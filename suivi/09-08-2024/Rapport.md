@@ -1,0 +1,5 @@
+- Exercice Dart
+- Recherche stat (BV, FK, Commune, District, Region, Province)
+  - Telechargement pdf resultats election legislative 29/05/2024
+  - script conversion pdf to excel (python library: tabula-py, pandas)
+- Conception architecture
