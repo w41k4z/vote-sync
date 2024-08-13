@@ -1,0 +1,2 @@
+- Flutter clean code architecture + TDD
+- BLoC (design pattern)
