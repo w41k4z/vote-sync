@@ -5,3 +5,6 @@
   - securité:
     - exposition de la base nationale par le biais des appels Web services.
       => mise en cache des données et filtrage des resultats par FK appellant (un seul `endpoint` en exposition)
+  - login responsable:
+    - localisation assigné ? BV ? Fokotany ? Commune ?
+      => ???
