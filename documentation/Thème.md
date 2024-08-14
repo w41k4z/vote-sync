@@ -57,3 +57,5 @@
 
     - import/scan des données
     - gestion BDV
+
+- Internship: max 88 days (from 2024-08-14 to 2024-11-10)

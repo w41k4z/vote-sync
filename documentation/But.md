@@ -6,6 +6,9 @@
 
   - admin:
 
+    - gestion des utilisateurs:
+      - role
+      - ...
     - acces au tableau de bord (presenter sous forme de map):
       - stat electorale (taux de participation...)
       - stat des alertes (nombre d'alerte par type, taux de resolution, ...)
@@ -17,12 +20,14 @@
       - valeur extreme (taux de participation inhabituel)
       - pattern temporel (enregistrement de vote en dehors des heures d'ouverture)
       - cohérence des données (incohérence entre le nombre de vote et le nombre d'electeur)
-    - CRUD (role et utilisateur, type election, candidat, district, bv, fk...)
+    - gestion élection (CRUD role et utilisateur, type election, candidat, district, bv, fk...)
 
   - responsable:
 
     - pointage electeur (par bv)
     - scan document resultat
+
+    Pour le resultat, un formulaire de validation est proposé apres le scan. Puis lors de l'envoie, le fichier source sera uploadé sur un serveur dedié (ex: Firebase), les informations extraites + le lien genéré seront stockées dans la base de données pour une validation ultérieure.
 
   - operateur:
 
