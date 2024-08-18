@@ -1,4 +1,5 @@
 - 09/08/2024
+
   - réalisation:
     - Plus de 28.000 BV au total (probleme de financement pour les installations nécessaires)
       => Limitation au niveau commune (1547 commune à peu près)
@@ -8,3 +9,9 @@
   - login responsable:
     - localisation assigné ? BV ? Fokotany ? Commune ?
       => ???
+
+- 16/08/2024
+  - Version mobile à supporter:
+    - les librairies doivent etre selectionnées specifiquement pour supporter les versions mobiles
+      => Choix des librairies supportant de large gamme de version mobile
+      (min: SDK 21, Android 5.0, iOS 9.0)
