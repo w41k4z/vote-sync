@@ -301,12 +301,6 @@
         <mxCell id="QsdNjlj7qh2SUGy0FxNo-32" value="&lt;ul style=&quot;font-size: 20px;&quot;&gt;&lt;li style=&quot;font-size: 20px;&quot;&gt;&lt;span style=&quot;background-color: initial; font-size: 20px;&quot;&gt;enregistrement électeur&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-size: 20px;&quot;&gt;&lt;span style=&quot;background-color: initial; font-size: 20px;&quot;&gt;scan document et envoie résultat&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="text;strokeColor=none;fillColor=none;html=1;whiteSpace=wrap;verticalAlign=middle;overflow=hidden;fontSize=20;" parent="QsdNjlj7qh2SUGy0FxNo-35" vertex="1">
           <mxGeometry x="738" y="239.5" width="307" height="155" as="geometry" />
         </mxCell>
-        <mxCell id="QsdNjlj7qh2SUGy0FxNo-36" value="&lt;font style=&quot;font-size: 40px;&quot;&gt;&lt;b&gt;Pre-election&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="289" y="1200" width="250" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="QsdNjlj7qh2SUGy0FxNo-37" value="Diagramme de sequence" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="330" y="1180" width="160" height="30" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
