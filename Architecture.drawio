@@ -221,7 +221,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ILdw6GPgbC6YQAx07R1B-1" value="Document preview/upload" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="QsdNjlj7qh2SUGy0FxNo-2">
+        <mxCell id="ILdw6GPgbC6YQAx07R1B-1" value="Document preview/upload&lt;div&gt;(HTTP/FTP)&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="QsdNjlj7qh2SUGy0FxNo-2">
           <mxGeometry x="0.2412" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
