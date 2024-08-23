@@ -3,6 +3,7 @@
 (Proposition personnelle)
 
 - Theme: Digitalisation electorale (Collecte des voix, Système de surveillance et d'alerte pour les irrégularités électorales)
+  => Digitalisation du processus électoral : Développement et optimisation d'une application mobile et back-office pour la gestion intégrée des élections.
 
 - Fonctionnalité:
 
@@ -58,4 +59,4 @@
     - import/scan des données
     - gestion BDV
 
-- Internship: max 88 days (from 2024-08-14 to 2024-11-10)
+- Internship: from 2024-08-05 to 2024-11-18
