@@ -3,7 +3,7 @@
 (Proposition personnelle)
 
 - Theme: Digitalisation electorale (Collecte des voix, Système de surveillance et d'alerte pour les irrégularités électorales)
-  => Digitalisation du processus électoral : Développement et optimisation d'une application mobile et back-office pour la gestion intégrée des élections.
+  => Digitalisation du processus électoral : Développement et optimisation d'une application mobile et back-office pour la gestion intégrée des élections populaires.
 
 - Fonctionnalité:
 
