@@ -54,7 +54,7 @@ class _HomescreenState extends State<Homescreen> {
           children: [
             AppHeaderAction(imagePicker: imagePicker),
             Card(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height - 300,
                 child: controller.value.isInitialized
                     ? CameraPreview(controller)
