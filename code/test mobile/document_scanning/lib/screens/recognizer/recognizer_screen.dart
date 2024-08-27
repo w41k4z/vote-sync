@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+// import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 class RecognizerScreen extends StatefulWidget {
   final File image;
@@ -13,25 +14,43 @@ class RecognizerScreen extends StatefulWidget {
 }
 
 class _RecognizerScreenState extends State<RecognizerScreen> {
-  late TextRecognizer textRecognizer;
+  // late TextRecognizer textRecognizer;
   String result = '';
 
   @override
   initState() {
     super.initState();
-    textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-    recognize();
+    // textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+    // recognize();
+    processRecognition();
+  }
+
+  processRecognition() async {
+    final FirebaseVisionImage visionImage =
+        FirebaseVisionImage.fromFile(widget.image);
+    final TextRecognizer textRecognizer =
+        FirebaseVision.instance.textRecognizer();
+    VisionText visionText = await textRecognizer.processImage(visionImage);
+    for (TextBlock block in visionText.blocks) {
+      for (TextLine line in block.lines) {
+        for (TextElement word in line.elements) {
+          result += '${word.text} ';
+        }
+        result += '\n';
+      }
+    }
+    setState(() {});
   }
 
   recognize() async {
-    InputImage inputImage = InputImage.fromFile(widget.image);
-    final RecognizedText recognizedText =
-        await textRecognizer.processImage(inputImage);
+    // InputImage inputImage = InputImage.fromFile(widget.image);
+    // final RecognizedText recognizedText =
+    //     await textRecognizer.processImage(inputImage);
 
-    String text = recognizedText.text;
-    setState(() {
-      result = text;
-    });
+    // String text = recognizedText.text;
+    // setState(() {
+    //   result = text;
+    // });
   }
 
   @override

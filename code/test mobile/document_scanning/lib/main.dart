@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:document_scanning/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -16,7 +17,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Document scanner',
       theme: ThemeData.from(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
