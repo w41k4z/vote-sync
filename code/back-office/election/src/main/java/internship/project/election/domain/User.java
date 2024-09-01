@@ -1,0 +1,34 @@
+package internship.project.election.domain;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Entity
+@Table(name = "utilisateurs")
+public class User extends AbstractEntity<Integer> {
+
+    @Column(name = "identifiant")
+    private String identifier;
+
+    @OneToOne
+    @JoinColumn(name = "id_role")
+    private Role role;
+
+    @Column(name = "nom")
+    private String name;
+
+    @Column(name = "prenom")
+    private String firstName;
+
+    private String contact;
+
+    @Column(name = "mot_de_passe")
+    private String password;
+}

@@ -1,0 +1,191 @@
+Sub Create_Tables()
+
+DoCmd.RunSQL "CREATE TABLE province(" & _
+   "id_province SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(id_province)," & _
+   "UNIQUE(nom)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE region(" & _
+   "id_region SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "id_province SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_region)," & _
+   "UNIQUE(nom)," & _
+   "FOREIGN KEY(id_province) REFERENCES province(id_province)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE district(" & _
+   "id_district SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "id_region SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_district)," & _
+   "UNIQUE(nom)," & _
+   "FOREIGN KEY(id_region) REFERENCES region(id_region)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE commune(" & _
+   "id_commune SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "id_district SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_commune)," & _
+   "UNIQUE(nom)," & _
+   "FOREIGN KEY(id_district) REFERENCES district(id_district)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE fokotany(" & _
+   "id_fokotany SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "id_commune SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_fokotany)," & _
+   "FOREIGN KEY(id_commune) REFERENCES commune(id_commune)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE type_election(" & _
+   "id_type_election SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(id_type_election)," & _
+   "UNIQUE(nom)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE election(" & _
+   "id_election INT," & _
+   "date_election DATE NOT NULL," & _
+   "date_fin DATE," & _
+   "id_type_election SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_election)," & _
+   "FOREIGN KEY(id_type_election) REFERENCES type_election(id_type_election)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE enregistrement_candidat(" & _
+   "id_enregistrement INT," & _
+   "date_enregistrement DATE NOT NULL," & _
+   "numero_candidat INT NOT NULL," & _
+   "nom_candidat VARCHAR(50) NOT NULL," & _
+   "parti_politique_candidat VARCHAR(50) NOT NULL," & _
+   "id_election INT NOT NULL," & _
+   "PRIMARY KEY(id_enregistrement)," & _
+   "FOREIGN KEY(id_election) REFERENCES election(id_election)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE role(" & _
+   "id_role SMALLINT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "niveau INT NOT NULL," & _
+   "PRIMARY KEY(id_role)," & _
+   "UNIQUE(nom)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE cv(" & _
+   "id_cv INT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "id_fokotany SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_cv)," & _
+   "FOREIGN KEY(id_fokotany) REFERENCES fokotany(id_fokotany)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE type_anomalie(" & _
+   "id_type_anomalie INT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "niveau INT," & _
+   "PRIMARY KEY(id_type_anomalie)," & _
+   "UNIQUE(nom)," & _
+   "UNIQUE(niveau)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE parti_politique(" & _
+   "id_parti_politique INT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "PRIMARY KEY(id_parti_politique)," & _
+   "UNIQUE(nom)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE bv(" & _
+   "id_bv SMALLINT," & _
+   "code_bv CHAR(12) NOT NULL," & _
+   "nom VARCHAR(100) NOT NULL," & _
+   "longitude DECIMAL(15,2)," & _
+   "latitude DECIMAL(15,2)," & _
+   "id_cv INT NOT NULL," & _
+   "PRIMARY KEY(id_bv)," & _
+   "UNIQUE(code_bv)," & _
+   "FOREIGN KEY(id_cv) REFERENCES cv(id_cv)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE enregistrement_electeur(" & _
+   "id_enregistrement BIGINT," & _
+   "date_enregistrement DATETIME NOT NULL," & _
+   "nom_electeur VARCHAR(50) NOT NULL," & _
+   "prenom_electeur VARCHAR(50)," & _
+   "cin_electeur VARCHAR(50) NOT NULL," & _
+   "id_bv SMALLINT NOT NULL," & _
+   "id_election INT NOT NULL," & _
+   "PRIMARY KEY(id_enregistrement)," & _
+   "UNIQUE(cin_electeur)," & _
+   "FOREIGN KEY(id_bv) REFERENCES bv(id_bv)," & _
+   "FOREIGN KEY(id_election) REFERENCES election(id_election)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE candidat(" & _
+   "id_candidat INT," & _
+   "nom VARCHAR(100) NOT NULL," & _
+   "parti_politique VARCHAR(100) NOT NULL," & _
+   "id_parti_politique INT NOT NULL," & _
+   "PRIMARY KEY(id_candidat)," & _
+   "FOREIGN KEY(id_parti_politique) REFERENCES parti_politique(id_parti_politique)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE anomalie(" & _
+   "id_anomalie BIGINT," & _
+   "date_anomalie DATETIME NOT NULL," & _
+   "description TEXT," & _
+   "etat INT NOT NULL," & _
+   "id_type_anomalie INT NOT NULL," & _
+   "id_bv SMALLINT," & _
+   "PRIMARY KEY(id_anomalie)," & _
+   "FOREIGN KEY(id_type_anomalie) REFERENCES type_anomalie(id_type_anomalie)," & _
+   "FOREIGN KEY(id_bv) REFERENCES bv(id_bv)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE utilisateur(" & _
+   "id_utilisateur INT," & _
+   "nom VARCHAR(50) NOT NULL," & _
+   "prenom VARCHAR(50)," & _
+   "contact CHAR(10) NOT NULL," & _
+   "identifiant VARCHAR(50) NOT NULL," & _
+   "mot_de_passe VARCHAR(50) NOT NULL," & _
+   "id_role SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_utilisateur)," & _
+   "UNIQUE(contact)," & _
+   "UNIQUE(identifiant)," & _
+   "FOREIGN KEY(id_role) REFERENCES role(id_role)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE resultat(" & _
+   "id_resultat BIGINT," & _
+   "inscrits INT NOT NULL," & _
+   "blancs INT NOT NULL," & _
+   "nuls INT NOT NULL," & _
+   "lien_document TEXT NOT NULL," & _
+   "etat INT NOT NULL," & _
+   "id_utilisateur INT," & _
+   "id_election INT NOT NULL," & _
+   "id_bv SMALLINT NOT NULL," & _
+   "PRIMARY KEY(id_resultat)," & _
+   "UNIQUE(lien_document)," & _
+   "FOREIGN KEY(id_utilisateur) REFERENCES utilisateur(id_utilisateur)," & _
+   "FOREIGN KEY(id_election) REFERENCES election(id_election)," & _
+   "FOREIGN KEY(id_bv) REFERENCES bv(id_bv)" & _
+");"   
+
+DoCmd.RunSQL "CREATE TABLE voix_candidat(" & _
+   "id_voix_candidat INT," & _
+   "numero_candidat INT NOT NULL," & _
+   "voix INT NOT NULL," & _
+   "id_resultat BIGINT NOT NULL," & _
+   "PRIMARY KEY(id_voix_candidat)," & _
+   "FOREIGN KEY(id_resultat) REFERENCES resultat(id_resultat)" & _
+");"   
+
+End Sub
