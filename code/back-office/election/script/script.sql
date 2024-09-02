@@ -5,7 +5,7 @@ CREATE TABLE roles (
    created_at DATE,
    updated_at DATE,
    PRIMARY KEY(id),
-   CONSTRAINT unique_nom UNIQUE(nom)
+   CONSTRAINT unique_nom_role UNIQUE(nom)
 );
 
 CREATE TABLE utilisateurs (
@@ -19,12 +19,26 @@ CREATE TABLE utilisateurs (
    created_at DATE,
    updated_at DATE,
    PRIMARY KEY(id),
-   CONSTRAINT unique_contact UNIQUE(contact),
-   CONSTRAINT unique_identifiant UNIQUE(identifiant),
+   CONSTRAINT unique_contact_utilisateur UNIQUE(contact),
+   CONSTRAINT unique_identifiant_utilisateur UNIQUE(identifiant),
    FOREIGN KEY(id_role) REFERENCES roles(id)
 );
 
+CREATE TABLE provinces (
+   id NUMBER,
+   nom VARCHAR2(12) NOT NULL,
+   PRIMARY KEY(id),
+   CONSTRAINT unique_nom_province UNIQUE(nom)
+);
 
-insert into roles values(default, 'OPERATOR', 0, sysdate, sysdate); 
-insert into roles values(default, 'MANAGER', 5, sysdate, sysdate); 
-insert into roles values(default, 'ADMIN', 10, sysdate, sysdate);
+
+insert into roles values(1, 'OPERATOR', 0, sysdate, sysdate); 
+insert into roles values(2, 'MANAGER', 5, sysdate, sysdate); 
+insert into roles values(3, 'ADMIN', 10, sysdate, sysdate);
+
+insert into provinces values(1, 'Antananarivo');
+insert into provinces values(2, 'Antsiranana');
+insert into provinces values(3, 'Fianarantsoa');
+insert into provinces values(4, 'Mahajanga');
+insert into provinces values(5, 'Toamasina');
+insert into provinces values(6, 'Toliara');
