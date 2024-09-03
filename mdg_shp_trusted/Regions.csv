@@ -1,10 +1,10 @@
-﻿PROVINCE_ID,FID,OBJECTID,REGION,P_CODE,R_CODE,SOURCE,Shape__Area,Shape__Length
+﻿PROV_ID,FID,OBJECTID,REGION,P_CODE,R_CODE,SOURCE,Shape__Area,Shape__Length
 1,1,1,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",19391632776.2891,897586.086238653
 1,2,2,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",20307852261.3057,980473.302637662
 1,3,3,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",7409123531.93066,631215.147042037
 1,4,4,Bongolava,MDG14,14,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",20274172396.1143,994897.700647118
 3,5,5,Haute Matsiatra,MDG21,21,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",24167309007.9912,965913.971868558
-3,6,6,Amoron i Mania,MDG22,22,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",18893023304.3604,1091183.68693538
+3,6,6,Amoron'i Mania,MDG22,22,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",18893023304.3604,1091183.68693538
 3,7,7,Vatovavy Fitovinany,MDG23,23,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",24021750455.1748,1036497.96645453
 3,8,8,Ihorombe,MDG24,24,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",30688959577.4258,1348866.33548067
 3,9,9,Atsimo Atsinanana,MDG25,25,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",19800527263.0088,1073277.85519539

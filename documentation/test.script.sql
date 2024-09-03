@@ -120,4 +120,3 @@ FROM
 GROUP BY
     p.name;
 ;
-

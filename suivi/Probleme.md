@@ -11,7 +11,12 @@
       => ???
 
 - 16/08/2024
+
   - Version mobile à supporter:
     - les librairies doivent etre selectionnées specifiquement pour supporter les versions mobiles
       => Choix des librairies supportant de large gamme de version mobile
       (min: SDK 21, Android 5.0, iOS 9.0)
+
+- 02/09/2024
+  - Donnée spatiale obselète:
+    => Adapter les données à jour en fonction des données spatiales recoltées (Groupement des BV du région Vatovavy dans Fitovinany pour reformer la région Vatovavy Fitovinany)

@@ -1,0 +1,25 @@
+<div class="d-flex page-content justify-content-center">
+    <section class="w-50 d-none d-md-block side-img-holder">
+        <img src="../../../assets/bg.jpg" alt="">
+    </section>
+    <section class="w-50 auth-card-holder">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="mb-5 text-center text-primary">Authentification</h1>
+                <h4 class="mb-4">Entrez votre identifiant et mot de passe</h4>
+                <div class="mt-4 mb-3">
+                    <label for="identifier-input" class="form-label">Identifiant</label>
+                    <input type="text" class="form-control form-control-lg" id="identifier-input" placeholder="nom@gmail.com"/>
+                </div>
+                <div class="mt-4 mb-3">
+                    <label for="password-input" class="form-label">Mot de passe</label>
+                    <div class="input-group input-group-lg">
+                        <input type="{{passwordIsShown ? 'text' : 'password' }}" class="form-control" id="password-input"/>
+                        <button (click)="togglePassword()" class="btn btn-outline-secondary" type="button"><i class="{{passwordIsShown ? eyeIcons[1] : eyeIcons[0] }}"></i></button>
+                    </div>
+                </div>
+                <button class="mt-4 btn btn-lg btn-primary w-100">Se connecter</button>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,9 +1,20 @@
-- Encadreur: Mr Mahery
+- Encadreur: Mme Vanona
 
 (Proposition personnelle)
 
 - Theme: Digitalisation electorale (Collecte des voix, Système de surveillance et d'alerte pour les irrégularités électorales)
-  => Digitalisation du processus électoral : Développement d'une application mobile et back-office pour la gestion intégrée des élections populaires.
+  => Modernisation du système de gestion des élections populaires : Développement d'une application mobile et d'un back-office pour l'amélioration du processus électoral.
+
+- Description:
+  => La Commission Électorale Nationale Indépendante (CENI) de Madagascar est en pleine refonte de ses applications 
+pour moderniser et optimiser la gestion électorale. Actuellement, la gestion des processus électoraux 
+est confrontée à des défis majeurs en raison de la complexité des opérations et des contraintes locales, 
+telles que la connectivité limitée dans certaines régions.
+Pour répondre à ces enjeux, nous développons une nouvelle application mobile et un système back-office dédiés 
+à l'amélioration du processus électoral. Cette solution vise à centraliser et à sécuriser les opérations, 
+tout en optimisant l'efficacité de la gestion des élections à tous les niveaux, 
+de l'inscription des candidats à la publication des résultats
+
 
 - Fonctionnalité:
 
