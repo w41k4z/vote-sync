@@ -1,7 +1,8 @@
-CREATE TABLE jeton_rafrachissements (
+CREATE TABLE jeton_rafraichissements (
    identifiant_utilisateur VARCHAR2(50),
    jeton VARCHAR2(150) NOT NULL,
-   PRIMARY KEY(identifiant_utilisateur)
+   PRIMARY KEY(identifiant_utilisateur),
+   CONSTRAINT unique_jeton UNIQUE(jeton)
 );
 
 CREATE TABLE roles (
@@ -41,6 +42,8 @@ CREATE TABLE provinces (
 insert into roles values(1, 'OPERATOR', 0, sysdate, sysdate); 
 insert into roles values(2, 'MANAGER', 5, sysdate, sysdate); 
 insert into roles values(3, 'ADMIN', 10, sysdate, sysdate);
+
+insert into utilisateurs values(default, 3, 'Admin', 'Admin', '0340000000', 'admin', '{bcrypt}$2a$10$J9f30WOeQCp2sJ8IjZwd0eUYK0xFF.U6Ou0Fw9vsGWoKdzSA7Nwje', sysdate, sysdate);
 
 insert into provinces values(1, 'Antananarivo');
 insert into provinces values(2, 'Antsiranana');

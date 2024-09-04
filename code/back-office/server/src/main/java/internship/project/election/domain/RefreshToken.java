@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "jeton_rafrachissements")
+@Table(name = "jeton_rafraichissements")
 public class RefreshToken {
 
     @Id

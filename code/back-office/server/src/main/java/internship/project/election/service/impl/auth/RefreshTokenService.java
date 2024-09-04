@@ -5,6 +5,7 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import internship.project.election.domain.RefreshToken;
 import internship.project.election.repository.RefreshTokenRepository;
 import internship.project.election.service.spec.AbstractJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,8 +36,7 @@ public class RefreshTokenService extends AbstractJwtService<String> {
         }
 
         // Invalidated token check
-        String userIdentifier = this.getSubject(token);
-        if (!this.repository.existsById(userIdentifier)) {
+        if (this.repository.findByToken(token).isEmpty()) {
             return false;
         }
         return true;
@@ -56,6 +56,14 @@ public class RefreshTokenService extends AbstractJwtService<String> {
     @Override
     public boolean validateToken(String token) {
         return this.isValid(token);
+    }
+
+    public void store(String token) {
+        String userIdentifier = this.getSubject(token);
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setUserIdentifier(userIdentifier);
+        refreshToken.setToken(token);
+        this.repository.save(refreshToken);
     }
 
     public void invalidate(String token) {

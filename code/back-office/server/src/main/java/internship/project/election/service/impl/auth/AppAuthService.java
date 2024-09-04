@@ -40,8 +40,11 @@ public class AppAuthService implements AuthService<Map<String, String>> {
         userRole.setName(userDetails.getAuthorities().iterator().next().getAuthority());
         user.setIdentifier(userDetails.getUsername());
         user.setRole(userRole);
-        response.put("accessToken", this.jwtService.generateToken(user));
-        response.put("refreshToken", this.refreshTokenService.generateToken(user.getIdentifier()));
+        String accessToken = this.jwtService.generateToken(user);
+        String refreshToken = this.refreshTokenService.generateToken(user.getIdentifier());
+        response.put("accessToken", accessToken);
+        response.put("refreshToken", refreshToken);
+        this.refreshTokenService.store(refreshToken);
         return response;
     }
 
