@@ -13,5 +13,10 @@
     "name": "jwt.expiration.time",
     "type": "java.lang.Long",
     "description": "JWT expiration time in milliseconds"
+  },
+  {
+    "name": "refresh.token.expiration.time",
+    "type": "java.lang.String",
+    "description": "Refresh token expiration time in milliseconds"
   }
 ]}

@@ -1,3 +1,7 @@
+section {
+    min-height: 100vh;
+}
+
 .error-container { 
     text-align: center; 
     background-color: #fff; 
@@ -8,7 +12,7 @@
   
 h1 { 
     font-size: 5rem; 
-    color: #ff5733; 
+    color: #EB2114; 
 } 
   
 p { 
@@ -19,7 +23,7 @@ p {
   
 a { 
     text-decoration: none; 
-    background-color: #ff5733; 
+    background-color: #EB2114; 
     color: #fff; 
     padding: 10px 20px; 
     border-radius: 3px; 
@@ -28,5 +32,5 @@ a {
 } 
   
 a:hover { 
-    background-color: #e6482e; 
+    background-color: #EB2114; 
 }

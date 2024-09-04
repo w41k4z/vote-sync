@@ -1,3 +1,9 @@
+CREATE TABLE jeton_rafrachissements (
+   identifiant_utilisateur VARCHAR2(50),
+   jeton VARCHAR2(150) NOT NULL,
+   PRIMARY KEY(identifiant_utilisateur)
+);
+
 CREATE TABLE roles (
    id NUMBER,
    nom VARCHAR2(50) NOT NULL,

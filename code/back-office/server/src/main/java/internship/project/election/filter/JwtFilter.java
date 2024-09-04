@@ -1,8 +1,12 @@
 package internship.project.election.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -10,7 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import internship.project.election.domain.User;
-import internship.project.election.service.impl.JwtService;
+import internship.project.election.service.impl.auth.AppJwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,9 +24,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    private JwtService jwtService;
+    private AppJwtService jwtService;
 
-    public JwtFilter(JwtService jwtService) {
+    public JwtFilter(AppJwtService jwtService) {
         this.jwtService = jwtService;
     }
 
@@ -29,6 +34,19 @@ public class JwtFilter extends OncePerRequestFilter {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.getWriter().write("{\"error\": \"Unauthorized\"}");
+    }
+
+    private void sendRefreshTokenRequiredResponse(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write("{\"error\": \"Refresh token required\", \"refresh_token_required\": true}");
+    }
+
+    private UserDetails getUserDetailsFromUser(User user) {
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        return new org.springframework.security.core.userdetails.User(user.getIdentifier(), "",
+                grantedAuthorities);
     }
 
     @Override
@@ -44,14 +62,19 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.split(" ")[1].trim();
-        boolean isValidToken = jwtService.validateToken(token);
-        if (!isValidToken) {
-            this.sendUnauthorizedResponse(response);
+        try {
+            boolean isValidToken = jwtService.validateToken(token);
+            if (!isValidToken) {
+                this.sendUnauthorizedResponse(response);
+                return;
+            }
+        } catch (ExpiredJwtException e) {
+            this.sendRefreshTokenRequiredResponse(response);
             return;
         }
 
         User user = jwtService.extractUserFromToken(token);
-        UserDetails userDetails = jwtService.getUserDetailsFromUser(user);
+        UserDetails userDetails = this.getUserDetailsFromUser(user);
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails,
