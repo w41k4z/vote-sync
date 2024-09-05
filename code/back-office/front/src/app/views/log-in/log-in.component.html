@@ -18,13 +18,9 @@
                         placeholder="nom@gmail.com"
                     />
                     <!-- Identifier input error validation -->
-                    @if (submitted && f['identifier'].errors) {
-                    <div class="invalid-feedback">
-                        @if (f['identifier'].errors['required']) {
-                        <p class="m-0">L'identifiant email est requise</p>
-                        }
+                    <div *ngIf="submitted && f['identifier'].errors" class="invalid-feedback">
+                        <p *ngIf="f['identifier'].errors['required']" class="m-0">L'identifiant email est requise</p>
                     </div>
-                    }
                 </div>
                 <div class="mt-4 mb-3">
                     <label for="password-input" class="form-label">Mot de passe</label>
@@ -37,15 +33,11 @@
                             formControlName="password"
                         />
                         <button (click)="togglePassword()" class="btn btn-outline-secondary" type="button"><i class="{{passwordIsShown ? eyeIcons[1] : eyeIcons[0] }}"></i></button>
+                        <!-- Password input error validation -->
+                        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                            <p *ngIf="f['password'].errors['required']" class="m-0">Le mot de passe est requis</p>
+                        </div>
                     </div>
-                    <!-- Password input error validation -->
-                    @if (submitted && f['password'].errors) {
-                    <div class="invalid-feedback">
-                        @if (f['password'].errors['required']) {
-                        <p class="m-0">Le mot de passe est requis</p>
-                        }
-                    </div>
-                    }
                 </div>
                 <!-- Server error validation -->
                 <div class="my-2 alert alert-danger" *ngIf="error$ | async as error" role="alert">

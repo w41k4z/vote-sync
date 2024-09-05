@@ -1,8 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  firstValueFrom,
+  map,
+  tap,
+  throwError,
+} from 'rxjs';
+import { env } from '../../../environment/env';
+import { ApiResponse } from '../../dto/api.response';
 
 export class ApiCallService {
-  protected baseUrl = 'http://localhost:3000/api';
+  protected baseUrl = env.baseUrl;
   protected httpClient: HttpClient;
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -16,7 +25,7 @@ export class ApiCallService {
     this.httpClient = httpClient;
   }
 
-  protected getCall(url: string): Observable<any> {
+  protected async getCall<T>(url: string): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
     const res = this.httpClient.get(`${this.baseUrl}/${url}`).pipe(
       tap((response: any) => {
@@ -28,17 +37,17 @@ export class ApiCallService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next(error.message);
+        this.errorSubject.next(error.error.message);
         setTimeout(() => {
           this.errorSubject.next(null);
         }, 5000);
         return throwError(() => error);
       })
     );
-    return res;
+    return await firstValueFrom(res);
   }
 
-  protected postCall(url: string, data: any): Observable<any> {
+  protected async postCall<T>(url: string, data: any): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
     const res = this.httpClient.post(`${this.baseUrl}/${url}`, data).pipe(
       tap((response: any) => {
@@ -50,17 +59,18 @@ export class ApiCallService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next(error.message);
+        this.errorSubject.next(error.error.message);
         setTimeout(() => {
           this.errorSubject.next(null);
         }, 5000);
         return throwError(() => error);
-      })
+      }),
+      map((response: any) => response)
     );
-    return res;
+    return await firstValueFrom(res);
   }
 
-  protected putCall(url: string, data: any): Observable<any> {
+  protected async putCall<T>(url: string, data: any): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
     const res = this.httpClient.put(`${this.baseUrl}/${url}`, data).pipe(
       tap((response: any) => {
@@ -72,17 +82,17 @@ export class ApiCallService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next(error.message);
+        this.errorSubject.next(error.error.message);
         setTimeout(() => {
           this.errorSubject.next(null);
         }, 5000);
         return throwError(() => error);
       })
     );
-    return res;
+    return await firstValueFrom(res);
   }
 
-  protected deleteCall(url: string): Observable<any> {
+  protected async deleteCall<T>(url: string): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
     const res = this.httpClient.delete(`${this.baseUrl}/${url}`).pipe(
       tap((response: any) => {
@@ -94,13 +104,13 @@ export class ApiCallService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next(error.message);
+        this.errorSubject.next(error.error.message);
         setTimeout(() => {
           this.errorSubject.next(null);
         }, 5000);
         return throwError(() => error);
       })
     );
-    return res;
+    return await firstValueFrom(res);
   }
 }

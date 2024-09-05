@@ -8,6 +8,8 @@ import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-la
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient } from '@angular/common/http';
+import { NavigationInterceptor } from './filter/navigation.interceptor';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PageNotFoundComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [],
+  providers: [provideHttpClient(), NavigationInterceptor],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

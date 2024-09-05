@@ -1,22 +1,35 @@
 import { Injectable } from '@angular/core';
-import { SignInService } from './sign-in.service';
 import { Router } from '@angular/router';
 import { Paths } from '../../paths';
+import { ApiCallService } from '../api/api-call.service';
+import { HttpClient } from '@angular/common/http';
+import { AuthRequest } from '../../dto/auth.request';
+
+type SignInResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService extends ApiCallService {
   public accessToken: string | null = null;
   public refreshToken: string | null = null;
 
-  constructor(public signInService: SignInService, public router: Router) {}
+  constructor(httpClient: HttpClient, public router: Router) {
+    super(httpClient);
+  }
 
-  logIn(username: string, password: string) {
-    const res = this.signInService.signIn(username, password);
-    if (res) {
-      this.accessToken = res.accessToken;
-      this.refreshToken = res.refreshToken;
+  async logIn(username: string, password: string) {
+    const authRequest = new AuthRequest(username, password);
+    const res = await this.postCall<SignInResponse>(
+      'auth/sign-in',
+      authRequest
+    );
+    if (res && res.payload) {
+      this.accessToken = res.payload.accessToken;
+      this.refreshToken = res.payload.refreshToken;
       localStorage.setItem('accessToken', this.accessToken);
       localStorage.setItem('refreshToken', this.refreshToken);
       this.router.navigate([Paths.DASHBOARD]);

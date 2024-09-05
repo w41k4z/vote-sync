@@ -21,15 +21,15 @@ export class LogInComponent extends FormContainerComponent {
       password: new FormControl('', [Validators.required]),
     });
     super(signInForm);
-    this.loading$ = authService.signInService.loading$;
-    this.error$ = authService.signInService.error$;
+    this.loading$ = authService.loading$;
+    this.error$ = authService.error$;
   }
 
   togglePassword() {
     this.passwordIsShown = !this.passwordIsShown;
   }
 
-  submit() {
+  async submit() {
     this.submitting();
     if (this.componentForm.invalid) {
       return;
@@ -40,6 +40,7 @@ export class LogInComponent extends FormContainerComponent {
     const password = this.componentForm.value.password
       ? this.componentForm.value.password
       : '';
-    this.authService.logIn(identifier, password);
+    await this.authService.logIn(identifier, password);
+    this.reset();
   }
 }
