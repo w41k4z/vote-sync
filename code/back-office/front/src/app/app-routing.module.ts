@@ -4,6 +4,10 @@ import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-la
 import { LogInComponent } from './views/log-in/log-in.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { Paths } from './paths';
+import { authGuard } from './guards/auth.guard';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { TestComponent } from './views/test/test.component';
+import { signInPageGuard } from './guards/sign-in-page.guard';
 
 const routes: Routes = [
   {
@@ -12,7 +16,22 @@ const routes: Routes = [
     children: [
       {
         path: 'log-in',
+        canActivate: [signInPageGuard],
         component: LogInComponent,
+      },
+    ],
+  },
+  {
+    path: 'app',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'test',
+        component: TestComponent,
       },
     ],
   },

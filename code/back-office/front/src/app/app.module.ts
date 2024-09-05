@@ -8,8 +8,10 @@ import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-la
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
-import { NavigationInterceptor } from './filter/navigation.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { jwtInterceptor } from './filter/interceptors';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { TestComponent } from './views/test/test.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +20,11 @@ import { NavigationInterceptor } from './filter/navigation.interceptor';
     FullPageLayoutComponent,
     AppLayoutComponent,
     PageNotFoundComponent,
+    DashboardComponent,
+    TestComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [provideHttpClient(), NavigationInterceptor],
+  providers: [provideHttpClient(withInterceptors([jwtInterceptor]))],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

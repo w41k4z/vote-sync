@@ -8,7 +8,7 @@ import {
   throwError,
 } from 'rxjs';
 import { env } from '../../../environment/env';
-import { ApiResponse } from '../../dto/api.response';
+import { ApiResponse } from '../../dto/response/api.response';
 
 export class ApiCallService {
   protected baseUrl = env.baseUrl;

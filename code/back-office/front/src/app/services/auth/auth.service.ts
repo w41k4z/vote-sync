@@ -3,12 +3,8 @@ import { Router } from '@angular/router';
 import { Paths } from '../../paths';
 import { ApiCallService } from '../api/api-call.service';
 import { HttpClient } from '@angular/common/http';
-import { AuthRequest } from '../../dto/auth.request';
-
-type SignInResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
+import { AuthRequest } from '../../dto/request/auth.request';
+import { SignInResponse } from '../../dto/response/sign-in.response';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +13,14 @@ export class AuthService extends ApiCallService {
   public accessToken: string | null = null;
   public refreshToken: string | null = null;
 
-  constructor(httpClient: HttpClient, public router: Router) {
+  constructor(httpClient: HttpClient, private router: Router) {
     super(httpClient);
+    if (localStorage.getItem('accessToken')) {
+      this.accessToken = localStorage.getItem('accessToken');
+    }
+    if (localStorage.getItem('refreshToken')) {
+      this.refreshToken = localStorage.getItem('refreshToken');
+    }
   }
 
   async logIn(username: string, password: string) {
