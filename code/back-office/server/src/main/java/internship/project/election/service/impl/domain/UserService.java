@@ -2,6 +2,8 @@ package internship.project.election.service.impl.domain;
 
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import internship.project.election.dto.request.NewUserRequest;
 import internship.project.election.repository.UserRepository;
 import internship.project.election.service.impl.auth.util.AdminPasswordHashing;
 import internship.project.election.service.impl.auth.util.UserPasswordHashing;
+import internship.project.election.service.impl.domain.filter.UserFilter;
+import internship.project.election.service.spec.AuthService;
 import internship.project.election.service.spec.util.AbstractPasswordHashing;
 
 @Service
@@ -30,7 +34,13 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return this.repository.findAll();
+        UserDetails activeUser = AuthService.getActiveUser();
+        Role role = new Role(activeUser.getAuthorities().stream().findFirst().get().getAuthority());
+        Specification<User> spec = UserFilter.getActiveUsers();
+        if (!role.getName().equals(Authority.ADMIN.toString())) {
+            spec = spec.and(UserFilter.getNonAdminUsers());
+        }
+        return this.repository.findAll(spec);
     }
 
     public User getUserById(int id) {

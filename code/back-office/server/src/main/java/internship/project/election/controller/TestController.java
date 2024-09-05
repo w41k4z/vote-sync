@@ -16,17 +16,8 @@ public class TestController {
         this.encoder = encoder;
     }
 
-    @GetMapping
+    @GetMapping("/hash")
     public String hash(@RequestBody String password) {
         return this.encoder.encode("password");
-    }
-
-    @GetMapping("/hash")
-    public boolean test() {
-        String test = this.encoder.encode("admin");
-        System.out.println("\n" + test + "\n");
-        return this.encoder.matches(
-                "admin",
-                test);
     }
 }

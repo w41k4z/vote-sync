@@ -3,23 +3,61 @@
         <img src="../../../assets/bg.jpg" alt="">
     </section>
     <section class="w-50 auth-card-holder">
-        <div class="card">
+        <form class="card" [formGroup]="componentForm" (ngSubmit)="submit()">
             <div class="card-body">
                 <h1 class="mb-5 text-center text-primary">Authentification</h1>
                 <h4 class="mb-4">Entrez votre identifiant et mot de passe</h4>
                 <div class="mt-4 mb-3">
                     <label for="identifier-input" class="form-label">Identifiant</label>
-                    <input type="text" class="form-control form-control-lg" id="identifier-input" placeholder="nom@gmail.com"/>
+                    <input 
+                        type="text" 
+                        class="form-control form-control-lg" 
+                        id="identifier-input" 
+                        [ngClass]="{ 'is-invalid': submitted && f['identifier'].errors }" 
+                        formControlName="identifier" 
+                        placeholder="nom@gmail.com"
+                    />
+                    <!-- Identifier input error validation -->
+                    @if (submitted && f['identifier'].errors) {
+                    <div class="invalid-feedback">
+                        @if (f['identifier'].errors['required']) {
+                        <p class="m-0">L'identifiant email est requise</p>
+                        }
+                    </div>
+                    }
                 </div>
                 <div class="mt-4 mb-3">
                     <label for="password-input" class="form-label">Mot de passe</label>
                     <div class="input-group input-group-lg">
-                        <input type="{{passwordIsShown ? 'text' : 'password' }}" class="form-control" id="password-input"/>
+                        <input 
+                            type="{{passwordIsShown ? 'text' : 'password' }}" 
+                            class="form-control" 
+                            id="password-input"
+                            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+                            formControlName="password"
+                        />
                         <button (click)="togglePassword()" class="btn btn-outline-secondary" type="button"><i class="{{passwordIsShown ? eyeIcons[1] : eyeIcons[0] }}"></i></button>
                     </div>
+                    <!-- Password input error validation -->
+                    @if (submitted && f['password'].errors) {
+                    <div class="invalid-feedback">
+                        @if (f['password'].errors['required']) {
+                        <p class="m-0">Le mot de passe est requis</p>
+                        }
+                    </div>
+                    }
                 </div>
-                <button class="mt-4 btn btn-lg btn-primary w-100">Se connecter</button>
+                <!-- Server error validation -->
+                <div class="my-2 alert alert-danger" *ngIf="error$ | async as error" role="alert">
+                    {{ error }}
+                </div>
+                <button class="mt-4 btn btn-lg btn-primary w-100">
+                    <span *ngIf="loading$ | async; else text" class="spinner-border text-white" role="status"></span>
+                    <ng-template #text>
+                        <p class="m-0">Se connecter</p>
+                    </ng-template>
+                </button>
             </div>
-        </div>
+        </form>
     </section>
 </div>

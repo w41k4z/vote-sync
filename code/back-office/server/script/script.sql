@@ -23,6 +23,7 @@ CREATE TABLE utilisateurs (
    contact CHAR(10) NOT NULL,
    identifiant VARCHAR2(50) NOT NULL,
    mot_de_passe VARCHAR2(150) NOT NULL,
+   etat NUMBER NOT NULL,
    created_at DATE,
    updated_at DATE,
    PRIMARY KEY(id),
@@ -43,7 +44,8 @@ insert into roles values(1, 'OPERATOR', 0, sysdate, sysdate);
 insert into roles values(2, 'MANAGER', 5, sysdate, sysdate); 
 insert into roles values(3, 'ADMIN', 10, sysdate, sysdate);
 
-insert into utilisateurs values(default, 3, 'Admin', 'Admin', '0340000000', 'admin', '{bcrypt}$2a$10$J9f30WOeQCp2sJ8IjZwd0eUYK0xFF.U6Ou0Fw9vsGWoKdzSA7Nwje', sysdate, sysdate);
+insert into utilisateurs values(1, 3, 'Admin', 'Admin', '0340000000', 'admin', '{bcrypt}$2a$10$J9f30WOeQCp2sJ8IjZwd0eUYK0xFF.U6Ou0Fw9vsGWoKdzSA7Nwje', 0, sysdate, sysdate);
+insert into utilisateurs values(DEFAULT, 2, 'Manager', 'Manager', '0330000000', 'manager', '{noop}manager', 0, sysdate, sysdate);
 
 insert into provinces values(1, 'Antananarivo');
 insert into provinces values(2, 'Antsiranana');

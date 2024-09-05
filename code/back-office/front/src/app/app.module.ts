@@ -7,6 +7,7 @@ import { LogInComponent } from './views/log-in/log-in.component';
 import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-layout.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,13 +15,10 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
     LogInComponent,
     FullPageLayoutComponent,
     AppLayoutComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

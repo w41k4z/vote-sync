@@ -31,4 +31,7 @@ public class User extends AbstractEntity<Integer> {
 
     @Column(name = "mot_de_passe")
     private String password;
+
+    @Column(name = "etat")
+    private Integer state;
 }

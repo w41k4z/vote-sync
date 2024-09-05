@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-layout.component';
 import { LogInComponent } from './views/log-in/log-in.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { Paths } from './paths';
 
 const routes: Routes = [
   {
@@ -15,7 +16,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '', redirectTo: '/page/log-in', pathMatch: 'full' },
+  { path: '', redirectTo: Paths.SIGN_IN, pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 
