@@ -1,4 +1,4 @@
-export class SignInResponse {
+export class SignInPayloadResponse {
   accessToken: string;
   refreshToken: string;
 

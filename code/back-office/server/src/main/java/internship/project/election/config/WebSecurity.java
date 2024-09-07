@@ -1,6 +1,7 @@
 package internship.project.election.config;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import internship.project.election.filter.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,6 +55,16 @@ public class WebSecurity {
                  * Disable CSRF (authenticating with JWT so no cookies are being used)
                  */
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> {
+                    cors.configurationSource(request -> {
+                        CorsConfiguration corsConfiguration = new CorsConfiguration();
+                        corsConfiguration.setAllowedMethods(List.of("*"));
+                        corsConfiguration.setAllowedHeaders(List.of("*"));
+                        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+                        // corsConfiguration.applyPermitDefaultValues();
+                        return corsConfiguration;
+                    });
+                })
                 /*
                  * Disable default form login redirection and change 403 to 401 status
                  */

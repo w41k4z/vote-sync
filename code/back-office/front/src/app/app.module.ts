@@ -11,7 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './filter/interceptors';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
-import { TestComponent } from './views/test/test.component';
+import { PermissionDeniedComponent } from './views/permission-denied/permission-denied.component';
+import { HomeComponent } from './views/home/home.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TestComponent } from './views/test/test.component';
     AppLayoutComponent,
     PageNotFoundComponent,
     DashboardComponent,
-    TestComponent,
+    PermissionDeniedComponent,
+    HomeComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor]))],

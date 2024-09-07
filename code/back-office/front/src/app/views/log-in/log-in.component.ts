@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { FormContainerComponent } from '../../components/form-container/form-container.component';
+import { Router } from '@angular/router';
+import { Paths } from '../../paths';
 
 @Component({
   selector: 'app-log-in',
@@ -15,7 +17,7 @@ export class LogInComponent extends FormContainerComponent {
   loading$!: Observable<Boolean>;
   error$!: Observable<string | null>;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     const signInForm = new FormGroup({
       identifier: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
@@ -40,7 +42,8 @@ export class LogInComponent extends FormContainerComponent {
     const password = this.componentForm.value.password
       ? this.componentForm.value.password
       : '';
-    await this.authService.logIn(identifier, password);
+    await this.authService.authenticate(identifier, password);
+    this.router.navigate([Paths.HOME]);
     this.reset();
   }
 }

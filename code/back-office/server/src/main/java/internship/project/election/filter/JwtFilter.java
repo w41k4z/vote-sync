@@ -3,6 +3,7 @@ package internship.project.election.filter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +14,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.google.gson.Gson;
+
 import internship.project.election.domain.User;
+import internship.project.election.dto.ApiResponse;
 import internship.project.election.service.impl.auth.AppJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -33,13 +37,19 @@ public class JwtFilter extends OncePerRequestFilter {
     private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"Unauthorized\"}");
+        HashMap<String, String> payload = new HashMap<>();
+        payload.put("refreshTokenRequired", "false");
+        ApiResponse content = new ApiResponse(payload, "Unauthorized");
+        response.getWriter().write(new Gson().toJson(content));
     }
 
     private void sendRefreshTokenRequiredResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"Refresh token required\", \"refresh_token_required\": true}");
+        HashMap<String, String> payload = new HashMap<>();
+        payload.put("refreshTokenRequired", "true");
+        ApiResponse content = new ApiResponse(payload, "Refresh token required");
+        response.getWriter().write(new Gson().toJson(content));
     }
 
     private UserDetails getUserDetailsFromUser(User user) {

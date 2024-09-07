@@ -1,9 +1,13 @@
-import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpEventType,
+  HttpHandlerFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
-import { Router } from '@angular/router';
-import { Paths } from '../paths';
 
 export function jwtInterceptor(
   req: HttpRequest<unknown>,
@@ -19,3 +23,13 @@ export function jwtInterceptor(
   }
   return next(req);
 }
+
+// return next(req).pipe(
+//   catchError((error: HttpErrorResponse) => {
+//     if (error.status === 401) {
+//       console.log('Ity ilay erreur');
+//       console.log(error);
+//     }
+//     return throwError(() => error);
+//   })
+// );

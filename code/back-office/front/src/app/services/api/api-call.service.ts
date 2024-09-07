@@ -28,7 +28,7 @@ export class ApiCallService {
   protected async getCall<T>(url: string): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
     const res = this.httpClient.get(`${this.baseUrl}/${url}`).pipe(
-      tap((response: any) => {
+      tap((response: ApiResponse<T>) => {
         this.loadingSubject.next(false);
         this.messageSubject.next(response.message || null);
         setTimeout(() => {
