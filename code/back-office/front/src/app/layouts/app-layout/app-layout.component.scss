@@ -1,0 +1,15 @@
+$nav-width: 310px;
+
+.app {
+    background-color: #EDEEF5;
+
+    .side-bar {
+        background-color: #FFFFFF;
+        height: 100vh;
+    }
+
+    .content-holder {
+        width: -webkit-fill-available;
+        margin: 10px 20px 0px 20px;
+    }
+}

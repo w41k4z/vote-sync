@@ -1,3 +1,11 @@
 $primary: #29611D;
+$danger: #EB2114;
+
+.active {
+    color: $primary;
+    background-color: #E7FFE2;
+    border-left: 3px solid $primary;
+    font-weight: bold;
+}
 
 @import "../node_modules/bootstrap/scss/bootstrap";

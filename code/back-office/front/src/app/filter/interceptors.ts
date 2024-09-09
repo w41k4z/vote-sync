@@ -72,6 +72,7 @@ function handle401Error(
     );
   }
 
+  router.navigate([Paths.PERMISSION_DENIED]);
   return throwError(() => error);
 }
 

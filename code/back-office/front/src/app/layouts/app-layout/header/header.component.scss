@@ -1,0 +1,58 @@
+header {
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    padding: 10px 30px;
+    margin-bottom: 2rem;
+
+    .left-header {
+        .nav-button-toggle {
+            display: none;
+        }
+    }
+
+    .right-header {
+        .search-bar {
+            background-color: #EDEEF5;
+            border-radius: 10px;
+            padding: 7px 15px;
+    
+            i {
+                color: #9ca3af;
+            }
+    
+            input {
+                border: none;
+                outline: none;
+                background-color: #EDEEF5;
+                border-radius: 10px;
+                padding: 5px 10px;
+                width: 100%;
+            }
+        }
+
+        .log-out-btn {
+            color: #EB2114;
+            transition: all 0.3s ease;
+        }
+
+        .log-out-btn:hover {
+            i {
+                color: #FFFFFF !important;
+            }
+            color: #FFFFFF;
+        }
+    }
+
+}
+
+@media (max-width: 767.98px) {
+    header {
+        .left-header {
+            .nav-button-toggle {
+                display: block;
+                border: 1px solid #EDEEF5;
+                border-radius: 10px;
+            }
+        }
+    }
+}

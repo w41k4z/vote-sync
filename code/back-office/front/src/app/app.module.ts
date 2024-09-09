@@ -13,6 +13,8 @@ import { jwtInterceptor } from './filter/interceptors';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { PermissionDeniedComponent } from './views/permission-denied/permission-denied.component';
 import { HomeComponent } from './views/home/home.component';
+import { HeaderComponent } from './layouts/app-layout/header/header.component';
+import { SideBarComponent } from './layouts/app-layout/side-bar/side-bar.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { HomeComponent } from './views/home/home.component';
     DashboardComponent,
     PermissionDeniedComponent,
     HomeComponent,
+    HeaderComponent,
+    SideBarComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor]))],

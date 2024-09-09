@@ -3,4 +3,5 @@ export class Paths {
   public static readonly SIGN_IN = '/page/log-in';
   public static readonly HOME = '/app';
   public static readonly DASHBOARD = '/app/dashboard';
+  public static readonly USERS = '/app/users';
 }

@@ -11,6 +11,7 @@ import { Privileges } from './privileges';
 import { permissionGuard } from './guards/permission.guard';
 import { PermissionDeniedComponent } from './views/permission-denied/permission-denied.component';
 import { HomeComponent } from './views/home/home.component';
+import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
   {
     path: 'app',
     canActivate: [authGuard],
+    component: AppLayoutComponent,
     canActivateChild: [permissionGuard],
     children: [
       {
