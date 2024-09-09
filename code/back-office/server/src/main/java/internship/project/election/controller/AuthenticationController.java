@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import internship.project.election.dto.ApiResponse;
 import internship.project.election.dto.request.AuthenticationRequest;
+import internship.project.election.dto.request.LogOutRequest;
+import internship.project.election.dto.request.NewAccessTokenRequest;
 import internship.project.election.service.impl.auth.AppAuthService;
 import internship.project.election.service.impl.auth.RefreshTokenService;
 import jakarta.transaction.Transactional;
@@ -34,19 +36,24 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
+    // sign out endpoint
+    @PostMapping("/sign-out")
+    public ResponseEntity<ApiResponse> signOut(@RequestBody LogOutRequest request) {
+        this.authService.logOut(request.getRefreshToken());
+        return ResponseEntity.ok(new ApiResponse(null, "User logged out successfully"));
+    }
+
     @PostMapping("/refresh-token")
     @Transactional
-    public ResponseEntity<ApiResponse> refreshToken(@RequestBody String refreshToken) {
+    public ResponseEntity<ApiResponse> refreshToken(@RequestBody NewAccessTokenRequest request) {
         HashMap<String, String> response = new HashMap<>();
-        if (this.refreshTokenService.validateToken(refreshToken)) {
-            String userIdentifier = this.refreshTokenService.getSubject(refreshToken);
-            String newRefreshToken = this.refreshTokenService.generateToken(userIdentifier);
-            this.refreshTokenService.invalidate(refreshToken);
-            this.refreshTokenService.store(newRefreshToken);
-            response.put("accessToken", newRefreshToken);
-            return ResponseEntity.ok(new ApiResponse(response, "Token refreshed successfully"));
+        try {
+            String newAccessToken = this.refreshTokenService.refreshedAccessToken(request.getRefreshToken());
+            response.put("newAccessToken", newAccessToken);
+            return ResponseEntity.ok(new ApiResponse(response, "Access token refreshed successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ApiResponse(null, "Invalid refresh token"));
         }
-        return ResponseEntity.badRequest().body(new ApiResponse(null, "Invalid refresh token"));
     }
 
 }

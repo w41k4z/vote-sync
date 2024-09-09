@@ -10,6 +10,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -48,6 +50,28 @@ public class WebSecurity {
         return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
+    private void corsConfigurer(CorsConfigurer<HttpSecurity> cors) {
+        cors.configurationSource(request -> {
+            CorsConfiguration corsConfiguration = new CorsConfiguration();
+            corsConfiguration.setAllowedMethods(List.of("*"));
+            corsConfiguration.setAllowedHeaders(List.of("*"));
+            corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+            // corsConfiguration.applyPermitDefaultValues();
+            return corsConfiguration;
+        });
+    }
+
+    private AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizationConfigurer(
+            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorize) {
+        return authorize
+                // public endpoints
+                .requestMatchers("/error/**", "/public/**",
+                        "/test/**", "/auth/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+    }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -55,16 +79,7 @@ public class WebSecurity {
                  * Disable CSRF (authenticating with JWT so no cookies are being used)
                  */
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> {
-                    cors.configurationSource(request -> {
-                        CorsConfiguration corsConfiguration = new CorsConfiguration();
-                        corsConfiguration.setAllowedMethods(List.of("*"));
-                        corsConfiguration.setAllowedHeaders(List.of("*"));
-                        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-                        // corsConfiguration.applyPermitDefaultValues();
-                        return corsConfiguration;
-                    });
-                })
+                .cors(cors -> corsConfigurer(cors))
                 /*
                  * Disable default form login redirection and change 403 to 401 status
                  */
@@ -72,13 +87,7 @@ public class WebSecurity {
                         (request, response, authException) -> response.sendError(
                                 HttpServletResponse.SC_UNAUTHORIZED,
                                 authException.getMessage())))
-                .authorizeHttpRequests(authorize -> authorize
-                        // public endpoints
-                        .requestMatchers("/error/**", "/public/**",
-                                "/test/**", "/auth/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
+                .authorizeHttpRequests(authorize -> authorizationConfigurer(authorize))
                 /*
                  * Disable session management (no session will be created because we are using
                  * JWT)

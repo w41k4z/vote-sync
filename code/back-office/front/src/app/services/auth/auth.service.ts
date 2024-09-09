@@ -52,27 +52,37 @@ export class AuthService extends ApiCallService {
   }
 
   async refreshAccessToken() {
-    if (!this.refreshToken) {
-      await this.logOut();
-      throw new Error('Refresh token not found');
-    }
-    const res = await this.postCall<RefreshTokenPayloadResponse>(
-      Endpoints.REFRESH_TOKEN,
-      {
-        refreshToken: this.refreshToken,
+    try {
+      if (!this.refreshToken) {
+        throw new Error('Refresh token not found');
       }
-    );
-    if (res && res.payload) {
-      this.accessToken = res.payload.accessToken;
-      localStorage.setItem('accessToken', this.accessToken);
+      const res = await this.postCall<RefreshTokenPayloadResponse>(
+        Endpoints.REFRESH_TOKEN,
+        {
+          refreshToken: this.refreshToken,
+        }
+      );
+      if (res.payload) {
+        this.accessToken = res.payload.newAccessToken;
+        localStorage.setItem('accessToken', this.accessToken);
+      } else {
+        throw new Error(
+          'Response payload is empty to refresh the access token'
+        );
+      }
+    } catch (error) {
+      await this.logOut();
+      throw error;
     }
   }
 
   async logOut() {
-    await this.getCall(Endpoints.SIGN_OUT);
     this.accessToken = null;
     this.refreshToken = null;
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    await this.postCall(Endpoints.SIGN_OUT, {
+      refreshToken: this.refreshToken,
+    });
   }
 }

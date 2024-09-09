@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.domain.RefreshToken;
+import internship.project.election.domain.User;
 import internship.project.election.repository.RefreshTokenRepository;
+import internship.project.election.service.impl.domain.UserService;
 import internship.project.election.service.spec.AbstractJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -20,8 +22,14 @@ public class RefreshTokenService extends AbstractJwtService<String> {
 
     private RefreshTokenRepository repository;
 
-    public RefreshTokenService(RefreshTokenRepository repository) {
+    private AppJwtService jwtService;
+
+    private UserService userService;
+
+    public RefreshTokenService(RefreshTokenRepository repository, AppJwtService jwtService, UserService userService) {
         this.repository = repository;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     private boolean isValid(String token) {
@@ -58,6 +66,15 @@ public class RefreshTokenService extends AbstractJwtService<String> {
         return this.isValid(token);
     }
 
+    public String refreshedAccessToken(String refreshToken) {
+        if (this.validateToken(refreshToken)) {
+            String userIdentifier = this.getSubject(refreshToken);
+            User user = this.userService.getUserByIdentifier(userIdentifier);
+            return this.jwtService.generateToken(user);
+        }
+        throw new IllegalArgumentException("Invalid refresh token");
+    }
+
     public void store(String token) {
         String userIdentifier = this.getSubject(token);
         RefreshToken refreshToken = new RefreshToken();
@@ -67,7 +84,7 @@ public class RefreshTokenService extends AbstractJwtService<String> {
     }
 
     public void invalidate(String token) {
-        String userIdentifier = this.getSubject(token);
-        this.repository.deleteById(userIdentifier);
+        RefreshToken refreshToken = this.repository.findByToken(token).get();
+        this.repository.delete(refreshToken);
     }
 }

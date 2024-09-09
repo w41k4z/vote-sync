@@ -1,7 +1,7 @@
 export class RefreshTokenPayloadResponse {
-  accessToken: string;
+  newAccessToken: string;
 
   constructor(accessToken: string) {
-    this.accessToken = accessToken;
+    this.newAccessToken = accessToken;
   }
 }
