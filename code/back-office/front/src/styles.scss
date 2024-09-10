@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    font-family: "Roboto", "Arial", sans-serif;
+}
+
+h1, h2 {
+    font-family: "Roboto Slab", "Georgia", serif;
+}
+
+h3, h4, h5, h6 {
+    font-family: "Roboto", "Arial", sans-serif;
+}
+
+th, button {
+    font-family: "Roboto", sans-serif;
+}
+
 i {
     font-size: x-large;
 }

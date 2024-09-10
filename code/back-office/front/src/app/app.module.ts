@@ -15,8 +15,8 @@ import { PermissionDeniedComponent } from './views/permission-denied/permission-
 import { HomeComponent } from './views/home/home.component';
 import { HeaderComponent } from './layouts/app-layout/header/header.component';
 import { SideBarComponent } from './layouts/app-layout/side-bar/side-bar.component';
-import { UsersComponent } from './pages/users/users.component';
-import { ListUsersComponent } from './pages/users/list-users/list-users.component';
+import { UsersComponent } from './views/users/users.component';
+import { ListUsersComponent } from './views/users/list-users/list-users.component';
 
 @NgModule({
   declarations: [

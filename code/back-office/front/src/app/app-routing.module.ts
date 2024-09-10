@@ -12,7 +12,7 @@ import { permissionGuard } from './guards/permission.guard';
 import { PermissionDeniedComponent } from './views/permission-denied/permission-denied.component';
 import { HomeComponent } from './views/home/home.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
-import { UsersComponent } from './pages/users/users.component';
+import { UsersComponent } from './views/users/users.component';
 
 const routes: Routes = [
   {

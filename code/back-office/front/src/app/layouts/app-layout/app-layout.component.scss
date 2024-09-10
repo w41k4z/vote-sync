@@ -1,10 +1,12 @@
+@import "../../../theme.scss";
+
 $nav-width: 310px;
 
 .app {
-    background-color: #EDEEF5;
+    background-color: $neutral-background;
 
     .side-bar {
-        background-color: #FFFFFF;
+        background-color: $primary;
         height: 100vh;
     }
 

@@ -1,8 +1,12 @@
+@import "../../../../theme.scss";
+
 header {
+    color: #FFFFFF;
     border-radius: 20px;
-    background-color: #FFFFFF;
+    background-color: $primary;
     padding: 10px 30px;
     margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.175);
 
     .left-header {
         .nav-button-toggle {
@@ -12,7 +16,7 @@ header {
 
     .right-header {
         .search-bar {
-            background-color: #EDEEF5;
+            background-color: $neutral-background;
             border-radius: 10px;
             padding: 7px 15px;
     
@@ -23,7 +27,7 @@ header {
             input {
                 border: none;
                 outline: none;
-                background-color: #EDEEF5;
+                background-color: $neutral-background;
                 border-radius: 10px;
                 padding: 5px 10px;
                 width: 100%;
@@ -31,8 +35,19 @@ header {
         }
 
         .log-out-btn {
-            color: #EB2114;
+            color: #FFFFFF;
+            background-color: $danger;
             transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 3px 10px;
+            
+            i {
+                font-size: large;
+            }
+
+            p {
+                font-size: small;
+            }
         }
 
         .log-out-btn:hover {
@@ -50,8 +65,14 @@ header {
         .left-header {
             .nav-button-toggle {
                 display: block;
-                border: 1px solid #EDEEF5;
-                border-radius: 10px;
+                border: 1px solid $grey-section;
+                border-radius: 50%;
+            }
+        }
+
+        .right-header {
+            .log-out-btn {
+                border-radius: 50%;
             }
         }
     }

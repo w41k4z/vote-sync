@@ -1,11 +1,10 @@
-$primary: #29611D;
-$danger: #EB2114;
+@import "theme.scss";
 
 .active {
-    color: $primary;
-    background-color: #E7FFE2;
-    border-left: 3px solid $primary;
+    background-color: $neutral-background;
+    border-left: 4px solid $primary;
     font-weight: bold;
+    color: $primary !important;
 }
 
 @import "../node_modules/bootstrap/scss/bootstrap";

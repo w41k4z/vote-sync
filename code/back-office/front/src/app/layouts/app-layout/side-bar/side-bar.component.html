@@ -1,17 +1,13 @@
-<div class="d-none d-md-block">
+<div class="side-bar d-none d-md-block">
     <nav class="d-flex flex-column align-items-center">
-        <section class="profile d-flex justify-content-center align-items-center">
-            <img src="../../../../assets/user.png" alt="User">
-            <div class="user-details ms-4">
-                <h4 class="text-primary fw-bold">John Doe</h4>
-                <h6 class="role">Administrateur</h6>
-            </div>
+        <section class="logo-section">
+            <img src="../../../../assets/logo.png" alt="VoteSync">
         </section>
-        <ul class="nav nav-pills flex-column mt-5 nav-items w-100">
+        <ul class="nav nav-pills flex-column mt-3 nav-items w-100">
             @for (item of allItems(); track $index) {
                 @if (item.isMenuTitle) {
                     <li class="menu-title">
-                        <p>{{item.title}}</p>
+                        <p>{{item.title}} : </p>
                     </li>
                 } @else {
                     <li class="nav-item" routerLink="{{item.pathTo}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
