@@ -14,7 +14,7 @@ import internship.project.election.dto.request.LogOutRequest;
 import internship.project.election.dto.request.NewAccessTokenRequest;
 import internship.project.election.service.impl.auth.AppAuthService;
 import internship.project.election.service.impl.auth.RefreshTokenService;
-import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @RequestMapping("/auth")
 @RestController
@@ -29,14 +29,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<ApiResponse> signIn(@RequestBody AuthenticationRequest authRequest) {
+    public ResponseEntity<ApiResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest) {
         ApiResponse response = new ApiResponse(
                 this.authService.logIn(authRequest.getIdentifier(), authRequest.getPassword()),
                 "User logged in successfully");
         return ResponseEntity.ok(response);
     }
 
-    // sign out endpoint
     @PostMapping("/sign-out")
     public ResponseEntity<ApiResponse> signOut(@RequestBody LogOutRequest request) {
         this.authService.logOut(request.getRefreshToken());
@@ -44,7 +43,6 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh-token")
-    @Transactional
     public ResponseEntity<ApiResponse> refreshToken(@RequestBody NewAccessTokenRequest request) {
         HashMap<String, String> response = new HashMap<>();
         try {

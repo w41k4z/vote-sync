@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Digitalisation du processus électoral" company="CENI Madagascar" webLink="https://www.ceni-madagascar.mg/" view-date="2024-08-01" view-index="0" gantt-divider-location="514" resource-divider-location="300" version="3.3.3309" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Digitalisation du processus électoral" company="CENI Madagascar" webLink="https://www.ceni-madagascar.mg/" view-date="2024-08-01" view-index="0" gantt-divider-location="728" resource-divider-location="300" version="3.3.3309" locale="fr_FR">
     <description><![CDATA[Développement et optimisation d'une application mobile et back-office pour la gestion intégrée des élections]]></description>
     <view zooming-state="default:9" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="256" order="0"/>
-        <field id="tpd6" name="Durée" width="48" order="1"/>
-        <field id="tpd4" name="Date de début" width="97" order="2"/>
+        <field id="tpd3" name="Nom" width="365" order="0"/>
+        <field id="tpd6" name="Durée" width="68" order="1"/>
+        <field id="tpd4" name="Date de début" width="139" order="2"/>
         <field id="tpd15" name="Notes" width="20" order="3"/>
-        <field id="tpd5" name="Date de fin" width="97" order="3"/>
+        <field id="tpd5" name="Date de fin" width="140" order="3"/>
         <option id="filter.completedTasks" value="false"/>
         <option id="filter.dueTodayTasks" value="false"/>
         <option id="filter.overdueTasks" value="false"/>
@@ -57,16 +57,15 @@
             <task id="7" uid="e3e2b39af6ea4794a0b378fddf5cf8f2" name="Interface de connexion et intégration Mobile" meeting="false" start="2024-09-17" duration="2" complete="0" expand="true"/>
             <task id="8" uid="4c81695ffb8c4b158f439dc0decc6e2e" name="Test du module" meeting="false" start="2024-09-18" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="9" uid="7b05ca355eb94fe7861c22ddfffd2cf1" name="Gestion des élections" meeting="false" start="2024-09-19" duration="5" complete="0" expand="false">
+        <task id="9" uid="7b05ca355eb94fe7861c22ddfffd2cf1" name="Gestion des élections" meeting="false" start="2024-09-19" duration="5" complete="0" expand="true">
             <depend id="16" type="2" difference="0" hardness="Strong"/>
             <task id="10" uid="a820070af44a4fcc8eeb77476f6eebe2" name="Interface et intégration CRUD élection" meeting="false" start="2024-09-19" duration="1" complete="0" expand="true"/>
             <task id="11" uid="f9954750cff247fa88666046443f2ced" name="Filtre des élections par année et type élection" meeting="false" start="2024-09-19" duration="1" complete="0" expand="true"/>
-            <task id="13" uid="456db45be06240a8b5e75eef4f5e48e7" name="Interface et intégration CRUD parti politique et candidat, avec fonctionnalité d'importation de donnée" meeting="false" start="2024-09-20" duration="2" complete="0" expand="true"/>
-            <task id="12" uid="0996d662a21d44279bb2379d36b48d57" name="Ajout interface de consultation des historiques d'élection et détails" meeting="false" start="2024-09-23" duration="2" complete="0" expand="true"/>
+            <task id="12" uid="0996d662a21d44279bb2379d36b48d57" name="Ajout interface de consultation des historiques d'élection et détails" meeting="false" start="2024-09-20" duration="2" complete="0" expand="true"/>
             <task id="14" uid="ab31abaaa2294de88ebf0703b234d3fb" name="Ajout d'un système de caching après connexion Mobile" meeting="false" start="2024-09-24" duration="1" complete="0" expand="true"/>
             <task id="15" uid="b5cd5dc327f14fbaa85c9f44c0a1fbd8" name="Test du module" meeting="false" start="2024-09-25" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="16" uid="770644140dc8481cad7661014fb5ff8e" name="Paramétrage" meeting="false" start="2024-09-26" duration="3" complete="0" expand="false">
+        <task id="16" uid="770644140dc8481cad7661014fb5ff8e" name="Paramétrage" meeting="false" start="2024-09-26" duration="3" complete="0" expand="true">
             <depend id="20" type="2" difference="0" hardness="Strong"/>
             <task id="17" uid="ce8bf2f4602c41e3a79019caed698a58" name="Intérface et intégration CRUD des localisations" meeting="false" start="2024-09-26" duration="2" complete="0" expand="true"/>
             <task id="18" uid="bf2f1b5c11774f9985df483d80702cbf" name="Filtre des bv par fokotany, commune, district et région" meeting="false" start="2024-09-27" duration="1" complete="0" expand="true"/>
@@ -77,16 +76,15 @@
             <task id="21" uid="efc11fced2c1405c9f92d620ce30617f" name="Interface et intégration enregistrement des électeurs" meeting="false" start="2024-10-01" duration="2" complete="0" expand="true"/>
             <task id="22" uid="f2060f6fd14a4404937258eeb2b198e4" name="Test du module" meeting="false" start="2024-10-03" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="23" uid="a71ab8bfc8234000a51fcab133c775f0" name="Gestion des alertes" meeting="false" start="2024-10-04" duration="4" complete="0" expand="false">
+        <task id="23" uid="a71ab8bfc8234000a51fcab133c775f0" name="Gestion des alertes" meeting="false" start="2024-10-04" duration="4" complete="0" expand="true">
             <depend id="30" type="2" difference="0" hardness="Strong"/>
             <task id="24" uid="fbde5b1b2dc548d3932970194afcdc47" name="Interface et intégration page des alertes" meeting="false" start="2024-10-04" duration="1" complete="0" expand="true"/>
-            <task id="25" uid="3e29ad3bd67d4bbbbb017a9ef2690ff7" name="Mise en place d'un système de checking de doublon" meeting="false" start="2024-10-07" duration="1" complete="0" expand="true"/>
             <task id="26" uid="b009a4a5a7d54a57a1b4107370f0cc73" name="Mise en place d'un système de checking de valeur extreme" meeting="false" start="2024-10-07" duration="1" complete="0" expand="true"/>
             <task id="27" uid="a62f59c3585b4c8191bb0297eb64e079" name="Mise en place d'un système de checking de pattern temporel" meeting="false" start="2024-10-08" duration="1" complete="0" expand="true"/>
             <task id="28" uid="3efac1fcff464fd1895d106e5bd241f8" name="Mise en place d'un système de checking d'incoherence de donnée" meeting="false" start="2024-10-08" duration="1" complete="0" expand="true"/>
             <task id="29" uid="7dce632bcbd84277ae6e7869f74c3106" name="Test du module" meeting="false" start="2024-10-09" duration="1" complete="0" expand="true"/>
         </task>
-        <task id="30" uid="1d876df570b0468fb33f93535b57fd76" name="Gestion des résultats" meeting="false" start="2024-10-10" duration="9" complete="0" expand="false">
+        <task id="30" uid="1d876df570b0468fb33f93535b57fd76" name="Gestion des résultats" meeting="false" start="2024-10-10" duration="9" complete="0" expand="true">
             <depend id="38" type="2" difference="0" hardness="Strong"/>
             <task id="31" uid="02bd8fff57044083a653064694bf6bb4" name="Modele de pv pour les résultats" meeting="false" start="2024-10-10" duration="1" complete="0" expand="true"/>
             <task id="32" uid="6ad5f2a87ac64ad5921a359d849b4cd6" name="Interface et intégration de géneration des codes qr pour chaque bv" meeting="false" start="2024-10-11" duration="1" complete="0" expand="true"/>

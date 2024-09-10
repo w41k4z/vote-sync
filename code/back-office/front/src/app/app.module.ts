@@ -9,12 +9,14 @@ import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { jwtInterceptor } from './filter/interceptors';
+import { jwtInterceptor } from './filter/token.interceptor';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { PermissionDeniedComponent } from './views/permission-denied/permission-denied.component';
 import { HomeComponent } from './views/home/home.component';
 import { HeaderComponent } from './layouts/app-layout/header/header.component';
 import { SideBarComponent } from './layouts/app-layout/side-bar/side-bar.component';
+import { UsersComponent } from './pages/users/users.component';
+import { ListUsersComponent } from './pages/users/list-users/list-users.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { SideBarComponent } from './layouts/app-layout/side-bar/side-bar.compone
     HomeComponent,
     HeaderComponent,
     SideBarComponent,
+    UsersComponent,
+    ListUsersComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideHttpClient(withInterceptors([jwtInterceptor]))],

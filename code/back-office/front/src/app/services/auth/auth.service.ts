@@ -77,12 +77,13 @@ export class AuthService extends ApiCallService {
   }
 
   async logOut() {
+    const refreshToken = this.refreshToken;
     this.accessToken = null;
     this.refreshToken = null;
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     await this.postCall(Endpoints.SIGN_OUT, {
-      refreshToken: this.refreshToken,
+      refreshToken: refreshToken,
     });
   }
 }

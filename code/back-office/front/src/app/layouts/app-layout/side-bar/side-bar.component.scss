@@ -1,16 +1,14 @@
-$item-width : 275px;
+$nav-width : 275px;
 
 nav {
     padding-top: 20px;
-    width: max-content;
+    width: $nav-width;
 
     .profile {
-        width: 90%;
-        margin-left: 5px;
-        margin-right: 5px;
+        width: 85%;
         background-color: #EDEEF5;
         border-radius: 10px;
-        padding: 10px 20px;
+        padding: 10px 15px;
     
         img {
             border-radius: 50%;
@@ -28,13 +26,17 @@ nav {
 
     .nav-items {
         li {
-            width: $item-width;
+            width: 100%;
             border-bottom: 1px solid #EFF0F7;
             height: 45px;
             display: flex;
             align-items: center;
             padding-left: 25px;
             padding-right: 20px;
+        }
+
+        li:hover {
+            cursor: pointer;
         }
         
         li:first-child {
@@ -58,6 +60,10 @@ nav {
                 margin-left: 25px;
                 font-size: 16px;
             }
+        }
+
+        .nav-item:hover {
+            background-color: #E7FFE2;
         }
 
         i {

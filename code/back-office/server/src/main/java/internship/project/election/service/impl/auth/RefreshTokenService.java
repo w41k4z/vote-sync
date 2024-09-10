@@ -39,6 +39,7 @@ public class RefreshTokenService extends AbstractJwtService<String> {
                 return false;
             }
         } catch (ExpiredJwtException e) {
+            this.invalidate(token);
             // Expiration handling is specific to the auth token
             return false;
         }
@@ -85,6 +86,8 @@ public class RefreshTokenService extends AbstractJwtService<String> {
 
     public void invalidate(String token) {
         RefreshToken refreshToken = this.repository.findByToken(token).get();
-        this.repository.delete(refreshToken);
+        if (refreshToken != null) {
+            this.repository.delete(refreshToken);
+        }
     }
 }

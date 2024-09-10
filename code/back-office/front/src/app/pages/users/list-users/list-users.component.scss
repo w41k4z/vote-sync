@@ -1,0 +1,42 @@
+.content {
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+
+    .table th {
+        color: #BCBDC0;
+    }
+
+    .table tr:hover {
+        background-color: #E7FFE2;
+    }
+
+    .table tr:hover td,
+    .table tr:hover th {
+        background-color: inherit;
+    }
+
+    .table tr:hover {
+        transition: background-color 0.3s ease;
+    }
+
+    header {
+        h6 {
+            color: rgba(63, 62, 69, 0.65);
+        }
+
+        .action-section {
+            button {
+                border-radius: 50%;
+            }
+
+            .add-btn {}
+        }
+    }
+
+    footer {
+        i {
+            color: #29611D;
+        }
+    }
+}
