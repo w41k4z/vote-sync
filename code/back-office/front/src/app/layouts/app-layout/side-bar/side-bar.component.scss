@@ -3,8 +3,10 @@
 $nav-width : 275px;
 
 .side-bar {
+    background-color: $primary;
     border: 1px solid rgba(0, 0, 0, 0.175);
     height: 100%;
+    min-height: 100vh;
     
     nav {
         padding-top: 20px;
