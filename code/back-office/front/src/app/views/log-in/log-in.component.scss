@@ -1,3 +1,5 @@
+@import "../../../theme.scss";
+
 .page-content {
     .side-img-holder {
         img {
@@ -7,7 +9,7 @@
     }
     
     .auth-card-holder {
-        background-color: #EFF0F7;
+        background-color: $content-background;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -19,7 +21,7 @@
         }
     
         input {
-            background-color: #D8E6D5;
+            background-color: $neutral-background;
         }
     }
 }

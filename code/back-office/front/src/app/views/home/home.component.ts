@@ -10,6 +10,5 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent extends ApiCallService {
   constructor(httpClient: HttpClient) {
     super(httpClient);
-    this.httpClient.get('http://localhost:8081/api/users').subscribe();
   }
 }

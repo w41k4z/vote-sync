@@ -1,20 +1,63 @@
+@import "./theme.scss";
+
 /* You can add global styles to this file, and also import other style files */
 * {
     font-family: "Roboto", "Arial", sans-serif;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: "Roboto Slab", "Georgia", serif;
 }
 
-h3, h4, h5, h6 {
+h3,
+h4,
+h5,
+h6 {
     font-family: "Roboto", "Arial", sans-serif;
 }
 
-th, button {
+th,
+button {
     font-family: "Roboto", sans-serif;
 }
 
 i {
     font-size: x-large;
+}
+
+.table tr td,
+.table tr th {
+    background-color: $content-background;
+}
+
+.table thead th {
+    border-bottom: 1px solid #c0b3b3;
+}
+
+.table tbody tr:hover td,
+.table tbody tr:hover th {
+    background-color: $neutral-background;
+}
+
+.notification {
+    margin-bottom: 20px;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.info-message {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    padding: 10px;
+    border: 1px solid #bee5eb;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }

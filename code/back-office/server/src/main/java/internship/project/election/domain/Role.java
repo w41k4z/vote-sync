@@ -12,17 +12,16 @@ import lombok.EqualsAndHashCode;
 @Table(name = "roles")
 public class Role extends AbstractEntity<Integer> {
 
-    public Role() {
-    }
-
-    public Role(String name) {
-        this.name = name;
-    }
-
     @Column(name = "nom")
     private String name;
 
     @Column(name = "niveau")
     private Integer level;
 
+    public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

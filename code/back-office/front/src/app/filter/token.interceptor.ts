@@ -82,34 +82,27 @@ function refreshAccessTokenAndRetry(
   next: HttpHandlerFn,
   router: Router
 ): Observable<HttpEvent<unknown>> {
+  let tokenRefreshFailed = true;
   return from(authService.refreshAccessToken()).pipe(
     // If token refresh is successful, retry the original request
     switchMap(() => {
+      tokenRefreshFailed = false;
       const newToken = authService.accessToken;
 
       const refreshedRequest = originalRequest.clone({
         setHeaders: { Authorization: `Bearer ${newToken}` },
       });
 
-      return handleRefreshedRequest(next(refreshedRequest));
+      return next(refreshedRequest);
     }),
     // If token refresh fails, rethrow the error
     catchError((refreshError) => {
-      console.error('Failed to refresh token:', refreshError);
       // Redirect to sign-in page if token refresh fails
-      router.navigate([Paths.SIGN_IN]);
+      if (tokenRefreshFailed) {
+        console.error('Failed to refresh token:', refreshError);
+        router.navigate([Paths.SIGN_IN]);
+      }
       return throwError(() => refreshError);
-    })
-  );
-}
-
-function handleRefreshedRequest(
-  refreshedRequest: Observable<HttpEvent<unknown>>
-): Observable<HttpEvent<unknown>> {
-  return refreshedRequest.pipe(
-    catchError((retryError: HttpErrorResponse) => {
-      console.error('Failed to retry the original request:', retryError);
-      return throwError(() => retryError);
     })
   );
 }

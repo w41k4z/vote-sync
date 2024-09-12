@@ -5,25 +5,6 @@
     border-radius: 20px;
     background-color: $content-background;
 
-    .table th {
-        color: $primary;
-        font-weight: 700;
-        font-size: 18px;
-    }
-
-    .table tr td, .table tr th {
-        background-color: $content-background;
-    }
-
-    .table tbody tr:hover td,
-    .table tbody tr:hover th {
-        background-color: $neutral-background;
-    }
-
-    .table tr:hover {
-        transition: all 0.3s ease;
-    }
-
     header {
         h5 {
             color: $primary;
@@ -32,18 +13,6 @@
         .action-section {
             button {
                 border-radius: 50%;
-            }
-
-            .add-btn {
-                background-color: $neutral-background;
-                border: 1px solid $primary;
-                color: $primary;
-            }
-
-            .filter-btn {
-                background-color: $content-background;
-                border: 1px solid rgb(66, 65, 65);
-                color: rgb(66, 65, 65);
             }
         }
     }

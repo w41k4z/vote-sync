@@ -1,5 +1,7 @@
 package internship.project.election.controller.api;
 
+import java.util.HashMap;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> allUsers() {
-        return ResponseEntity.ok(new ApiResponse(this.userService.getAllUsers(), null));
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("users", this.userService.getAllUsers());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 }

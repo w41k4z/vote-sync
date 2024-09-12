@@ -1,48 +1,54 @@
 <section class="card card-body content">
-    <header class="d-flex justify-content-between align-items-center mb-3">
+    <header class="d-flex justify-content-between align-items-center mb-2">
         <h5>Liste des utilisateurs</h5>
         <div class="action-section d-flex gap-3 justify-content-center align-items-center">
-            <button class="add-btn">
+            <button class="btn btn-outline-primary">
                 <i class="bi bi-plus-lg"></i>
             </button>
-            <button class="filter-btn">
+            <button class="btn btn-outline-secondary">
                 <i class="bi bi-filter"></i>
             </button>
         </div>
     </header>
-    <table class="table table-borderless table-responsive">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry the Bird</td>
-                <td>Ohio</td>
-                <td>twitter</td>
-            </tr>
-        </tbody>
-    </table>
-    <footer class="mt-5 d-flex gap-3 justify-content-center align-items-center">
-        <i class="bi bi-arrow-left-circle"></i>
-        <p class="m-0 fw-lighter">Page 1 sur 2</p>
-        <i class="bi bi-arrow-right-circle"></i>
-    </footer>
+    <div class="notification">
+        <div class="error-message" *ngIf="error$ | async as error">
+            <p class="m-0">{{ error }}</p>
+        </div>
+        <div class="info-message" *ngIf="message$ | async as message">
+            <p class="m-0">{{ message }}</p>
+        </div>
+    </div>
+    <div *ngIf="loading$ | async; else content" class="w-100 my-5 d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <ng-template #content>
+        <div *ngIf="users.length != 0; else empty">
+            <table class="table table-borderless table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users; index as i">
+                        <th scope="row">{{i + 1}}</th>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.contact }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="mt-5 d-flex gap-3 justify-content-center align-items-center">
+                <i class="bi bi-arrow-left-circle"></i>
+                <p class="m-0 fw-lighter">Page 1 sur 2</p>
+                <i class="bi bi-arrow-right-circle"></i>
+            </footer>
+        </div>
+        <ng-template #empty>
+            <p class="m-0 text-center text-danger">Pas de résultat</p>
+        </ng-template>
+    </ng-template>
 </section>

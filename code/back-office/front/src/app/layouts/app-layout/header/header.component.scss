@@ -1,78 +1,76 @@
 @import "../../../../theme.scss";
 
-header {
-    color: #FFFFFF;
+section {
+    position: sticky;
+    top: 10px !important;
+    z-index: 10;
+    color: #000000;
     border-radius: 20px;
-    background-color: $primary;
+    background-color: $content-background;
     padding: 10px 30px;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0, 0, 0, 0.175);
 
-    .left-header {
-        .nav-button-toggle {
-            display: none;
-        }
-    }
-
-    .right-header {
-        .search-bar {
-            background-color: $neutral-background;
-            border-radius: 10px;
-            padding: 7px 15px;
+    header {
+        // border: 1px solid $grey-section;
     
-            i {
-                color: #9ca3af;
+        .left-header {
+            .nav-button-toggle {
+                display: none;
             }
+        }
     
-            input {
-                border: none;
-                outline: none;
-                background-color: $neutral-background;
+        .right-header {
+            .search-bar {
+                border-radius: 35px !important;
+                background-color: #e8e7e4;
                 border-radius: 10px;
-                padding: 5px 10px;
-                width: 100%;
+                padding: 1px 15px;
+        
+                i {
+                    color: #9ca3af;
+                }
+        
+                input {
+                    border: none;
+                    outline: none;
+                    background-color: #e8e7e4;
+                    border-radius: 10px;
+                    padding: 5px 10px;
+                    width: 100%;
+                }
+            }
+    
+            .log-out-btn {
+                border-radius: 20px;
+                padding: 3px 10px;
+                
+                i {
+                    font-size: large;
+                }
+    
+                p {
+                    font-size: small;
+                }
             }
         }
-
-        .log-out-btn {
-            color: #FFFFFF;
-            background-color: $danger;
-            transition: all 0.3s ease;
-            border-radius: 20px;
-            padding: 3px 10px;
-            
-            i {
-                font-size: large;
-            }
-
-            p {
-                font-size: small;
-            }
-        }
-
-        .log-out-btn:hover {
-            i {
-                color: #FFFFFF !important;
-            }
-            color: #FFFFFF;
-        }
+    
     }
-
 }
 
 @media (max-width: 767.98px) {
-    header {
-        .left-header {
-            .nav-button-toggle {
-                display: block;
-                border: 1px solid $grey-section;
-                border-radius: 50%;
+    section {
+        header {
+            .left-header {
+                .nav-button-toggle {
+                    display: block;
+                    border: 1px solid $grey-section;
+                    border-radius: 50%;
+                }
             }
-        }
-
-        .right-header {
-            .log-out-btn {
-                border-radius: 50%;
+    
+            .right-header {
+                .log-out-btn {
+                    border-radius: 50%;
+                }
             }
         }
     }
