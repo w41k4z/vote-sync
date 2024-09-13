@@ -3,7 +3,6 @@ package internship.project.election.service.impl.domain;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.config.Authority;
@@ -19,16 +18,20 @@ import internship.project.election.service.spec.util.AbstractPasswordHashing;
 @Service
 public class UserService {
 
-    private PasswordEncoder encoder;
-
     private UserRepository repository;
 
     private RoleService roleService;
 
-    public UserService(PasswordEncoder encoder, UserRepository repository, RoleService roleService) {
-        this.encoder = encoder;
+    private AdminPasswordHashing adminPasswordHashing;
+
+    private UserPasswordHashing userPasswordHashing;
+
+    public UserService(UserRepository repository, RoleService roleService, AdminPasswordHashing adminPasswordHashing,
+            UserPasswordHashing userPasswordHashing) {
         this.repository = repository;
         this.roleService = roleService;
+        this.adminPasswordHashing = adminPasswordHashing;
+        this.userPasswordHashing = userPasswordHashing;
     }
 
     public List<User> getAllUsers() {
@@ -60,16 +63,16 @@ public class UserService {
             throw new IllegalArgumentException("Role not found");
         }
         if (role.getName().equals(Authority.ADMIN.toString())) {
-            passwordHashing = new AdminPasswordHashing(encoder);
+            passwordHashing = this.adminPasswordHashing;
         } else {
-            passwordHashing = new UserPasswordHashing();
+            passwordHashing = this.userPasswordHashing;
         }
         newUser.setName(request.getName());
         newUser.setFirstName(request.getFirstName());
         newUser.setIdentifier(request.getIdentifier());
         newUser.setContact(request.getContact());
         newUser.setRole(role);
-        newUser.setPassword(passwordHashing.getFormattedPassword(request.getPassword()));
+        newUser.setPassword(passwordHashing.hash(request.getPassword()));
         this.saveUser(newUser);
     }
 }

@@ -1,15 +1,16 @@
 @import "../../../../theme.scss";
 
-.content {
-    // padding: 20px;
+h5 {
+    color: $primary;
+}
+
+.content, .stat {
     border-radius: 20px;
     background-color: $content-background;
+}
 
+.content {
     header {
-        h5 {
-            color: $primary;
-        }
-
         .action-section {
             button {
                 border-radius: 50%;

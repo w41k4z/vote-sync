@@ -1,3 +1,5 @@
+import { Privileges } from '../privileges';
+
 export class Role {
   id: number;
   name: string;
