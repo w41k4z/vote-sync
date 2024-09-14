@@ -2,7 +2,7 @@ package internship.project.election.repository;
 
 import java.util.Optional;
 
-import internship.project.election.domain.RefreshToken;
+import internship.project.election.model.RefreshToken;
 
 public interface RefreshTokenRepository extends EntityRepository<RefreshToken, String> {
 

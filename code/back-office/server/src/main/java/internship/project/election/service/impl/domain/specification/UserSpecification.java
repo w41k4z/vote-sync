@@ -1,8 +1,8 @@
-package internship.project.election.service.impl.domain.filter;
+package internship.project.election.service.impl.domain.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import internship.project.election.domain.User;
+import internship.project.election.model.User;
 
 public class UserSpecification {
 

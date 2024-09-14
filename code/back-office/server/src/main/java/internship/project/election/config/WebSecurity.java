@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -50,28 +51,6 @@ public class WebSecurity {
         return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
-    private void corsConfigurer(CorsConfigurer<HttpSecurity> cors) {
-        cors.configurationSource(request -> {
-            CorsConfiguration corsConfiguration = new CorsConfiguration();
-            corsConfiguration.setAllowedMethods(List.of("*"));
-            corsConfiguration.setAllowedHeaders(List.of("*"));
-            corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-            // corsConfiguration.applyPermitDefaultValues();
-            return corsConfiguration;
-        });
-    }
-
-    private AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizationConfigurer(
-            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorize) {
-        return authorize
-                // public endpoints
-                .requestMatchers("/error/**", "/public/**",
-                        "/test/**", "/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
-    }
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -80,13 +59,7 @@ public class WebSecurity {
                  */
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> corsConfigurer(cors))
-                /*
-                 * Disable default form login redirection and change 403 to 401 status
-                 */
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(
-                        (request, response, authException) -> response.sendError(
-                                HttpServletResponse.SC_UNAUTHORIZED,
-                                authException.getMessage())))
+                .exceptionHandling(exception -> handleException(exception))
                 .authorizeHttpRequests(authorize -> authorizationConfigurer(authorize))
                 /*
                  * Disable session management (no session will be created because we are using
@@ -100,5 +73,45 @@ public class WebSecurity {
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    private void corsConfigurer(CorsConfigurer<HttpSecurity> cors) {
+        cors.configurationSource(request -> {
+            CorsConfiguration corsConfiguration = new CorsConfiguration();
+            corsConfiguration.setAllowedMethods(List.of("*"));
+            corsConfiguration.setAllowedHeaders(List.of("*"));
+            corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+            return corsConfiguration;
+        });
+    }
+
+    private AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizationConfigurer(
+            AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorize) {
+        return authorize
+                // public endpoints
+                .requestMatchers("/error/**", "/public/**",
+                        "/test/**", "/auth/**")
+                .permitAll()
+                // Admin endpoints
+                .requestMatchers("/api/users/**").hasAuthority(Authority.ADMIN)
+                // User endpoints
+                .anyRequest()
+                .authenticated();
+    }
+
+    private ExceptionHandlingConfigurer<HttpSecurity> handleException(
+            ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling) {
+        return exceptionHandling
+                .authenticationEntryPoint(
+                        /*
+                         * Disable default form login redirection and change 403 to 401 status
+                         */
+                        (request, response, authException) -> response.sendError(
+                                HttpServletResponse.SC_UNAUTHORIZED,
+                                authException.getMessage()))
+                .accessDeniedHandler(
+                        (request, response, accessDeniedException) -> response.sendError(
+                                HttpServletResponse.SC_FORBIDDEN,
+                                accessDeniedException.getMessage()));
     }
 }

@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import internship.project.election.domain.Role;
-import internship.project.election.domain.User;
+import internship.project.election.model.Role;
+import internship.project.election.model.User;
 import internship.project.election.service.impl.domain.UserService;
 
 @Service

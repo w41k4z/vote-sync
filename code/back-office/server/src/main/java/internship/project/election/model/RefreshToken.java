@@ -1,4 +1,4 @@
-package internship.project.election.domain;
+package internship.project.election.model;
 
 import lombok.Data;
 import jakarta.persistence.Column;

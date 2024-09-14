@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.auth;
+package internship.project.election.service.impl;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.domain.Role;
-import internship.project.election.domain.User;
+import internship.project.election.model.Role;
+import internship.project.election.model.User;
 import internship.project.election.service.spec.AbstractJwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -9,9 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import internship.project.election.domain.Role;
-import internship.project.election.domain.User;
-import internship.project.election.service.spec.AuthService;
+import internship.project.election.model.Role;
+import internship.project.election.model.User;
+import internship.project.election.service.impl.AppJwtService;
+import internship.project.election.service.impl.RefreshTokenService;
+import internship.project.election.service.spec.auth.AuthService;
 
 @Service
 public class AppAuthService implements AuthService<Map<String, String>> {

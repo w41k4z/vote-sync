@@ -16,9 +16,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.gson.Gson;
 
-import internship.project.election.domain.User;
 import internship.project.election.dto.ApiResponse;
-import internship.project.election.service.impl.auth.AppJwtService;
+import internship.project.election.model.User;
+import internship.project.election.service.impl.AppJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

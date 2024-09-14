@@ -1,4 +1,4 @@
-package internship.project.election.service.spec;
+package internship.project.election.service.spec.auth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -12,8 +12,8 @@ import internship.project.election.dto.ApiResponse;
 import internship.project.election.dto.request.AuthenticationRequest;
 import internship.project.election.dto.request.LogOutRequest;
 import internship.project.election.dto.request.NewAccessTokenRequest;
+import internship.project.election.service.impl.RefreshTokenService;
 import internship.project.election.service.impl.auth.AppAuthService;
-import internship.project.election.service.impl.auth.RefreshTokenService;
 import jakarta.validation.Valid;
 
 @RequestMapping("/auth")

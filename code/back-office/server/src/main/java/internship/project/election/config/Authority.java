@@ -1,7 +1,6 @@
 package internship.project.election.config;
 
-public enum Authority {
-    ADMIN,
-    MANAGER,
-    OPERATOR
+public final class Authority {
+    public final static String ADMIN = "ADMIN";
+    public final static String OPERATOR = "OPERATOR";
 }

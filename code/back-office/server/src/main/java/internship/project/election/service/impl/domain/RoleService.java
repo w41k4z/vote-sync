@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.domain.Role;
+import internship.project.election.model.Role;
 import internship.project.election.repository.RoleRepository;
 
 @Service

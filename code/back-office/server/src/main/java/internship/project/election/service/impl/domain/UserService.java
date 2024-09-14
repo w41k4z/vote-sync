@@ -1,19 +1,19 @@
 package internship.project.election.service.impl.domain;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.config.Authority;
-import internship.project.election.domain.Role;
-import internship.project.election.domain.User;
 import internship.project.election.dto.request.NewUserRequest;
+import internship.project.election.model.Role;
+import internship.project.election.model.User;
 import internship.project.election.repository.UserRepository;
 import internship.project.election.service.impl.auth.util.AdminPasswordHashing;
 import internship.project.election.service.impl.auth.util.UserPasswordHashing;
-import internship.project.election.service.impl.domain.filter.UserSpecification;
-import internship.project.election.service.spec.util.AbstractPasswordHashing;
+import internship.project.election.service.impl.domain.specification.UserSpecification;
+import internship.project.election.service.spec.auth.util.AbstractPasswordHashing;
 
 @Service
 public class UserService {
@@ -34,9 +34,9 @@ public class UserService {
         this.userPasswordHashing = userPasswordHashing;
     }
 
-    public List<User> getAllUsers() {
-        Specification<User> spec = UserSpecification.getActiveUsers();
-        return this.repository.findAll(spec);
+    public Page<User> getAllUsers(int page, int size) {
+        // Specification<User> spec = UserSpecification.getActiveUsers();
+        return this.repository.findAll(PageRequest.of(page, size));
     }
 
     public User getUserById(int id) {

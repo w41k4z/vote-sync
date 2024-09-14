@@ -1,12 +1,12 @@
-package internship.project.election.service.impl.auth;
+package internship.project.election.service.impl;
 
 import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import internship.project.election.domain.RefreshToken;
-import internship.project.election.domain.User;
+import internship.project.election.model.RefreshToken;
+import internship.project.election.model.User;
 import internship.project.election.repository.RefreshTokenRepository;
 import internship.project.election.service.impl.domain.UserService;
 import internship.project.election.service.spec.AbstractJwtService;

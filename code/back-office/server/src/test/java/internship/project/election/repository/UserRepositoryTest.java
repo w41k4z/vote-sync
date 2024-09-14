@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import internship.project.election.domain.Role;
-import internship.project.election.domain.User;
+import internship.project.election.model.Role;
+import internship.project.election.model.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
