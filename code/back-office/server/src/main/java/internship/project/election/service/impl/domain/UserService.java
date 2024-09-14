@@ -1,12 +1,13 @@
 package internship.project.election.service.impl.domain;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.config.Authority;
-import internship.project.election.dto.request.NewUserRequest;
+import internship.project.election.dto.request.user.NewUserRequest;
+import internship.project.election.dto.request.user.UpdateUserRequest;
 import internship.project.election.model.Role;
 import internship.project.election.model.User;
 import internship.project.election.repository.UserRepository;
@@ -34,9 +35,9 @@ public class UserService {
         this.userPasswordHashing = userPasswordHashing;
     }
 
-    public Page<User> getAllUsers(int page, int size) {
+    public PagedModel<User> getAllUsers(Pageable pageable) {
         Specification<User> spec = UserSpecification.getActiveUsers();
-        return this.repository.findAll(spec, PageRequest.of(page, size));
+        return new PagedModel<>(this.repository.findAll(spec, pageable));
     }
 
     public User getUserById(int id) {
@@ -47,15 +48,11 @@ public class UserService {
         return this.repository.findByIdentifier(identifier).orElse(null);
     }
 
-    public void saveUser(User user) {
-        this.repository.save(user);
-    }
-
     public void deleteUser(Integer id) {
         this.repository.deleteById(id);
     }
 
-    public void createNewUser(NewUserRequest request) {
+    public User createNewUser(NewUserRequest request) {
         AbstractPasswordHashing passwordHashing;
         User newUser = new User();
         Role role = this.roleService.getRoleById(request.getRoleId());
@@ -73,6 +70,20 @@ public class UserService {
         newUser.setContact(request.getContact());
         newUser.setRole(role);
         newUser.setPassword(passwordHashing.hash(request.getPassword()));
-        this.saveUser(newUser);
+        newUser.setState(0);
+        return this.repository.save(newUser);
+    }
+
+    public User updateUser(UpdateUserRequest updateRequest) {
+        if (updateRequest.getId() == null) {
+            throw new IllegalArgumentException("User id is required");
+        }
+        Role role = new Role();
+        role.setId(updateRequest.getRoleId());
+        User user = new User(
+                updateRequest.getIdentifier(), role, updateRequest.getName(), updateRequest.getFirstName(),
+                updateRequest.getContact(), updateRequest.getPassword(), updateRequest.getState());
+        user.setId(updateRequest.getId());
+        return this.repository.save(user);
     }
 }

@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import internship.project.election.dto.ApiResponse;
-import internship.project.election.dto.request.NewUserRequest;
+import internship.project.election.dto.request.user.NewUserRequest;
 import internship.project.election.service.impl.domain.UserService;
+import jakarta.validation.Valid;
 
 @RequestMapping("/admin")
 @RestController
@@ -22,7 +23,7 @@ public class AdminController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<ApiResponse> createNewUser(@RequestBody NewUserRequest request) {
+    public ResponseEntity<ApiResponse> createNewUser(@Valid @RequestBody NewUserRequest request) {
         this.userService.createNewUser(request);
         return new ResponseEntity<>(new ApiResponse(null, "New user created successfully"), HttpStatus.CREATED);
     }
