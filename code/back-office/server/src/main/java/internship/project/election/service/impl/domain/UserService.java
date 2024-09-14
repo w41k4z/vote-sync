@@ -35,8 +35,8 @@ public class UserService {
     }
 
     public Page<User> getAllUsers(int page, int size) {
-        // Specification<User> spec = UserSpecification.getActiveUsers();
-        return this.repository.findAll(PageRequest.of(page, size));
+        Specification<User> spec = UserSpecification.getActiveUsers();
+        return this.repository.findAll(spec, PageRequest.of(page, size));
     }
 
     public User getUserById(int id) {
