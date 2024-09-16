@@ -18,5 +18,10 @@
       (min: SDK 21, Android 5.0, iOS 9.0)
 
 - 02/09/2024
+
   - Donnée spatiale obselète:
     => Adapter les données à jour en fonction des données spatiales recoltées (Groupement des BV du région Vatovavy dans Fitovinany pour reformer la région Vatovavy Fitovinany)
+
+- 16/09/2024
+  - Vue matérialisée vs table des résultats agrégés:
+    => En connaissance du fait que le volume des données est important, il est préférable de créer des tables pour les résultats agrégés, et ainsi supprimer les données de la table d'origine pour plus de performance.

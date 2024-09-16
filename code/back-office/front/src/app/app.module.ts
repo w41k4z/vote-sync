@@ -7,7 +7,7 @@ import { LogInComponent } from './views/log-in/log-in.component';
 import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-layout.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './filter/token.interceptor';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
@@ -17,6 +17,13 @@ import { HeaderComponent } from './layouts/app-layout/header/header.component';
 import { SideBarComponent } from './layouts/app-layout/side-bar/side-bar.component';
 import { UsersComponent } from './views/users/users.component';
 import { ListUsersComponent } from './views/users/list-users/list-users.component';
+import { FormatRolePipe } from './pipes/format-role.pipe';
+import { UsersStatComponent } from './views/users/users-stat/users-stat.component';
+import { AddNewUserDialogComponent } from './views/users/list-users/add-new-user-dialog/add-new-user-dialog.component';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -32,9 +39,24 @@ import { ListUsersComponent } from './views/users/list-users/list-users.componen
     SideBarComponent,
     UsersComponent,
     ListUsersComponent,
+    FormatRolePipe,
+    UsersStatComponent,
+    AddNewUserDialogComponent,
+    DeleteDialogComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
-  providers: [provideHttpClient(withInterceptors([jwtInterceptor]))],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogContent,
+    MatDialogActions,
+    MatInputModule,
+  ],
+  providers: [
+    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideAnimationsAsync(),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

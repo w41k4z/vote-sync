@@ -1,0 +1,7 @@
+@import "../../../theme.scss";
+
+.user-list, .stat {
+    border-radius: 20px;
+    background-color: $content-background;
+    height: fit-content;
+}

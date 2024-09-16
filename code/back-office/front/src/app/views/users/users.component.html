@@ -1,1 +1,16 @@
-<app-list-users class="user-list"></app-list-users>
+<div class="d-flex flex-wrap flex-md-row-reverse mb-3">
+    <section class="ms-sm-0 ms-lg-2 card card-body stat">
+        <app-users-stat
+            [stats]="stats"
+            [loading$]="loading$" 
+        ></app-users-stat>
+    </section>
+    <section class="card card-body mt-sm-2 mt-lg-0 user-list">
+        <app-list-users
+            [userListPayload]="userListPayload"
+            [loading$]="loading$" 
+            [error$]="error$"
+            [message$]="message$"
+        ></app-list-users>
+    </section>
+</div>

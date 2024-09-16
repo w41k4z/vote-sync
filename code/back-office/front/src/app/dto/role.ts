@@ -10,4 +10,8 @@ export class Role {
     this.name = name;
     this.level = level;
   }
+
+  getName(): string {
+    return this.name;
+  }
 }

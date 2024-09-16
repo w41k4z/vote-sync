@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { ApiCallService } from '../api/api-call.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthRequest } from '../../dto/request/auth.request';
-import { SignInPayloadResponse } from '../../dto/response/sign-in-payload.response';
+import { SignInPayloadResponse } from '../../dto/response/auth/sign-in-payload.response';
 import { jwtDecode } from 'jwt-decode';
 import { AppJwt } from '../../dto/app.jwt';
-import { RefreshTokenPayloadResponse } from '../../dto/response/refresh-token-payload.response';
+import { RefreshTokenPayloadResponse } from '../../dto/response/auth/refresh-token-payload.response';
 import { Endpoints } from '../../endpoints';
 
 @Injectable({

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { UserService } from '../../../services/api/user/user.service';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../../../dto/user';
-import { Role } from '../../../dto/role';
+import { UserListPayload } from '../../../dto/response/user/user-list-payload.response';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewUserDialogComponent } from './add-new-user-dialog/add-new-user-dialog.component';
 
 @Component({
   selector: 'app-list-users',
@@ -10,22 +10,15 @@ import { Role } from '../../../dto/role';
   styleUrl: './list-users.component.scss',
 })
 export class ListUsersComponent {
-  loading$!: Observable<Boolean>;
-  error$!: Observable<string | null>;
-  message$!: Observable<string | null>;
-  users: User[] = [];
+  @Input() loading$!: Observable<Boolean>;
+  @Input() error$!: Observable<string | null>;
+  @Input() message$!: Observable<string | null>;
+  @Input() userListPayload!: UserListPayload | null;
 
-  constructor(private userService: UserService) {
-    this.loading$ = userService.loading$;
-    this.error$ = userService.error$;
-    this.message$ = userService.message$;
-  }
+  constructor(private dialog: MatDialog) {}
 
-  ngOnInit(): void {
-    this.userService.getUsers().then((listUserPayload) => {
-      if (listUserPayload) {
-        this.users = listUserPayload.users;
-      }
-    });
+  openAddNewUserDialog() {
+    const dialogRef = this.dialog.open(AddNewUserDialogComponent);
+    dialogRef.afterClosed().subscribe();
   }
 }

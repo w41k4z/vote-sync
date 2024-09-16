@@ -1,0 +1,25 @@
+<h5>Statistique</h5>
+<div *ngIf="loading$ | async; else content" class="w-100 my-5 d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status"></div>
+</div>
+<ng-template #content>
+    <div *ngIf="stats.length != 0; else empty">
+        <table class="mt-3 table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">Groupe</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let stat of stats">
+                    <td>{{ stat.role | formatRole }}</td>
+                    <td class="text-end">{{ stat.count }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #empty>
+        <p class="m-0 mt-4 text-center text-danger">Pas de résultat</p>
+    </ng-template>
+</ng-template>

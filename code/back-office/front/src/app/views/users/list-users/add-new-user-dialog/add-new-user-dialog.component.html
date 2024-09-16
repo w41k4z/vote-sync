@@ -1,0 +1,28 @@
+<div class="dialog-content">
+    <h3 mat-dialog-title class="text-primary my-3">Ajouter un nouveau utilisateur</h3>
+    <mat-dialog-content class="d-flex flex-column">
+        <mat-form-field>
+            <mat-label>Identifiant</mat-label>
+            <input matInput [(ngModel)]="newUser.identifier">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nom</mat-label>
+            <input matInput [(ngModel)]="newUser.name">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Prénom</mat-label>
+            <input matInput [(ngModel)]="newUser.firstName">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Contact</mat-label>
+            <input matInput [(ngModel)]="newUser.contact">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Mot de passe</mat-label>
+            <input matInput [(ngModel)]="newUser.password">
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex gap-2 justify-content-end">
+        <button class="btn btn-primary" (click)="confirm()" cdkFocusInitial>Confirmer</button>
+    </mat-dialog-actions>
+</div>

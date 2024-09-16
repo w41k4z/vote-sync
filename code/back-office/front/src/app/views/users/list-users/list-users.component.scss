@@ -4,23 +4,16 @@ h5 {
     color: $primary;
 }
 
-.content, .stat {
-    border-radius: 20px;
-    background-color: $content-background;
-}
-
-.content {
-    header {
-        .action-section {
-            button {
-                border-radius: 50%;
-            }
+header {
+    .action-section {
+        button {
+            border-radius: 50%;
         }
     }
+}
 
-    footer {
-        i {
-            color: $primary;
-        }
+footer {
+    i {
+        color: $primary;
     }
 }

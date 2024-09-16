@@ -3,6 +3,7 @@ export class Endpoints {
   public static readonly SIGN_OUT = 'auth/sign-out';
   public static readonly REFRESH_TOKEN = 'auth/refresh-token';
   public static readonly USERS = 'api/users';
+  public static readonly USERS_AND_STATS = 'api/users/users-and-stats';
 
   public static publicEndpoints = [
     Endpoints.SIGN_IN,
