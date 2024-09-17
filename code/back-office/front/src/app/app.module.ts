@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppRoutingModule } from './app-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+
 import { AppComponent } from './app.component';
 import { LogInComponent } from './views/log-in/log-in.component';
 import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-layout.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './filter/token.interceptor';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
@@ -22,8 +25,6 @@ import { UsersStatComponent } from './views/users/users-stat/users-stat.componen
 import { UserFormDialogComponent } from './views/users/list-users/user-form-dialog/user-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
 import { UserFiltersComponent } from './views/users/list-users/user-filters/user-filters.component';
 
 @NgModule({
@@ -54,6 +55,7 @@ import { UserFiltersComponent } from './views/users/list-users/user-filters/user
     MatDialogContent,
     MatDialogActions,
     MatInputModule,
+    LeafletModule,
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),

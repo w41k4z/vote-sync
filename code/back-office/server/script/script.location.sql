@@ -11,7 +11,8 @@ CREATE TABLE regions (
    p_code VARCHAR2(10) NOT NULL,
    r_code VARCHAR2(10) NOT NULL,
    nom VARCHAR2(50) UNIQUE NOT NULL,
-   geom MDSYS.SDO_GEOMETRY,
+   geojson CLOB,
+--    geom MDSYS.SDO_GEOMETRY,
    PRIMARY KEY(id),
    CONSTRAINT unique_code_region UNIQUE(p_code, r_code),
    FOREIGN KEY(id_province) REFERENCES provinces(id)
@@ -24,28 +25,6 @@ VALUES (
         SDO_DIM_ELEMENT('X', -180, 180, 0.05),  -- X dimension (Longitude)
         SDO_DIM_ELEMENT('Y', -90, 90, 0.05)     -- Y dimension (Latitude)
     ),
-    8307                      -- The SRID (Spatial Reference ID), 8307 corresponds to WGS 84
+    4326                        -- The SRID (Spatial Reference ID)
 );
 CREATE INDEX idx_region_geom ON regions(geom) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
-INSERT INTO regions
-VALUES (
-    1,
-    1,
-    'MDG11',
-    '11',
-    'Test region',
-    MDSYS.SDO_GEOMETRY(
-        2003,
-        NULL,
-        NULL,
-        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1003),
-        MDSYS.SDO_ORDINATE_ARRAY(0,0,10,0,10,10,0,10,0,0,5,5,7,5,7,7,5,7,5,5)
-    )
-);
-
-SELECT 
-    nom,
-    SDO_GEOM.SDO_AREA(geom) AS area,
-    SDO_GEOM.SDO_LENGTH(geom) AS perimeter
-FROM 
-    regions;

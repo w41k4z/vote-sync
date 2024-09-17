@@ -1,0 +1,11 @@
+// for the table element, add borders
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead th, thead td, tbody th, tbody td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}

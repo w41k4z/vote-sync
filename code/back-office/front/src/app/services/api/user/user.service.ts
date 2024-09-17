@@ -11,7 +11,7 @@ import { SaveUserPayload } from '../../../dto/response/user/save-user-payload.re
   providedIn: 'root',
 })
 export class UserService extends ApiCallService {
-  constructor(private http: HttpClient) {
+  constructor(http: HttpClient) {
     super(http);
   }
 

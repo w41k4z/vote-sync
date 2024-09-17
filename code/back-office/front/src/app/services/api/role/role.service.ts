@@ -8,7 +8,7 @@ import { Endpoints } from '../../../endpoints';
   providedIn: 'root',
 })
 export class RoleService extends ApiCallService {
-  constructor(private http: HttpClient) {
+  constructor(http: HttpClient) {
     super(http);
   }
 

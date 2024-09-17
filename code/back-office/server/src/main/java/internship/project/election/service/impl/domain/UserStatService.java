@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.model.UserStat;
+import internship.project.election.model.VUserStat;
 import internship.project.election.repository.UserStatRepository;
 
 @Service
@@ -16,7 +16,7 @@ public class UserStatService {
         this.repository = repository;
     }
 
-    public List<UserStat> getUserStats() {
+    public List<VUserStat> getUserStats() {
         return this.repository.findAll();
     }
 }

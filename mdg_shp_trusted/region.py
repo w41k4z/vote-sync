@@ -1,4 +1,5 @@
 import oracledb
+import json
 
 def generate_sdo_elem_info_array(num_polygons):
     array = []
@@ -62,50 +63,53 @@ with open('Regions.geojson', 'r') as f:
         dsn="localhost/XEPDB1"
     )
     cursor = connection.cursor()
-    with open('cleaned/region.sql', 'w') as w:
-        for each in geojson_data["features"]:
-            coordinates = each["geometry"]["coordinates"][0]
-            sd_elem_info = ''
-            if each["geometry"]["type"] == 'MultiPolygon':
-                sd_elem_info = generate_sdo_elem_info_array(len(coordinates))
-            else:
-                sd_elem_info = [1, 1003, 1]
-            arr_coordinates = []
-            for coord in coordinates:
-                if each["geometry"]["type"] == 'MultiPolygon':
-                    for c in coord:
-                        arr_coordinates.append(float(c[0]))
-                        arr_coordinates.append(float(c[1]))
-                else:
-                    arr_coordinates.append(float(coord[0]))
-                    arr_coordinates.append(float(coord[1]))
-            id = regs[each["properties"]["REGION"].upper()]["id"]
-            prov_id = regs[each["properties"]["REGION"].upper()]["PROV_ID"]
-            p_code = regs[each["properties"]["REGION"].upper()]["P_CODE"]
-            r_code = regs[each["properties"]["REGION"].upper()]["R_CODE"]
-            region = each["properties"]["REGION"].upper()
-            
-            type_obj = connection.gettype("MDSYS.SDO_GEOMETRY")
-            element_info_type_obj = connection.gettype("MDSYS.SDO_ELEM_INFO_ARRAY")
-            ordinate_type_obj = connection.gettype("MDSYS.SDO_ORDINATE_ARRAY")
-            obj = type_obj.newobject()
-            obj.SDO_GTYPE = 2007
-            obj.SDO_SRID = 8307
-            obj.SDO_ELEM_INFO = element_info_type_obj.newobject()
-            obj.SDO_ELEM_INFO.extend(sd_elem_info)
-            obj.SDO_ORDINATES = ordinate_type_obj.newobject()
-            obj.SDO_ORDINATES.extend(arr_coordinates)
-            
-            script = "INSERT INTO regions(id, id_province, p_code, r_code, nom, geom) values(:id, :prov_id, :p_code, :r_code, :region, :obj)"
-            cursor.execute(script, {
-                "id": id,
-                "prov_id": prov_id,
-                "p_code": p_code,
-                "r_code": r_code,
-                "region": region,
-                "obj": obj
-            })
-            print('Tafiditra \n')
-        cursor.execute("commit")
-        cursor.close()
-        connection.close()
+    for each in geojson_data["features"]:
+        # coordinates = each["geometry"]["coordinates"][0]
+        # sd_elem_info = ''
+        # if each["geometry"]["type"] == 'MultiPolygon':
+        #     sd_elem_info = generate_sdo_elem_info_array(len(coordinates))
+        # else:
+        #     sd_elem_info = [1, 1003, 1]
+        # arr_coordinates = []
+        # for coord in coordinates:
+        #     if each["geometry"]["type"] == 'MultiPolygon':
+        #         for c in coord:
+        #             arr_coordinates.append(c[0])
+        #             arr_coordinates.append(c[1])
+        #     else:
+        #         arr_coordinates.append(coord[0])
+        #         arr_coordinates.append(coord[1])
+        id = regs[each["properties"]["REGION"].upper()]["id"]
+        prov_id = regs[each["properties"]["REGION"].upper()]["PROV_ID"]
+        p_code = regs[each["properties"]["REGION"].upper()]["P_CODE"]
+        r_code = regs[each["properties"]["REGION"].upper()]["R_CODE"]
+        region = each["properties"]["REGION"].upper()
+        str_geojson = json.dumps(each["geometry"])
+        # type_obj = connection.gettype("MDSYS.SDO_GEOMETRY")
+        # element_info_type_obj = connection.gettype("MDSYS.SDO_ELEM_INFO_ARRAY")
+        # ordinate_type_obj = connection.gettype("MDSYS.SDO_ORDINATE_ARRAY")
+        # obj = type_obj.newobject()
+        
+        # if each["geometry"]["type"] == 'MultiPolygon':
+        #     obj.SDO_GTYPE = 2007
+        # else:
+        #     obj.SDO_GTYPE = 2003
+        # obj.SDO_SRID = 8307
+        # obj.SDO_ELEM_INFO = element_info_type_obj.newobject()
+        # obj.SDO_ELEM_INFO.extend(sd_elem_info)
+        # obj.SDO_ORDINATES = ordinate_type_obj.newobject()
+        # obj.SDO_ORDINATES.extend(arr_coordinates)
+        
+        script = "INSERT INTO regions(id, id_province, p_code, r_code, nom, geojson) values(:id, :prov_id, :p_code, :r_code, :region, :geojson)"
+        cursor.execute(script, {
+            "id": id,
+            "prov_id": prov_id,
+            "p_code": p_code,
+            "r_code": r_code,
+            "region": region,
+            "geojson": str_geojson
+        })
+        print('Tafiditra \n')
+    cursor.execute("commit")
+    cursor.close()
+    connection.close()

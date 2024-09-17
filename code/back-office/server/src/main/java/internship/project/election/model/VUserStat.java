@@ -12,7 +12,7 @@ import lombok.Data;
 @Entity
 @Table(name = "stat_utilisateur")
 @Immutable
-public class UserStat {
+public class VUserStat {
 
     @Id
     @Column(name = "id_role")
