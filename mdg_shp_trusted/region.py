@@ -10,17 +10,7 @@ def generate_sdo_elem_info_array(num_polygons):
     for _ in range(num_polygons):
         array.append(1003)
         array.append(1)
-    
-    res = 'SDO_ELEM_INFO_ARRAY('
-    str_res = ''
-    for i in range(len(array)):
-        res += str(array[i])
-        str_res += str(array[i])
-        if i < len(array) - 1:
-            res += ', '
-            str_res += ', '
-    res += ')'
-    return [res, array, str_res]
+    return array
 
 import csv
 
@@ -79,36 +69,42 @@ with open('Regions.geojson', 'r') as f:
             if each["geometry"]["type"] == 'MultiPolygon':
                 sd_elem_info = generate_sdo_elem_info_array(len(coordinates))
             else:
-                sd_elem_info = ['SDO_ELEM_INFO_ARRAY(1,1003,1)', [1, 1003, 1], '1,1003,1']
-            str_coordinates = ''
+                sd_elem_info = [1, 1003, 1]
             arr_coordinates = []
             for coord in coordinates:
                 if each["geometry"]["type"] == 'MultiPolygon':
                     for c in coord:
-                        str_coordinates += str(c[0]) + ',' + str(c[1]) + ','
                         arr_coordinates.append(float(c[0]))
                         arr_coordinates.append(float(c[1]))
                 else:
-                    str_coordinates += str(coord[0]) + ',' + str(coord[1]) + ','
                     arr_coordinates.append(float(coord[0]))
                     arr_coordinates.append(float(coord[1]))
-            str_coordinates = str_coordinates[:-1]
             id = regs[each["properties"]["REGION"].upper()]["id"]
             prov_id = regs[each["properties"]["REGION"].upper()]["PROV_ID"]
             p_code = regs[each["properties"]["REGION"].upper()]["P_CODE"]
             r_code = regs[each["properties"]["REGION"].upper()]["R_CODE"]
             region = each["properties"]["REGION"].upper()
-            script = """
-                    INSERT INTO regions(id, id_province, p_code, r_code, nom, geom) 
-                    VALUES(""" + id + """, """ + prov_id + """,'""" + p_code + """','""" + r_code + """','""" + region + """', SDO_GEOMETRY(
-                        2007,
-                        8307,
-                        NULL,
-                        SDO_ELEM_INFO_ARRAY(""" + sd_elem_info[2] + """),
-                        SDO_ORDINATE_ARRAY(""" + str_coordinates + """) 
-                    ))
-                """
-            cursor.execute(script)
+            
+            type_obj = connection.gettype("MDSYS.SDO_GEOMETRY")
+            element_info_type_obj = connection.gettype("MDSYS.SDO_ELEM_INFO_ARRAY")
+            ordinate_type_obj = connection.gettype("MDSYS.SDO_ORDINATE_ARRAY")
+            obj = type_obj.newobject()
+            obj.SDO_GTYPE = 2007
+            obj.SDO_SRID = 8307
+            obj.SDO_ELEM_INFO = element_info_type_obj.newobject()
+            obj.SDO_ELEM_INFO.extend(sd_elem_info)
+            obj.SDO_ORDINATES = ordinate_type_obj.newobject()
+            obj.SDO_ORDINATES.extend(arr_coordinates)
+            
+            script = "INSERT INTO regions(id, id_province, p_code, r_code, nom, geom) values(:id, :prov_id, :p_code, :r_code, :region, :obj)"
+            cursor.execute(script, {
+                "id": id,
+                "prov_id": prov_id,
+                "p_code": p_code,
+                "r_code": r_code,
+                "region": region,
+                "obj": obj
+            })
             print('Tafiditra \n')
         cursor.execute("commit")
         cursor.close()

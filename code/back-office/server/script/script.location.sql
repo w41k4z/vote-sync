@@ -43,23 +43,6 @@ VALUES (
     )
 );
 
--- insert example data with multipolygon in the regions table
-INSERT INTO regions
-VALUES (
-    1,
-    1,
-    'MDG12',
-    '12',
-    'Test region 2',
-    MDSYS.SDO_GEOMETRY(
-        2007,
-        8307,
-        NULL,
-        MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,1,19,2003,1),
-        MDSYS.SDO_ORDINATE_ARRAY(0,0,10,0,10,10,0,10,0,0,5,5,7,5,7,7,5,7,5,5,0,0,10,0,10,10,0,10,0,0,5,5,7,5,7,7,5,7,5,5)
-    )
-);
-
 SELECT 
     nom,
     SDO_GEOM.SDO_AREA(geom) AS area,
