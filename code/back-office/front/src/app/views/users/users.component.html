@@ -8,9 +8,11 @@
     <section class="card card-body mt-sm-2 mt-lg-0 user-list">
         <app-list-users
             [userListPayload]="userListPayload"
+            [stats]="stats"
             [loading$]="loading$" 
             [error$]="error$"
             [message$]="message$"
+            [userService]="userService"
         ></app-list-users>
     </section>
 </div>

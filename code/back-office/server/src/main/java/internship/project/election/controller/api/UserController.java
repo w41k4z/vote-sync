@@ -54,14 +54,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> createNewUser(@Valid @RequestBody NewUserRequest request) {
-        return new ResponseEntity<>(new ApiResponse(
-                this.userService.createNewUser(request), "User created"), HttpStatus.CREATED);
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("user", this.userService.createNewUser(request));
+        return new ResponseEntity<>(new ApiResponse(payload, "User created"), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<ApiResponse> updateUser(@Valid @RequestBody UpdateUserRequest request) {
-        return ResponseEntity.ok(new ApiResponse(
-                this.userService.updateUser(request), "User updated"));
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("user", this.userService.updateUser(request));
+        return ResponseEntity.ok(new ApiResponse(payload, "User updated"));
     }
 
     @DeleteMapping

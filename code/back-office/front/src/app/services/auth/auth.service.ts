@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiCallService } from '../api/api-call.service';
+import { ApiCallService } from '../api/api-call';
 import { HttpClient } from '@angular/common/http';
 import { AuthRequest } from '../../dto/request/auth.request';
 import { SignInPayloadResponse } from '../../dto/response/auth/sign-in-payload.response';

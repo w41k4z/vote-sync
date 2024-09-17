@@ -1,0 +1,13 @@
+@import "../../../../../theme.scss";
+
+.filter {
+    background-color: $content-background;
+    border-bottom: 1px solid $grey-section;
+    border-top: 1px solid $grey-section;
+
+    table {
+        border-spacing: 10px;
+        border-collapse: unset;
+        width: 100%;
+    }
+}

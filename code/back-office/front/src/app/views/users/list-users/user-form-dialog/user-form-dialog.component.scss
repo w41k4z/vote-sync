@@ -1,0 +1,15 @@
+@import "../../../../../theme.scss";
+
+:host {
+    width: 75%;
+}
+
+.dialog-content {
+    padding: 10px 25px 0px 25px;
+    background-color: $content-background;
+
+    main {
+        max-height: 325px;
+        overflow-y: scroll;
+    }
+}

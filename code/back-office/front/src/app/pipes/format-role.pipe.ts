@@ -8,6 +8,7 @@ export class FormatRolePipe implements PipeTransform {
     ADMIN: 'Administrateur',
     MANAGER: 'Responsable',
     OPERATOR: 'Opérateur',
+    CCID: 'Chef CID',
   };
 
   transform(role: string): string {

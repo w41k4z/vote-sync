@@ -1,0 +1,43 @@
+<div class="dialog-content">
+    <header class="d-flex justify-content-between align-items-center my-2">
+        <h3 class="text-primary">Formulaire d'utilisateur</h3>
+        <button
+            class="ms-5 btn btn-outline-primary d-flex align-items-center"
+        >
+            Importer<i class="mbi bi-file-excel" style="font-size: 20px"></i>
+        </button>
+    </header>
+    <main class="card card-body mt-4">
+        <div class="d-flex flex-column gap-2">
+            <div class="form-group">
+                <label for="role" class="form-label">Rôle</label>
+                <select id="role" class="form-select" [(ngModel)]="newUser.roleId">
+                    <option *ngFor="let role of data.roles" value="{{role.id}}">{{ role.name | formatRole }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="identifier" class="form-label">Identifiant</label>
+                <input type="text" id="identifier" class="form-control" [(ngModel)]="newUser.identifier">
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="text" id="password" class="form-control" [(ngModel)]="newUser.password">
+            </div>
+            <div class="form-group">
+                <label for="name" class="form-label">Nom</label>
+                <input type="text" id="name" class="form-control" [(ngModel)]="newUser.name">
+            </div>
+            <div class="form-group">
+                <label for="firstName" class="form-label">Prénom</label>
+                <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName">
+            </div>
+            <div class="form-group">
+                <label for="contact" class="form-label">Contact</label>
+                <input type="text" id="contact" class="form-control" [(ngModel)]="newUser.contact">
+            </div>
+        </div>
+    </main>
+    <mat-dialog-actions class="d-flex gap-2 justify-content-end">
+        <button class="btn btn-primary" (click)="confirm()" cdkFocusInitial>Ajouter</button>
+    </mat-dialog-actions>
+</div>

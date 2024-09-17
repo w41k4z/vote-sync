@@ -1,0 +1,27 @@
+<section class="filter mb-4">
+    <table classe="table table-borderless table-responsive">
+        <thead>
+            <tr>
+                <th class="col">Rechercher</th>
+                <th class="col">Type d'utilisateur</th>
+                <th class="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" class="form-control" placeholder="Rechercher un utilisateur">
+                </td>
+                <td>
+                    <select class="form-select" id="roleFilter">
+                        <option value="*">Tous les types</option>
+                        <option *ngFor="let role of roles" [value]="role.id">{{ role.name | formatRole }}</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-primary">Filtrer</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

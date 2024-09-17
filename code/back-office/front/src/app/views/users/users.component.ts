@@ -16,13 +16,11 @@ export class UsersComponent {
   userListPayload: UserListPayload | null = null;
   stats: UserStat[] = [];
 
-  constructor(private userService: UserService) {
+  constructor(public userService: UserService) {
     this.loading$ = userService.loading$;
     this.error$ = userService.error$;
     this.message$ = userService.message$;
-  }
 
-  ngOnInit(): void {
     this.userService.getUsersAndStats().then((usersAndStatsPayload) => {
       if (usersAndStatsPayload) {
         this.userListPayload = new UserListPayload(usersAndStatsPayload.users);

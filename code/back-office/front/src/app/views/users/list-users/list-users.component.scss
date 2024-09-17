@@ -12,6 +12,10 @@ header {
     }
 }
 
+.table-content {
+    overflow-x: auto;
+}
+
 footer {
     i {
         color: $primary;

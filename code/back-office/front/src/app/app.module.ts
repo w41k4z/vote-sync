@@ -19,11 +19,12 @@ import { UsersComponent } from './views/users/users.component';
 import { ListUsersComponent } from './views/users/list-users/list-users.component';
 import { FormatRolePipe } from './pipes/format-role.pipe';
 import { UsersStatComponent } from './views/users/users-stat/users-stat.component';
-import { AddNewUserDialogComponent } from './views/users/list-users/add-new-user-dialog/add-new-user-dialog.component';
+import { UserFormDialogComponent } from './views/users/list-users/user-form-dialog/user-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { UserFiltersComponent } from './views/users/list-users/user-filters/user-filters.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +42,9 @@ import { MatInputModule } from '@angular/material/input';
     ListUsersComponent,
     FormatRolePipe,
     UsersStatComponent,
-    AddNewUserDialogComponent,
+    UserFormDialogComponent,
     DeleteDialogComponent,
+    UserFiltersComponent,
   ],
   imports: [
     BrowserModule,
