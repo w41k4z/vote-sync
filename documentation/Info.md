@@ -95,3 +95,14 @@
   ????
 
 - La corruption n'est possible qu'au niveau des bureaux de vote.
+
+
+# Nettoyage des données
+
+Pour adapter les données spatials avec les résultas:
+
+- Ajout d'un colonne id_groupement_region dans la table de résultat:
+	- Fitovinany: 35
+	- Vatovavy: 35 (23ème région)
+	- Analanjirofo: 52
+	- Ambatosoa: 52 (24ème région)
