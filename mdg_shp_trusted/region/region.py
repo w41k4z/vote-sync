@@ -17,7 +17,7 @@ import csv
 
 regs = {}
 # Raw region
-with open('../result.csv', 'r') as csvfile:
+with open('../liste-bv.csv', 'r') as csvfile:
     file_content = csv.reader(csvfile, delimiter=';')
     i = 0
     regions = []
@@ -26,6 +26,12 @@ with open('../result.csv', 'r') as csvfile:
             i+=1
             continue
         the_region = row[0]
+        bv_code = row[6]
+        if bv_code.startswith('1'): # Only Antananarivo
+            if the_region not in regions:
+                regions.append(the_region)
+                regs[the_region] = {"id": row[5].replace(' ', '')[0:2]}
+            
         if the_region == 'VATOVAVY':
             continue
         if the_region == 'FITOVINANY':
@@ -36,9 +42,6 @@ with open('../result.csv', 'r') as csvfile:
                 the_region = 'ALAOTRA MANGORO'
         if the_region == 'ATSIMO-ANDREFAN':
                 the_region = 'ATSIMO ANDREFANA'
-        if the_region not in regions:
-            regions.append(the_region)
-            regs[the_region] = {"id": row[5].replace(' ', '')[0:2]}
             
 # Raw region + column P_CODE and R_CODE    
 with open('Regions.csv', 'r') as csvfile:
@@ -100,7 +103,7 @@ with open('Regions.geojson', 'r') as f:
         # obj.SDO_ORDINATES = ordinate_type_obj.newobject()
         # obj.SDO_ORDINATES.extend(arr_coordinates)
         
-        script = "INSERT INTO imported_regions(id, id_province, p_code, r_code, nom, geojson) values(:id, :prov_id, :p_code, :r_code, :region, :geojson)"
+        script = "INSERT INTO imported_regions(code, id_province, p_code, r_code, nom, geojson) values(:id, :prov_id, :p_code, :r_code, :region, :geojson)"
         cursor.execute(script, {
             "id": str(id),
             "prov_id": str(prov_id),

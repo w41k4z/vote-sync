@@ -72,7 +72,7 @@ with open('District.geojson', 'r') as f:
         district = each["properties"]["DISTRICT"].upper()
         str_geojson = json.dumps(each["geometry"])
         
-        script = "INSERT INTO imported_districts(id, p_code, d_code, reg_pcode, r_code, nom, geojson) values(:id, :p_code, :d_code, :reg_pcode, :r_code, :district, :geojson)"
+        script = "INSERT INTO imported_districts(code, p_code, d_code, reg_pcode, r_code, nom, geojson) values(:id, :p_code, :d_code, :reg_pcode, :r_code, :district, :geojson)"
         cursor.execute(script, {
             "id": id,
             "p_code": p_code,
