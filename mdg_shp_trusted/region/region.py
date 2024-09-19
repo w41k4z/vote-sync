@@ -30,7 +30,7 @@ with open('../liste-bv.csv', 'r') as csvfile:
         if bv_code.startswith('1'): # Only Antananarivo
             if the_region not in regions:
                 regions.append(the_region)
-                regs[the_region] = {"id": row[5].replace(' ', '')[0:2]}
+                regs[the_region] = {"id": bv_code[0:2]}
 
             
 # Raw region + column P_CODE and R_CODE    

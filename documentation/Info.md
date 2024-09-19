@@ -109,4 +109,7 @@ Pour adapter les données spatiales avec les résultas:
 	- Ambatosoa: 52 (24ème région)
 
 Note: J'ai abandonné de nettoyer les données à partir de commune en raison du volume de donnée.
-Pour y remedier, j'ai generé les codes communes (code commune = code district + incremental two digits)
+Donnée recoltés:
+	- Province: Antananarivo
+	- Commune: 4e Arrondissement et 5e Arrondissement
+	- Fokontany: Andavamba Ambilanibe, Ampangabe Anjanakinifolo, Ambodivoanjo Ambohijatovo et Ivandry
