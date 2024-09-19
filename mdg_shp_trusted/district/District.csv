@@ -1,24 +1,29 @@
 ﻿FID,OBJECTID,DISTRICT,P_CODE,D_CODE,REGION,REG_PCODE,R_CODE,SOURCE,Shape__Area,Shape__Length
-1,1,Antananarivo Renivohitra,MDG11101,101,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
-2,2,Antananarivo Avaradrano,MDG11102,102,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",653562598.105469,185622.267949658
-3,3,Ambohidratrimo,MDG11103,103,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",1604375132.86328,238570.98611119
-4,4,Ankazobe,MDG11104,104,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",8194564404.02539,523243.090796306
-5,5,Arivonimamo,MDG13105,105,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2403390330.9834,299697.509324413
-6,6,Manjakandriana,MDG11106,106,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2018697011.25195,298975.4531247
-7,7,Anjozorobe,MDG11107,107,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",4763091813.5625,427242.752420246
-8,8,Antsirabe I,MDG12108,108,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",151105113.726563,63864.2303889781
-9,9,Betafo,MDG12109,109,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",4726676835.58008,478446.004855451
-10,10,Ambatolampy,MDG12110,110,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",1867109383.86426,324268.691482629
-11,11,Tsiroanomandidy,MDG14111,111,Bongolava,MDG14,14,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",11851208662.6904,835810.134662098
-12,12,Miarinarivo,MDG13112,112,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2897345299.97754,328825.485184786
-13,13,Soavinandriana,MDG13113,113,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2108387900.96973,314510.030793738
-14,14,Antanifotsy,MDG12114,114,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",3160859894.60645,378875.336993254
-15,15,Andramasina,MDG11115,115,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",1587207782.44922,216756.152946277
-16,16,Faratsiho,MDG12116,116,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2098433582.10156,272934.161754433
-17,17,Antananarivo Atsimondrano,MDG11117,117,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",474659612.270508,121954.17426114
-18,18,Antsirabe II,MDG12118,118,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2809032869.65234,390358.331350399
-19,19,Fenoarivobe,MDG14119,119,Bongolava,MDG14,14,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",8422963733.42383,572117.691363318
-20,20,Mandoto,MDG12120,120,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",5494634581.77441,470334.915600298
+1,1,Antananarivo I,MDG11101,101,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
+1,1,Antananarivo II,MDG11102,102,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
+1,1,Antananarivo III,MDG11103,103,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
+1,1,Antananarivo IV,MDG11104,104,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
+1,1,Antananarivo V,MDG11105,105,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
+1,1,Antananarivo VI,MDG11106,106,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",95474421.7607422,51272.0848615735
+2,2,Antananarivo Avaradrano,MDG11107,107,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",653562598.105469,185622.267949658
+3,3,Ambohidratrimo,MDG11108,108,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",1604375132.86328,238570.98611119
+4,4,Ankazobe,MDG11109,109,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",8194564404.02539,523243.090796306
+5,5,Arivonimamo,MDG13110,110,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2403390330.9834,299697.509324413
+6,6,Manjakandriana,MDG11111,111,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2018697011.25195,298975.4531247
+7,7,Anjozorobe,MDG11112,112,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",4763091813.5625,427242.752420246
+8,8,Antsirabe I,MDG12113,113,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",151105113.726563,63864.2303889781
+9,9,Betafo,MDG12114,114,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",4726676835.58008,478446.004855451
+10,10,Ambatolampy,MDG12115,115,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",1867109383.86426,324268.691482629
+11,11,Tsiroanomandidy,MDG14116,116,Bongolava,MDG14,14,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",11851208662.6904,835810.134662098
+12,12,Miarinarivo,MDG13117,117,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2897345299.97754,328825.485184786
+13,13,Soavinandriana,MDG13118,118,Itasy,MDG13,13,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2108387900.96973,314510.030793738
+14,14,Antanifotsy,MDG12119,119,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",3160859894.60645,378875.336993254
+15,15,Andramasina,MDG11120,120,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",1587207782.44922,216756.152946277
+16,16,Faratsiho,MDG12121,121,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2098433582.10156,272934.161754433
+17,17,Antananarivo Atsimondrano,MDG11122,122,Analamanga,MDG11,11,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",474659612.270508,121954.17426114
+18,18,Antsirabe II,MDG12123,123,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",2809032869.65234,390358.331350399
+19,19,Fenoarivobe,MDG14124,124,Bongolava,MDG14,14,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",8422963733.42383,572117.691363318
+20,20,Mandoto,MDG12125,125,Vakinankaratra,MDG12,12,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",5494634581.77441,470334.915600298
 21,21,Fianarantsoa,MDG21201,201,Haute Matsiatra,MDG21,21,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",99825816.5830078,57206.608693652
 22,22,Ambatofinandrahana,MDG22202,202,Amoron I Mania,MDG22,22,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",11824785387.0498,795882.978829197
 23,23,Ambositra,MDG22203,203,Amoron I Mania,MDG22,22,"BNGRC (National Disaster Management Office), Adm3 polygons from 2011 cleaned and merged by OCHA.",3341753783.52734,482774.010490882
