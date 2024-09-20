@@ -40,6 +40,7 @@ CREATE TABLE elections (
    nom VARCHAR2(50) UNIQUE NOT NULL,
    date_debut DATE NOT NULL,
    date_fin DATE,
+   etat NUMBER NOT NULL, -- 0: en cours, 10: cloturé
    PRIMARY KEY(id),
    FOREIGN KEY(id_type_election) REFERENCES type_elections(id)
 );

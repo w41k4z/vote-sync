@@ -1,6 +1,7 @@
 CREATE TABLE provinces (
     id CHAR(1),
     nom VARCHAR2(12) NOT NULL,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT unique_nom_province UNIQUE(nom)
 );
@@ -11,6 +12,7 @@ CREATE TABLE regions (
     id_province CHAR(1) NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
     geojson CLOB,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_province) REFERENCES provinces(id)
 );
@@ -21,6 +23,7 @@ CREATE TABLE districts (
     id_region NUMBER NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
     geojson CLOB,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_region) REFERENCES regions(id)
 );
@@ -31,6 +34,7 @@ CREATE TABLE communes (
     id_district NUMBER NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
     geojson CLOB,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_district) REFERENCES districts(id)
 );
@@ -41,6 +45,7 @@ CREATE TABLE fokontany (
     id_commune NUMBER NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
     geojson CLOB,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_commune) REFERENCES communes(id)
 );
@@ -51,6 +56,7 @@ CREATE TABLE cv (
     id_fokontany NUMBER NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
     localisation SDO_GEOMETRY,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_fokontany) REFERENCES fokontany(id)
 );
@@ -71,6 +77,7 @@ CREATE TABLE bv (
     code CHAR(12) UNIQUE NOT NULL,
     id_cv NUMBER NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_cv) REFERENCES cv(id)
 );

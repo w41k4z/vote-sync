@@ -1,4 +1,4 @@
-CREATE VIEW stat_utilisateur AS
+CREATE OR REPLACE VIEW stat_utilisateur AS
 SELECT
     id_role,
     nom_role,
@@ -21,7 +21,8 @@ FROM (
 GROUP BY id_role, nom_role
 ;
 
-CREATE VIEW election_en_cours AS
+
+CREATE OR REPLACE VIEW election_en_cours AS
 SELECT
     e.id,
     e.id_type_election,
@@ -38,7 +39,8 @@ WHERE
 AND ROWNUM = 1
 ;
 
-CREATE VIEW resultats_par_bv AS
+
+CREATE OR REPLACE VIEW resultats_par_bv AS
 SELECT
     r.id_election,
     r.id_bv,
@@ -59,8 +61,31 @@ JOIN candidats c
     ON ec.id_candidat = c.id
 WHERE r.etat = 10
 ;
+CREATE OR REPLACE VIEW resultat_statistique_par_bv AS
+SELECT
+    r.id_election,
+    r.id_bv,
+    bv.code AS code_bv,
+    r.inscrits,
+    r.blancs,
+    r.nuls,
+    dr.exprimes
+FROM resultats r
+JOIN (
+    SELECT
+        id_resultat,
+        SUM(voix) AS exprimes
+    FROM details_resultats
+    GROUP BY id_resultat
+) dr
+    ON r.id = dr.id_resultat
+JOIN bv
+    ON r.id_bv = bv.id
+WHERE r.etat = 10
+;
 
-CREATE VIEW resultats_par_fokontany AS
+
+CREATE OR REPLACE VIEW resultats_par_fokontany AS
 SELECT
     rbv.id_election,
     fk.id AS id_fokontany,
@@ -86,8 +111,30 @@ GROUP BY
     rbv.information_candidat,
     rbv.chemin_photo_candidat
 ;
+CREATE OR REPLACE VIEW resultat_statistique_par_fokontany AS
+SELECT
+    rsbv.id_election,
+    fk.id AS id_fokontany,
+    fk.code AS code_fokontany,
+    SUM(rsbv.inscrits) AS inscrits,
+    SUM(rsbv.blancs) AS blancs,
+    SUM(rsbv.nuls) AS nuls,
+    SUM(rsbv.exprimes) AS exprimes
+FROM resultat_statistique_par_bv rsbv
+JOIN bv
+    ON rsbv.id_bv = bv.id
+JOIN cv
+    ON bv.id_cv = cv.id
+JOIN fokontany fk
+    ON fk.id = cv.id_fokontany
+GROUP BY
+    rsbv.id_election,
+    fk.id,
+    fk.code
+;
 
-CREATE VIEW resultats_par_commune AS
+
+CREATE OR REPLACE VIEW resultats_par_commune AS
 SELECT
     rfk.id_election,
     cm.id AS id_commune,
@@ -111,9 +158,28 @@ GROUP BY
     rfk.information_candidat,
     rfk.chemin_photo_candidat
 ;
+CREATE OR REPLACE VIEW resultat_statistique_par_commune AS
+SELECT
+    rsf.id_election,
+    cm.id AS id_commune,
+    cm.code AS code_commune,
+    SUM(rsf.inscrits) AS inscrits,
+    SUM(rsf.blancs) AS blancs,
+    SUM(rsf.nuls) AS nuls,
+    SUM(rsf.exprimes) AS exprimes
+FROM resultat_statistique_par_fokontany rsf
+JOIN fokontany fk
+    ON fk.id = rsf.id_fokontany
+JOIN communes cm
+    ON cm.id = fk.id_commune
+GROUP BY
+    rsf.id_election,
+    cm.id,
+    cm.code
+;
 
 -- Presidential election and legislative election only
-CREATE VIEW resultats_par_district AS
+CREATE OR REPLACE VIEW resultats_par_district AS
 SELECT
     rcm.id_election,
     d.id AS id_district,
@@ -137,9 +203,29 @@ GROUP BY
     rcm.information_candidat,
     rcm.chemin_photo_candidat
 ;
+CREATE OR REPLACE VIEW resultat_statistique_par_district AS
+SELECT
+    rsc.id_election,
+    d.id AS id_district,
+    d.code AS code_district,
+    SUM(rsc.inscrits) AS inscrits,
+    SUM(rsc.blancs) AS blancs,
+    SUM(rsc.nuls) AS nuls,
+    SUM(rsc.exprimes) AS exprimes
+FROM resultat_statistique_par_commune rsc
+JOIN communes cm
+    ON cm.id = rsc.id_commune
+JOIN districts d
+    ON d.id = cm.id_district
+GROUP BY
+    rsc.id_election,
+    d.id,
+    d.code
+;
+
 
 -- Presidential election only
-CREATE VIEW resultats_par_region AS
+CREATE OR REPLACE VIEW resultats_par_region AS
 SELECT
     rds.id_election,
     r.id AS id_region,
@@ -163,9 +249,28 @@ GROUP BY
     rds.information_candidat,
     rds.chemin_photo_candidat
 ;
+CREATE OR REPLACE VIEW resultat_statistique_par_region AS
+SELECT
+    rsd.id_election,
+    r.id AS id_region,
+    r.code AS code_region,
+    SUM(rsd.inscrits) AS inscrits,
+    SUM(rsd.blancs) AS blancs,
+    SUM(rsd.nuls) AS nuls,
+    SUM(rsd.exprimes) AS exprimes
+FROM resultat_statistique_par_district rsd
+JOIN districts d
+    ON d.id = rsd.id_district
+JOIN regions r
+    ON r.id = d.id_region
+GROUP BY
+    rsd.id_election,
+    r.id,
+    r.code
+;
 
 -- Presidential election only
-CREATE VIEW resultats_par_province AS
+CREATE OR REPLACE VIEW resultats_par_province AS
 SELECT
     rrg.id_election,
     p.id AS id_province,
@@ -187,9 +292,27 @@ GROUP BY
     rrg.information_candidat,
     rrg.chemin_photo_candidat
 ;
+CREATE OR REPLACE VIEW resultat_statistique_par_province AS
+SELECT
+    rsr.id_election,
+    p.id AS id_province,
+    SUM(rsr.inscrits) AS inscrits,
+    SUM(rsr.blancs) AS blancs,
+    SUM(rsr.nuls) AS nuls,
+    SUM(rsr.exprimes) AS exprimes
+FROM resultat_statistique_par_region rsr
+JOIN regions r
+    ON r.id = rsr.id_region
+JOIN provinces p
+    ON p.id = r.id_province
+GROUP BY
+    rsr.id_election,
+    p.id
+;
+
 
 -- Presidential election only
-CREATE VIEW resultats_election AS
+CREATE OR REPLACE VIEW resultats_election AS
 SELECT
     rpp.id_election,
     rpp.numero_candidat,
@@ -204,4 +327,15 @@ GROUP BY
     rpp.id_candidat,
     rpp.information_candidat,
     rpp.chemin_photo_candidat
+;
+CREATE OR REPLACE VIEW resultat_statistique_election AS
+SELECT
+    rsp.id_election,
+    SUM(rsp.inscrits) AS inscrits,
+    SUM(rsp.blancs) AS blancs,
+    SUM(rsp.nuls) AS nuls,
+    SUM(rsp.exprimes) AS exprimes
+FROM resultat_statistique_par_province rsp
+GROUP BY
+    rsp.id_election
 ;
