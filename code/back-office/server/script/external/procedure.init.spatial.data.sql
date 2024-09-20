@@ -6,6 +6,13 @@ BEGIN
     import_fokontany;
     import_cv;
     import_bv;
+
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_regions';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_districts';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_communes';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_fokontany';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_cv';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_bv';
 END;
 /
 

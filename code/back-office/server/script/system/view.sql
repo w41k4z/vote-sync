@@ -36,3 +36,11 @@ WHERE
     e.date_fin IS NULL
 AND ROWNUM = 1;
 
+CREATE VIEW resultats_par_bv AS
+SELECT
+    r.id_election,
+    r.id_bv,
+    dr.
+FROM details_resultats dr
+JOIN resultats r
+    ON dr.id_resultat = r.id

@@ -1,3 +1,10 @@
+-- Run all the python script for the spatial data initialization
+-- Then call the import_data procedure
+
+insert into type_elections values(1, 'Presidentielle');
+insert into type_elections values(2, 'Legislative');
+insert into type_elections values(3, 'Locale');
+
 insert into roles values(1, 'OPERATOR', 0); 
 insert into roles values(2, 'MANAGER', 5); 
 insert into roles values(3, 'ADMIN', 10);
