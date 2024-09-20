@@ -51,7 +51,7 @@ CREATE TABLE resultats (
    inscrits NUMBER NOT NULL,
    blancs NUMBER NOT NULL,
    nuls NUMBER NOT NULL,
-   etat NUMBER NOT NULL,
+   etat NUMBER NOT NULL, -- 0: en attente, 10: cloturé
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_bv) REFERENCES bv(id),
