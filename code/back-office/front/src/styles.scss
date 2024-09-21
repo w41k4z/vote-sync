@@ -101,3 +101,32 @@ body {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.ADMIN {
+    padding: 5px 10px;
+    border-radius: 15px;
+    // Back ground color as bootstrap success color
+    background-color: #5cb85c;
+    color: white;
+}
+
+.MANAGER {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: #5bc0de;
+    color: white;
+}
+
+.CCID {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: #f0ad4e;
+    color: white;
+}
+
+.OPERATOR {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: gray;
+    color: white;
+}

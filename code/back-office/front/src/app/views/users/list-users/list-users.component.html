@@ -21,13 +21,12 @@
     <div class="spinner-border text-primary" role="status"></div>
 </div>
 <ng-template #content>
-    <div *ngIf="userListPayload != null && userListPayload.users.content.length != 0; else empty">
+    <div *ngIf="userLists.length != 0; else empty">
         <div class="table-content">
             <table class="table table-borderless table-responsive">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Identifiant</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">Contact</th>
@@ -36,15 +35,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of userListPayload.users.content; index as i">
+                    <tr *ngFor="let user of userLists; index as i">
                         <th scope="row">{{i + 1}}</th>
-                        <td>{{ user.identifier }}</td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.contact }}</td>
-                        <td>{{ user.role.name | formatRole }}</td>
+                        <td><span class="{{ user.role.name }}">{{ user.role.name | formatRole }}</span></td>
                         <td>
-                            <button class="btn btn-outline-warning">Modifier</button>
+                            <span class="edit-button">Modifier</span>
+                            <span class="delete-button ms-1">Supprimer</span>
                         </td>
                     </tr>
                 </tbody>
@@ -52,7 +51,7 @@
         </div>
         <footer class="mt-3 d-flex gap-3 justify-content-center align-items-center">
             <i class="bi bi-arrow-left-circle"></i>
-            <p class="m-0 fw-lighter">Page <b><span class="text-primary">{{userListPayload.users.page.number + 1}}</span></b> sur {{userListPayload.users.page.totalPages}}</p>
+            <p class="m-0 fw-lighter">Page <b><span class="text-primary">{{page && page.number + 1}}</span></b> sur {{page && page.totalPages}}</p>
             <i class="bi bi-arrow-right-circle"></i>
         </footer>
     </div>
