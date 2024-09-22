@@ -1,0 +1,1 @@
+CREATE SEARCH INDEX idx_user_text_search ON utilisateurs(search_column) PARAMETERS ('SYNC (ON COMMIT)');

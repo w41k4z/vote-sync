@@ -37,17 +37,19 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> allUsers(
-            @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+            @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable,
+            @RequestParam(required = false) String filter, @RequestParam(required = false) Integer userTypeFilter) {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("users", this.userService.getAllUsers(pageable));
+        payload.put("users", this.userService.getAllUsers(filter, userTypeFilter, pageable));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
     @GetMapping("/users-and-stats")
     public ResponseEntity<ApiResponse> allUsersAndStats(
-            @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+            @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable,
+            @RequestParam(required = false) String filter, @RequestParam(required = false) Integer userTypeFilter) {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("users", this.userService.getAllUsers(pageable));
+        payload.put("users", this.userService.getAllUsers(filter, userTypeFilter, pageable));
         payload.put("stats", this.userStatService.getUserStats());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }

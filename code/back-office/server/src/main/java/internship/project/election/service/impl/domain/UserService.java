@@ -35,8 +35,14 @@ public class UserService {
         this.userPasswordHashing = userPasswordHashing;
     }
 
-    public PagedModel<User> getAllUsers(Pageable pageable) {
+    public PagedModel<User> getAllUsers(String filter, Integer userType, Pageable pageable) {
         Specification<User> spec = UserSpecification.getActiveUsers();
+        if (filter != null && !filter.isEmpty()) {
+            spec = spec.and(UserSpecification.getUsersByNameOrFirstName(filter));
+        }
+        if (userType != null) {
+            spec = spec.and(UserSpecification.getUsersByType(userType));
+        }
         return new PagedModel<>(this.repository.findAll(spec, pageable));
     }
 
@@ -82,7 +88,7 @@ public class UserService {
         role.setId(updateRequest.getRoleId());
         User user = new User(
                 updateRequest.getIdentifier(), role, updateRequest.getName(), updateRequest.getFirstName(),
-                updateRequest.getContact(), updateRequest.getPassword(), updateRequest.getState());
+                updateRequest.getContact(), updateRequest.getPassword(), updateRequest.getState(), null);
         user.setId(updateRequest.getId());
         return this.repository.save(user);
     }

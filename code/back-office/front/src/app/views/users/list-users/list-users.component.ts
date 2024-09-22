@@ -20,6 +20,13 @@ export class ListUsersComponent {
   @Input() onCreateUser!: (request: NewUserRequest) => void;
   @Input() userLists!: User[];
   @Input() page!: Page | null;
+  @Input() onFilter!: (
+    filter: string | null,
+    userTypeFilter: string,
+    page: number
+  ) => void;
+  @Input() onNextPage!: () => void;
+  @Input() onPreviousPage!: () => void;
   roles: Role[] = [];
 
   constructor(private dialog: MatDialog, private roleService: RoleService) {
@@ -35,7 +42,6 @@ export class ListUsersComponent {
       data: { roles: this.roles },
     });
     dialogRef.afterClosed().subscribe((newUserRequest: NewUserRequest) => {
-      console.log(newUserRequest);
       if (newUserRequest) {
         this.onCreateUser(newUserRequest);
       }

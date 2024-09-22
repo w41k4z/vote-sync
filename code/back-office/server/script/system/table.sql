@@ -22,6 +22,7 @@ CREATE TABLE utilisateurs (
    identifiant VARCHAR2(50) NOT NULL,
    mot_de_passe VARCHAR2(150) NOT NULL,
    etat NUMBER NOT NULL,
+   search_column VARCHAR2(110), -- For full text search
    PRIMARY KEY(id),
    CONSTRAINT unique_contact_utilisateur UNIQUE(contact),
    CONSTRAINT unique_identifiant_utilisateur UNIQUE(identifiant),

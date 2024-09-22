@@ -8,4 +8,15 @@ import { Role } from '../../../../dto/role';
 })
 export class UserFiltersComponent {
   @Input() roles!: Role[];
+  filter: string | null = null;
+  userTypeFilter: string = '*';
+  @Input() onFilter!: (
+    filter: string | null,
+    userTypeFilter: string,
+    page: number
+  ) => void;
+
+  filterUsers() {
+    this.onFilter(this.filter, this.userTypeFilter, 0);
+  }
 }

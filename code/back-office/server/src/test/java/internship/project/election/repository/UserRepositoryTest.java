@@ -30,7 +30,7 @@ public class UserRepositoryTest {
                 "firstName",
                 "contact",
                 "{noop}password",
-                0);
+                0, null);
         underTest.save(user);
         // when
         Optional<User> userByIdentifer = underTest.findByIdentifier(identifier);

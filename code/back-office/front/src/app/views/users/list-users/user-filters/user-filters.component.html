@@ -10,16 +10,16 @@
         <tbody>
             <tr>
                 <td>
-                    <input type="text" class="form-control" placeholder="Rechercher un utilisateur">
+                    <input type="text" class="form-control" placeholder="Rechercher un utilisateur" [(ngModel)]="filter">
                 </td>
                 <td>
-                    <select class="form-select" id="roleFilter">
+                    <select class="form-select" id="roleFilter" [(ngModel)]="userTypeFilter">
                         <option value="*">Tous les types</option>
                         <option *ngFor="let role of roles" [value]="role.id">{{ role.name | formatRole }}</option>
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-primary">Filtrer</button>
+                    <button class="btn btn-primary" (click)="filterUsers()">Filtrer</button>
                 </td>
             </tr>
         </tbody>
