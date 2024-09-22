@@ -36,14 +36,23 @@ public class UserService {
     }
 
     public PagedModel<User> getAllUsers(String filter, Integer userType, Pageable pageable) {
-        Specification<User> spec = UserSpecification.getActiveUsers();
+        Specification<User> spec = null;
+        boolean hasCondition = false;
         if (filter != null && !filter.isEmpty()) {
-            spec = spec.and(UserSpecification.getUsersByNameOrFirstName(filter));
+            spec = UserSpecification.getUsersByFilter(filter);
+            hasCondition = true;
         }
         if (userType != null) {
-            spec = spec.and(UserSpecification.getUsersByType(userType));
+            if (hasCondition) {
+                spec = spec.and(UserSpecification.getUsersByType(userType));
+            } else {
+                spec = UserSpecification.getUsersByType(userType);
+                hasCondition = true;
+            }
         }
-        return new PagedModel<>(this.repository.findAll(spec, pageable));
+        return hasCondition ? new PagedModel<>(this.repository.findAll(spec, pageable))
+                : new PagedModel<>(
+                        this.repository.findAll(pageable));
     }
 
     public User getUserById(int id) {
@@ -76,7 +85,6 @@ public class UserService {
         newUser.setContact(request.getContact());
         newUser.setRole(role);
         newUser.setPassword(passwordHashing.hash(request.getPassword()));
-        newUser.setState(0);
         return this.repository.save(newUser);
     }
 
@@ -88,7 +96,7 @@ public class UserService {
         role.setId(updateRequest.getRoleId());
         User user = new User(
                 updateRequest.getIdentifier(), role, updateRequest.getName(), updateRequest.getFirstName(),
-                updateRequest.getContact(), updateRequest.getPassword(), updateRequest.getState(), null);
+                updateRequest.getContact(), updateRequest.getPassword(), null);
         user.setId(updateRequest.getId());
         return this.repository.save(user);
     }

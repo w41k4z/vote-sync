@@ -7,11 +7,7 @@ import jakarta.persistence.criteria.Predicate;
 
 public class UserSpecification {
 
-    public static Specification<User> getActiveUsers() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("state"), 0);
-    }
-
-    public static Specification<User> getUsersByNameOrFirstName(String filter) {
+    public static Specification<User> getUsersByFilter(String filter) {
         return (root, query, cb) -> {
             Predicate predicate = cb.gt(
                     cb.function("CONTAINS", Integer.class,

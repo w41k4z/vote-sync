@@ -22,10 +22,13 @@ AS
     result registered_candidates;
 BEGIN
     -- Retrieving the election type
-    SELECT nom
+    SELECT te.nom
     INTO type_election
-    FROM elections
-    WHERE id = id_election_param;
+    FROM elections e
+    JOIN type_elections te
+        ON e.id_type_election = te.id
+    WHERE e.id = id_election_param
+    ;
 
     IF type_election = 'Presidentielle' THEN
         SELECT
@@ -61,9 +64,14 @@ BEGIN
         JOIN communes cm
             ON cl.id_district = cm.id_district
         JOIN fokontany fk
-            ON fk.id = id_bv_param
+            ON fk.id_commune = cm.id
+        JOIN cv
+            ON fk.id = cv.id_fokontany
+        JOIN bv
+            ON cv.id = bv.id_cv
         WHERE 
-            cl.id_election = id_election_param
+            cl.id_election = id_election_param AND
+            bv.id = id_bv_param
         ;
 
     ELSIF type_election = 'Locale' THEN
@@ -82,10 +90,13 @@ BEGIN
         FROM candidats_locaux cl
         JOIN fokontany fk
             ON cl.id_commune = fk.id_commune
+        JOIN cv 
+            ON fk.id = cv.id_fokontany
         JOIN bv
-            ON fk.id = id_bv_param
+            ON cv.id = bv.id_cv
         WHERE 
-            cl.id_election = id_election_param
+            cl.id_election = id_election_param AND
+            bv.id = id_bv_param
         ;
 
     ELSE

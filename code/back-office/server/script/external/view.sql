@@ -39,7 +39,7 @@ JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
 ;
 
-CREATE VIEW candidats_locaux AS
+CREATE OR REPLACE VIEW candidats_locaux AS
 SELECT
     ec.id AS id_enregistrement,
     ec.id_election,
@@ -54,7 +54,7 @@ SELECT
     ec.date_enregistrement
 FROM enregistrement_candidats ec
 JOIN communes cm
-    ON ec.id_district = cm.id
+    ON ec.id_commune = cm.id
 JOIN candidats c
     ON ec.id_candidat = c.id
 JOIN entites_politiques ep
