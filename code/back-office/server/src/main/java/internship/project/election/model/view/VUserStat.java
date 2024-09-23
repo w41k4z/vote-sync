@@ -1,4 +1,4 @@
-package internship.project.election.model;
+package internship.project.election.model.view;
 
 import org.springframework.data.annotation.Immutable;
 

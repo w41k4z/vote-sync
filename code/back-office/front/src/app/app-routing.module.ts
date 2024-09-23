@@ -13,6 +13,7 @@ import { PermissionDeniedComponent } from './views/permission-denied/permission-
 import { HomeComponent } from './views/home/home.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { UsersComponent } from './views/users/users.component';
+import { ElectionsComponent } from './views/elections/elections.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,11 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+        data: { requiredPrivileges: [Privileges.ADMIN] },
+      },
+      {
+        path: 'elections',
+        component: ElectionsComponent,
         data: { requiredPrivileges: [Privileges.ADMIN] },
       },
     ],

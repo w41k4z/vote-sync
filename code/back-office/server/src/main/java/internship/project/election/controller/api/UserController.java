@@ -73,4 +73,10 @@ public class UserController {
         this.userService.deleteUser(userId);
         return ResponseEntity.ok(new ApiResponse(null, "User deleted"));
     }
+
+    @GetMapping("/assign-operators")
+    public ResponseEntity<ApiResponse> assignOperators() {
+        this.userService.assignOperators();
+        return ResponseEntity.ok(new ApiResponse(null, "Operators assigned"));
+    }
 }

@@ -93,7 +93,8 @@ public class WebSecurity {
                         "/test/**", "/auth/**")
                 .permitAll()
                 // Admin endpoints
-                .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**").hasAuthority(Authority.ADMIN)
+                .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**")
+                .hasAuthority(Authority.ADMIN)
                 // User endpoints
                 .anyRequest()
                 .authenticated();

@@ -77,7 +77,9 @@ CREATE TABLE bv (
     code CHAR(12) UNIQUE NOT NULL,
     id_cv NUMBER NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
+    id_operateur_validateur NUMBER,
     etat NUMBER NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(id_cv) REFERENCES cv(id)
+    FOREIGN KEY(id_cv) REFERENCES cv(id),
+    FOREIGN KEY(id_operateur_validateur) REFERENCES utilisateurs(id)
 );

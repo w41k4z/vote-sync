@@ -32,4 +32,16 @@ export const menuItems = [
       },
     ],
   },
+  {
+    title: 'Parametrage',
+    permitted: [Privileges.ADMIN],
+    children: [
+      {
+        path: Paths.ELECTIONS,
+        icon: 'bi bi-archive',
+        title: 'Elections',
+        permitted: [Privileges.ADMIN],
+      },
+    ],
+  },
 ];

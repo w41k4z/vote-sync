@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.model.VUserStat;
+import internship.project.election.model.view.VUserStat;
 import internship.project.election.repository.UserStatRepository;
 
 @Service

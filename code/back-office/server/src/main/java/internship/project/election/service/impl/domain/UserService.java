@@ -1,5 +1,7 @@
 package internship.project.election.service.impl.domain;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
@@ -15,9 +17,15 @@ import internship.project.election.service.impl.auth.util.AdminPasswordHashing;
 import internship.project.election.service.impl.auth.util.UserPasswordHashing;
 import internship.project.election.service.impl.domain.specification.UserSpecification;
 import internship.project.election.service.spec.auth.util.AbstractPasswordHashing;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private UserRepository repository;
 
@@ -92,6 +100,10 @@ public class UserService {
         if (updateRequest.getId() == null) {
             throw new IllegalArgumentException("User id is required");
         }
+        Optional<User> existingUser = this.repository.findById(updateRequest.getId());
+        if (existingUser.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
         Role role = new Role();
         role.setId(updateRequest.getRoleId());
         User user = new User(
@@ -99,5 +111,10 @@ public class UserService {
                 updateRequest.getContact(), updateRequest.getPassword(), null);
         user.setId(updateRequest.getId());
         return this.repository.save(user);
+    }
+
+    @Transactional
+    public void assignOperators() {
+        this.entityManager.createNativeQuery("CALL assign_operators_to_polling_stations()").executeUpdate();
     }
 }

@@ -19,25 +19,6 @@ FROM (
     FROM roles r2
 )
 GROUP BY id_role, nom_role
-;
-
-
-CREATE OR REPLACE VIEW election_en_cours AS
-SELECT
-    e.id,
-    e.id_type_election,
-    te.nom AS type_election,
-    e.nom,
-    e.date_debut,
-    e.date_fin
-FROM election e
-JOIN type_election te 
-    ON e.id_type_election = te.id
-WHERE 
-    e.date_debut <= CURRENT_DATE AND
-    e.date_fin IS NULL
-AND ROWNUM = 1
-;
 
 
 CREATE OR REPLACE VIEW resultats_par_bv AS

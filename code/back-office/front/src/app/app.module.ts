@@ -27,6 +27,7 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { UserFiltersComponent } from './views/users/list-users/user-filters/user-filters.component';
 import { FormatNumberPipe } from './pipes/format-number.pipe';
+import { ElectionsComponent } from './views/elections/elections.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { FormatNumberPipe } from './pipes/format-number.pipe';
     DeleteDialogComponent,
     UserFiltersComponent,
     FormatNumberPipe,
+    ElectionsComponent,
   ],
   imports: [
     BrowserModule,
