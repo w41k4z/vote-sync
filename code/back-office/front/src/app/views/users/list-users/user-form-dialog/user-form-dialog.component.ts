@@ -9,12 +9,17 @@ import { Role } from '../../../../dto/role';
   styleUrl: './user-form-dialog.component.scss',
 })
 export class UserFormDialogComponent {
-  newUser = new NewUserRequest();
+  newUser: NewUserRequest = new NewUserRequest();
 
   constructor(
     public dialogRef: MatDialogRef<UserFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { roles: Role[] }
-  ) {}
+    @Inject(MAT_DIALOG_DATA)
+    public data: { roles: Role[]; userObjectHolder: NewUserRequest | null }
+  ) {
+    if (data.userObjectHolder) {
+      this.newUser = data.userObjectHolder;
+    }
+  }
 
   confirm(): void {
     this.dialogRef.close(this.newUser);

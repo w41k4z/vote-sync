@@ -9,10 +9,13 @@
         <app-list-users
             [userLists]="users"
             [page]="page"
+            [pageSize]="pageSize"
             [loading$]="loading$" 
             [error$]="error$"
             [message$]="message$"
             [onCreateUser]="createNewUser"
+            [onUpdateUser]="updateUser"
+            [onDeleteUser]="deleteUser"
             [onFilter]="filterUsers"
             [onNextPage]="nextPage"
             [onPreviousPage]="previousPage"

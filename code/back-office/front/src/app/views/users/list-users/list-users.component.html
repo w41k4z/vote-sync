@@ -37,14 +37,14 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let user of userLists; index as i">
-                        <th scope="row">{{i + 1}}</th>
+                        <th scope="row">{{page && (i + 1 + (page.number * pageSize))}}</th>
                         <td>{{ user.name }}</td>
                         <td>{{ user.firstName }}</td>
                         <td>{{ user.contact }}</td>
                         <td><span class="{{ user.role.name }}">{{ user.role.name | formatRole }}</span></td>
                         <td>
-                            <span class="edit-button">Modifier</span>
-                            <span class="delete-button ms-1">Supprimer</span>
+                            <span class="edit-button" (click)="openEditUserDialog(i)">Modifier</span>
+                            <span class="delete-button ms-1" (click)="openDeleteDialog(i)">Supprimer</span>
                         </td>
                     </tr>
                 </tbody>

@@ -7,6 +7,7 @@ import { RoleService } from '../../../services/api/role/role.service';
 import { Role } from '../../../dto/role';
 import { User } from '../../../dto/user';
 import { Page } from '../../../dto/response/page';
+import { DeleteDialogComponent } from '../../../components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-list-users',
@@ -17,9 +18,15 @@ export class ListUsersComponent {
   @Input() loading$!: Observable<Boolean>;
   @Input() error$!: Observable<string | null>;
   @Input() message$!: Observable<string | null>;
-  @Input() onCreateUser!: (request: NewUserRequest) => void;
   @Input() userLists!: User[];
   @Input() page!: Page | null;
+  @Input() pageSize!: number;
+  @Input() onCreateUser!: (request: NewUserRequest) => Promise<void>;
+  @Input() onUpdateUser!: (
+    userIndex: number,
+    request: NewUserRequest
+  ) => Promise<void>;
+  @Input() onDeleteUser!: (userId: number) => Promise<unknown>;
   @Input() onFilter!: (
     filter: string | null,
     userTypeFilter: string,
@@ -27,6 +34,7 @@ export class ListUsersComponent {
   ) => void;
   @Input() onNextPage!: () => void;
   @Input() onPreviousPage!: () => void;
+  userObjectHolder: NewUserRequest | null = null;
   roles: Role[] = [];
 
   constructor(private dialog: MatDialog, private roleService: RoleService) {
@@ -39,11 +47,52 @@ export class ListUsersComponent {
 
   openAddNewUserDialog() {
     const dialogRef = this.dialog.open(UserFormDialogComponent, {
-      data: { roles: this.roles },
+      data: { roles: this.roles, userObjectHolder: this.userObjectHolder },
     });
     dialogRef.afterClosed().subscribe((newUserRequest: NewUserRequest) => {
       if (newUserRequest) {
-        this.onCreateUser(newUserRequest);
+        this.onCreateUser(newUserRequest)
+          .then(() => {
+            this.userObjectHolder = null;
+          })
+          .catch(() => {
+            this.userObjectHolder = newUserRequest;
+          });
+      }
+    });
+  }
+
+  openEditUserDialog(userIndex: number) {
+    this.userObjectHolder = new NewUserRequest();
+    this.userObjectHolder.name = this.userLists[userIndex].name;
+    this.userObjectHolder.firstName = this.userLists[userIndex].firstName;
+    this.userObjectHolder.roleId = this.userLists[userIndex].role.id;
+    this.userObjectHolder.contact = this.userLists[userIndex].identifier;
+    this.userObjectHolder.identifier = this.userLists[userIndex].identifier;
+    this.userObjectHolder.password = this.userLists[userIndex].identifier;
+    const dialogRef = this.dialog.open(UserFormDialogComponent, {
+      data: { roles: this.roles, userObjectHolder: this.userObjectHolder },
+    });
+    dialogRef.afterClosed().subscribe((newUserRequest: NewUserRequest) => {
+      if (newUserRequest) {
+        this.onUpdateUser(userIndex, newUserRequest);
+        this.userObjectHolder = null;
+      }
+    });
+  }
+
+  openDeleteDialog(userIndex: number) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        id: userIndex,
+      },
+    });
+    dialogRef.afterClosed().subscribe((data: { id: number }) => {
+      if (data) {
+        console.log(data.id);
+        this.onDeleteUser(this.userLists[data.id].id).then(() => {
+          this.userLists.splice(data.id, 1);
+        });
       }
     });
   }

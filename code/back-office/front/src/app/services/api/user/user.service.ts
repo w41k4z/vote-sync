@@ -6,6 +6,7 @@ import { Endpoints } from '../../../endpoints';
 import { UsersAndStatsPayload } from '../../../dto/response/user/users-and-stats-payload.response';
 import { NewUserRequest } from '../../../dto/request/new-user.request';
 import { SaveUserPayload } from '../../../dto/response/user/save-user-payload.response';
+import { UpdateUserRequest } from '../../../dto/request/update-user.request';
 
 @Injectable({
   providedIn: 'root',
@@ -70,5 +71,16 @@ export class UserService extends ApiCallService {
     return (
       await this.postCall<SaveUserPayload>(Endpoints.USERS, newUserRequest)
     ).payload;
+  }
+
+  async updateUser(updateUserRequest: UpdateUserRequest) {
+    return (
+      await this.putCall<SaveUserPayload>(Endpoints.USERS, updateUserRequest)
+    ).payload;
+  }
+
+  async deleteUser(userId: number) {
+    return (await this.deleteCall(`${Endpoints.USERS}?userId=${userId}`))
+      .payload;
   }
 }

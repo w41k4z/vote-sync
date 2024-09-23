@@ -1,1 +1,14 @@
-<p>delete-dialog works!</p>
+<div class="card">
+    <div class="card-header d-flex justify-content-center">
+        <i class="bi bi-exclamation-octagon warning-icon"></i>
+    </div>
+    <div class="card-body px-5">
+        <h2 mat-dialog-title class="my-3 text-center">Êtes-vous sûr ?</h2>
+        <p class="text-center">Voulez-vous vraiment supprimer cet enregistrement? Ce processus ne peut pas être annulé.
+        </p>
+    </div>
+    <div class="card-footer d-flex my-1 gap-2 justify-content-end">
+        <button class="btn btn-secondary" (click)="close()">Retour</button>
+        <button class="btn btn-danger" cdkFocusInitial (click)="confirm()">Confirmer</button>
+    </div>
+</div>

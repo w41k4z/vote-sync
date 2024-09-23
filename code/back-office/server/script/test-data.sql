@@ -180,6 +180,18 @@ VALUES ('990011223344', 'Andrianjatovo', 'Tojo', 0);
 INSERT INTO electeurs (cin, nom, prenom, genre)
 VALUES ('001122334455', 'Randrianambinina', 'Zo', 1);
 
+-- Opérateur
+INSERT INTO utilisateurs (id_role, nom, prenom, contact, identifiant, mot_de_passe)
+VALUES (1, 'Ratsimba', 'Harisoa', '0349333360', '0349333360', '{noop}0349333355');
+INSERT INTO utilisateurs (id_role, nom, prenom, contact, identifiant, mot_de_passe)
+VALUES (1, 'Randriamahefa', 'Tiana', '0349333356', '0349333356', '{noop}0349333356');
+INSERT INTO utilisateurs (id_role, nom, prenom, contact, identifiant, mot_de_passe)
+VALUES (1, 'Rafidy', 'Mbolatiana', '0349333357', '0349333357', '{noop}0349333357');
+INSERT INTO utilisateurs (id_role, nom, prenom, contact, identifiant, mot_de_passe)
+VALUES (1, 'Rakotovao', 'Ando', '0349333358', '0349333358', '{noop}0349333358');
+INSERT INTO utilisateurs (id_role, nom, prenom, contact, identifiant, mot_de_passe)
+VALUES (1, 'Ramaroson', 'Fenosoa', '0349333359', '0349333359', '{noop}0349333359');
+
 
 -- Enregistrement electeurs 4e Arrondissement Ampangabe Anjanakinifolo EPP Anosipatrana Salle 2
 INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)

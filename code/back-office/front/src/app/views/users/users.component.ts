@@ -5,6 +5,7 @@ import { UserStat } from '../../dto/user-stat';
 import { NewUserRequest } from '../../dto/request/new-user.request';
 import { User } from '../../dto/user';
 import { Page } from '../../dto/response/page';
+import { UpdateUserRequest } from '../../dto/request/update-user.request';
 
 @Component({
   selector: 'app-users',
@@ -80,15 +81,34 @@ export class UsersComponent {
   };
 
   createNewUser = (newUserRequest: NewUserRequest) => {
-    this.userService.createUser(newUserRequest).then((payload) => {
+    return this.userService.createUser(newUserRequest).then((payload) => {
       if (payload) {
         this.updateUserListAndStats(payload.user);
       }
     });
   };
 
+  updateUser = (userIndex: number, request: NewUserRequest) => {
+    let updateRequest = new UpdateUserRequest(this.users[userIndex].id);
+    updateRequest.name = request.name;
+    updateRequest.firstName = request.firstName;
+    updateRequest.roleId = request.roleId;
+    updateRequest.contact = request.contact;
+    updateRequest.identifier = request.identifier;
+    updateRequest.password = request.password;
+    return this.userService.updateUser(updateRequest).then((payload) => {
+      if (payload) {
+        this.users[userIndex] = payload.user;
+      }
+    });
+  };
+
+  deleteUser = (userId: number) => {
+    return this.userService.deleteUser(userId);
+  };
+
   private updateUserListAndStats(newUser: User) {
-    this.users.push(newUser);
+    this.users.unshift(newUser);
     for (let stat of this.stats) {
       if (stat.role === newUser.role.name) {
         stat.count++;
