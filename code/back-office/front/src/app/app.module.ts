@@ -28,6 +28,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { UserFiltersComponent } from './views/users/list-users/user-filters/user-filters.component';
 import { FormatNumberPipe } from './pipes/format-number.pipe';
 import { ElectionsComponent } from './views/elections/elections.component';
+import { PollingStationComponent } from './views/polling-station/polling-station.component';
+import { FormatNamePipe } from './pipes/format-name.pipe';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { ElectionsComponent } from './views/elections/elections.component';
     UserFiltersComponent,
     FormatNumberPipe,
     ElectionsComponent,
+    PollingStationComponent,
+    FormatNamePipe,
   ],
   imports: [
     BrowserModule,

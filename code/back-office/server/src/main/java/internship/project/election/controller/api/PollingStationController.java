@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 import internship.project.election.dto.ApiResponse;
 import internship.project.election.service.impl.domain.PollingStationService;
 
@@ -20,6 +22,8 @@ public class PollingStationController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllPollingStation() {
-        return ResponseEntity.ok(new ApiResponse(this.service.getAllPollingStation(), null));
+	HashMap<String, Object> data = new HashMap<>();
+	data.put("pollingStations", this.service.getAllPollingStation());
+        return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }

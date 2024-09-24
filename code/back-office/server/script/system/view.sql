@@ -20,15 +20,20 @@ FROM (
 )
 GROUP BY id_role, nom_role
 
-CREATE VIEW liste_bv AS
+CREATE OR REPLACE VIEW liste_bv AS
 SELECT
     bv.id,
     bv.code AS code_bv,
     bv.nom AS nom_bv,
+    cv.id AS id_cv,
     cv.nom AS nom_cv,
+    fk.id AS id_fokontany,
     fk.nom AS nom_fokontany,
+    cm.id AS id_commune,
     cm.nom AS nom_commune,
+    d.id AS id_district,
     d.nom AS nom_district,
+    r.id AS id_region,
     r.nom AS nom_region
 FROM bv
 JOIN cv
@@ -41,4 +46,11 @@ JOIN districts d
     ON cm.id_district = d.id
 JOIN regions r
     ON d.id_region = r.id
+ORDER BY
+    r.nom,
+    d.nom,
+    cm.nom,
+    fk.nom,
+    cv.nom,
+    bv.code
 ;

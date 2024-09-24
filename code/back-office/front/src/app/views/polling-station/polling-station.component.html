@@ -1,0 +1,86 @@
+<section class="card card-body content">
+    <header>
+        <h5 class="text-primary">Liste et emplacement des bureaux de vote</h5>
+    </header>
+    <div class="notification">
+        <div class="error-message" *ngIf="error$ | async as error">
+            <p class="m-0">{{ error }}</p>
+        </div>
+        <div class="info-message" *ngIf="message$ | async as message">
+            <p class="m-0">{{ message }}</p>
+        </div>
+    </div>
+    <div *ngIf="loading$ | async; else content" class="w-100 my-5 d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <ng-template #content>
+        <div *ngIf="pollingStations.length != 0; else empty">
+            <div class="table-content mt-4">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td>
+                                <select class="form-select" id="">
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-select" id="">
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-select" id="">
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-select" id="">
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                    <option value="">Test</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-outline-primary filter-button">Filtrer</button>
+                            </td>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th scope="col">Region</th>
+                            <th scope="col">District</th>
+                            <th scope="col">Commune</th>
+                            <th scope="col">Fokontany</th>
+                            <th scope="col">Centre de vote</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Bureau de vote</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pollingStation of pollingStations; index as i;">
+                            <td>{{pollingStation.region | formatName}}</td>
+                            <td>{{pollingStation.district | formatName}}</td>
+                            <td>{{pollingStation.commune | formatName}}</td>
+                            <td>{{pollingStation.fokontany | formatName}}</td>
+                            <td>{{pollingStation.votingCenter | formatName}}</td>
+                            <td>{{pollingStation.pollingStationCode}}</td>
+                            <td>{{pollingStation.pollingStation | formatName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <ng-template #empty>
+            <p class="m-0 text-center text-danger">Pas de résultat</p>
+        </ng-template>
+    </ng-template>  
+</section>

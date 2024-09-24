@@ -14,6 +14,7 @@ import { HomeComponent } from './views/home/home.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { UsersComponent } from './views/users/users.component';
 import { ElectionsComponent } from './views/elections/elections.component';
+import { PollingStationComponent } from './views/polling-station/polling-station.component';
 
 const routes: Routes = [
   {
@@ -54,6 +55,11 @@ const routes: Routes = [
       {
         path: 'elections',
         component: ElectionsComponent,
+        data: { requiredPrivileges: [Privileges.ADMIN] },
+      },
+      {
+        path: 'polling-stations',
+        component: PollingStationComponent,
         data: { requiredPrivileges: [Privileges.ADMIN] },
       },
     ],

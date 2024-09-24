@@ -42,6 +42,12 @@ export const menuItems = [
         title: 'Elections',
         permitted: [Privileges.ADMIN],
       },
+      {
+        path: Paths.POLLING_STATIONS,
+        icon: 'bi bi-box-seam',
+        title: 'Bureaux de vote',
+        permitted: [Privileges.ADMIN],
+      },
     ],
   },
 ];

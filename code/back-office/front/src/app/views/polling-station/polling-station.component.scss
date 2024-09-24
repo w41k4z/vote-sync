@@ -1,0 +1,17 @@
+@import "../../../theme.scss";
+
+.content {
+    background-color: $content-background;
+    
+    .filter-button {
+        width: -webkit-fill-available;
+    }
+
+    .table-content {
+        overflow-x: auto;
+
+        tbody {
+            font-size: small;
+        }
+    }
+}
