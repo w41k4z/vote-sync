@@ -44,23 +44,8 @@ public class UserService {
     }
 
     public PagedModel<User> getAllUsers(String filter, Integer userType, Pageable pageable) {
-        Specification<User> spec = null;
-        boolean hasCondition = false;
-        if (filter != null && !filter.isEmpty()) {
-            spec = UserSpecification.getUsersByFilter(filter);
-            hasCondition = true;
-        }
-        if (userType != null) {
-            if (hasCondition) {
-                spec = spec.and(UserSpecification.getUsersByType(userType));
-            } else {
-                spec = UserSpecification.getUsersByType(userType);
-                hasCondition = true;
-            }
-        }
-        return hasCondition ? new PagedModel<>(this.repository.findAll(spec, pageable))
-                : new PagedModel<>(
-                        this.repository.findAll(pageable));
+        Specification<User> spec = UserSpecification.filterUsers(filter, userType);
+        return new PagedModel<>(this.repository.findAll(spec, pageable));
     }
 
     public User getUserById(int id) {

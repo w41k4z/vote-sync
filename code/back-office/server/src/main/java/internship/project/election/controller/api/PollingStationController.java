@@ -3,6 +3,7 @@ package internship.project.election.controller.api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -21,9 +22,13 @@ public class PollingStationController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllPollingStation() {
-	HashMap<String, Object> data = new HashMap<>();
-	data.put("pollingStations", this.service.getAllPollingStation());
+    public ResponseEntity<ApiResponse> getAllPollingStation(
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
+            @RequestParam(required = false) Integer communeId,
+            @RequestParam(required = false) Integer fokontanyId) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("pollingStations", this.service.getAllPollingStation(regionId, districtId, communeId, fokontanyId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }

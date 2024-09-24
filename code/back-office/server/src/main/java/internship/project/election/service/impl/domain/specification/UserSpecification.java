@@ -5,7 +5,18 @@ import org.springframework.data.jpa.domain.Specification;
 import internship.project.election.model.User;
 import jakarta.persistence.criteria.Predicate;
 
-public class UserSpecification {
+public final class UserSpecification {
+
+    public static Specification<User> filterUsers(String filter, Integer userType) {
+        Specification<User> spec = Specification.where(null);
+        if (filter != null && !filter.isEmpty()) {
+            spec = spec.and(getUsersByFilter(filter));
+        }
+        if (userType != null) {
+            spec = spec.and(getUsersByType(userType));
+        }
+        return spec;
+    }
 
     public static Specification<User> getUsersByFilter(String filter) {
         return (root, query, cb) -> {

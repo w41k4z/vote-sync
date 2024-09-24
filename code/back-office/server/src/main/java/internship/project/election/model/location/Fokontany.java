@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "regions")
-@AttributeOverride(name = "upperDivisionId", column = @Column(name = "id_province"))
-public class Region extends AdministrationDivision {
+@Table(name = "fokontany")
+@AttributeOverride(name = "upperDivisionId", column = @Column(name = "id_commune"))
+public class Fokontany extends AdministrationDivision {
 }

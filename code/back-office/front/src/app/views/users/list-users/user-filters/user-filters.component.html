@@ -1,4 +1,4 @@
-<section class="filter mb-4">
+<section class="filter mb-2">
     <table classe="table table-borderless table-responsive">
         <thead>
             <tr>
@@ -10,7 +10,7 @@
         <tbody>
             <tr>
                 <td>
-                    <input type="text" class="form-control" placeholder="Rechercher un utilisateur" [(ngModel)]="filter">
+                    <input type="text" class="form-control" [(ngModel)]="filter" (keypress)="pressEnter($event)">
                 </td>
                 <td>
                     <select class="form-select" id="roleFilter" [(ngModel)]="userTypeFilter">

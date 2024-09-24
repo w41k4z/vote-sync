@@ -26,4 +26,25 @@ public class StatController {
         payload.put("regions", this.statService.getRegionsStat());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
+
+    @GetMapping("/districts")
+    public ResponseEntity<ApiResponse> getDistrictsStat() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("districts", this.statService.getDistrictsStat());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
+    @GetMapping("/communes")
+    public ResponseEntity<ApiResponse> getCommunesStat() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("communes", this.statService.getCommunesStat());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
+    @GetMapping("/fokontany")
+    public ResponseEntity<ApiResponse> getFokontaniesStat() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("fokontany", this.statService.getFokontanyStat());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
 }

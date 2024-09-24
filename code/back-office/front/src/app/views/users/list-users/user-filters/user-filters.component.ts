@@ -16,6 +16,12 @@ export class UserFiltersComponent {
     page: number
   ) => void;
 
+  pressEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.filterUsers();
+    }
+  }
+
   filterUsers() {
     this.onFilter(this.filter, this.userTypeFilter, 0);
   }

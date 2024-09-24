@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import internship.project.election.config.State;
 import internship.project.election.model.Election;
 
-public class ElectionSpecification {
+public final class ElectionSpecification {
 
     public static Specification<Election> closedElections() {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("state"), State.CLOSED);
