@@ -1,8 +1,8 @@
 package internship.project.election.service.impl.domain;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.model.view.VPollingStation;
@@ -18,10 +18,10 @@ public class PollingStationService {
         this.viewRepository = viewRepository;
     }
 
-    public List<VPollingStation> getAllPollingStation(Integer regionId, Integer districtId, Integer communeId,
-            Integer fokontanyId) {
+    public PagedModel<VPollingStation> getAllPollingStation(Integer regionId, Integer districtId, Integer communeId,
+            Integer fokontanyId, Pageable pageable) {
         Specification<VPollingStation> spec = PollingStationSpecification.filterPollingStations(regionId, districtId,
                 communeId, fokontanyId);
-        return this.viewRepository.findAll(spec);
+        return new PagedModel<>(this.viewRepository.findAll(spec, pageable));
     }
 }

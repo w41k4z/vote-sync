@@ -6,6 +6,7 @@ import { NewUserRequest } from '../../dto/request/new-user.request';
 import { User } from '../../dto/user';
 import { Page } from '../../dto/response/page';
 import { UpdateUserRequest } from '../../dto/request/update-user.request';
+import { Pagination } from '../../pagination';
 
 @Component({
   selector: 'app-users',
@@ -19,7 +20,7 @@ export class UsersComponent {
   users: User[] = [];
   stats: UserStat[] = [];
   page: Page | null = null;
-  pageSize: number = 5;
+  pageSize: number = Pagination.DEFAULT_SIZE;
   filter: string | null = null;
   userTypeFilter: string = '*';
 

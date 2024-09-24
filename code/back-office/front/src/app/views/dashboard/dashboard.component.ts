@@ -7,8 +7,7 @@ import {
   tileLayer,
   geoJSON,
 } from 'leaflet';
-import { StatService } from '../../services/api/stat/stat.service';
-import { RegionStatPayload } from '../../dto/response/stat/region-stat-payload.response';
+import { AdministrativeDivisionService } from '../../services/api/administrative-division/administrative-division.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,8 +17,8 @@ import { RegionStatPayload } from '../../dto/response/stat/region-stat-payload.r
 export class DashboardComponent {
   geojsonLayers: LayerGroup[] = [];
 
-  constructor(private statService: StatService) {
-    this.statService.getRegionsStat().then((payload) => {
+  constructor(private service: AdministrativeDivisionService) {
+    this.service.getRegionsStat().then((payload) => {
       if (payload) {
         for (let region of payload.regions) {
           const geojson = JSON.parse(region.geojson);

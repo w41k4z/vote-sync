@@ -21,22 +21,26 @@
                         <tr>
                             <td>
                                 <select class="form-select" id="">
-                                    <option value="">Toutes</option>
+                                    <option value="*">Toutes</option>
+                                    <option *ngFor="let region of regions" value="{{region.id}}">{{ region.name | formatName }}</option>
                                 </select>
                             </td>
                             <td>
                                 <select class="form-select" id="">
-                                    <option value="">Tous</option>
+                                    <option value="*">Tous</option>
+                                    <option *ngFor="let district of districts" value="{{district.id}}">{{ district.name | formatName }}</option>
                                 </select>
                             </td>
                             <td>
                                 <select class="form-select" id="">
-                                    <option value="">Toutes</option>
+                                    <option value="*">Toutes</option>
+                                    <option *ngFor="let commune of communes" value="{{commune.id}}">{{ commune.name | formatName }}</option>
                                 </select>
                             </td>
                             <td>
                                 <select class="form-select" id="">
-                                    <option value="">Tous</option>
+                                    <option value="*">Tous</option>
+                                    <option *ngFor="let fk of fokontany" value="{{fk.id}}">{{ fk.name | formatName }}</option>
                                 </select>
                             </td>
                             <td></td>

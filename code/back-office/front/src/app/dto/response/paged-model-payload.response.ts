@@ -1,6 +1,6 @@
 import { Page } from './page';
 
-export class PageModel<C> {
+export class PagedModel<C> {
   content: C[];
   page: Page;
 

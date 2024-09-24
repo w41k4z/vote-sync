@@ -1,10 +1,10 @@
 import { User } from '../../user';
-import { PageModel } from '../page-model-payload.response';
+import { PagedModel } from '../paged-model-payload.response';
 
 export class UserListPayload {
-  users: PageModel<User>;
+  users: PagedModel<User>;
 
-  constructor(users: PageModel<User>) {
+  constructor(users: PagedModel<User>) {
     this.users = users;
   }
 }

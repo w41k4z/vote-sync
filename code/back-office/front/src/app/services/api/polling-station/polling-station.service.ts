@@ -12,9 +12,22 @@ export class PollingStationService extends ApiCallService {
     super(http);
   }
 
-  async getPollingStations() {
+  async getPollingStations(page: number, size: number) {
+    let params: string[] = [];
+    params.push(`page=${page}`);
+    params.push(`size=${size}`);
+    let strParam = '';
+    if (params.length > 0) {
+      strParam = '?';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
     return (
-      await this.getCall<PollingStationPayload>(Endpoints.POLLING_STATIONS)
+      await this.getCall<PollingStationPayload>(
+        `${Endpoints.POLLING_STATIONS}${strParam}`
+      )
     ).payload;
   }
 }

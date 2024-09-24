@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public abstract class AdministrationDivision {
+public class AdministrationDivision {
 
     @Id
     private Integer id;
@@ -18,4 +18,13 @@ public abstract class AdministrationDivision {
     private String geojson;
 
     private Integer upperDivisionId;
+
+    public AdministrationDivision() {
+    }
+
+    public AdministrationDivision(Integer id, String name, Integer upperDivisionId) {
+        this.id = id;
+        this.name = name;
+        this.upperDivisionId = upperDivisionId;
+    }
 }

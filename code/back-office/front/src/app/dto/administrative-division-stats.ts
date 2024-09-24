@@ -1,4 +1,4 @@
-export class Region {
+export class AdministrativeDivisionStats {
   id: number;
   provinceId: number;
   name: string;
