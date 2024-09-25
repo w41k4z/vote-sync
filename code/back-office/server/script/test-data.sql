@@ -283,3 +283,40 @@ INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enre
 VALUES (1, 28, 39, SYSDATE, 0);
 INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
 VALUES (1, 28, 40, SYSDATE, 0);
+
+
+-- Résultats bureau de vote EPP Anosipatrana Salle 2
+INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
+VALUES (1, 1, 2, 10, 1, 2, 10);
+
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (1, 1, 4);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (1, 2, 3);
+
+-- Résultats bureau de vote EPP Ilanivato Salle 1
+INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
+VALUES (2, 1, 6, 10, 0, 0, 10);
+
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (2, 1, 5);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (2, 2, 5);
+
+-- Résultats bureau de vote EPP Ivandry S1
+INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
+VALUES (3, 1, 13, 10, 1, 0, 10);
+
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (3, 3, 5);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (3, 4, 4);
+
+-- Résultats bureau de vote LTP S1
+INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
+VALUES (4, 1, 19, 10, 0, 2, 10);
+
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (4, 3, 3);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (4, 4, 5);

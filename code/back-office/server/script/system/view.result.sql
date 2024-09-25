@@ -3,6 +3,7 @@ SELECT
     r.id_election,
     r.id_bv,
     bv.code AS code_bv,
+    bv.nom AS nom_bv,
     ec.numero_candidat,
     c.id AS id_candidat,
     c.information AS information_candidat,
