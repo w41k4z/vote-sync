@@ -130,3 +130,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: gray;
     color: white;
 }
+
+footer {
+    i {
+        color: $primary;
+    }
+
+    i:hover {
+        cursor: pointer;
+    }
+}

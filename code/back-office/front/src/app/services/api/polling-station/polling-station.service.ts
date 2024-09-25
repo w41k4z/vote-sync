@@ -12,10 +12,29 @@ export class PollingStationService extends ApiCallService {
     super(http);
   }
 
-  async getPollingStations(page: number, size: number) {
+  async getPollingStations(
+    page: number,
+    size: number,
+    regionId: string,
+    districtId: string,
+    communeId: string,
+    fokontanyId: string
+  ) {
     let params: string[] = [];
     params.push(`page=${page}`);
     params.push(`size=${size}`);
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    if (communeId && communeId !== '*') {
+      params.push(`communeId=${communeId}`);
+    }
+    if (fokontanyId && fokontanyId !== '*') {
+      params.push(`fokontanyId=${fokontanyId}`);
+    }
     let strParam = '';
     if (params.length > 0) {
       strParam = '?';

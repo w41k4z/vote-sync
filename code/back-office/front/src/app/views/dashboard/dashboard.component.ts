@@ -20,7 +20,7 @@ export class DashboardComponent {
   constructor(private service: AdministrativeDivisionService) {
     this.service.getRegionsStat().then((payload) => {
       if (payload) {
-        for (let region of payload.regions) {
+        for (let region of payload.administrativeDivisionStats) {
           const geojson = JSON.parse(region.geojson);
           this.geojsonLayers.push(
             geoJSON(geojson, {

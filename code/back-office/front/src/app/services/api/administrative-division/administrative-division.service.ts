@@ -30,7 +30,7 @@ export class AdministrativeDivisionService extends ApiCallService {
     ).payload;
   }
 
-  async getCommunessByDistrictId(districtId: number) {
+  async getCommunesByDistrictId(districtId: number) {
     const param = `upperDivisionId=${districtId}`;
     return (
       await this.getCall<AdministrativeDivisionsPayload>(
