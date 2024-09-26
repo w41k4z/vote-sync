@@ -88,8 +88,12 @@ BEGIN
             )
         BULK COLLECT INTO result
         FROM candidats_locaux cl
+        JOIN municipalites mc
+            ON cl.id_municipalite = mc.id
+        JOIN communes cm
+            ON mc.id = cm.id_municipalite
         JOIN fokontany fk
-            ON cl.id_commune = fk.id_commune
+            ON cm.id = fk.id_commune
         JOIN cv 
             ON fk.id = cv.id_fokontany
         JOIN bv

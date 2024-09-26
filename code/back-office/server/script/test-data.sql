@@ -1,34 +1,38 @@
 -- Election locale 05 Novembre 2024
 insert into elections (id, id_type_election, nom, date_debut, etat)
-values (DEFAULT, 3, 'Election locale 05 Novembre 2024', TO_DATE('2024-11-05', 'YYYY-MM-DD'), 0);
+values (1, 3, 'Election municipale 2024', TO_DATE('2024-11-05', 'YYYY-MM-DD'), 0);
+insert into elections (id, id_type_election, nom, date_debut, etat)
+values (2, 3, 'Election communale 2024', TO_DATE('2024-11-05', 'YYYY-MM-DD'), 0);
 
 -- Entité politique
 INSERT INTO entites_politiques (nom, description)
 VALUES ('TNF', 'Tiako Ny Fireneko');
 INSERT INTO entites_politiques (nom, description)
 VALUES ('MM', 'Miara Mandroso');
+INSERT INTO entites_politiques (nom, description)
+VALUES ('IRMM', 'Isika Rehetra Miara Mandroso');
+INSERT INTO entites_politiques (nom, description)
+VALUES ('AM', 'Alefa Madagasikara');
 
 -- Candidats
 INSERT INTO candidats (id_entite_politique, information)
 VALUES (1, 'Rasoa Mamy');
 INSERT INTO candidats (id_entite_politique, information)
-VALUES (1, 'Rakoto Andry');
+VALUES (2, 'Rakoto Andry');
 INSERT INTO candidats (id_entite_politique, information)
-VALUES (2, 'Rasoanirina Hasina');
+VALUES (3, 'Rasoanirina Hasina');
 INSERT INTO candidats (id_entite_politique, information)
-VALUES (2, 'Randriamiharisoa Lova');
+VALUES (4, 'Randriamiharisoa Lova');
 
--- Enregistrement candidats commune 4e Arrondissement
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_commune, numero_candidat, chemin_photo, date_enregistrement)
+-- Enregistrement candidats maire Antananarivo Renivohitra
+INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
 VALUES (1, 1, 1, 1, 'No image.jpg', SYSDATE);
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_commune, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 3, 1, 2, 'No image.jpg', SYSDATE);
-
--- Enregistrement candidats commune 5e Arrondissement
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_commune, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 2, 2, 1, 'No image.jpg', SYSDATE);
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_commune, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 4, 2, 2, 'No image.jpg', SYSDATE);
+INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+VALUES (1, 2, 1, 2, 'No image.jpg', SYSDATE);
+INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+VALUES (1, 3, 1, 3, 'No image.jpg', SYSDATE);
+INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+VALUES (1, 4, 1, 4, 'No image.jpg', SYSDATE);
 
 -- Chef CID 4e Arrondissement et V
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
@@ -290,33 +294,49 @@ INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
 VALUES (1, 1, 2, 10, 1, 2, 10);
 
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (1, 1, 4);
+VALUES (1, 1, 2);
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (1, 2, 3);
+VALUES (1, 2, 1);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (1, 3, 1);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (1, 4, 3);
 
 -- Résultats bureau de vote EPP Ilanivato Salle 1
 INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
 VALUES (2, 1, 6, 10, 0, 0, 10);
 
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (2, 1, 5);
+VALUES (2, 1, 2);
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (2, 2, 5);
+VALUES (2, 2, 3);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (2, 3, 3);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (2, 4, 2);
 
 -- Résultats bureau de vote EPP Ivandry S1
 INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
 VALUES (3, 1, 13, 10, 1, 0, 10);
 
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (3, 3, 5);
+VALUES (3, 1, 0);
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (3, 4, 4);
+VALUES (3, 2, 1);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (3, 3, 4);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (3, 4, 3);
 
 -- Résultats bureau de vote LTP S1
 INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
 VALUES (4, 1, 19, 10, 0, 2, 10);
 
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (4, 1, 1);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
+VALUES (4, 2, 0);
+INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
 VALUES (4, 3, 3);
 INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (4, 4, 5);
+VALUES (4, 4, 4);

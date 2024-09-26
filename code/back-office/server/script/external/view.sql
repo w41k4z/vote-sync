@@ -1,4 +1,4 @@
-CREATE VIEW candidats_presidentiels AS
+CREATE OR REPLACE VIEW candidats_presidentiels AS
 SELECT
     ec.id AS id_enregistrement,
     ec.id_election,
@@ -17,7 +17,7 @@ JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
 ;
 
-CREATE VIEW candidats_legislatifs AS
+CREATE OR REPLACE VIEW candidats_legislatifs AS
 SELECT
     ec.id AS id_enregistrement,
     ec.id_election,
@@ -44,7 +44,7 @@ SELECT
     ec.id AS id_enregistrement,
     ec.id_election,
     ec.id_candidat,
-    cm.id AS id_commune,
+    mc.id AS id_municipalite,
     c.id_entite_politique,
     c.information AS information_candidat,
     ec.numero_candidat,
@@ -53,10 +53,22 @@ SELECT
     ec.chemin_photo,
     ec.date_enregistrement
 FROM enregistrement_candidats ec
-JOIN communes cm
-    ON ec.id_commune = cm.id
+JOIN municipalites mc
+    ON ec.id_municipalite = mc.id
 JOIN candidats c
     ON ec.id_candidat = c.id
 JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
+GROUP BY
+    ec.id,
+    ec.id_election,
+    ec.id_candidat,
+    mc.id,
+    c.id_entite_politique,
+    c.information,
+    ec.numero_candidat,
+    ep.nom,
+    ep.description,
+    ec.chemin_photo,
+    ec.date_enregistrement
 ;

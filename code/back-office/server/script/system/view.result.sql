@@ -110,6 +110,7 @@ GROUP BY
 ;
 
 
+-- Presidential election and legislative election only
 CREATE OR REPLACE VIEW resultats_par_commune AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rfk.id_election) AS id,
@@ -163,6 +164,63 @@ GROUP BY
     cm.code,
     cm.nom
 ;
+
+
+-- Presidential election and local election only
+CREATE OR REPLACE VIEW resultats_par_municipalite AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY rfk.id_election) AS id,
+    rfk.id_election,
+    cm.id_municipalite,
+    cm.code_municipalite,
+    cm.nom_municipalite,
+    rfk.id_candidat,
+    rfk.numero_candidat,
+    rfk.information_candidat,
+    rfk.id_entite_politique,
+    rfk.nom_entite_politique,
+    SUM(rfk.voix_candidat) AS voix_candidat,
+    rfk.chemin_photo_candidat
+FROM resultats_par_fokontany rfk
+JOIN fokontany fk
+    ON rfk.id_fokontany = fk.id
+JOIN communes cm
+    ON fk.id_commune = cm.id
+GROUP BY
+    rfk.id_election,
+    cm.id_municipalite,
+    cm.code_municipalite,
+    cm.nom_municipalite,
+    rfk.numero_candidat,
+    rfk.id_candidat,
+    rfk.information_candidat,
+    rfk.id_entite_politique,
+    rfk.nom_entite_politique,
+    rfk.chemin_photo_candidat
+;
+CREATE OR REPLACE VIEW resultat_statistique_par_municipalite AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY rsf.id_election) AS id,
+    rsf.id_election,
+    cm.id_municipalite,
+    cm.code_municipalite,
+    cm.nom_municipalite,
+    SUM(rsf.inscrits) AS inscrits,
+    SUM(rsf.blancs) AS blancs,
+    SUM(rsf.nuls) AS nuls,
+    SUM(rsf.exprimes) AS exprimes
+FROM resultat_statistique_par_fokontany rsf
+JOIN fokontany fk
+    ON fk.id = rsf.id_fokontany
+JOIN communes cm
+    ON cm.id = fk.id_commune
+GROUP BY
+    rsf.id_election,
+    cm.id_municipalite,
+    cm.code_municipalite,
+    cm.nom_municipalite
+;
+
 
 -- Presidential election and legislative election only
 CREATE OR REPLACE VIEW resultats_par_district AS
