@@ -1,18 +1,19 @@
 package internship.project.election.model.result;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
+import java.util.List;
+
+import internship.project.election.model.result.details.RegionalResultDetails;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "resultats_par_region")
-@AttributeOverrides({
-                @AttributeOverride(name = "code", column = @Column(name = "code_region")),
-                @AttributeOverride(name = "locationId", column = @Column(name = "id_region")),
-                @AttributeOverride(name = "location", column = @Column(name = "nom_region"))
-})
+@Table(name = "regions")
 public class RegionalResult extends ElectoralResult {
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "region_id")
+    private List<RegionalResultDetails> details;
 }

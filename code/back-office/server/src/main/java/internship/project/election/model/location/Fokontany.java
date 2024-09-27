@@ -8,5 +8,5 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "fokontany")
 @AttributeOverride(name = "upperDivisionId", column = @Column(name = "id_commune"))
-public class Fokontany extends AdministrationDivision {
+public class Fokontany extends AdministrativeDivision {
 }

@@ -171,9 +171,9 @@ CREATE OR REPLACE VIEW resultats_par_municipalite AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rfk.id_election) AS id,
     rfk.id_election,
-    cm.id_municipalite,
-    cm.code_municipalite,
-    cm.nom_municipalite,
+    mc.id AS id_municipalite,
+    mc.code AS code_municipalite,
+    mc.nom AS nom_municipalite,
     rfk.id_candidat,
     rfk.numero_candidat,
     rfk.information_candidat,
@@ -186,11 +186,13 @@ JOIN fokontany fk
     ON rfk.id_fokontany = fk.id
 JOIN communes cm
     ON fk.id_commune = cm.id
+JOIN municipalites mc
+    ON cm.id_municipalite = mc.id
 GROUP BY
     rfk.id_election,
-    cm.id_municipalite,
-    cm.code_municipalite,
-    cm.nom_municipalite,
+    mc.id,
+    mc.code,
+    mc.nom,
     rfk.numero_candidat,
     rfk.id_candidat,
     rfk.information_candidat,
@@ -202,9 +204,9 @@ CREATE OR REPLACE VIEW resultat_statistique_par_municipalite AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsf.id_election) AS id,
     rsf.id_election,
-    cm.id_municipalite,
-    cm.code_municipalite,
-    cm.nom_municipalite,
+    mc.id AS id_municipalite,
+    mc.code AS code_municipalite,
+    mc.nom AS nom_municipalite,
     SUM(rsf.inscrits) AS inscrits,
     SUM(rsf.blancs) AS blancs,
     SUM(rsf.nuls) AS nuls,
@@ -214,11 +216,13 @@ JOIN fokontany fk
     ON fk.id = rsf.id_fokontany
 JOIN communes cm
     ON cm.id = fk.id_commune
+JOIN municipalites mc
+    ON mc.id = cm.id_municipalite
 GROUP BY
     rsf.id_election,
-    cm.id_municipalite,
-    cm.code_municipalite,
-    cm.nom_municipalite
+    mc.id,
+    mc.code,
+    mc.nom
 ;
 
 

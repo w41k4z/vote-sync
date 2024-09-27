@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.model.location.AdministrationDivision;
 import internship.project.election.model.location.Commune;
 import internship.project.election.model.location.District;
 import internship.project.election.model.location.Fokontany;
@@ -32,47 +31,31 @@ public class AdministrativeDivisionService {
         this.fokontanyRepository = fokontanyRepository;
     }
 
-    public List<Region> getRegionsStat() {
-        return this.regionRepository.findAll();
-    }
-
-    public List<AdministrationDivision> getRegionsWithoutGeoJson() {
+    public List<Region> getRegionsWithoutGeoJson() {
         return this.regionRepository.findAllWithoutGeoJson();
     }
 
-    public List<District> getDistrictsStat() {
-        return this.districtRepository.findAll();
-    }
-
-    public List<AdministrationDivision> getDistrictsWithoutGeoJson() {
+    public List<District> getDistrictsWithoutGeoJson() {
         return this.districtRepository.findAllWithoutGeoJson();
     }
 
-    public List<District> getDistrictsByRegionId(Integer regionId) {
-        return this.districtRepository.findByUpperDivisionId(regionId);
+    public List<District> getDistrictsByRegionIdWithoutGeoJson(Integer regionId) {
+        return this.districtRepository.findByUpperDivisionIdWithoutGeoJson(regionId);
     }
 
-    public List<Commune> getCommunesStat() {
-        return this.communeRepository.findAll();
-    }
-
-    public List<AdministrationDivision> getCommunesWithoutGeoJson() {
+    public List<Commune> getCommunesWithoutGeoJson() {
         return this.communeRepository.findAllWithoutGeoJson();
     }
 
-    public List<Commune> getCommunesByDistrictId(Integer districtId) {
-        return this.communeRepository.findByUpperDivisionId(districtId);
+    public List<Commune> getCommunesByDistrictIdWithoutGeoJson(Integer districtId) {
+        return this.communeRepository.findByUpperDivisionIdWithoutGeoJson(districtId);
     }
 
-    public List<Fokontany> getFokontanyStat() {
-        return this.fokontanyRepository.findAll();
-    }
-
-    public List<AdministrationDivision> getFokontanyWithoutGeoJson() {
+    public List<Fokontany> getFokontanyWithoutGeoJson() {
         return this.fokontanyRepository.findAllWithoutGeoJson();
     }
 
-    public List<Fokontany> getFokontanyByCommuneId(Integer communeId) {
-        return this.fokontanyRepository.findByUpperDivisionId(communeId);
+    public List<Fokontany> getFokontanyByCommuneIdWithoutGeoJson(Integer communeId) {
+        return this.fokontanyRepository.findByUpperDivisionIdWithoutGeoJson(communeId);
     }
 }

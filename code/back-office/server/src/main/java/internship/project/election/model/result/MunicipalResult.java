@@ -1,17 +1,26 @@
 package internship.project.election.model.result;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import java.util.List;
 
+import org.springframework.data.annotation.Immutable;
+
+import internship.project.election.model.result.details.MunicipalResultDetails;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "resultats_par_municipalite")
-@AttributeOverrides({
-        @AttributeOverride(name = "code", column = @Column(name = "code_municipalite")),
-        @AttributeOverride(name = "locationId", column = @Column(name = "id_municipalite")),
-        @AttributeOverride(name = "location", column = @Column(name = "nom_municipalite"))
-})
+@Table(name = "municipalites")
+@Immutable
 public class MunicipalResult extends ElectoralResult {
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_municipalite")
+    private List<MunicipalResultDetails> details;
 }

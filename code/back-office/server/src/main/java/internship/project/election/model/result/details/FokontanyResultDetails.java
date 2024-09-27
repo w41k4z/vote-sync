@@ -1,4 +1,4 @@
-package internship.project.election.model.result.stat;
+package internship.project.election.model.result.details;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -13,5 +13,5 @@ import jakarta.persistence.Table;
         @AttributeOverride(name = "locationId", column = @Column(name = "id_fokontany")),
         @AttributeOverride(name = "location", column = @Column(name = "nom_fokontany"))
 })
-public class FokontanyResultStat extends ElectoralResultStat {
+public class FokontanyResultDetails extends ElectoralResultDetails {
 }

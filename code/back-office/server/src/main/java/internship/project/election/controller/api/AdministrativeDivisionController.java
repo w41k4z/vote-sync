@@ -28,13 +28,6 @@ public class AdministrativeDivisionController {
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
-    @GetMapping("/regions/stats")
-    public ResponseEntity<ApiResponse> getRegionsStat() {
-        HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisionStats", this.service.getRegionsStat());
-        return ResponseEntity.ok(new ApiResponse(payload, null));
-    }
-
     @GetMapping("/districts")
     public ResponseEntity<ApiResponse> getDistricts() {
         HashMap<String, Object> payload = new HashMap<>();
@@ -45,14 +38,8 @@ public class AdministrativeDivisionController {
     @GetMapping("/districts/by-region")
     public ResponseEntity<ApiResponse> getDistrictsByRegionId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getDistrictsByRegionId(upperDivisionId));
-        return ResponseEntity.ok(new ApiResponse(payload, null));
-    }
-
-    @GetMapping("/districts/stats")
-    public ResponseEntity<ApiResponse> getDistrictsStat() {
-        HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisionStats", this.service.getDistrictsStat());
+        payload.put("administrativeDivisions",
+                this.service.getDistrictsByRegionIdWithoutGeoJson(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -66,14 +53,8 @@ public class AdministrativeDivisionController {
     @GetMapping("/communes/by-district")
     public ResponseEntity<ApiResponse> getCommunesByDistrictId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getCommunesByDistrictId(upperDivisionId));
-        return ResponseEntity.ok(new ApiResponse(payload, null));
-    }
-
-    @GetMapping("/communes/stats")
-    public ResponseEntity<ApiResponse> getCommunesStat() {
-        HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisionStats", this.service.getCommunesStat());
+        payload.put("administrativeDivisions",
+                this.service.getCommunesByDistrictIdWithoutGeoJson(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -87,14 +68,8 @@ public class AdministrativeDivisionController {
     @GetMapping("/fokontany/by-commune")
     public ResponseEntity<ApiResponse> getFokontanyByCommuneId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getFokontanyByCommuneId(upperDivisionId));
-        return ResponseEntity.ok(new ApiResponse(payload, null));
-    }
-
-    @GetMapping("/fokontany/stats")
-    public ResponseEntity<ApiResponse> getFokontanyStat() {
-        HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisionStats", this.service.getFokontanyStat());
+        payload.put("administrativeDivisions",
+                this.service.getFokontanyByCommuneIdWithoutGeoJson(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 }

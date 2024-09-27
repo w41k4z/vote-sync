@@ -2,14 +2,13 @@ package internship.project.election.service.impl.domain.result;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.repository.result.CommunalResultRepository;
-import internship.project.election.repository.result.DistrictResultRepository;
-import internship.project.election.repository.result.FokontanyResultRepository;
-import internship.project.election.repository.result.GlobalResultRepository;
-import internship.project.election.repository.result.MunicipalResultRepository;
-import internship.project.election.repository.result.PollingStationResultRepository;
-import internship.project.election.repository.result.ProvincialResultRepository;
-import internship.project.election.repository.result.RegionalResultRepository;
+import internship.project.election.repository.result.details.CommunalResultDetailsRepository;
+import internship.project.election.repository.result.details.DistrictResultDetailsRepository;
+import internship.project.election.repository.result.details.FokontanyResultDetailsRepository;
+import internship.project.election.repository.result.details.GlobalResultDetailsRepository;
+import internship.project.election.repository.result.details.PollingStationResultDetailsRepository;
+import internship.project.election.repository.result.details.ProvincialResultDetailsRepository;
+import internship.project.election.repository.result.details.RegionalResultDetailsRepository;
 import internship.project.election.repository.result.stat.CommunalResultStatRepository;
 import internship.project.election.repository.result.stat.DistrictResultStatRepository;
 import internship.project.election.repository.result.stat.FokontanyResultStatRepository;
@@ -21,19 +20,21 @@ import internship.project.election.repository.result.stat.RegionalResultStatRepo
 @Service
 public class PresidentialResultService extends LegislativeResultService {
 
-    private GlobalResultRepository globalResultRepository;
-    private ProvincialResultRepository provincialResultRepository;
-    private RegionalResultRepository regionalResultRepository;
+    private GlobalResultDetailsRepository globalResultDetailsRepository;
+    private ProvincialResultDetailsRepository provincialResultDetailsRepository;
+    private RegionalResultDetailsRepository regionalResultDetailsRepository;
 
     private GlobalResultStatRepository globalResultStatRepository;
     private ProvincialResultStatRepository provincialResultStatRepository;
     private RegionalResultStatRepository regionalResultStatRepository;
 
-    public PresidentialResultService(GlobalResultRepository globalResultRepository,
-            ProvincialResultRepository provincialResultRepository, RegionalResultRepository regionalResultRepository,
-            DistrictResultRepository districtResultRepository,
-            CommunalResultRepository communalResultRepository, FokontanyResultRepository fokontanyResultRepository,
-            PollingStationResultRepository pollingStationResultRepository,
+    public PresidentialResultService(GlobalResultDetailsRepository globalResultDetailsRepository,
+            ProvincialResultDetailsRepository provincialResultDetailsRepository,
+            RegionalResultDetailsRepository regionalResultDetailsRepository,
+            DistrictResultDetailsRepository districtResultDetailsRepository,
+            CommunalResultDetailsRepository communalResultDetailsRepository,
+            FokontanyResultDetailsRepository fokontanyResultDetailsRepository,
+            PollingStationResultDetailsRepository pollingStationResultDetailsRepository,
             GlobalResultStatRepository globalResultStatRepository,
             ProvincialResultStatRepository provincialResultStatRepository,
             RegionalResultStatRepository regionalResultStatRepository,
@@ -41,13 +42,13 @@ public class PresidentialResultService extends LegislativeResultService {
             CommunalResultStatRepository communalResultStatRepository,
             FokontanyResultStatRepository fokontanyResultStatRepository,
             PollingStationResultStatRepository pollingStationResultStatRepository) {
-        super(districtResultRepository, communalResultRepository, fokontanyResultRepository,
-                pollingStationResultRepository,
+        super(districtResultDetailsRepository, communalResultDetailsRepository, fokontanyResultDetailsRepository,
+                pollingStationResultDetailsRepository,
                 districtResultStatRepository, communalResultStatRepository, fokontanyResultStatRepository,
                 pollingStationResultStatRepository);
-        this.globalResultRepository = globalResultRepository;
-        this.provincialResultRepository = provincialResultRepository;
-        this.regionalResultRepository = regionalResultRepository;
+        this.globalResultDetailsRepository = globalResultDetailsRepository;
+        this.provincialResultDetailsRepository = provincialResultDetailsRepository;
+        this.regionalResultDetailsRepository = regionalResultDetailsRepository;
 
         this.globalResultStatRepository = globalResultStatRepository;
         this.provincialResultStatRepository = provincialResultStatRepository;

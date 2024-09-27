@@ -1,18 +1,22 @@
 package internship.project.election.model.result;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
+import java.util.List;
+
+import org.springframework.data.annotation.Immutable;
+
+import internship.project.election.model.result.details.FokontanyResultDetails;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "resultats_par_fokontany")
-@AttributeOverrides({
-        @AttributeOverride(name = "code", column = @Column(name = "code_fokontany")),
-        @AttributeOverride(name = "locationId", column = @Column(name = "id_fokontany")),
-        @AttributeOverride(name = "location", column = @Column(name = "nom_fokontany"))
-})
+@Table(name = "fokontany")
+@Immutable
 public class FokontanyResult extends ElectoralResult {
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_fokontany")
+    private List<FokontanyResultDetails> details;
 }

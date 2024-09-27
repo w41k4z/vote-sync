@@ -2,43 +2,38 @@ package internship.project.election.service.impl.domain.result;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.repository.result.CommunalResultRepository;
-import internship.project.election.repository.result.DistrictResultRepository;
-import internship.project.election.repository.result.FokontanyResultRepository;
-import internship.project.election.repository.result.PollingStationResultRepository;
+import internship.project.election.repository.result.details.CommunalResultDetailsRepository;
+import internship.project.election.repository.result.details.DistrictResultDetailsRepository;
+import internship.project.election.repository.result.details.FokontanyResultDetailsRepository;
+import internship.project.election.repository.result.details.PollingStationResultDetailsRepository;
 import internship.project.election.repository.result.stat.CommunalResultStatRepository;
 import internship.project.election.repository.result.stat.DistrictResultStatRepository;
 import internship.project.election.repository.result.stat.FokontanyResultStatRepository;
 import internship.project.election.repository.result.stat.PollingStationResultStatRepository;
 
 @Service
-public class LegislativeResultService {
+public class LegislativeResultService extends ElectionResultService {
 
-    private DistrictResultRepository districtResultRepository;
-    private CommunalResultRepository communalResultRepository;
-    private FokontanyResultRepository fokontanyResultRepository;
-    private PollingStationResultRepository pollingStationResultRepository;
+    private DistrictResultDetailsRepository districtResultDetailsRepository;
+    private CommunalResultDetailsRepository communalResultDetailsRepository;
 
     private DistrictResultStatRepository districtResultStatRepository;
     private CommunalResultStatRepository communalResultStatRepository;
-    private FokontanyResultStatRepository fokontanyResultStatRepository;
-    private PollingStationResultStatRepository pollingStationResultStatRepository;
 
-    public LegislativeResultService(DistrictResultRepository districtResultRepository,
-            CommunalResultRepository communalResultRepository, FokontanyResultRepository fokontanyResultRepository,
-            PollingStationResultRepository pollingStationResultRepository,
+    public LegislativeResultService(DistrictResultDetailsRepository districtResultDetailsRepository,
+            CommunalResultDetailsRepository communalResultDetailsRepository,
+            FokontanyResultDetailsRepository fokontanyResultDetailsRepository,
+            PollingStationResultDetailsRepository pollingStationResultDetailsRepository,
             DistrictResultStatRepository districtResultStatRepository,
             CommunalResultStatRepository communalResultStatRepository,
             FokontanyResultStatRepository fokontanyResultStatRepository,
             PollingStationResultStatRepository pollingStationResultStatRepository) {
-        this.districtResultRepository = districtResultRepository;
-        this.communalResultRepository = communalResultRepository;
-        this.fokontanyResultRepository = fokontanyResultRepository;
-        this.pollingStationResultRepository = pollingStationResultRepository;
+        super(fokontanyResultDetailsRepository, pollingStationResultDetailsRepository, fokontanyResultStatRepository,
+                pollingStationResultStatRepository);
+        this.districtResultDetailsRepository = districtResultDetailsRepository;
+        this.communalResultDetailsRepository = communalResultDetailsRepository;
 
         this.districtResultStatRepository = districtResultStatRepository;
         this.communalResultStatRepository = communalResultStatRepository;
-        this.fokontanyResultStatRepository = fokontanyResultStatRepository;
-        this.pollingStationResultStatRepository = pollingStationResultStatRepository;
     }
 }
