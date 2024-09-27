@@ -1,18 +1,29 @@
 package internship.project.election.model.result;
 
-import internship.project.election.model.result.details.ElectoralResultDetails;
+import java.util.List;
+
+import org.springframework.data.annotation.Immutable;
+
+import internship.project.election.model.result.details.ProvincialResultDetails;
 import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "resultats_par_province")
-@AttributeOverrides({
-                @AttributeOverride(name = "code", column = @Column(name = "code_province")),
-                @AttributeOverride(name = "locationId", column = @Column(name = "id_province")),
-                @AttributeOverride(name = "location", column = @Column(name = "nom_province"))
-})
-public class ProvincialResult extends ElectoralResultDetails {
+@Table(name = "provinces")
+@Immutable
+@AttributeOverride(name = "code", column = @Column(name = "id", insertable = false, updatable = false))
+public class ProvincialResult extends ElectoralResult {
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_province")
+    private List<ProvincialResultDetails> details;
 }

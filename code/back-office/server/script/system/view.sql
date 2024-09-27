@@ -1,3 +1,11 @@
+CREATE OR REPLACE VIEW v_pays AS
+SELECT
+    0 AS id,
+    'Madagascar' AS nom,
+    '0' AS code
+FROM DUAL
+;
+
 CREATE OR REPLACE VIEW stat_utilisateur AS
 SELECT
     id_role,

@@ -1,6 +1,6 @@
 package internship.project.election.repository.result.details;
 
-import internship.project.election.model.result.ProvincialResult;
+import internship.project.election.model.result.details.ProvincialResultDetails;
 
-public interface ProvincialResultDetailsRepository extends ElectoralResultDetailsRepository<ProvincialResult> {
+public interface ProvincialResultDetailsRepository extends ElectoralResultDetailsRepository<ProvincialResultDetails> {
 }
