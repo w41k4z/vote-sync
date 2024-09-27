@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import internship.project.election.model.result.details.MunicipalResultDetails;
-import internship.project.election.repository.result.details.FokontanyResultDetailsRepository;
-import internship.project.election.repository.result.details.MunicipalResultDetailsRepository;
-import internship.project.election.repository.result.details.PollingStationResultDetailsRepository;
+import internship.project.election.model.result.MunicipalResult;
+import internship.project.election.repository.result.FokontanyResultRepository;
+import internship.project.election.repository.result.MunicipalResultRepository;
+import internship.project.election.repository.result.PollingStationResultRepository;
 import internship.project.election.repository.result.stat.FokontanyResultStatRepository;
 import internship.project.election.repository.result.stat.MunicipalResultStatRepository;
 import internship.project.election.repository.result.stat.PollingStationResultStatRepository;
@@ -15,24 +15,24 @@ import internship.project.election.repository.result.stat.PollingStationResultSt
 @Service
 public class LocalResultService extends ElectionResultService {
 
-    private MunicipalResultDetailsRepository municipalResultDetailsRepository;
+    private MunicipalResultRepository municipalResultRepository;
 
     private MunicipalResultStatRepository municipalResultStatRepository;
 
-    public LocalResultService(MunicipalResultDetailsRepository municipalResultDetailsRepository,
-            FokontanyResultDetailsRepository fokontanyResultDetailsRepository,
-            PollingStationResultDetailsRepository pollingStationResultDetailsRepository,
+    public LocalResultService(MunicipalResultRepository municipalResultRepository,
+            FokontanyResultRepository fokontanyResultRepository,
+            PollingStationResultRepository pollingStationResultRepository,
             MunicipalResultStatRepository municipalResultStatRepository,
             FokontanyResultStatRepository fokontanyResultStatRepository,
             PollingStationResultStatRepository pollingStationResultStatRepository) {
-        super(fokontanyResultDetailsRepository, pollingStationResultDetailsRepository, fokontanyResultStatRepository,
+        super(fokontanyResultRepository, pollingStationResultRepository, fokontanyResultStatRepository,
                 pollingStationResultStatRepository);
-        this.municipalResultDetailsRepository = municipalResultDetailsRepository;
+        this.municipalResultRepository = municipalResultRepository;
 
         this.municipalResultStatRepository = municipalResultStatRepository;
     }
 
-    public List<MunicipalResultDetails> getMunicipalResultDetails() {
-        return this.municipalResultDetailsRepository.findAll();
+    public List<MunicipalResult> getMunicipalResults() {
+        return this.municipalResultRepository.findAll();
     }
 }
