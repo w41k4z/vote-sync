@@ -3,6 +3,7 @@ package internship.project.election.service.impl.domain.result;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.model.Election;
@@ -24,6 +25,7 @@ import internship.project.election.repository.result.stat.PollingStationResultSt
 import internship.project.election.repository.result.stat.ProvincialResultStatRepository;
 import internship.project.election.repository.result.stat.RegionalResultStatRepository;
 import internship.project.election.service.impl.domain.ElectionService;
+import internship.project.election.service.impl.domain.specification.ElectoralResultSpecification;
 
 @Service
 public class PresidentialResultService extends LegislativeResultService {
@@ -69,6 +71,7 @@ public class PresidentialResultService extends LegislativeResultService {
         if (!election.isEmpty() && !election.get().getType().isPresidential()) {
             throw new IllegalArgumentException("The election type is not a presidential election");
         }
+        Specification<GlobalResult> spec = ElectoralResultSpecification.withElectionId(electionId);
         return this.globalResultRepository.findAll().get(0);
     }
 
@@ -77,7 +80,8 @@ public class PresidentialResultService extends LegislativeResultService {
         if (!election.isEmpty() && !election.get().getType().isPresidential()) {
             throw new IllegalArgumentException("The election type is not a presidential election");
         }
-        return this.provincialResultRepository.findAll();
+        Specification<ProvincialResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return this.provincialResultRepository.findAll(spec);
     }
 
     public List<RegionalResult> getRegionalResults(Integer electionId) {
@@ -85,6 +89,7 @@ public class PresidentialResultService extends LegislativeResultService {
         if (!election.isEmpty() && !election.get().getType().isPresidential()) {
             throw new IllegalArgumentException("The election type is not a presidential election");
         }
-        return this.regionalResultRepository.findAll();
+        Specification<RegionalResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return this.regionalResultRepository.findAll(spec);
     }
 }

@@ -3,6 +3,7 @@ package internship.project.election.service.impl.domain.result;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import internship.project.election.model.Election;
@@ -17,6 +18,7 @@ import internship.project.election.repository.result.stat.DistrictResultStatRepo
 import internship.project.election.repository.result.stat.FokontanyResultStatRepository;
 import internship.project.election.repository.result.stat.PollingStationResultStatRepository;
 import internship.project.election.service.impl.domain.ElectionService;
+import internship.project.election.service.impl.domain.specification.ElectoralResultSpecification;
 
 @Service
 public class LegislativeResultService extends ElectoralResultService {
@@ -51,7 +53,8 @@ public class LegislativeResultService extends ElectoralResultService {
                 || election.get().getType().isPresidential())) {
             throw new IllegalArgumentException("The election type is not a legislative or presidential election");
         }
-        return this.communalResultRepository.findAll();
+        Specification<CommunalResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return this.communalResultRepository.findAll(spec);
     }
 
     public List<DistrictResult> getDistrictResults(Integer electionId) {
@@ -60,6 +63,7 @@ public class LegislativeResultService extends ElectoralResultService {
                 && !(election.get().getType().isLegislative() || election.get().getType().isPresidential())) {
             throw new IllegalArgumentException("The election type is not a legislative or presidential election");
         }
-        return this.districtResultRepository.findAll();
+        Specification<DistrictResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return this.districtResultRepository.findAll(spec);
     }
 }
