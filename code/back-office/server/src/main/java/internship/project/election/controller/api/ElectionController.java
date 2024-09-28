@@ -1,7 +1,7 @@
 package internship.project.election.controller.api;
 
 import java.util.HashMap;
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -54,9 +54,9 @@ public class ElectionController {
     @GetMapping("/current")
     public ResponseEntity<ApiResponse> getCurrentElection() {
         HashMap<String, Object> data = new HashMap<>();
-        Optional<Election> currentElection = this.service.getCurrentElection();
+        List<Election> currentElection = this.service.getCurrentElections();
         String message = currentElection.isEmpty() ? "No current election" : "";
-        data.put("election", currentElection.orElse(null));
+        data.put("election", currentElection);
         return ResponseEntity.ok(new ApiResponse(data, message));
     }
 

@@ -1,6 +1,7 @@
 package internship.project.election.service.impl.domain;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
@@ -64,9 +65,13 @@ public class ElectionService {
         this.repository.deleteById(electionId);
     }
 
-    public Optional<Election> getCurrentElection() {
+    public Optional<Election> getElection(Integer electionId) {
+        return this.repository.findById(electionId);
+    }
+
+    public List<Election> getCurrentElections() {
         Specification<Election> spec = ElectionSpecification.currentElection();
-        return this.repository.findOne(spec);
+        return this.repository.findAll(spec);
     }
 
     public PagedModel<Election> getElectionsHistory(Pageable pageable) {

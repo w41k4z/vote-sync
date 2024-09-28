@@ -1,9 +1,11 @@
 package internship.project.election.service.impl.domain.result;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import internship.project.election.model.Election;
 import internship.project.election.model.result.CommunalResult;
 import internship.project.election.model.result.DistrictResult;
 import internship.project.election.repository.result.CommunalResultRepository;
@@ -14,9 +16,10 @@ import internship.project.election.repository.result.stat.CommunalResultStatRepo
 import internship.project.election.repository.result.stat.DistrictResultStatRepository;
 import internship.project.election.repository.result.stat.FokontanyResultStatRepository;
 import internship.project.election.repository.result.stat.PollingStationResultStatRepository;
+import internship.project.election.service.impl.domain.ElectionService;
 
 @Service
-public class LegislativeResultService extends ElectionResultService {
+public class LegislativeResultService extends ElectoralResultService {
 
     private DistrictResultRepository districtResultRepository;
     private CommunalResultRepository communalResultRepository;
@@ -31,9 +34,10 @@ public class LegislativeResultService extends ElectionResultService {
             DistrictResultStatRepository districtResultStatRepository,
             CommunalResultStatRepository communalResultStatRepository,
             FokontanyResultStatRepository fokontanyResultStatRepository,
-            PollingStationResultStatRepository pollingStationResultStatRepository) {
+            PollingStationResultStatRepository pollingStationResultStatRepository,
+            ElectionService electionService) {
         super(fokontanyResultRepository, pollingStationResultRepository, fokontanyResultStatRepository,
-                pollingStationResultStatRepository);
+                pollingStationResultStatRepository, electionService);
         this.districtResultRepository = districtResultRepository;
         this.communalResultRepository = communalResultRepository;
 
@@ -41,11 +45,21 @@ public class LegislativeResultService extends ElectionResultService {
         this.communalResultStatRepository = communalResultStatRepository;
     }
 
-    public List<CommunalResult> getCommunalResults() {
+    public List<CommunalResult> getCommunalResults(Integer electionId) {
+        Optional<Election> election = this.electionService.getElection(electionId);
+        if (!election.isEmpty() && !(election.get().getType().isLegislative()
+                || election.get().getType().isPresidential())) {
+            throw new IllegalArgumentException("The election type is not a legislative or presidential election");
+        }
         return this.communalResultRepository.findAll();
     }
 
-    public List<DistrictResult> getDistrictResults() {
+    public List<DistrictResult> getDistrictResults(Integer electionId) {
+        Optional<Election> election = this.electionService.getElection(electionId);
+        if (!election.isEmpty()
+                && !(election.get().getType().isLegislative() || election.get().getType().isPresidential())) {
+            throw new IllegalArgumentException("The election type is not a legislative or presidential election");
+        }
         return this.districtResultRepository.findAll();
     }
 }
