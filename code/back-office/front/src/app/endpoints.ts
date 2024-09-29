@@ -11,6 +11,8 @@ export class Endpoints {
     'api/administrative-divisions';
   public static readonly POLLING_STATIONS = 'api/polling-stations';
 
+  public static readonly ELECTIONS = 'api/elections';
+
   public static publicEndpoints = [
     Endpoints.SIGN_IN,
     Endpoints.SIGN_OUT,

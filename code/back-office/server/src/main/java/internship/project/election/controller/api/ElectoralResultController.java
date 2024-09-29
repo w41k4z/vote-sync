@@ -15,13 +15,13 @@ import internship.project.election.service.impl.domain.result.PresidentialResult
 
 @RequestMapping("/api/elections/results")
 @RestController
-public class ElectionResultController {
+public class ElectoralResultController {
 
     private PresidentialResultService presidentialResultService;
     private LegislativeResultService legislativeResultService;
     private LocalResultService localResultService;
 
-    public ElectionResultController(PresidentialResultService presidentialResultService,
+    public ElectoralResultController(PresidentialResultService presidentialResultService,
             LegislativeResultService legislativeResultService, LocalResultService localResultService) {
         this.presidentialResultService = presidentialResultService;
         this.legislativeResultService = legislativeResultService;

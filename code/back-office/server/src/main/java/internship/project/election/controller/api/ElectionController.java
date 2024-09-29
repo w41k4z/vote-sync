@@ -52,11 +52,11 @@ public class ElectionController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<ApiResponse> getCurrentElection() {
+    public ResponseEntity<ApiResponse> getCurrentElections() {
         HashMap<String, Object> data = new HashMap<>();
-        List<Election> currentElection = this.service.getCurrentElections();
-        String message = currentElection.isEmpty() ? "No current election" : "";
-        data.put("election", currentElection);
+        List<Election> currentElections = this.service.getCurrentElections();
+        String message = currentElections.isEmpty() ? "No current election" : "";
+        data.put("elections", currentElections);
         return ResponseEntity.ok(new ApiResponse(data, message));
     }
 

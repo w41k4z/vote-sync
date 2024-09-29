@@ -3,19 +3,18 @@
         <h5>Election en cours</h5>
     </div>
     <ul class="list">
-        <li class="item">
+        <li class="item" *ngFor="let election of currentElections">
             <div class="details">
                 <span class="list-type">
                     <i class="me-2 bi bi-envelope"></i>
-                    <span>Locales</span>
+                    <span>{{ election.type.type }}</span>
+                </span>
+                <span class="list-column">
+                    <span><b>{{ election.name }}</b></span>
                 </span>
                 <span class="list-column">
                     <i class="me-2 bi bi-calendar-plus"></i>
-                    <span>05/11/2024</span>
-                </span>
-                <span class="list-column">
-                    <span>112 candidats</span>
-                    <i class="ms-1 bi bi-people"></i>
+                    <span>{{ election.startDate.toString() }}</span>
                 </span>
                 <span class="in-progress">
                     <span>En cours</span>
@@ -23,14 +22,11 @@
                 </span>
             </div>
             <div class="action d-flex align-items-center gap-1">
-                <button class="btn btn-outline-info">
-                    Détails
-                </button>
-                <button class="btn btn-outline-warning">
-                    Alertes
-                </button>
                 <button class="btn btn-outline-primary">
                     Exporter
+                </button>
+                <button class="btn btn-primary">
+                    Résultat
                 </button>
             </div>
         </li>
@@ -75,7 +71,7 @@
                 </div>
                 <div class="action d-flex align-items-center gap-1">
                     <button class="btn btn-primary">
-                        Résultat
+                        Résultat provisoire
                     </button>
                 </div>
             </li>
@@ -100,7 +96,7 @@
                 </div>
                 <div class="action d-flex align-items-center gap-1">
                     <button class="btn btn-primary">
-                        Résultat
+                        Résultat provisoire
                     </button>
                 </div>
             </li>
