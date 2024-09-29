@@ -10,6 +10,7 @@ https://github.com/vinimrs/spring-boot-clean-architecture/tree/master/common
 
 - Table et non vue materialisée
   => Les vues matérialisées sont rattachées à leur table d'origine donc duplicaton des données et configuration de methode de rafraichissement problématique (Les données sont volumineuses, possibilité de supprimer les données de la table d'origine après leur migration vers les tables des données agrégés)
+  => Finalement apres reflexion, la table est mieux appropriée pour les données agrégés car les données sont volumineuses et les vues matérialisées devront être rafraichies completement.
 
   A penser: Pour la table des données agregés, serait ils mieux de s'arreter sur les bv, et continuer avec des vues materialisées (fokontany, commune, district, region, province) ?
 
