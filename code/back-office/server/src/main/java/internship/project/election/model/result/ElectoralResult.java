@@ -12,8 +12,23 @@ public class ElectoralResult {
     @Id
     private Integer id;
 
+    @Column(name = "id_election")
+    private Integer electionId;
+
     private String code;
 
     @Column(name = "nom")
     private String name;
+
+    @Column(name = "inscrits")
+    private Integer registeredVoters;
+
+    @Column(name = "blancs")
+    private Integer blankVotes;
+
+    @Column(name = "nuls")
+    private Integer nullVotes;
+
+    @Column(name = "exprimes")
+    private Integer validVotes;
 }

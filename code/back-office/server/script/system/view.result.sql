@@ -49,7 +49,20 @@ JOIN bv
     ON r.id_bv = bv.id
 WHERE r.etat = 10
 ;
-
+CREATE OR REPLACE VIEW bv_resultats AS
+SELECT
+    rsbv.id_election,
+    bv.id,
+    bv.code,
+    bv.nom,
+    rsbv.inscrits,
+    rsbv.blancs,
+    rsbv.nuls,
+    rsbv.exprimes
+FROM bv
+JOIN resultat_statistique_par_bv rsbv
+    ON bv.id = rsbv.id_bv
+;
 
 CREATE OR REPLACE VIEW resultats_par_fokontany AS
 SELECT
@@ -108,6 +121,20 @@ GROUP BY
     fk.code,
     fk.nom
 ;
+CREATE VIEW fokontany_resultats AS
+SELECT
+    rsfk.id_election,
+    fk.id,
+    fk.code,
+    fk.nom,
+    rsfk.inscrits,
+    rsfk.blancs,
+    rsfk.nuls,
+    rsfk.exprimes
+FROM fokontany fk
+JOIN resultat_statistique_par_fokontany rsfk
+    ON fk.id = rsfk.id_fokontany
+;
 
 
 -- Presidential election and legislative election only
@@ -163,6 +190,20 @@ GROUP BY
     cm.id,
     cm.code,
     cm.nom
+;
+CREATE VIEW communes_resultats AS
+SELECT
+    rscm.id_election,
+    cm.id,
+    cm.code,
+    cm.nom,
+    rscm.inscrits,
+    rscm.blancs,
+    rscm.nuls,
+    rscm.exprimes
+FROM communes cm
+JOIN resultat_statistique_par_commune rscm
+    ON cm.id = rscm.id_commune
 ;
 
 
@@ -224,6 +265,20 @@ GROUP BY
     mc.code,
     mc.nom
 ;
+CREATE VIEW municipalites_resultats AS
+SELECT
+    rsmc.id_election,
+    mc.id,
+    mc.code,
+    mc.nom,
+    rsmc.inscrits,
+    rsmc.blancs,
+    rsmc.nuls,
+    rsmc.exprimes
+FROM municipalites mc
+JOIN resultat_statistique_par_municipalite rsmc
+    ON mc.id = rsmc.id_municipalite
+;
 
 
 -- Presidential election and legislative election only
@@ -279,6 +334,20 @@ GROUP BY
     d.id,
     d.code,
     d.nom
+;
+CREATE VIEW districts_resultats AS
+SELECT
+    rsd.id_election,
+    d.id,
+    d.code,
+    d.nom,
+    rsd.inscrits,
+    rsd.blancs,
+    rsd.nuls,
+    rsd.exprimes
+FROM districts d
+JOIN resultat_statistique_par_district rsd
+    ON d.id = rsd.id_district
 ;
 
 
@@ -336,6 +405,20 @@ GROUP BY
     r.code,
     r.nom
 ;
+CREATE VIEW regions_resultats AS
+SELECT
+    rsr.id_election,
+    r.id,
+    r.code,
+    r.nom,
+    rsr.inscrits,
+    rsr.blancs,
+    rsr.nuls,
+    rsr.exprimes
+FROM regions r
+JOIN resultat_statistique_par_region rsr
+    ON r.id = rsr.id_region
+;
 
 -- Presidential election only
 CREATE OR REPLACE VIEW resultats_par_province AS
@@ -389,6 +472,20 @@ GROUP BY
     p.id,
     p.nom
 ;
+CREATE VIEW provinces_resultats AS
+SELECT
+    rsp.id_election,
+    p.id,
+    TO_CHAR(p.id) AS code,
+    p.nom,
+    rsp.inscrits,
+    rsp.blancs,
+    rsp.nuls,
+    rsp.exprimes
+FROM provinces p
+JOIN resultat_statistique_par_province rsp
+    ON p.id = rsp.id_province
+;
 
 
 -- Presidential election only
@@ -430,4 +527,18 @@ SELECT
 FROM resultat_statistique_par_province rsp
 GROUP BY
     rsp.id_election
+;
+CREATE VIEW global_resultats AS
+SELECT
+    rsg.id_election,
+    '0' AS id,
+    '0' AS code,
+    'Madagascar' AS nom,
+    rsg.inscrits,
+    rsg.blancs,
+    rsg.nuls,
+    rsg.exprimes
+FROM dual d
+JOIN resultat_statistique_election rsg
+    ON rsg.id_pays = '0'
 ;
