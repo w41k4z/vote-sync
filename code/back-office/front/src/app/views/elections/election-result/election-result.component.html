@@ -1,0 +1,57 @@
+<div class="d-flex justify-content-center option">
+    <div class="d-flex justify-content-center align-items-center gap-3">
+        <button class="type" [ngClass]="current == i ? 'active' : ''" *ngFor="let type of results; index as i">
+            {{ type }}
+        </button>
+    </div>
+</div>
+<section class="card card-body mt-4">
+    <div *ngFor="let electoralResult of electoralResults">
+        <header>
+            <h5 class="text-primary">Municipal: <b class="text-black">{{ electoralResult.name | formatName }}</b></h5>
+            <table class="table table-borderless mt-4">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h6 class="text-primary">Inscrits: <b class="text-black">{{electoralResult.registeredVoters | formatNumber}}</b></h6>
+                        </td>
+                        <td>
+                            <h6 class="text-primary">Exprimés: <b class="text-black">{{electoralResult.validVotes| formatNumber}}</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6 class="text-primary">Blancs: <b class="text-black">{{electoralResult.blankVotes| formatNumber}}</b></h6>
+                        </td>
+                        <td>
+                            <h6 class="text-primary">Nuls: <b class="text-black">{{electoralResult.nullVotes| formatNumber}}</b></h6>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </header>
+        <main class="container">
+            <div class="row mb-3 table-header">
+                <div class="col-2 text-center">Numéro</div>
+                <div class="col-6 text-center">Candidats</div>
+                <div class="col-2 text-center">Voix</div>
+                <div class="col-2 text-center">%</div>
+            </div>
+            <div class="row mb-1 table-content align-items-center" *ngFor="let detail of electoralResult.details">
+                <div class="col-2 text-center fw-bold">{{detail.candidateNumber}}</div>
+                <div class="col-6">
+                    <img src="../../../../assets/user.png" alt="" style="height: 40px; width: 40px;">
+                    <span class="ms-3">{{detail.candidateInformation + ' (' + detail.politicalEntity + ')'}}</span>
+                </div>
+                <div class="col-2 text-end fw-bold">{{detail.candidateVotes}}</div>
+                <div class="col-2 text-end fw-bold">{{ (detail.candidateVotes * 100 / electoralResult.validVotes).toString().slice(0, 5) }} %</div>
+            </div>
+            <footer class="mt-5 d-flex gap-3 justify-content-center align-items-center">
+                <i class="bi bi-arrow-left-circle"></i>
+                <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">1</span></b> sur
+                    1</p>
+                <i class="bi bi-arrow-right-circle"></i>
+            </footer>
+        </main>
+    </div>
+</section>

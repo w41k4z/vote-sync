@@ -31,35 +31,35 @@ public class ElectoralResultController {
     @GetMapping("/polling-station")
     public ResponseEntity<ApiResponse> pollingStationResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("pollingStationResults", this.presidentialResultService.getPollingStationResults(electionId));
+        data.put("electoralResults", this.presidentialResultService.getPollingStationResults(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/fokontany")
     public ResponseEntity<ApiResponse> fokontanyResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("fokontanyResults", this.presidentialResultService.getFokontanyResults(electionId));
+        data.put("electoralResults", this.presidentialResultService.getFokontanyResults(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/local/municipal")
     public ResponseEntity<ApiResponse> localMunicipalResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("municipalResults", this.localResultService.getMunicipalResults(electionId));
+        data.put("electoralResults", this.localResultService.getMunicipalResults(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/legislative/communal")
     public ResponseEntity<ApiResponse> legislativeCommunalResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("communalResults", this.legislativeResultService.getCommunalResults(electionId));
+        data.put("electoralResults", this.legislativeResultService.getCommunalResults(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/legislative/district")
     public ResponseEntity<ApiResponse> legislativeDistrictResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("districtResults", this.legislativeResultService.getCommunalResults(electionId));
+        data.put("electoralResults", this.legislativeResultService.getCommunalResults(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
@@ -76,14 +76,14 @@ public class ElectoralResultController {
     @GetMapping("/presidential/provincial")
     public ResponseEntity<ApiResponse> presidentialProvincialResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("provincialResults", this.presidentialResultService.getProvincialResults(electionId));
+        data.put("electoralResults", this.presidentialResultService.getProvincialResults(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/presidential/global")
     public ResponseEntity<ApiResponse> presidentialGlobalResults(@RequestParam Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("globalResults", this.presidentialResultService.getGlobalResult(electionId));
+        data.put("electoralResults", this.presidentialResultService.getGlobalResult(electionId));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }

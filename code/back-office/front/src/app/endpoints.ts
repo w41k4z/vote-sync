@@ -5,13 +5,13 @@ export class Endpoints {
 
   public static readonly USERS = 'api/users';
   public static readonly ROLES = 'api/roles';
-  public static readonly USERS_AND_STATS = 'api/users/users-and-stats';
 
   public static readonly ADMINISTRATIVE_DIVISION =
     'api/administrative-divisions';
   public static readonly POLLING_STATIONS = 'api/polling-stations';
 
   public static readonly ELECTIONS = 'api/elections';
+  public static readonly ELECTION_RESULTS = `${this.ELECTIONS}/results`;
 
   public static publicEndpoints = [
     Endpoints.SIGN_IN,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ElectionService } from '../../services/api/election/election.service';
 import { Election } from '../../dto/election';
+import { Paths } from '../../paths';
 
 @Component({
   selector: 'app-elections',
@@ -8,6 +9,7 @@ import { Election } from '../../dto/election';
   styleUrl: './elections.component.scss',
 })
 export class ElectionsComponent {
+  electionPath = Paths.ELECTIONS;
   currentElections: Election[] = [];
   electionHistory: Election[] = [];
 
@@ -15,8 +17,6 @@ export class ElectionsComponent {
     this.electionService.getCurrentElections().then((payload) => {
       if (payload) {
         this.currentElections = payload.elections;
-        console.log(payload.elections);
-        console.log(this.currentElections);
       }
     });
   }

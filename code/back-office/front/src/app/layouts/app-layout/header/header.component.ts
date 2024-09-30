@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Paths } from '../../../paths';
+import { Title } from '@angular/platform-browser';
+import { filter, map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -9,9 +11,33 @@ import { Paths } from '../../../paths';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  title = document.title;
+  pageTitle = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+  ) {}
+
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.activatedRoute),
+        map((route) => {
+          while (route.firstChild) {
+            route = route.firstChild;
+          }
+          return route;
+        }),
+        mergeMap((route) => route.data)
+      )
+      .subscribe((data) => {
+        this.pageTitle = data['title'] || 'Default Title';
+        this.titleService.setTitle(this.pageTitle); // Set browser tab title
+      });
+  }
 
   async logOut() {
     try {

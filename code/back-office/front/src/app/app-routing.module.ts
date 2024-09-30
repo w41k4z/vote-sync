@@ -15,6 +15,7 @@ import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { UsersComponent } from './views/users/users.component';
 import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
+import { ElectionResultComponent } from './views/elections/election-result/election-result.component';
 
 const routes: Routes = [
   {
@@ -25,10 +26,16 @@ const routes: Routes = [
         path: 'log-in',
         canActivate: [signInPageGuard],
         component: LogInComponent,
+        data: {
+          title: 'Connexion',
+        },
       },
       {
         path: 'permission-denied',
         component: PermissionDeniedComponent,
+        data: {
+          title: 'Permission refusée',
+        },
       },
     ],
   },
@@ -41,26 +48,40 @@ const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
+        data: {
+          title: 'Accueil',
+        },
       },
       {
         path: 'dashboard',
         component: DashboardComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN] },
+        data: {
+          requiredPrivileges: [Privileges.ADMIN],
+          title: 'Tableau de bord',
+        },
       },
       {
         path: 'users',
         component: UsersComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN] },
-      },
-      {
-        path: 'elections',
-        component: ElectionsComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN] },
+        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Utilisateurs' },
       },
       {
         path: 'polling-stations',
         component: PollingStationComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN] },
+        data: {
+          requiredPrivileges: [Privileges.ADMIN],
+          title: 'Bureaux de vote',
+        },
+      },
+      {
+        path: 'elections',
+        component: ElectionsComponent,
+        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Elections' },
+      },
+      {
+        path: 'elections/result/:electionId',
+        component: ElectionResultComponent,
+        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
       },
     ],
   },

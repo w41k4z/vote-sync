@@ -62,7 +62,7 @@ export class UserService extends ApiCallService {
     }
     return (
       await this.getCall<UsersAndStatsPayload>(
-        `${Endpoints.USERS_AND_STATS}${strParam}`
+        `${Endpoints.USERS}/users-and-stats${strParam}`
       )
     ).payload;
   }

@@ -30,6 +30,7 @@ import { FormatNumberPipe } from './pipes/format-number.pipe';
 import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
 import { FormatNamePipe } from './pipes/format-name.pipe';
+import { ElectionResultComponent } from './views/elections/election-result/election-result.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { FormatNamePipe } from './pipes/format-name.pipe';
     FormatRolePipe,
     FormatNumberPipe,
     FormatNamePipe,
+    ElectionResultComponent,
   ],
   imports: [
     BrowserModule,
