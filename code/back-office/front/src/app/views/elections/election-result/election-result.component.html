@@ -24,13 +24,14 @@
                             <h6 class="text-primary">Blancs: <b class="text-black">{{electoralResult.blankVotes| formatNumber}}</b></h6>
                         </td>
                         <td>
-                            <h6 class="text-primary">Nuls: <b class="text-black">{{electoralResult.nullVotes| formatNumber}}</b></h6>
+                            <h6 class="text-primary">Nuls: <b class="text-black">{{electoralResult.nullVotes | formatNumber}}</b></h6>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <h5 class="text-danger">Taux de participation: <b class="text-black">{{ (electoralResult.validVotes * 100 / electoralResult.registeredVoters).toString().slice(0, 6) }} %</b></h5>
         </header>
-        <main class="container">
+        <main class="container mt-4">
             <div class="row mb-3 table-header">
                 <div class="col-2 text-center">Numéro</div>
                 <div class="col-6 text-center">Candidats</div>
@@ -45,6 +46,12 @@
                 </div>
                 <div class="col-2 text-end fw-bold">{{detail.candidateVotes}}</div>
                 <div class="col-2 text-end fw-bold">{{ (detail.candidateVotes * 100 / electoralResult.validVotes).toString().slice(0, 5) }} %</div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-6 text-end fw-bold text-danger" style="font-size: larger;">Total</div>
+                <div class="col-2 text-end fw-bold" style="font-size: larger;">100</div>
+                <div class="col-2"></div>
             </div>
             <footer class="mt-5 d-flex gap-3 justify-content-center align-items-center">
                 <i class="bi bi-arrow-left-circle"></i>

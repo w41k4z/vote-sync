@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatRolePipe implements PipeTransform {
   private roleTranslations: { [key: string]: string } = {
     ADMIN: 'Administrateur',
-    MANAGER: 'Responsable',
-    OPERATOR: 'Opérateur',
+    MANAGER: 'Membre de bureau électoral',
+    OPERATOR: 'Opérateur de saisie',
     CCID: 'Chef CID',
   };
 

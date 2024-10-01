@@ -71,6 +71,9 @@ i {
 
 .table thead th {
     border-bottom: 1px solid #c0b3b3;
+    color: white;
+    background-color: $primary;
+    font-weight: 600;
 }
 
 .table tbody tr:hover td,
