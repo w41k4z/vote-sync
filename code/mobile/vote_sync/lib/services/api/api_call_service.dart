@@ -1,20 +1,19 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import 'package:vote_sync/dto/request/auth/auth_request.dart';
+import 'package:dio/dio.dart';
+import 'package:vote_sync/filter/auth_interceptor.dart';
 
 class ApiCallService {
-  Future<T> getCall<T>(String url, AuthRequest authRequest) async {
-    final response = await http.get(Uri.parse(url));
-    return response.body as T;
+  final Dio _dio = Dio();
+
+  ApiCallService() {
+    _dio.options.baseUrl = 'http://localhost:8081';
+    _dio.interceptors.add(AuthInterceptor());
   }
 
-  Future<T> postCall<T>(String url, dynamic body) async {
-    final response = await http.post(Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(body));
-    return response.body as T;
+  Future<Response<T>> getCall<T>(String path) async {
+    return await _dio.get<T>(path);
+  }
+
+  Future<Response<T>> postCall<T>(String path, dynamic data) async {
+    return await _dio.post<T>(path, data: data);
   }
 }

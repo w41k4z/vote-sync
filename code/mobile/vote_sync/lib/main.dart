@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:vote_sync/services/api/auth_service.dart';
+import 'package:vote_sync/services/location_service.dart';
+import 'package:vote_sync/services/token_service.dart';
 
 void main() {
+  setUpServiceLocator();
   runApp(const MyApp());
+}
+
+void setUpServiceLocator() {
+  GetIt.I.registerSingleton<TokenService>(TokenService());
+  GetIt.I.registerSingleton<AuthService>(AuthService());
+  GetIt.I.registerSingleton<LocationService>(LocationService());
 }
 
 class MyApp extends StatelessWidget {

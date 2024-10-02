@@ -4,6 +4,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 
 import internship.project.election.config.Pagination;
 import internship.project.election.dto.ApiResponse;
+import internship.project.election.dto.request.NearestPollingStationRequest;
 import internship.project.election.service.impl.domain.AdministrativeDivisionService;
 import internship.project.election.service.impl.domain.PollingStationService;
 
@@ -39,6 +42,13 @@ public class PollingStationController {
         data.put("pollingStations",
                 this.service.getAllPollingStation(regionId, districtId, communeId, fokontanyId, pageable));
         data.put("regions", this.administrativeDivisionService.getRegionsWithoutGeoJson());
+        return ResponseEntity.ok(new ApiResponse(data, null));
+    }
+
+    @PostMapping("/nearest")
+    public ResponseEntity<ApiResponse> getNearestPollingStations(@RequestBody NearestPollingStationRequest request) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("pollingStations", this.service.getNearestPollingStations(request));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }
