@@ -9,7 +9,6 @@ class AuthService extends ApiCallService {
       identifier: identifier,
       password: password,
     );
-    final response =
-        await postCall<AuthResponsePayload>(Endpoints.AUTH, authRequest);
+    await postCall<AuthResponsePayload>(Endpoints.AUTH, authRequest);
   }
 }
