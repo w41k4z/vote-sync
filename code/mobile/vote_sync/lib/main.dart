@@ -5,6 +5,7 @@ import 'package:vote_sync/screens/log-in/log_in_page.dart';
 import 'package:vote_sync/services/api/auth_service.dart';
 import 'package:vote_sync/services/location_service.dart';
 import 'package:vote_sync/services/token_service.dart';
+import 'package:vote_sync/services/api/polling_station_service.dart';
 
 void main() {
   setUpServiceLocator();
@@ -15,6 +16,7 @@ void setUpServiceLocator() {
   GetIt.I.registerSingleton<TokenService>(TokenService());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   GetIt.I.registerSingleton<LocationService>(LocationService());
+  GetIt.I.registerSingleton<PollingStationService>(PollingStationService());
 }
 
 class App extends StatelessWidget {

@@ -90,7 +90,7 @@ public class WebSecurity {
         return authorize
                 // public endpoints
                 .requestMatchers("/error/**", "/public/**",
-                        "/test/**", "/auth/**")
+                        "/test/**", "/auth/**", "/api/polling-stations/nearest")
                 .permitAll()
                 // Admin endpoints
                 .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**")
