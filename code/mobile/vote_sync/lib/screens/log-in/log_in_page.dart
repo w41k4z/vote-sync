@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
+import 'package:vote_sync/dto/polling_station.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
 
 class LogInPage extends StatefulWidget {
@@ -11,6 +12,9 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+  List<PollingStation> pollingStations = [];
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -18,9 +22,17 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   Future<void> _getNearestPollingStation() async {
+    setState(() {
+      isLoading = true;
+    });
     PollingStationService pollingStationService =
         GetIt.I.get<PollingStationService>();
-    await pollingStationService.getNearestPollingStation();
+    List<PollingStation> nearestPollingStations =
+        await pollingStationService.getNearestPollingStation();
+    setState(() {
+      isLoading = true;
+      pollingStations = nearestPollingStations;
+    });
   }
 
   @override
@@ -48,8 +60,8 @@ class _LogInPageState extends State<LogInPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Image.asset(
-                'assets/ballot_box.png', // Ballot box image path
-                height: 100,
+                'assets/images/urne.png', // Ballot box image path
+                height: 150,
               ),
             ),
 
@@ -73,15 +85,17 @@ class _LogInPageState extends State<LogInPage> {
                           prefixIcon: Icon(Icons.location_on),
                           hintText: "Bureau de vote",
                         ),
-                        items: <String>['Bureau 1', 'Bureau 2', 'Bureau 3']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                        items: pollingStations.isEmpty && !isLoading
+                            ? const <DropdownMenuItem<String>>[]
+                            : pollingStations.map<DropdownMenuItem<String>>(
+                                (PollingStation value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.id.toString(),
+                                  child: Text(value.name),
+                                );
+                              }).toList(),
                         onChanged: (String? newValue) {
-                          // Handle value change
+                          print("Selected: $newValue");
                         },
                       ),
                     ),
