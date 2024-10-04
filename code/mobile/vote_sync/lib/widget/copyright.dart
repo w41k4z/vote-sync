@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vote_sync/config/app_colors.dart';
 
-class LogInPageFooter extends StatelessWidget {
-  const LogInPageFooter({super.key});
+class Copyright extends StatelessWidget {
+  const Copyright({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/dto/polling_station.dart';
-import 'package:vote_sync/screens/log-in/log_in_page_footer.dart';
-import 'package:vote_sync/screens/log-in/log_in_page_form.dart';
+import 'package:vote_sync/widget/copyright.dart';
+import 'package:vote_sync/screens/log-in/form/log_in_page_form.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
 
 class LogInPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _LogInPageState extends State<LogInPage> {
   @override
   void initState() {
     super.initState();
+    context.loaderOverlay.show();
     _getNearestPollingStation();
   }
 
@@ -37,6 +39,7 @@ class _LogInPageState extends State<LogInPage> {
     setState(() {
       isLoading = true;
       pollingStations = nearestPollingStations;
+      context.loaderOverlay.hide();
     });
   }
 
@@ -80,7 +83,7 @@ class _LogInPageState extends State<LogInPage> {
             onPasswordInputChange: _handlePasswordInputChange,
           ),
         ),
-        const LogInPageFooter()
+        const Copyright()
       ],
     );
   }

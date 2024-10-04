@@ -17,14 +17,13 @@ class LogInPasswordInputWidget extends StatelessWidget {
       child: TextFormField(
         obscureText: true,
         decoration: const InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.all(15),
-            prefixIcon: Icon(Icons.lock),
-            prefixIconColor: Colors.white,
-            hintText: "Mot de passe",
-            hintStyle: TextStyle(color: Colors.white),
-            focusColor: Colors.white,
-            hoverColor: Colors.white),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.all(15),
+          prefixIcon: Icon(Icons.lock),
+          prefixIconColor: Colors.white,
+          hintText: "Mot de passe",
+          hintStyle: TextStyle(color: Colors.white),
+        ),
         style: const TextStyle(color: Colors.white),
         onChanged: (value) {
           onPasswordInputChange(value);
