@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class LogInSubmitButtonWidget extends StatelessWidget {
+  final Function() onSubmit;
+
   const LogInSubmitButtonWidget({
     super.key,
+    required this.onSubmit,
   });
 
   @override

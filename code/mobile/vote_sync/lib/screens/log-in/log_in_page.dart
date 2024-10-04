@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/dto/polling_station.dart';
+import 'package:vote_sync/screens/home/home_page.dart';
+import 'package:vote_sync/services/api/auth_service.dart';
 import 'package:vote_sync/widget/copyright.dart';
 import 'package:vote_sync/screens/log-in/form/log_in_page_form.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
@@ -16,44 +18,51 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   List<PollingStation> pollingStations = [];
-  bool isLoading = false;
 
-  String selectedPollingStationId = '';
+  String selectedPollingStationCode = '';
   String password = '';
 
   @override
   void initState() {
     super.initState();
-    context.loaderOverlay.show();
     _getNearestPollingStation();
   }
 
   Future<void> _getNearestPollingStation() async {
-    setState(() {
-      isLoading = true;
-    });
+    context.loaderOverlay.show();
     PollingStationService pollingStationService =
         GetIt.I.get<PollingStationService>();
     List<PollingStation> nearestPollingStations =
         await pollingStationService.getNearestPollingStation();
     setState(() {
-      isLoading = true;
       pollingStations = nearestPollingStations;
       context.loaderOverlay.hide();
     });
   }
 
   void _handlePollingStationsChange(String newValue) {
-    print("Selected: $newValue");
     setState(() {
-      selectedPollingStationId = newValue;
+      selectedPollingStationCode = newValue;
     });
   }
 
   void _handlePasswordInputChange(String newValue) {
-    print("Password: $newValue");
     setState(() {
       password = newValue;
+    });
+  }
+
+  void _handleFormSubmit() async {
+    context.loaderOverlay.show();
+    AuthService authService = GetIt.I.get<AuthService>();
+    await authService.authenticateUser(selectedPollingStationCode, password);
+    setState(() {
+      context.loaderOverlay.hide();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
     });
   }
 
@@ -81,6 +90,7 @@ class _LogInPageState extends State<LogInPage> {
             pollingStations: pollingStations,
             onPollingStationSelect: _handlePollingStationsChange,
             onPasswordInputChange: _handlePasswordInputChange,
+            onSubmit: _handleFormSubmit,
           ),
         ),
         const Copyright()

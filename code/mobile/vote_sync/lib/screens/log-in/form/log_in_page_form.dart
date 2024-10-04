@@ -9,12 +9,14 @@ class LogInPageForm extends StatelessWidget {
   final List<PollingStation> pollingStations;
   final Function(String) onPollingStationSelect;
   final Function(String) onPasswordInputChange;
+  final Function() onSubmit;
 
   const LogInPageForm({
     super.key,
     required this.pollingStations,
     required this.onPollingStationSelect,
     required this.onPasswordInputChange,
+    required this.onSubmit,
   });
 
   @override
@@ -38,7 +40,7 @@ class LogInPageForm extends StatelessWidget {
             onPasswordInputChange: onPasswordInputChange,
           ),
           const SizedBox(height: 20),
-          const LogInSubmitButtonWidget(),
+          LogInSubmitButtonWidget(onSubmit: onSubmit),
         ],
       ),
     );

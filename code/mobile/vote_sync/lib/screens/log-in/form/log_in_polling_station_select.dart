@@ -37,7 +37,7 @@ class LogInPollingStationSelectWidget extends StatelessWidget {
             : pollingStations
                 .map<DropdownMenuItem<String>>((PollingStation value) {
                 return DropdownMenuItem<String>(
-                  value: value.id.toString(),
+                  value: value.code,
                   child: Text(value.name),
                 );
               }).toList(),

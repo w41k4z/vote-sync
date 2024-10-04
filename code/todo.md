@@ -1,0 +1,2 @@
+- Mobile App Error Handling (0%)
+- Flutter does not have a way to parse response data from API directly to a dart object, so careful when changing the ApiResponse structure
