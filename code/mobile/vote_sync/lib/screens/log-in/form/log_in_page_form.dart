@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:vote_sync/dto/polling_station.dart';
+import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/screens/log-in/form/log_in_form_logo.dart';
 import 'package:vote_sync/screens/log-in/form/log_in_password_input.dart';
 import 'package:vote_sync/screens/log-in/form/log_in_submit_button.dart';
 import 'package:vote_sync/screens/log-in/form/log_in_polling_station_select.dart';
 
 class LogInPageForm extends StatelessWidget {
-  final List<PollingStation> pollingStations;
+  final List<PollingStationDTO> pollingStations;
   final Function(String) onPollingStationSelect;
   final Function(String) onPasswordInputChange;
   final Function() onSubmit;

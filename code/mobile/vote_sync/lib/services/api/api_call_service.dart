@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:vote_sync/config/endpoints.dart';
-import 'package:vote_sync/filter/auth_interceptor.dart';
+import 'package:vote_sync/filters/auth_interceptor.dart';
 
 class ApiCallService {
   final Dio _dio = Dio();

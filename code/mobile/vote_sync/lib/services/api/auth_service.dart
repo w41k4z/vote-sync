@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/endpoints.dart';
-import 'package:vote_sync/dto/request/auth/auth_request.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
 import 'package:vote_sync/services/token_service.dart';
 
@@ -18,12 +17,11 @@ class AuthService extends ApiCallService {
   }
 
   Future<void> authenticateUser(String identifier, String password) async {
-    AuthRequest authRequest = AuthRequest(
-      identifier: identifier,
-      password: password,
-    );
-    final response = await postCall(Endpoints.AUTH, authRequest);
-    String accessToken = response.data["accessToken"];
+    final response = await postCall(Endpoints.AUTH, {
+      'identifier': identifier,
+      'password': password,
+    });
+    String accessToken = response.data["payload"]["accessToken"];
     await GetIt.I.get<TokenService>().saveToken(accessToken);
     _accessToken = accessToken;
   }

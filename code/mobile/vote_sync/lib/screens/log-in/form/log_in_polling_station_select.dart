@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/dto/polling_station.dart';
+import 'package:vote_sync/dto/polling_station_dto.dart';
 
 class LogInPollingStationSelectWidget extends StatelessWidget {
-  final List<PollingStation> pollingStations;
+  final List<PollingStationDTO> pollingStations;
   final Function(String) onPollingStationSelect;
 
   const LogInPollingStationSelectWidget({
@@ -35,7 +35,7 @@ class LogInPollingStationSelectWidget extends StatelessWidget {
                 )
               ]
             : pollingStations
-                .map<DropdownMenuItem<String>>((PollingStation value) {
+                .map<DropdownMenuItem<String>>((PollingStationDTO value) {
                 return DropdownMenuItem<String>(
                   value: value.code,
                   child: Text(value.name),
@@ -50,7 +50,7 @@ class LogInPollingStationSelectWidget extends StatelessWidget {
           "Bureau de vote",
           style: TextStyle(color: Colors.white, fontSize: 16),
         ),
-        dropdownColor: theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+        dropdownColor: theme.colorScheme.onSurface.withOpacity(0.9),
         style: const TextStyle(color: Colors.white),
         iconEnabledColor: Colors.white,
       ),

@@ -6,15 +6,16 @@ import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/screens/log-in/log_in_page.dart';
 import 'package:vote_sync/services/api/auth_service.dart';
+import 'package:vote_sync/services/data/database_manager.dart';
 import 'package:vote_sync/services/location_service.dart';
 import 'package:vote_sync/services/token_service.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setUpServiceLocator().then((_) {
-    runApp(const App());
-  });
+  await setUpServiceLocator();
+  setUpDatabase();
+  runApp(const App());
 }
 
 Future<void> setUpServiceLocator() async {
@@ -26,12 +27,18 @@ Future<void> setUpServiceLocator() async {
   GetIt.I.registerSingleton<PollingStationService>(PollingStationService());
 }
 
+void setUpDatabase() {
+  GetIt.I.registerSingleton<DatabaseManager>(DatabaseManager());
+}
+
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     bool isAuthenticated = GetIt.I.get<AuthService>().isAuthenticated();
+    final pageDestination =
+        isAuthenticated ? const HomePage() : const LogInPage();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -67,7 +74,7 @@ class App extends StatelessWidget {
             ),
           );
         },
-        child: isAuthenticated ? const HomePage() : const LogInPage(),
+        child: pageDestination,
       ),
     );
   }

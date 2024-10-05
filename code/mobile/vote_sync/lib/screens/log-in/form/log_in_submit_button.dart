@@ -20,7 +20,7 @@ class LogInSubmitButtonWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 15),
           ),
           onPressed: () {
-            // Handle login action
+            onSubmit();
           },
           child: const Text(
             'Se connecter',
