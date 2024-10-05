@@ -8,8 +8,7 @@ class DatabaseTableInit {
         fokontany TEXT NOT NULL,
         commune TEXT NOT NULL,
         district TEXT NOT NULL,
-        region TEXT NOT NULL,
-        province VARCHAR(12) NOT NULL
+        region TEXT NOT NULL
     )
   ''';
   static const String CREATE_POLLING_STATION_ELECTION_TABLE = '''

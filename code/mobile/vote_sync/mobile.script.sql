@@ -6,8 +6,7 @@ CREATE TABLE polling_stations (
     fokontany TEXT NOT NULL,
     commune TEXT NOT NULL,
     district TEXT NOT NULL,
-    region TEXT NOT NULL,
-    province VARCHAR(12) NOT NULL
+    region TEXT NOT NULL
 );
 
 CREATE TABLE polling_station_elections (

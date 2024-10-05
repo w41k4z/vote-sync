@@ -7,7 +7,6 @@ class PollingStation {
   final String commune;
   final String district;
   final String region;
-  final String province;
 
   const PollingStation({
     required this.id,
@@ -18,7 +17,6 @@ class PollingStation {
     required this.commune,
     required this.district,
     required this.region,
-    required this.province,
   });
 
   // Database mapping
@@ -32,7 +30,6 @@ class PollingStation {
       commune: json['commune'],
       district: json['district'],
       region: json['region'],
-      province: json['province'],
     );
   }
 
@@ -46,7 +43,6 @@ class PollingStation {
       'commune': commune,
       'district': district,
       'region': region,
-      'province': province,
     };
   }
 }
