@@ -6,6 +6,7 @@ import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/services/api/auth_service.dart';
+import 'package:vote_sync/services/error/global_error_handler.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 import 'package:vote_sync/screens/log-in/form/log_in_page_form.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
@@ -33,12 +34,27 @@ class _LogInPageState extends State<LogInPage> {
     context.loaderOverlay.show();
     PollingStationService pollingStationService =
         GetIt.I.get<PollingStationService>();
-    List<PollingStationDTO> nearestPollingStations =
-        await pollingStationService.getNearestPollingStation();
-    setState(() {
-      pollingStations = nearestPollingStations;
+    try {
+      List<PollingStationDTO> nearestPollingStations =
+          await pollingStationService.getNearestPollingStation();
+      setState(() {
+        pollingStations = nearestPollingStations;
+        context.loaderOverlay.hide();
+      });
+    } catch (e) {
+      if (!mounted) return;
       context.loaderOverlay.hide();
-    });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            GlobalErrorHandler.internetAccessErrorDialog(
+          context: context,
+          onRetry: () {
+            _getNearestPollingStation();
+          },
+        ),
+      );
+    }
   }
 
   void _handlePollingStationsChange(String newValue) {

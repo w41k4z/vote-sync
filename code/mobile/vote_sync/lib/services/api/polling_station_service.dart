@@ -27,4 +27,11 @@ class PollingStationService extends ApiCallService {
     });
     return nearestPollingStations;
   }
+
+  Future<Map<String, dynamic>> getPollingStationData(
+      int pollingStationId, int electionId) async {
+    final response = await getCall(
+        '$pollingStationEndpoint/data/$electionId/$pollingStationId');
+    return response.data["payload"];
+  }
 }

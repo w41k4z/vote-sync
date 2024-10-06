@@ -29,4 +29,9 @@ class AuthService extends ApiCallService {
   bool isAuthenticated() {
     return _accessToken != null;
   }
+
+  Future<void> logout() async {
+    await GetIt.I.get<TokenService>().clearToken();
+    _accessToken = null;
+  }
 }

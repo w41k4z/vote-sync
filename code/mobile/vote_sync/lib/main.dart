@@ -14,7 +14,7 @@ import 'package:vote_sync/services/api/polling_station_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpServiceLocator();
-  setUpDatabase();
+  await setUpDatabase();
   runApp(const App());
 }
 
@@ -27,8 +27,11 @@ Future<void> setUpServiceLocator() async {
   GetIt.I.registerSingleton<PollingStationService>(PollingStationService());
 }
 
-void setUpDatabase() {
-  GetIt.I.registerSingleton<DatabaseManager>(DatabaseManager());
+Future<void> setUpDatabase() async {
+  DatabaseManager databaseManager = DatabaseManager();
+  // initializing the database
+  await databaseManager.database;
+  GetIt.I.registerSingleton<DatabaseManager>(databaseManager);
 }
 
 class App extends StatelessWidget {
