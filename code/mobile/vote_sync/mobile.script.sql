@@ -20,7 +20,7 @@ CREATE TABLE polling_station_elections (
     FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
 );
 
-CREATE TABLE electors (
+CREATE TABLE voters (
     id INTEGER PRIMARY KEY,
     nic TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
@@ -30,6 +30,19 @@ CREATE TABLE electors (
     polling_station_id INTEGER NOT NULL,
     FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
 );
-CREATE INDEX idx_electors_name ON electors(name);
-CREATE INDEX idx_electors_first_name ON electors(first_name);
-CREATE INDEX idx_electors_has_voted ON electors(has_voted);
+CREATE INDEX idx_voters_name ON voters(name);
+CREATE INDEX idx_voters_first_name ON voters(first_name);
+CREATE INDEX idx_voters_has_voted ON voters(has_voted);
+
+CREATE TABLE candidates (
+    id INTEGER PRIMARY KEY,
+    registration_id INTEGER NOT NULL,
+    registration_date TEXT NOT NULL,
+    candidate_number INTEGER NOT NULL,
+    information TEXT NOT NULL,
+    political_entity TEXT NOT NULL,
+    political_entity_description TEXT NOT NULL,
+    image_path TEXT NOT NULL,
+    polling_station_id INTEGER NOT NULL,
+    FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
+);

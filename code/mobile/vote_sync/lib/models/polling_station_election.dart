@@ -1,5 +1,7 @@
+import 'package:vote_sync/dto/election_dto.dart';
+
 class PollingStationElections {
-  final String id;
+  final int id;
   final String electionType;
   final String name;
   final String electionDate;
@@ -27,6 +29,19 @@ class PollingStationElections {
       registeredVoters: json['registered_voters'],
       electionDate: json['election_date'],
       pollingStationId: json['polling_station_id'],
+    );
+  }
+
+  factory PollingStationElections.fromDTO(ElectionDTO dto, int candidates,
+      int registeredVoters, int pollingStationId) {
+    return PollingStationElections(
+      id: dto.id,
+      electionType: dto.electionType,
+      name: dto.name,
+      candidates: candidates,
+      registeredVoters: registeredVoters,
+      electionDate: dto.electionDate,
+      pollingStationId: pollingStationId,
     );
   }
 

@@ -10,7 +10,9 @@ class LogInFormLogoWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       child: Center(
-        child: Image.asset("assets/images/logo.png"),
+        child: Image.asset(
+          "assets/images/logo.png",
+        ),
       ),
     );
   }

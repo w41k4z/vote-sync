@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/screens/log-in/log_in_page.dart';
-import 'package:vote_sync/services/api/auth_service.dart';
+import 'package:vote_sync/services/app_instance.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   void _handleLogout(BuildContext context) async {
-    await GetIt.I.get<AuthService>().logout();
+    await GetIt.I.get<AppInstance>().logout();
     if (!context.mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(

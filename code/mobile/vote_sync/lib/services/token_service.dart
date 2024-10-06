@@ -1,22 +1,18 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
+import 'package:vote_sync/services/secure_storage_service.dart';
 
 class TokenService {
   static const _tokenKey = "accessToken";
-  final _secureStorage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-  );
 
   Future<void> saveToken(String token) async {
-    await _secureStorage.write(key: _tokenKey, value: token);
+    await GetIt.I.get<SecureStorageService>().save(_tokenKey, token);
   }
 
   Future<String?> getToken() async {
-    return await _secureStorage.read(key: _tokenKey);
+    return await GetIt.I.get<SecureStorageService>().read(_tokenKey);
   }
 
   Future<void> clearToken() async {
-    await _secureStorage.delete(key: _tokenKey);
+    await GetIt.I.get<SecureStorageService>().delete(_tokenKey);
   }
 }

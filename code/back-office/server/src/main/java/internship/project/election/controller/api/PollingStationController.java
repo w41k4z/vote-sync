@@ -60,6 +60,7 @@ public class PollingStationController {
     public ResponseEntity<ApiResponse> getNearestPollingStations(@RequestBody NearestPollingStationRequest request) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("pollingStations", this.service.getNearestPollingStations(request));
+        data.put("elections", this.electionService.getCurrentElections());
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
@@ -67,7 +68,6 @@ public class PollingStationController {
     public ResponseEntity<ApiResponse> getPollingStationData(@PathVariable Integer electionId,
             @PathVariable Integer pollingStationId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("election", this.electionService.getElection(electionId));
         data.put("voters", this.voterService.getRegisteredVoters(electionId, pollingStationId));
         data.put("candidates", this.candidateService.getRegisteredCandidates(electionId, pollingStationId));
         return ResponseEntity.ok(new ApiResponse(data, null));

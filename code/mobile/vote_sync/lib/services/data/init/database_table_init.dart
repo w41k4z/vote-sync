@@ -24,14 +24,29 @@ class DatabaseTableInit {
     )
 ''';
 
-  static const String CREATE_ELECTOR_TABLE = '''
-    CREATE TABLE electors (
+  static const String CREATE_VOTER_TABLE = '''
+    CREATE TABLE voters (
         id INTEGER PRIMARY KEY,
         nic TEXT UNIQUE NOT NULL,
         name TEXT NOT NULL,
         first_name TEXT,
         gender INTEGER NOT NULL,
         has_voted INTEGER NOT NULL,
+        polling_station_id INTEGER NOT NULL,
+        FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
+    )
+  ''';
+
+  static const String CREATE_CANDIDATE_TABLE = '''
+    CREATE TABLE candidates (
+        id INTEGER PRIMARY KEY,
+        registration_id INTEGER NOT NULL,
+        registration_date TEXT NOT NULL,
+        candidate_number INTEGER NOT NULL,
+        information TEXT NOT NULL,
+        political_entity TEXT NOT NULL,
+        political_entity_description TEXT NOT NULL,
+        image_path TEXT NOT NULL,
         polling_station_id INTEGER NOT NULL,
         FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
     )

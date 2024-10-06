@@ -1,4 +1,4 @@
-class Elector {
+class Voter {
   final int id;
   final String nic;
   final String name;
@@ -6,7 +6,7 @@ class Elector {
   final int gender;
   final int hasVoted;
 
-  const Elector({
+  const Voter({
     required this.id,
     required this.nic,
     required this.name,
@@ -16,8 +16,8 @@ class Elector {
   });
 
   // Database mapping
-  factory Elector.fromJson(Map<String, dynamic> json) {
-    return Elector(
+  factory Voter.fromJson(Map<String, dynamic> json) {
+    return Voter(
       id: json['id'],
       nic: json['nic'],
       name: json['name'],
