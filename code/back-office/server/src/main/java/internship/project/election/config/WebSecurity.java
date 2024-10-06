@@ -95,6 +95,9 @@ public class WebSecurity {
                 // Admin endpoints
                 .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**")
                 .hasAuthority(Authority.ADMIN)
+                // PollingStationManager endpoints
+                .requestMatchers("/api/polling-stations/data/**")
+                .hasAnyAuthority(Authority.MANAGER, Authority.ADMIN)
                 // User endpoints
                 .anyRequest()
                 .authenticated();

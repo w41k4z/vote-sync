@@ -72,3 +72,12 @@ GROUP BY
     ec.chemin_photo,
     ec.date_enregistrement
 ;
+
+CREATE OR REPLACE VIEW electeurs_enregistres AS
+SELECT
+    e.*,
+    ee.id_election,
+    ee.id_bv
+FROM enregistrement_electeurs ee
+JOIN electeurs e
+    ON ee.id_electeur = e.id

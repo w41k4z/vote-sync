@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 
@@ -16,7 +17,10 @@ import internship.project.election.config.Pagination;
 import internship.project.election.dto.ApiResponse;
 import internship.project.election.dto.request.NearestPollingStationRequest;
 import internship.project.election.service.impl.domain.AdministrativeDivisionService;
+import internship.project.election.service.impl.domain.CandidateService;
+import internship.project.election.service.impl.domain.ElectionService;
 import internship.project.election.service.impl.domain.PollingStationService;
+import internship.project.election.service.impl.domain.VoterService;
 
 @RequestMapping("/api/polling-stations")
 @RestController
@@ -24,11 +28,18 @@ public class PollingStationController {
 
     private PollingStationService service;
     private AdministrativeDivisionService administrativeDivisionService;
+    private CandidateService candidateService;
+    private VoterService voterService;
+    private ElectionService electionService;
 
     public PollingStationController(PollingStationService service,
-            AdministrativeDivisionService administrativeDivisionService) {
+            AdministrativeDivisionService administrativeDivisionService,
+            CandidateService candidateService, VoterService voterService, ElectionService electionService) {
         this.service = service;
         this.administrativeDivisionService = administrativeDivisionService;
+        this.candidateService = candidateService;
+        this.voterService = voterService;
+        this.electionService = electionService;
     }
 
     @GetMapping
@@ -51,4 +62,15 @@ public class PollingStationController {
         data.put("pollingStations", this.service.getNearestPollingStations(request));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
+
+    @GetMapping("/data/{electionId}/{pollingStationId}")
+    public ResponseEntity<ApiResponse> getPollingStationData(@PathVariable Integer electionId,
+            @PathVariable Integer pollingStationId) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("election", this.electionService.getElection(electionId));
+        data.put("voters", this.voterService.getRegisteredVoters(electionId, pollingStationId));
+        data.put("candidates", this.candidateService.getRegisteredCandidates(electionId, pollingStationId));
+        return ResponseEntity.ok(new ApiResponse(data, null));
+    }
+
 }
