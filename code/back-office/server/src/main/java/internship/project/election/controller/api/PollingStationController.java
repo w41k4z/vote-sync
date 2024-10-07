@@ -12,10 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
+import java.util.List;
 
 import internship.project.election.config.Pagination;
 import internship.project.election.dto.ApiResponse;
 import internship.project.election.dto.request.NearestPollingStationRequest;
+import internship.project.election.model.Election;
+import internship.project.election.model.function.RegisteredCandidate;
+import internship.project.election.model.view.VPollingStation;
+import internship.project.election.model.view.VRegisteredVoter;
 import internship.project.election.service.impl.domain.AdministrativeDivisionService;
 import internship.project.election.service.impl.domain.CandidateService;
 import internship.project.election.service.impl.domain.ElectionService;
@@ -68,8 +73,23 @@ public class PollingStationController {
     public ResponseEntity<ApiResponse> getPollingStationData(@PathVariable Integer electionId,
             @PathVariable Integer pollingStationId) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("voters", this.voterService.getRegisteredVoters(electionId, pollingStationId));
-        data.put("candidates", this.candidateService.getRegisteredCandidates(electionId, pollingStationId));
+        Election election = this.electionService.getElection(electionId).get();
+        if (election == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse(null, "Election not found"));
+        }
+        VPollingStation pollingStation = this.service.getPollingStationById(pollingStationId).get();
+        if (pollingStation == null) {
+            return ResponseEntity.badRequest().body(new ApiResponse(null, "Polling station not found"));
+        }
+        List<VRegisteredVoter> voters = this.voterService.getRegisteredVoters(electionId, pollingStationId);
+        List<RegisteredCandidate> candidates = this.candidateService.getRegisteredCandidates(electionId,
+                pollingStationId);
+        election.setCandidates(candidates.size());
+        election.setVoters(voters.size());
+        data.put("pollingStation", pollingStation);
+        data.put("election", election);
+        data.put("voters", voters);
+        data.put("candidates", candidates);
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 

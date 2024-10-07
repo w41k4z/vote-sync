@@ -1,6 +1,7 @@
 package internship.project.election.service.impl.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -36,5 +37,9 @@ public class PollingStationService {
     public List<PollingStation> getNearestPollingStations(NearestPollingStationRequest request) {
         return this.pollingStationRepository.findNearbyPollingStations(request.getLatitude(), request.getLongitude(),
                 request.getRange());
+    }
+
+    public Optional<VPollingStation> getPollingStationById(Integer id) {
+        return this.viewRepository.findById(id);
     }
 }

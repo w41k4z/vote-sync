@@ -49,7 +49,7 @@ public class ElectionService {
         type.setId(request.getElectionTypeId());
         Election election = new Election(
                 type, request.getName(), Date.valueOf(request.getStartDate()), existingElection.get().getEndDate(),
-                existingElection.get().getState());
+                existingElection.get().getState(), 0, 0);
         election.setId(request.getId());
         return this.repository.save(election);
     }
