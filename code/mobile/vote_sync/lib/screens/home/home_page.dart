@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
+import 'package:vote_sync/config/page_content.dart';
 import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/polling_station_election.dart';
 import 'package:vote_sync/screens/home/home_page_card_info.dart';
@@ -51,8 +52,8 @@ class _HomePageState extends State<HomePage> {
     double bottomSheetHeight = Copyright.height;
     return Scaffold(
       appBar: AppBar(title: const Text('Accueil')),
+      drawer: const AppDrawer(activeItem: PageContent.HOME),
       bottomSheet: const Copyright(),
-      drawer: const AppDrawer(),
       backgroundColor: AppColors.neutralBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
               HomePageCardInfo(
                 iconData: Icons.people,
                 title: "Electeurs",
-                content: ["${election?.registeredVoters} électeurs"],
+                content: ["${pollingStation?.registeredVoters} électeurs"],
               ),
 
               // Bureau de vote

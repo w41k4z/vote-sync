@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
+import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/screens/candidates/candidate_page.dart';
+import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/screens/log-in/log_in_page.dart';
+import 'package:vote_sync/screens/result/result_page.dart';
+import 'package:vote_sync/screens/voters/registered_voters_page.dart';
+import 'package:vote_sync/screens/voters/voters_turnout_page.dart';
 import 'package:vote_sync/services/app_instance.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final String activeItem;
+
+  const AppDrawer({super.key, required this.activeItem});
 
   void _handleLogout(BuildContext context) async {
     await GetIt.I.get<AppInstance>().logout();
@@ -32,18 +40,117 @@ class AppDrawer extends StatelessWidget {
             ),
             child: null,
           ),
-          const ListTile(
-            title: Text('Home'),
-            onTap: null,
+          ListTile(
+            leading: Icon(
+              Icons.home,
+              color: activeItem == PageContent.HOME
+                  ? AppColors.primaryGreen
+                  : Colors.grey[400],
+            ),
+            title: Text(
+              'Accueil',
+              style: TextStyle(
+                color: activeItem == PageContent.HOME
+                    ? AppColors.primaryGreen
+                    : Colors.grey[400],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            },
           ),
-          const ListTile(
-            title: Text('Item 2'),
-            onTap: null,
+          ListTile(
+            leading: Icon(
+              Icons.person_add_alt,
+              color: activeItem == PageContent.REGISTERED_VOTERS
+                  ? AppColors.primaryGreen
+                  : Colors.grey[400],
+            ),
+            title: Text(
+              'Liste des inscrits',
+              style: TextStyle(
+                color: activeItem == PageContent.REGISTERED_VOTERS
+                    ? AppColors.primaryGreen
+                    : Colors.grey[400],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => const RegisteredVotersPage()),
+              );
+            },
           ),
+          ListTile(
+            leading: Icon(
+              Icons.how_to_reg,
+              color: activeItem == PageContent.CANDIDATES
+                  ? AppColors.primaryGreen
+                  : Colors.grey[400],
+            ),
+            title: Text(
+              'Liste des candidates',
+              style: TextStyle(
+                color: activeItem == PageContent.CANDIDATES
+                    ? AppColors.primaryGreen
+                    : Colors.grey[400],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const CandidatePage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.fact_check,
+              color: activeItem == PageContent.VOTERS_TURNOUT
+                  ? AppColors.primaryGreen
+                  : Colors.grey[400],
+            ),
+            title: Text(
+              'Enregistrement',
+              style: TextStyle(
+                color: activeItem == PageContent.VOTERS_TURNOUT
+                    ? AppColors.primaryGreen
+                    : Colors.grey[400],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => const VotersTurnoutPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.bar_chart,
+              color: activeItem == PageContent.RESULT
+                  ? AppColors.primaryGreen
+                  : Colors.grey[400],
+            ),
+            title: Text(
+              "Résultat",
+              style: TextStyle(
+                color: activeItem == PageContent.RESULT
+                    ? AppColors.primaryGreen
+                    : Colors.grey[400],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const ResultPage()),
+              );
+            },
+          ),
+          // Push the following items to the bottom
           Expanded(
-              child:
-                  Container()), // Force the next items to the bottom of the drawer
-          // add a divider between the items
+            child: Container(),
+          ),
           const Divider(
             color: Color.fromARGB(255, 219, 223, 219),
           ),
@@ -54,7 +161,6 @@ class AppDrawer extends StatelessWidget {
             ),
             title: const Text('Se deconnecter'),
             trailing: const Icon(
-              // a person running to the right
               Icons.directions_run_rounded,
               color: AppColors.redDanger,
             ),

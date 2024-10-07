@@ -7,6 +7,7 @@ class PollingStation {
   final String commune;
   final String district;
   final String region;
+  final int registeredVoters;
 
   const PollingStation({
     required this.id,
@@ -17,6 +18,7 @@ class PollingStation {
     required this.commune,
     required this.district,
     required this.region,
+    required this.registeredVoters,
   });
 
   // API mapping
@@ -30,6 +32,7 @@ class PollingStation {
       commune: json['commune'],
       district: json['district'],
       region: json['region'],
+      registeredVoters: json['registeredVoters'],
     );
   }
 
@@ -44,6 +47,7 @@ class PollingStation {
       commune: json['commune'],
       district: json['district'],
       region: json['region'],
+      registeredVoters: json['registered_voters'],
     );
   }
 
@@ -57,6 +61,7 @@ class PollingStation {
       'commune': commune,
       'district': district,
       'region': region,
+      'registered_voters': registeredVoters,
     };
   }
 }

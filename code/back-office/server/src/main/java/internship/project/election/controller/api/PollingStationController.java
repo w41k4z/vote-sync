@@ -85,7 +85,7 @@ public class PollingStationController {
         List<RegisteredCandidate> candidates = this.candidateService.getRegisteredCandidates(electionId,
                 pollingStationId);
         election.setCandidates(candidates.size());
-        election.setVoters(voters.size());
+        pollingStation.setVoters(voters.size());
         data.put("pollingStation", pollingStation);
         data.put("election", election);
         data.put("voters", voters);

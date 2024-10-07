@@ -4,7 +4,6 @@ class PollingStationElections {
   final String name;
   final String electionDate;
   final int candidates;
-  final int registeredVoters;
   final int pollingStationId;
 
   const PollingStationElections({
@@ -13,7 +12,6 @@ class PollingStationElections {
     required this.name,
     required this.electionDate,
     required this.candidates,
-    required this.registeredVoters,
     required this.pollingStationId,
   });
 
@@ -26,7 +24,6 @@ class PollingStationElections {
       name: json['name'],
       electionDate: json['startDate'],
       candidates: json['candidates'],
-      registeredVoters: json['voters'],
       pollingStationId: pollingStationId,
     );
   }
@@ -38,7 +35,6 @@ class PollingStationElections {
       electionType: json['election_type'],
       name: json['name'],
       candidates: json['candidates'],
-      registeredVoters: json['registered_voters'],
       electionDate: json['election_date'],
       pollingStationId: json['polling_station_id'],
     );
@@ -51,7 +47,6 @@ class PollingStationElections {
       'name': name,
       'election_date': electionDate,
       'candidates': candidates,
-      'registered_voters': registeredVoters,
       'polling_station_id': pollingStationId,
     };
   }

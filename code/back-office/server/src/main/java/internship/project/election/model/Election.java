@@ -39,7 +39,4 @@ public class Election extends AbstractEntity<Integer> {
 
     @Transient
     private Integer candidates;
-
-    @Transient
-    private Integer voters;
 }

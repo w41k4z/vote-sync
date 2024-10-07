@@ -163,7 +163,7 @@ class _LogInPageState extends State<LogInPage> {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => const HomePage(),
         ),
       );
     } on DioException catch (e) {

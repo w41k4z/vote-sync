@@ -8,7 +8,8 @@ class DatabaseTableInit {
         fokontany TEXT NOT NULL,
         commune TEXT NOT NULL,
         district TEXT NOT NULL,
-        region TEXT NOT NULL
+        region TEXT NOT NULL,
+        registered_voters INTEGER NOT NULL,
     )
   ''';
   static const String CREATE_POLLING_STATION_ELECTION_TABLE = '''
@@ -18,7 +19,6 @@ class DatabaseTableInit {
         name TEXT NOT NULL,
         election_date TEXT NOT NULL,
         candidates INTEGER NOT NULL,
-        registered_voters INTEGER NOT NULL,
         polling_station_id INTEGER NOT NULL,
         FOREIGN KEY (polling_station_id) REFERENCES polling_stations (id)
     )

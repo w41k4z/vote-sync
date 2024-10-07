@@ -10,8 +10,8 @@ import 'package:vote_sync/services/data/domain/candidate_domain_service.dart';
 import 'package:vote_sync/services/data/domain/election_domain_service.dart';
 import 'package:vote_sync/services/data/domain/polling_station_domain_service.dart';
 import 'package:vote_sync/services/data/domain/voter_domain_service.dart';
-import 'package:vote_sync/services/data/init/database_index_init.dart';
-import 'package:vote_sync/services/data/init/database_table_init.dart';
+import 'package:vote_sync/config/init/database_index_init.dart';
+import 'package:vote_sync/config/init/database_table_init.dart';
 
 class DatabaseManager {
   static const _databaseVersion = 1;
