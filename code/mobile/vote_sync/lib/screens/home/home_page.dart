@@ -1,83 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
+import 'package:vote_sync/models/polling_station.dart';
+import 'package:vote_sync/models/polling_station_election.dart';
 import 'package:vote_sync/screens/home/home_page_card_info.dart';
+import 'package:vote_sync/services/app_instance.dart';
+import 'package:vote_sync/services/data/database_manager.dart';
+import 'package:vote_sync/services/data/domain/election_domain_service.dart';
+import 'package:vote_sync/services/data/domain/polling_station_domain_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  PollingStation? pollingStation;
+  PollingStationElections? election;
+
+  @override
+  void initState() {
+    super.initState();
+    _getPollingStationAndElection();
+  }
+
+  Future<void> _getPollingStationAndElection() async {
+    final appInstance = GetIt.I.get<AppInstance>();
+    Database database = await GetIt.I.get<DatabaseManager>().database;
+    String pollingStationId = appInstance.getPollingStationId();
+    String electionId = appInstance.getElectionId();
+    final storedPollingStation = await GetIt.I
+        .get<PollingStationDomainService>()
+        .findById(database, int.parse(pollingStationId));
+    final storedElection = await GetIt.I
+        .get<ElectionDomainService>()
+        .findById(database, int.parse(electionId));
+    setState(() {
+      pollingStation = storedPollingStation;
+      election = storedElection;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    double bottomSheetHeight = 35;
+    double bottomSheetHeight = Copyright.height;
     return Scaffold(
       appBar: AppBar(title: const Text('Accueil')),
       bottomSheet: const Copyright(),
       drawer: const AppDrawer(),
       backgroundColor: AppColors.neutralBackgroundColor,
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               // Information election
               HomePageCardInfo(
                 iconData: Icons.how_to_vote,
-                title: "Election municipale 2024",
-                content: ["Type: Locale", "Date: 05 Décembre 2024"],
+                title: "${election?.name}",
+                content: [
+                  "Type: ${election?.electionType}",
+                  "Date: ${election?.electionDate}"
+                ],
               ),
 
               // Participants (Candidats et electeurs)
               HomePageCardInfo(
                 iconData: Icons.person_pin_rounded,
                 title: "Candidats",
-                content: ["5 candidats"],
+                content: ["${election?.candidates} candidats"],
               ),
 
               HomePageCardInfo(
                 iconData: Icons.people,
                 title: "Electeurs",
-                content: ["10 électeurs"],
+                content: ["${election?.registeredVoters} électeurs"],
               ),
 
               // Bureau de vote
               HomePageCardInfo(
                 iconData: Icons.location_on,
                 title: "Bureau de vote",
-                content: ["Lycée Technique Alarobia S10"],
+                content: ["${pollingStation?.name}"],
               ),
 
               // Fokontany
               HomePageCardInfo(
                 iconData: Icons.home,
                 title: "Fokontany",
-                content: ["Ivandry"],
+                content: ["${pollingStation?.fokontany}"],
               ),
 
               // Commune
               HomePageCardInfo(
                 iconData: Icons.map_outlined,
                 title: "Commune",
-                content: ["4e Arrondissement"],
+                content: ["${pollingStation?.commune}"],
               ),
 
               // District
               HomePageCardInfo(
                 iconData: Icons.location_searching_sharp,
                 title: "District",
-                content: ["Antananarivo IV"],
+                content: ["${pollingStation?.district}"],
               ),
 
               // Region
               HomePageCardInfo(
                 iconData: Icons.public,
                 title: "Région",
-                content: ["Analamanga"],
+                content: ["${pollingStation?.region}"],
               ),
 
               SizedBox(height: bottomSheetHeight),
