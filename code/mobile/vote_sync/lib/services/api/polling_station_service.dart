@@ -3,6 +3,10 @@ import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/endpoints.dart';
 import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/dto/election_dto.dart';
+import 'package:vote_sync/models/candidate.dart';
+import 'package:vote_sync/models/polling_station.dart';
+import 'package:vote_sync/models/polling_station_election.dart';
+import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
 import 'package:vote_sync/services/location_service.dart';
 
@@ -43,6 +47,26 @@ class PollingStationService extends ApiCallService {
       int pollingStationId, int electionId) async {
     final response = await getCall(
         '$pollingStationEndpoint/data/$electionId/$pollingStationId');
-    return response.data["payload"];
+    final payload = response.data["payload"];
+    PollingStation pollingStation =
+        PollingStation.fromJson(payload["pollingStation"]);
+    PollingStationElections election = PollingStationElections.fromJson(
+        payload["election"], pollingStation.id);
+    List<Voter> voters = [];
+    payload["voters"].forEach((rawVoter) {
+      Voter voter = Voter.fromJson(rawVoter);
+      voters.add(voter);
+    });
+    List<Candidate> candidates = [];
+    payload["candidates"].forEach((rawCandidate) {
+      Candidate candidate = Candidate.fromJson(rawCandidate, pollingStation.id);
+      candidates.add(candidate);
+    });
+    return {
+      "pollingStation": pollingStation,
+      "election": election,
+      "voters": voters,
+      "candidates": candidates
+    };
   }
 }

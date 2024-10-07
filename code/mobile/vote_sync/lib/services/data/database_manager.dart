@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:vote_sync/dto/election_dto.dart';
-import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/polling_station_election.dart';
@@ -27,6 +25,8 @@ class DatabaseManager {
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
+    await deleteDatabase(path);
+    print("Database deleted");
     return openDatabase(
       path,
       version: _databaseVersion,
@@ -56,10 +56,10 @@ class DatabaseManager {
   }
 
   Future<void> populateDatabase(
-    PollingStationDTO pollingStationDTO,
-    ElectionDTO electionDTO,
-    List<Map<String, dynamic>> voters,
-    List<Map<String, dynamic>> candidates,
+    PollingStation pollingStation,
+    PollingStationElections election,
+    List<Voter> voters,
+    List<Candidate> candidates,
   ) async {
     Database databaseInstance = await database;
     await GetIt.I
@@ -68,12 +68,10 @@ class DatabaseManager {
     await GetIt.I
         .get<ElectionDomainService>()
         .create(databaseInstance, election);
-    List<Voter> voters = votersAndCandidates["voters"];
     VoterDomainService voterDomainService = GetIt.I.get<VoterDomainService>();
     for (Voter voter in voters) {
       await voterDomainService.create(databaseInstance, voter);
     }
-    List<Candidate> candidates = votersAndCandidates["candidates"];
     CandidateDomainService candidateDomainService =
         GetIt.I.get<CandidateDomainService>();
     for (Candidate candidate in candidates) {

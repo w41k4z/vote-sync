@@ -15,8 +15,20 @@ class Voter {
     required this.hasVoted,
   });
 
-  // Database mapping
+  // API mapping
   factory Voter.fromJson(Map<String, dynamic> json) {
+    return Voter(
+      id: json['id'],
+      nic: json['nic'],
+      name: json['name'],
+      firstName: json['firstName'],
+      gender: json['gender'],
+      hasVoted: 0,
+    );
+  }
+
+  // Database mapping
+  factory Voter.fromMap(Map<String, dynamic> json) {
     return Voter(
       id: json['id'],
       nic: json['nic'],

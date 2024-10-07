@@ -18,7 +18,7 @@ class PollingStationDomainService {
       whereArgs: [pollingStationId],
     );
     if (maps.isNotEmpty) {
-      return PollingStation.fromJson(maps.first);
+      return PollingStation.fromMap(maps.first);
     }
     return null;
   }

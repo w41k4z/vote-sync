@@ -21,8 +21,23 @@ class Candidate {
     required this.pollingStationId,
   });
 
+  // API mapping
+  factory Candidate.fromJson(Map<String, dynamic> json, int pollingStationId) {
+    return Candidate(
+      id: json['id'],
+      registrationId: json['registrationId'],
+      registrationDate: json['registrationDate'],
+      candidateNumber: json['candidateNumber'],
+      information: json['information'],
+      politicalEntity: json['politicalEntity'],
+      politicalEntityDescription: json['politicalEntityDescription'],
+      imagePath: json['imagePath'],
+      pollingStationId: pollingStationId,
+    );
+  }
+
   // Database mapping
-  factory Candidate.fromJson(Map<String, dynamic> json) {
+  factory Candidate.fromMap(Map<String, dynamic> json) {
     return Candidate(
       id: json['id'],
       registrationId: json['registration_id'],

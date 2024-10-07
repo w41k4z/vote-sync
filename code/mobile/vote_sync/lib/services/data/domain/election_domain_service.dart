@@ -20,7 +20,7 @@ class ElectionDomainService {
       whereArgs: [pollingStationElectionId],
     );
     if (maps.isNotEmpty) {
-      return PollingStationElections.fromJson(maps.first);
+      return PollingStationElections.fromMap(maps.first);
     }
     return null;
   }

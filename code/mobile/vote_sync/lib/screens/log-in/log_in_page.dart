@@ -146,6 +146,8 @@ class _LogInPageState extends State<LogInPage> {
             GetIt.I.get<PollingStationService>();
         final data = await pollingStationService.getPollingStationData(
             pollingStationDTO.id, int.parse(electionDTO.id.toString()));
+        await databaseManager.populateDatabase(data["pollingStation"],
+            data["election"], data["voters"], data["candidates"]);
       }
 
       // Removes flutter lint warning about context usage with async call

@@ -19,8 +19,22 @@ class PollingStation {
     required this.region,
   });
 
-  // Database mapping
+  // API mapping
   factory PollingStation.fromJson(Map<String, dynamic> json) {
+    return PollingStation(
+      id: json['id'],
+      code: json['pollingStationCode'],
+      name: json['pollingStation'],
+      voteCenter: json['votingCenter'],
+      fokontany: json['fokontany'],
+      commune: json['commune'],
+      district: json['district'],
+      region: json['region'],
+    );
+  }
+
+  // Database mapping
+  factory PollingStation.fromMap(Map<String, dynamic> json) {
     return PollingStation(
       id: json['id'],
       code: json['code'],

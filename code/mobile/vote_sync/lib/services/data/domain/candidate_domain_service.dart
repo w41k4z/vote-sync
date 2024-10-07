@@ -13,7 +13,7 @@ class CandidateDomainService {
   Future<List<Candidate>> findAll(Database database) async {
     final List<Map<String, dynamic>> maps = await database.query('candidates');
     return List.generate(maps.length, (i) {
-      return Candidate.fromJson(maps[i]);
+      return Candidate.fromMap(maps[i]);
     });
   }
 }

@@ -1,5 +1,3 @@
-import 'package:vote_sync/dto/election_dto.dart';
-
 class PollingStationElections {
   final int id;
   final String electionType;
@@ -19,8 +17,22 @@ class PollingStationElections {
     required this.pollingStationId,
   });
 
+  // API mapping
+  factory PollingStationElections.fromJson(
+      Map<String, dynamic> json, int pollingStationId) {
+    return PollingStationElections(
+      id: json['id'],
+      electionType: json['type']["type"],
+      name: json['name'],
+      electionDate: json['startDate'],
+      candidates: json['candidates'],
+      registeredVoters: json['voters'],
+      pollingStationId: pollingStationId,
+    );
+  }
+
   // Database mapping
-  factory PollingStationElections.fromJson(Map<String, dynamic> json) {
+  factory PollingStationElections.fromMap(Map<String, dynamic> json) {
     return PollingStationElections(
       id: json['id'],
       electionType: json['election_type'],
@@ -29,19 +41,6 @@ class PollingStationElections {
       registeredVoters: json['registered_voters'],
       electionDate: json['election_date'],
       pollingStationId: json['polling_station_id'],
-    );
-  }
-
-  factory PollingStationElections.fromDTO(ElectionDTO dto, int candidates,
-      int registeredVoters, int pollingStationId) {
-    return PollingStationElections(
-      id: dto.id,
-      electionType: dto.electionType,
-      name: dto.name,
-      candidates: candidates,
-      registeredVoters: registeredVoters,
-      electionDate: dto.electionDate,
-      pollingStationId: pollingStationId,
     );
   }
 

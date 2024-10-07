@@ -21,8 +21,7 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.backgroundColor,
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
@@ -41,6 +40,9 @@ class AppDrawer extends StatelessWidget {
             title: Text('Item 2'),
             onTap: null,
           ),
+          Expanded(
+              child:
+                  Container()), // Force the next items to the bottom of the drawer
           // add a divider between the items
           const Divider(
             color: Color.fromARGB(255, 219, 223, 219),
