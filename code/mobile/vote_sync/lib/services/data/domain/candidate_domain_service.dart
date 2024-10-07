@@ -2,8 +2,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/models/candidate.dart';
 
 class CandidateDomainService {
-  Future<void> create(Database database, Candidate candidate) async {
-    await database.insert(
+  Future<void> create(Transaction tsx, Candidate candidate) async {
+    await tsx.insert(
       "candidates",
       candidate.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,

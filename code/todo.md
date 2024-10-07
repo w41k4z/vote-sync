@@ -1,2 +1,5 @@
 - Mobile App Error Handling (0%)
+	- Request time out should be handled (unreachable host)
+	- Localisation activation on the login page should be handled
+	- Global error handling to avoid crash
 - Flutter does not have a way to parse response data from API directly to a dart object, so careful when changing the ApiResponse structure

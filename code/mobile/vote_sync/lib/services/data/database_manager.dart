@@ -25,8 +25,6 @@ class DatabaseManager {
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
-    await deleteDatabase(path);
-    print("Database deleted");
     return openDatabase(
       path,
       version: _databaseVersion,
@@ -62,20 +60,20 @@ class DatabaseManager {
     List<Candidate> candidates,
   ) async {
     Database databaseInstance = await database;
-    await GetIt.I
-        .get<PollingStationDomainService>()
-        .create(databaseInstance, pollingStation);
-    await GetIt.I
-        .get<ElectionDomainService>()
-        .create(databaseInstance, election);
-    VoterDomainService voterDomainService = GetIt.I.get<VoterDomainService>();
-    for (Voter voter in voters) {
-      await voterDomainService.create(databaseInstance, voter);
-    }
-    CandidateDomainService candidateDomainService =
-        GetIt.I.get<CandidateDomainService>();
-    for (Candidate candidate in candidates) {
-      await candidateDomainService.create(databaseInstance, candidate);
-    }
+    await databaseInstance.transaction((tsx) async {
+      await GetIt.I
+          .get<PollingStationDomainService>()
+          .create(tsx, pollingStation);
+      await GetIt.I.get<ElectionDomainService>().create(tsx, election);
+      VoterDomainService voterDomainService = GetIt.I.get<VoterDomainService>();
+      for (Voter voter in voters) {
+        await voterDomainService.create(tsx, voter);
+      }
+      CandidateDomainService candidateDomainService =
+          GetIt.I.get<CandidateDomainService>();
+      for (Candidate candidate in candidates) {
+        await candidateDomainService.create(tsx, candidate);
+      }
+    });
   }
 }

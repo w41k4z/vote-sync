@@ -54,7 +54,7 @@ class PollingStationService extends ApiCallService {
         payload["election"], pollingStation.id);
     List<Voter> voters = [];
     payload["voters"].forEach((rawVoter) {
-      Voter voter = Voter.fromJson(rawVoter);
+      Voter voter = Voter.fromJson(rawVoter, pollingStation.id);
       voters.add(voter);
     });
     List<Candidate> candidates = [];

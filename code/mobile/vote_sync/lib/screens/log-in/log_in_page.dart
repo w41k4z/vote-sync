@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -89,11 +91,17 @@ class _LogInPageState extends State<LogInPage> {
         context.loaderOverlay.hide();
       });
     } on DioException catch (e) {
-      if (!mounted) return;
-      context.loaderOverlay.hide();
+      log(e.toString());
       if (e.type == DioExceptionType.connectionError) {
         _showInternetAccessErrorDialog();
+      } else {
+        _showSnackBarError(e.toString());
       }
+    } catch (e) {
+      log(e.toString());
+      _showSnackBarError(e.toString());
+    } finally {
+      if (mounted) context.loaderOverlay.hide();
     }
   }
 

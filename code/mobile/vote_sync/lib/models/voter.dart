@@ -5,6 +5,7 @@ class Voter {
   final String firstName;
   final int gender;
   final int hasVoted;
+  final int pollingStationId;
 
   const Voter({
     required this.id,
@@ -13,10 +14,11 @@ class Voter {
     required this.firstName,
     required this.gender,
     required this.hasVoted,
+    required this.pollingStationId,
   });
 
   // API mapping
-  factory Voter.fromJson(Map<String, dynamic> json) {
+  factory Voter.fromJson(Map<String, dynamic> json, int pollingStationId) {
     return Voter(
       id: json['id'],
       nic: json['nic'],
@@ -24,6 +26,7 @@ class Voter {
       firstName: json['firstName'],
       gender: json['gender'],
       hasVoted: 0,
+      pollingStationId: pollingStationId,
     );
   }
 
@@ -36,6 +39,7 @@ class Voter {
       firstName: json['first_name'],
       gender: json['gender'],
       hasVoted: json['has_voted'],
+      pollingStationId: json['polling_station_id'],
     );
   }
 
@@ -47,6 +51,7 @@ class Voter {
       'first_name': firstName,
       'gender': gender,
       'has_voted': hasVoted,
+      'polling_station_id': pollingStationId,
     };
   }
 }

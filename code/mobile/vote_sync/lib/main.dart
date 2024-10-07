@@ -66,42 +66,42 @@ class App extends StatelessWidget {
         appInstance.isPollingStationIdSet() &&
         appInstance.isElectionIdSet();
     final pageDestination = hasAccess ? const HomePage() : const LogInPage();
-    return MaterialApp(
-      title: 'VoteSync',
-      theme: ThemeData(
-        primaryColor: AppColors.primaryGreen,
-        colorScheme: const ColorScheme.light(
-          primary: AppColors.primaryGreen,
-          secondary: AppColors.secondaryWhite,
+    return GlobalLoaderOverlay(
+      overlayWidgetBuilder: (_) {
+        return const Center(
+          child: SpinKitWaveSpinner(
+            size: 75.0,
+            color: Colors.white,
+            waveColor: AppColors.primaryGreen,
+          ),
+        );
+      },
+      child: MaterialApp(
+        title: 'VoteSync',
+        theme: ThemeData(
+          primaryColor: AppColors.primaryGreen,
+          colorScheme: const ColorScheme.light(
+            primary: AppColors.primaryGreen,
+            secondary: AppColors.secondaryWhite,
+          ),
+          scaffoldBackgroundColor: AppColors.backgroundColor,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.primaryGreen,
+            foregroundColor: AppColors.backgroundColor,
+          ),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey[400],
+            backgroundColor: Colors.white,
+          ),
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.white,
+            selectionColor: Colors.grey,
+            selectionHandleColor: Colors.white,
+          ),
         ),
-        scaffoldBackgroundColor: AppColors.backgroundColor,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.primaryGreen,
-          foregroundColor: AppColors.backgroundColor,
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey[400],
-          backgroundColor: Colors.white,
-        ),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Colors.white,
-          selectionColor: Colors.grey,
-          selectionHandleColor: Colors.white,
-        ),
-      ),
-      home: LoaderOverlay(
-        overlayWidgetBuilder: (_) {
-          return const Center(
-            child: SpinKitWaveSpinner(
-              size: 75.0,
-              color: AppColors.primaryGreen,
-              waveColor: AppColors.primaryGreen,
-            ),
-          );
-        },
-        child: pageDestination,
+        home: pageDestination,
       ),
     );
   }
