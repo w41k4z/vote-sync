@@ -65,7 +65,7 @@ class App extends StatelessWidget {
     bool hasAccess = appInstance.isUserAuthenticated() &&
         appInstance.isPollingStationIdSet() &&
         appInstance.isElectionIdSet();
-    final pageDestination = hasAccess ? const HomePage() : const LogInPage();
+    final pageDestination = hasAccess ? HomePage() : const LogInPage();
     return GlobalLoaderOverlay(
       overlayWidgetBuilder: (_) {
         return const Center(

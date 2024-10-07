@@ -7,7 +7,7 @@ class PollingStationElections {
   final int registeredVoters;
   final int pollingStationId;
 
-  PollingStationElections({
+  const PollingStationElections({
     required this.id,
     required this.electionType,
     required this.name,

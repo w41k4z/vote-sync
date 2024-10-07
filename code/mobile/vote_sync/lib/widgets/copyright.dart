@@ -8,15 +8,14 @@ class Copyright extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primaryGreen,
-      child: const Column(
-        children: [
-          // Copyright text
-          Text(
-            '© 2024 CENI Madagascar',
-            style: TextStyle(color: Colors.white),
+      height: 35,
+      child: const Center(
+        child: Text(
+          '© 2024 CENI Madagascar',
+          style: TextStyle(
+            color: Colors.white,
           ),
-          SizedBox(height: 20),
-        ],
+        ),
       ),
     );
   }
