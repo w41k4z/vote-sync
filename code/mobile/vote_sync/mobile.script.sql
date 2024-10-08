@@ -28,6 +28,7 @@ CREATE TABLE voters (
     gender INTEGER NOT NULL,
     has_voted INTEGER NOT NULL -- 0: No, 1: Yes,
     polling_station_id INTEGER NOT NULL,
+    registration_date TEXT,
     FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
 );
 CREATE INDEX idx_voters_name ON voters(name);

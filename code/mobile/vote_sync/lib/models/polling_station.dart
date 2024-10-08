@@ -1,15 +1,15 @@
 class PollingStation {
-  final int id;
-  final String code;
-  final String name;
-  final String voteCenter;
-  final String fokontany;
-  final String commune;
-  final String district;
-  final String region;
-  final int registeredVoters;
+  int id;
+  String code;
+  String name;
+  String voteCenter;
+  String fokontany;
+  String commune;
+  String district;
+  String region;
+  int registeredVoters;
 
-  const PollingStation({
+  PollingStation({
     required this.id,
     required this.code,
     required this.name,

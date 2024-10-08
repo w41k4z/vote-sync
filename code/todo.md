@@ -5,3 +5,4 @@
 - Flutter does not have a way to parse response data from API directly to a dart object, so careful when changing the ApiResponse structure
 - Remove refresh token for CCID and manager (make CCID token expiration to something higher, like 7 days)
 - Server logging
+- Mobile app permission requesting logic (request all, one after another, at once)

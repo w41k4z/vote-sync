@@ -12,7 +12,7 @@ class HomePageCardInfo extends StatelessWidget {
 
   const HomePageCardInfo({
     super.key,
-    this.color = AppColors.cardGreyBackground,
+    this.color = Colors.white,
     required this.iconData,
     this.iconColor = AppColors.primaryGreen,
     required this.title,

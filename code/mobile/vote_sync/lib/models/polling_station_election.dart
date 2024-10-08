@@ -1,12 +1,12 @@
 class PollingStationElections {
-  final int id;
-  final String electionType;
-  final String name;
-  final String electionDate;
-  final int candidates;
-  final int pollingStationId;
+  int id;
+  String electionType;
+  String name;
+  String electionDate;
+  int candidates;
+  int pollingStationId;
 
-  const PollingStationElections({
+  PollingStationElections({
     required this.id,
     required this.electionType,
     required this.name,

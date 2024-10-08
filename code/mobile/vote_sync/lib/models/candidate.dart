@@ -1,15 +1,15 @@
 class Candidate {
-  final int id;
-  final int registrationId;
-  final String registrationDate;
-  final int candidateNumber;
-  final String information;
-  final String politicalEntity;
-  final String politicalEntityDescription;
-  final String imagePath;
-  final int pollingStationId;
+  int id;
+  int registrationId;
+  String registrationDate;
+  int candidateNumber;
+  String information;
+  String politicalEntity;
+  String politicalEntityDescription;
+  String imagePath;
+  int pollingStationId;
 
-  const Candidate({
+  Candidate({
     required this.id,
     required this.registrationId,
     required this.registrationDate,

@@ -33,6 +33,7 @@ class DatabaseTableInit {
         gender INTEGER NOT NULL,
         has_voted INTEGER NOT NULL,
         polling_station_id INTEGER NOT NULL,
+        registration_date TEXT,
         FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
     )
   ''';

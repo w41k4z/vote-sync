@@ -1,10 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:vote_sync/config/app_colors.dart';
+import 'package:vote_sync/config/env.dart';
 import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/models/voter.dart';
+import 'package:vote_sync/services/data/database_manager.dart';
+import 'package:vote_sync/services/data/domain/voter_domain_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
-class RegisteredVotersPage extends StatelessWidget {
+class RegisteredVotersPage extends StatefulWidget {
   const RegisteredVotersPage({super.key});
+
+  @override
+  State<RegisteredVotersPage> createState() => _RegisteredVotersPageState();
+}
+
+class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
+  List<Voter> voters = [];
+  String nicFilter = '';
+  int currentPage = 1;
+  int totalPages = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _getRegisteredVoters();
+  }
+
+  Future<void> _filter(int page, String nic) async {
+    Database databaseInstance = await GetIt.I.get<DatabaseManager>().database;
+    Map<String, dynamic> result = await GetIt.I
+        .get<VoterDomainService>()
+        .findRegisteredVoters(
+            databaseInstance, 0, page, Env.DEFAULT_PAGE_SIZE, nic);
+    List<Voter> registeredVoters = result['voters'];
+    int pages = result['totalPages'];
+    setState(() {
+      currentPage = page;
+      voters = registeredVoters;
+      totalPages = pages;
+      nicFilter = nic;
+    });
+  }
+
+  void _getRegisteredVoters() async {
+    await _filter(currentPage, nicFilter);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +57,101 @@ class RegisteredVotersPage extends StatelessWidget {
       ),
       drawer: const AppDrawer(activeItem: PageContent.REGISTERED_VOTERS),
       bottomSheet: const Copyright(),
-      body: const Center(
-        child: Text('Electeurs inscrits'),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (newValue) {
+                _filter(1, newValue);
+              },
+              decoration: InputDecoration(
+                hintText: 'Rechercher par identifiant CIN',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: voters.length,
+              itemBuilder: (context, index) {
+                final voter = voters[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 5.0,
+                  ),
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      backgroundColor: AppColors.primaryGreen,
+                      child: Icon(
+                        Icons.person,
+                        color: AppColors.backgroundColor,
+                      ),
+                    ),
+                    title: Text('${voter.firstName} ${voter.name}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )),
+                    subtitle: Text('CIN: ${voter.nic}'),
+                    trailing: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryGreen,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Action on button press (register voter)
+                      },
+                      child: const Text('Enregistrer'),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    int page =
+                        currentPage - 1 > 0 ? currentPage - 1 : totalPages;
+                    _filter(page, nicFilter);
+                  },
+                ),
+                Text(
+                  'Page $currentPage / $totalPages',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: () {
+                    int page =
+                        currentPage + 1 <= totalPages ? currentPage + 1 : 1;
+                    _filter(page, nicFilter);
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: Copyright.height,
+          )
+        ],
       ),
     );
   }

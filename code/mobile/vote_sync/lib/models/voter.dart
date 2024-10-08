@@ -1,13 +1,14 @@
 class Voter {
-  final int id;
-  final String nic;
-  final String name;
-  final String firstName;
-  final int gender;
-  final int hasVoted;
-  final int pollingStationId;
+  int id;
+  String nic;
+  String name;
+  String? firstName;
+  int gender;
+  int hasVoted;
+  int pollingStationId;
+  String? registrationDate; // Voting date
 
-  const Voter({
+  Voter({
     required this.id,
     required this.nic,
     required this.name,
@@ -15,6 +16,7 @@ class Voter {
     required this.gender,
     required this.hasVoted,
     required this.pollingStationId,
+    this.registrationDate,
   });
 
   // API mapping
@@ -40,6 +42,7 @@ class Voter {
       gender: json['gender'],
       hasVoted: json['has_voted'],
       pollingStationId: json['polling_station_id'],
+      registrationDate: json['registration_date'],
     );
   }
 
@@ -52,6 +55,7 @@ class Voter {
       'gender': gender,
       'has_voted': hasVoted,
       'polling_station_id': pollingStationId,
+      'registration_date': registrationDate,
     };
   }
 }
