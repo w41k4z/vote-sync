@@ -5,7 +5,6 @@ import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/polling_station_election.dart';
 import 'package:vote_sync/models/voter.dart';
-import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/data/domain/candidate_domain_service.dart';
 import 'package:vote_sync/services/data/domain/election_domain_service.dart';
 import 'package:vote_sync/services/data/domain/polling_station_domain_service.dart';
@@ -44,12 +43,11 @@ class DatabaseManager {
   }
 
   // Care to call this method after granting access to the app
-  Future<bool> isDatabasePopulated() async {
-    String pollingStationId = GetIt.I.get<AppInstance>().getPollingStationId();
+  Future<bool> isDatabasePopulated(int pollingStationId) async {
     Database databaseInstance = await database;
     PollingStation? pollingStation = await GetIt.I
         .get<PollingStationDomainService>()
-        .findById(databaseInstance, int.parse(pollingStationId));
+        .findById(databaseInstance, pollingStationId);
     return pollingStation != null;
   }
 

@@ -126,6 +126,7 @@ class _LogInPageState extends State<LogInPage> {
   void _handleFormSubmit() async {
     context.loaderOverlay.show();
     AuthService authService = GetIt.I.get<AuthService>();
+    AppInstance appInstance = GetIt.I.get<AppInstance>();
     if (selectedPollingStationCode.isEmpty ||
         password.isEmpty ||
         selectedElectionId.isEmpty) {
@@ -142,11 +143,12 @@ class _LogInPageState extends State<LogInPage> {
 
       // Granting access by setting the access token and polling station id
       // to the app instance
-      await GetIt.I.get<AppInstance>().grantAccess(
+      await appInstance.grantAccess(
           accessToken, pollingStationDTO.id.toString(), selectedElectionId);
 
       DatabaseManager databaseManager = GetIt.I.get<DatabaseManager>();
-      bool isDatabasePopulated = await databaseManager.isDatabasePopulated();
+      bool isDatabasePopulated =
+          await databaseManager.isDatabasePopulated(pollingStationDTO.id);
 
       if (!isDatabasePopulated) {
         // Fetching the polling station data
@@ -167,6 +169,7 @@ class _LogInPageState extends State<LogInPage> {
         ),
       );
     } on DioException catch (e) {
+      appInstance.logout();
       if (!mounted) return;
       _showSnackBarError(e.response?.data["message"]);
     } finally {

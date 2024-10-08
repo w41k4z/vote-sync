@@ -9,7 +9,7 @@ class DatabaseTableInit {
         commune TEXT NOT NULL,
         district TEXT NOT NULL,
         region TEXT NOT NULL,
-        registered_voters INTEGER NOT NULL,
+        registered_voters INTEGER NOT NULL
     )
   ''';
   static const String CREATE_POLLING_STATION_ELECTION_TABLE = '''

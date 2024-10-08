@@ -32,7 +32,7 @@ class PollingStation {
       commune: json['commune'],
       district: json['district'],
       region: json['region'],
-      registeredVoters: json['registeredVoters'],
+      registeredVoters: json['voters'],
     );
   }
 
