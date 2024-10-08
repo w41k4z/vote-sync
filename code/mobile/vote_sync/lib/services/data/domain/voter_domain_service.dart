@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:sqflite/sqflite.dart';
+import 'package:vote_sync/config/env.dart';
 import 'package:vote_sync/models/voter.dart';
 
 class VoterDomainService {
@@ -19,12 +20,18 @@ class VoterDomainService {
     });
   }
 
-  Future<Map<String, dynamic>> findRegisteredVoters(
-      Database database, int hasVoted, int page, int size, String nic) async {
+  Future<Map<String, dynamic>> findRegisteredVoters({
+    required Database database,
+    int hasVoted = 0,
+    String condition = "=",
+    int page = 1,
+    int size = Env.DEFAULT_PAGE_SIZE,
+    String nic = "",
+  }) async {
     final offset = (page - 1) * size;
-    String rawQuery = 'SELECT * FROM voters WHERE has_voted = ?';
+    String rawQuery = 'SELECT * FROM voters WHERE has_voted $condition ?';
     String rawCountQuery =
-        'SELECT COUNT(*) AS voters FROM voters WHERE has_voted = ?';
+        'SELECT COUNT(*) AS voters FROM voters WHERE has_voted $condition ?';
     List<dynamic> arguments = [hasVoted];
     List<dynamic> countArguments = [hasVoted];
     if (nic.isNotEmpty) {

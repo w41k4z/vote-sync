@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/config/env.dart';
 import 'package:vote_sync/config/page_content.dart';
 import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/services/data/database_manager.dart';
@@ -33,8 +32,7 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
     Database databaseInstance = await GetIt.I.get<DatabaseManager>().database;
     Map<String, dynamic> result = await GetIt.I
         .get<VoterDomainService>()
-        .findRegisteredVoters(
-            databaseInstance, 0, page, Env.DEFAULT_PAGE_SIZE, nic);
+        .findRegisteredVoters(database: databaseInstance, page: page, nic: nic);
     List<Voter> registeredVoters = result['voters'];
     int pages = result['totalPages'];
     setState(() {
