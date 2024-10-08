@@ -78,45 +78,15 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: voters.length,
-              itemBuilder: (context, index) {
-                final voter = voters[index];
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 5.0,
-                  ),
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: AppColors.primaryGreen,
-                      child: Icon(
-                        Icons.person,
-                        color: AppColors.backgroundColor,
-                      ),
+            child: voters.isEmpty
+                ? const Center(
+                    child: Text(
+                    "Aucun résultat",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                    title: Text('${voter.firstName} ${voter.name}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )),
-                    subtitle: Text('CIN: ${voter.nic}'),
-                    trailing: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryGreen,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Action on button press (register voter)
-                      },
-                      child: const Text('Enregistrer'),
-                    ),
-                  ),
-                );
-              },
-            ),
+                  ))
+                : _votersList(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -153,6 +123,48 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _votersList() {
+    return ListView.builder(
+      itemCount: voters.length,
+      itemBuilder: (context, index) {
+        final voter = voters[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 5.0,
+          ),
+          child: ListTile(
+            leading: const CircleAvatar(
+              backgroundColor: AppColors.primaryGreen,
+              child: Icon(
+                Icons.person,
+                color: AppColors.backgroundColor,
+              ),
+            ),
+            title: Text('${voter.firstName} ${voter.name}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                )),
+            subtitle: Text('CIN: ${voter.nic}'),
+            trailing: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryGreen,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                // Action on button press (register voter)
+              },
+              child: const Text('Enregistrer'),
+            ),
+          ),
+        );
+      },
     );
   }
 }
