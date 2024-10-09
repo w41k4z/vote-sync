@@ -28,21 +28,22 @@ public class PublicResourceController {
 
     @GetMapping("/{*filePath}")
     public ResponseEntity<Resource> getFile(@PathVariable String filePath) {
+        if (filePath.contains("..")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Invalid path
+        }
+        filePath = filePath.replaceFirst("^/+", "");
         Path path = fileStorageService.load(filePath);
         try {
             byte[] imageBytes = Files.readAllBytes(path);
-
             ByteArrayResource resource = new ByteArrayResource(imageBytes);
-
             // Determine the content type (you might want to use a more dynamic approach)
             String contentType = Files.probeContentType(path);
-
             return ResponseEntity.ok()
                     .contentType(contentType != null ? MediaType.parseMediaType(contentType)
                             : MediaType.APPLICATION_OCTET_STREAM)
                     .body(resource);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // File not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
