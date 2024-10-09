@@ -8,7 +8,7 @@
         android:label="vote_sync"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true"> <!-- Fixing OS Error: Connection refused, errno = 111 -->
+        android:requestLegacyExternalStorage="true"> <!-- Retrocompatibility with older version -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

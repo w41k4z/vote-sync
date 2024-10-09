@@ -12,33 +12,30 @@ import 'package:vote_sync/services/data/domain/candidate_domain_service.dart';
 import 'package:vote_sync/services/data/domain/election_domain_service.dart';
 import 'package:vote_sync/services/data/domain/polling_station_domain_service.dart';
 import 'package:vote_sync/services/data/domain/voter_domain_service.dart';
+import 'package:vote_sync/services/local_storage_service.dart';
 import 'package:vote_sync/services/location_service.dart';
 import 'package:vote_sync/services/secure_storage_service.dart';
 import 'package:vote_sync/services/token_service.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpServices();
   await setUpDomainServices();
   await setUpDatabase();
+  await setUpAppAccess();
   runApp(const App());
 }
 
 Future<void> setUpServices() async {
-  TokenService tokenService = TokenService();
-  SecureStorageService secureStorageService = SecureStorageService();
-  GetIt.I.registerSingleton<SecureStorageService>(secureStorageService);
-  String? accessToken = await tokenService.getToken();
-  GetIt.I.registerSingleton<TokenService>(tokenService);
+  GetIt.I.registerSingleton<SecureStorageService>(SecureStorageService());
+  GetIt.I.registerSingleton<TokenService>(TokenService());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   GetIt.I.registerSingleton<LocationService>(LocationService());
   GetIt.I.registerSingleton<PollingStationService>(PollingStationService());
-  String? pollingStationId =
-      await secureStorageService.read('pollingStationId');
-  String? electionId = await secureStorageService.read('electionId');
-  GetIt.I.registerSingleton<AppInstance>(
-      AppInstance(accessToken, pollingStationId, electionId));
+  GetIt.I.registerSingleton<LocalStorageService>(
+      LocalStorageService(appDocDir: await getApplicationDocumentsDirectory()));
 }
 
 Future<void> setUpDomainServices() async {
@@ -50,10 +47,21 @@ Future<void> setUpDomainServices() async {
 }
 
 Future<void> setUpDatabase() async {
-  DatabaseManager databaseManager = DatabaseManager();
-  // initializing the database
-  await databaseManager.database;
+  DatabaseManager databaseManager =
+      DatabaseManager(database: await DatabaseManager.initDatabase());
   GetIt.I.registerSingleton<DatabaseManager>(databaseManager);
+}
+
+Future<void> setUpAppAccess() async {
+  TokenService tokenService = GetIt.I.get<TokenService>();
+  SecureStorageService secureStorageService =
+      GetIt.I.get<SecureStorageService>();
+  String? accessToken = await tokenService.getToken();
+  String? pollingStationId =
+      await secureStorageService.read('pollingStationId');
+  String? electionId = await secureStorageService.read('electionId');
+  GetIt.I.registerSingleton<AppInstance>(
+      AppInstance(accessToken, pollingStationId, electionId));
 }
 
 class App extends StatelessWidget {

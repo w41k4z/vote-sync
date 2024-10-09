@@ -15,14 +15,11 @@ import 'package:vote_sync/config/init/database_table_init.dart';
 class DatabaseManager {
   static const _databaseVersion = 1;
   static const _databaseName = 'vote_sync.db';
-  Database? _database;
+  final Database database;
 
-  Future<Database> get database async {
-    _database ??= await _initDatabase();
-    return _database!;
-  }
+  const DatabaseManager({required this.database});
 
-  Future<Database> _initDatabase() async {
+  static Future<Database> initDatabase() async {
     String path = join(await getDatabasesPath(), _databaseName);
     return openDatabase(
       path,
@@ -44,10 +41,9 @@ class DatabaseManager {
 
   // Care to call this method after granting access to the app
   Future<bool> isDatabasePopulated(int pollingStationId) async {
-    Database databaseInstance = await database;
     PollingStation? pollingStation = await GetIt.I
         .get<PollingStationDomainService>()
-        .findById(databaseInstance, pollingStationId);
+        .findById(database, pollingStationId);
     return pollingStation != null;
   }
 
@@ -57,8 +53,7 @@ class DatabaseManager {
     List<Voter> voters,
     List<Candidate> candidates,
   ) async {
-    Database databaseInstance = await database;
-    await databaseInstance.transaction((tsx) async {
+    await database.transaction((tsx) async {
       await GetIt.I
           .get<PollingStationDomainService>()
           .create(tsx, pollingStation);
