@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import internship.project.election.dto.ApiResponse;
-import internship.project.election.service.impl.domain.AdministrativeDivisionService;
+import internship.project.election.service.domain.AdministrativeDivisionService;
 
 @RestController
 @RequestMapping("/api/administrative-divisions")

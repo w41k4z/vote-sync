@@ -21,11 +21,11 @@ import internship.project.election.model.Election;
 import internship.project.election.model.function.RegisteredCandidate;
 import internship.project.election.model.view.VPollingStation;
 import internship.project.election.model.view.VRegisteredVoter;
-import internship.project.election.service.impl.domain.AdministrativeDivisionService;
-import internship.project.election.service.impl.domain.CandidateService;
-import internship.project.election.service.impl.domain.ElectionService;
-import internship.project.election.service.impl.domain.PollingStationService;
-import internship.project.election.service.impl.domain.VoterService;
+import internship.project.election.service.domain.AdministrativeDivisionService;
+import internship.project.election.service.domain.CandidateService;
+import internship.project.election.service.domain.ElectionService;
+import internship.project.election.service.domain.PollingStationService;
+import internship.project.election.service.domain.VoterService;
 
 @RequestMapping("/api/polling-stations")
 @RestController

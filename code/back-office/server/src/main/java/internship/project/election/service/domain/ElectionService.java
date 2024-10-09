@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.domain;
+package internship.project.election.service.domain;
 
 import java.sql.Date;
 import java.util.List;
@@ -15,7 +15,7 @@ import internship.project.election.dto.request.election.UpdateElectionRequest;
 import internship.project.election.model.Election;
 import internship.project.election.model.ElectionType;
 import internship.project.election.repository.ElectionRepository;
-import internship.project.election.service.impl.domain.specification.ElectionSpecification;
+import internship.project.election.service.domain.specification.ElectionSpecification;
 
 @Service
 public class ElectionService {

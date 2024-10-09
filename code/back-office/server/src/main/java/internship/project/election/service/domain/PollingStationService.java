@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.domain;
+package internship.project.election.service.domain;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import internship.project.election.model.PollingStation;
 import internship.project.election.model.view.VPollingStation;
 import internship.project.election.repository.PollingStationRepository;
 import internship.project.election.repository.view.VPollingStationRepository;
-import internship.project.election.service.impl.domain.specification.PollingStationSpecification;
+import internship.project.election.service.domain.specification.PollingStationSpecification;
 
 @Service
 public class PollingStationService {

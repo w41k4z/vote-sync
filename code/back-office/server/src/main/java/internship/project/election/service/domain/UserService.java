@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.domain;
+package internship.project.election.service.domain;
 
 import java.util.Optional;
 
@@ -13,9 +13,9 @@ import internship.project.election.dto.request.user.UpdateUserRequest;
 import internship.project.election.model.Role;
 import internship.project.election.model.User;
 import internship.project.election.repository.UserRepository;
+import internship.project.election.service.domain.specification.UserSpecification;
 import internship.project.election.service.impl.auth.util.AdminPasswordHashing;
 import internship.project.election.service.impl.auth.util.UserPasswordHashing;
-import internship.project.election.service.impl.domain.specification.UserSpecification;
 import internship.project.election.service.spec.auth.util.AbstractPasswordHashing;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -19,8 +19,8 @@ import internship.project.election.config.Pagination;
 import internship.project.election.dto.ApiResponse;
 import internship.project.election.dto.request.user.NewUserRequest;
 import internship.project.election.dto.request.user.UpdateUserRequest;
-import internship.project.election.service.impl.domain.UserService;
-import internship.project.election.service.impl.domain.UserStatService;
+import internship.project.election.service.domain.UserService;
+import internship.project.election.service.domain.UserStatService;
 import jakarta.validation.Valid;
 
 @RequestMapping("/api/users")

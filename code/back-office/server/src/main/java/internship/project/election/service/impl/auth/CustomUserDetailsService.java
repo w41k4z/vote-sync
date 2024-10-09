@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import internship.project.election.model.Role;
 import internship.project.election.model.User;
-import internship.project.election.service.impl.domain.UserService;
+import internship.project.election.service.domain.UserService;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

@@ -21,7 +21,7 @@ import internship.project.election.dto.ApiResponse;
 import internship.project.election.dto.request.election.ConfigureElectionRequest;
 import internship.project.election.dto.request.election.UpdateElectionRequest;
 import internship.project.election.model.Election;
-import internship.project.election.service.impl.domain.ElectionService;
+import internship.project.election.service.domain.ElectionService;
 
 @RequestMapping("/api/elections")
 @RestController

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import internship.project.election.model.RefreshToken;
 import internship.project.election.model.User;
 import internship.project.election.repository.RefreshTokenRepository;
-import internship.project.election.service.impl.domain.UserService;
+import internship.project.election.service.domain.UserService;
 import internship.project.election.service.spec.AbstractJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

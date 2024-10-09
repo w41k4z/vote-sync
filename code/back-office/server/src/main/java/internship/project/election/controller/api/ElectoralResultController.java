@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import internship.project.election.dto.ApiResponse;
-import internship.project.election.service.impl.domain.result.LegislativeResultService;
-import internship.project.election.service.impl.domain.result.LocalResultService;
-import internship.project.election.service.impl.domain.result.PresidentialResultService;
+import internship.project.election.service.domain.result.LegislativeResultService;
+import internship.project.election.service.domain.result.LocalResultService;
+import internship.project.election.service.domain.result.PresidentialResultService;
 
 @RequestMapping("/api/elections/results")
 @RestController

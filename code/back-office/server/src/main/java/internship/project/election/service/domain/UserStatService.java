@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.domain;
+package internship.project.election.service.domain;
 
 import java.util.List;
 

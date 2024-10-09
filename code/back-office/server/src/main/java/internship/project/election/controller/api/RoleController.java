@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 
 import internship.project.election.dto.ApiResponse;
-import internship.project.election.service.impl.domain.RoleService;
+import internship.project.election.service.domain.RoleService;
 
 @RequestMapping("/api/roles")
 @RestController

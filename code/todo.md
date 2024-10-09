@@ -1,3 +1,5 @@
+- Storage configuration (storing the storage folder)
+- Server configuration for file storage, access and upload
 - Mobile App Error Handling (0%)
 	- Request time out should be handled (unreachable host)
 	- Localisation activation on the login page should be handled

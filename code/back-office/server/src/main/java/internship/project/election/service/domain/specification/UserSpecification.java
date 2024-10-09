@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.domain.specification;
+package internship.project.election.service.domain.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 

@@ -1,4 +1,4 @@
-package internship.project.election.service.impl.domain.result;
+package internship.project.election.service.domain.result;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +13,8 @@ import internship.project.election.repository.result.CommunalResultRepository;
 import internship.project.election.repository.result.DistrictResultRepository;
 import internship.project.election.repository.result.FokontanyResultRepository;
 import internship.project.election.repository.result.PollingStationResultRepository;
-import internship.project.election.service.impl.domain.ElectionService;
-import internship.project.election.service.impl.domain.specification.ElectoralResultSpecification;
+import internship.project.election.service.domain.ElectionService;
+import internship.project.election.service.domain.specification.ElectoralResultSpecification;
 
 @Service
 public class LegislativeResultService extends ElectoralResultService {
