@@ -1,4 +1,3 @@
-- Change app id to "ceni.system.votesync"
 - Server configuration for file storage, access and upload
 - Mobile App Error Handling (0%)
 	- Request time out should be handled (unreachable host)
