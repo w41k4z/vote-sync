@@ -18,5 +18,10 @@
     "name": "refresh.token.expiration.time",
     "type": "java.lang.String",
     "description": "Refresh token expiration time in milliseconds"
+  },
+  {
+    "name": "storage.location",
+    "type": "java.lang.String",
+    "description": "Base directory for file storage"
   }
 ]}
