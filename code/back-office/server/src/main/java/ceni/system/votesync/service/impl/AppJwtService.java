@@ -17,7 +17,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class AppJwtService extends AbstractJwtService<User> {
 
     @Override
-    public String generateToken(User user) {
+    public String generateToken(User user, Long BONUS_TIME) {
         Map<String, Object> claims = new HashMap<>();
         String authority = user.getRole().getName();
         claims.put("authority", authority);
@@ -26,7 +26,7 @@ public class AppJwtService extends AbstractJwtService<User> {
                 .setClaims(claims)
                 .setSubject(user.getIdentifier())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME + BONUS_TIME))
                 .signWith(this.getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

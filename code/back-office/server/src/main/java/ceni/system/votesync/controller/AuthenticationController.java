@@ -36,6 +36,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
+    // Mobile app wont have a sign-out feature from the server
     @PostMapping("/sign-out")
     public ResponseEntity<ApiResponse> signOut(@RequestBody LogOutRequest request) {
         this.authService.logOut(request.getRefreshToken());

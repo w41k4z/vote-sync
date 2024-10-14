@@ -16,7 +16,7 @@
   },
   {
     "name": "refresh.token.expiration.time",
-    "type": "java.lang.String",
+    "type": "java.lang.Long",
     "description": "Refresh token expiration time in milliseconds"
   },
   {

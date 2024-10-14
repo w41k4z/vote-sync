@@ -12,9 +12,9 @@ import ceni.system.votesync.repository.EntityRepository;
 public interface AdministrativeDivisionRepository<T extends AdministrativeDivision>
         extends EntityRepository<T, Integer> {
 
-    @Query("SELECT new internship.project.election.model.location.AdministrativeDivision(a.id, a.name, a.upperDivisionId) FROM #{#entityName} a")
+    @Query("SELECT new ceni.system.votesync.model.location.AdministrativeDivision(a.id, a.name, a.upperDivisionId) FROM #{#entityName} a")
     List<T> findAllWithoutGeoJson();
 
-    @Query("SELECT new internship.project.election.model.location.AdministrativeDivision(a.id, a.name, a.upperDivisionId) FROM #{#entityName} a WHERE a.upperDivisionId = ?1")
+    @Query("SELECT new ceni.system.votesync.model.location.AdministrativeDivision(a.id, a.name, a.upperDivisionId) FROM #{#entityName} a WHERE a.upperDivisionId = ?1")
     List<T> findByUpperDivisionIdWithoutGeoJson(Integer upperDivisionId);
 }

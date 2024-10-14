@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import ceni.system.votesync.config.Authority;
 import ceni.system.votesync.model.Role;
 import ceni.system.votesync.model.User;
 import ceni.system.votesync.service.impl.AppJwtService;
@@ -42,11 +43,16 @@ public class AppAuthService implements AuthService<Map<String, String>> {
         userRole.setName(userDetails.getAuthorities().iterator().next().getAuthority());
         user.setIdentifier(userDetails.getUsername());
         user.setRole(userRole);
-        String accessToken = this.jwtService.generateToken(user);
-        String refreshToken = this.refreshTokenService.generateToken(user.getIdentifier());
+        Long bonusTime = 0L;
+        if (userRole.getName().equals(Authority.ADMIN) || userRole.getName().equals(Authority.OPERATOR)) {
+            String refreshToken = this.refreshTokenService.generateToken(user.getIdentifier(), bonusTime);
+            response.put("refreshToken", refreshToken);
+            this.refreshTokenService.store(refreshToken);
+        } else {
+            bonusTime = Authority.MOBILE_USER_BONUS_TIME;
+        }
+        String accessToken = this.jwtService.generateToken(user, bonusTime);
         response.put("accessToken", accessToken);
-        response.put("refreshToken", refreshToken);
-        this.refreshTokenService.store(refreshToken);
         return response;
     }
 

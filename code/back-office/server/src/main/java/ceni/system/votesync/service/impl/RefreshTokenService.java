@@ -52,12 +52,12 @@ public class RefreshTokenService extends AbstractJwtService<String> {
     }
 
     @Override
-    public String generateToken(String userIdentifier) {
+    public String generateToken(String userIdentifier, Long BONUS_TIME) {
         return Jwts
                 .builder()
                 .setSubject(userIdentifier)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME + BONUS_TIME))
                 .signWith(this.getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -71,7 +71,7 @@ public class RefreshTokenService extends AbstractJwtService<String> {
         if (this.validateToken(refreshToken)) {
             String userIdentifier = this.getSubject(refreshToken);
             User user = this.userService.getUserByIdentifier(userIdentifier);
-            return this.jwtService.generateToken(user);
+            return this.jwtService.generateToken(user, 0L);
         }
         throw new IllegalArgumentException("Invalid refresh token");
     }
