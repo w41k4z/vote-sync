@@ -1,10 +1,13 @@
-<div class="dialog-content">
+<form [formGroup]="componentForm" class="dialog-content" (ngSubmit)="confirm()">
     <header class="d-flex justify-content-between align-items-center my-2">
         <h3 class="text-primary">Formulaire d'utilisateur</h3>
         <button
             class="ms-5 btn btn-outline-primary d-flex align-items-center"
         >
-            Importer<i class="mbi bi-file-excel" style="font-size: 20px"></i>
+            <span>
+                Importer
+            </span>
+            <i class="ms-3 bi-file-excel" style="font-size: 20px"></i>
         </button>
     </header>
     <main class="card card-body mt-4">
@@ -38,6 +41,6 @@
         </div>
     </main>
     <mat-dialog-actions class="d-flex gap-2 justify-content-end">
-        <button class="btn btn-primary" (click)="confirm()" cdkFocusInitial>Ajouter</button>
+        <button class="btn btn-primary" cdkFocusInitial>Ajouter</button>
     </mat-dialog-actions>
-</div>
+</form>
