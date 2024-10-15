@@ -80,12 +80,12 @@ public class UserController {
             @RequestParam(required = true) Integer roleId) {
         this.userService.importUsers(file, roleId);
 
-        return ResponseEntity.ok(new ApiResponse());
+        return ResponseEntity.ok(new ApiResponse(null, "Users imported"));
     }
 
     @GetMapping("/assign-operators")
     public ResponseEntity<ApiResponse> assignOperators() {
         this.userService.assignOperators();
-        return ResponseEntity.ok(new ApiResponse(null, "Utilisateurs importés"));
+        return ResponseEntity.ok(new ApiResponse(null, "Operators assigned"));
     }
 }

@@ -136,14 +136,13 @@ public class UserService {
                 user.setContact(row.getCell(3).getStringCellValue());
                 user.setPassword(passwordHashing.hash(row.getCell(4).getStringCellValue()));
                 user.setRole(role);
-                try {
-                    this.repository.updateByIdentifier(role.getId(), user.getName(), user.getFirstName(),
-                            user.getContact(), user.getPassword(), user.getIdentifier());
-                } catch (Exception e) {
+                int affectedRow = this.repository.updateByIdentifier(role.getId(), user.getName(), user.getFirstName(),
+                        user.getContact(), user.getPassword(), user.getIdentifier());
+                if (affectedRow == 0) {
                     try {
                         this.repository.save(user);
-                    } catch (Exception e2) {
-                        errors.put(line, e2.getMessage());
+                    } catch (Exception e) {
+                        errors.put(line, e.getMessage());
                     }
                 }
                 line++;
@@ -151,6 +150,9 @@ public class UserService {
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Error reading imported file. Source: " + file.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Error importing users. Details: " + e.getMessage());
         }
     }
 
