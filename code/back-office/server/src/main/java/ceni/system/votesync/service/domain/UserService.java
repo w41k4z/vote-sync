@@ -1,11 +1,19 @@
 package ceni.system.votesync.service.domain;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Optional;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Authority;
 import ceni.system.votesync.dto.request.user.NewUserRequest;
@@ -61,8 +69,8 @@ public class UserService {
     }
 
     public User createNewUser(NewUserRequest request) {
-        AbstractPasswordHashing passwordHashing;
         User newUser = new User();
+        AbstractPasswordHashing passwordHashing;
         Role role = this.roleService.getRoleById(request.getRoleId());
         if (role == null) {
             throw new IllegalArgumentException("Role not found");
@@ -96,6 +104,54 @@ public class UserService {
                 updateRequest.getContact(), updateRequest.getPassword(), null);
         user.setId(updateRequest.getId());
         return this.repository.save(user);
+    }
+
+    public void importUsers(MultipartFile file, Integer roleId) {
+        AbstractPasswordHashing passwordHashing;
+        Role role = this.roleService.getRoleById(roleId);
+        if (role == null) {
+            throw new IllegalArgumentException("Role not found");
+        }
+        if (role.getName().equals(Authority.ADMIN.toString())) {
+            passwordHashing = this.adminPasswordHashing;
+        } else {
+            passwordHashing = this.userPasswordHashing;
+        }
+        HashMap<Integer, String> errors = new HashMap<>();
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            int line = 0;
+            while (rowIterator.hasNext()) {
+                if (line == 0) {
+                    rowIterator.next();
+                    line++;
+                    continue;
+                }
+                Row row = rowIterator.next();
+                User user = new User();
+                user.setName(row.getCell(0).getStringCellValue());
+                user.setFirstName(row.getCell(1).getStringCellValue());
+                user.setIdentifier(row.getCell(2).getStringCellValue());
+                user.setContact(row.getCell(3).getStringCellValue());
+                user.setPassword(passwordHashing.hash(row.getCell(4).getStringCellValue()));
+                user.setRole(role);
+                try {
+                    this.repository.updateByIdentifier(role.getId(), user.getName(), user.getFirstName(),
+                            user.getContact(), user.getPassword(), user.getIdentifier());
+                } catch (Exception e) {
+                    try {
+                        this.repository.save(user);
+                    } catch (Exception e2) {
+                        errors.put(line, e2.getMessage());
+                    }
+                }
+                line++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Error reading imported file. Source: " + file.getOriginalFilename());
+        }
     }
 
     @Transactional

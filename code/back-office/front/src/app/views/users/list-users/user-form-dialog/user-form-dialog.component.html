@@ -1,14 +1,15 @@
 <form [formGroup]="componentForm" class="dialog-content" (ngSubmit)="confirm()">
     <header class="d-flex justify-content-between align-items-center my-2">
         <h3 class="text-primary">Formulaire d'utilisateur</h3>
-        <button
+        <p
             class="ms-5 btn btn-outline-primary d-flex align-items-center"
+            (click)="openImportDialog()"
         >
             <span>
                 Importer
             </span>
             <i class="ms-3 bi-file-excel" style="font-size: 20px"></i>
-        </button>
+        </p>
     </header>
     <main class="card card-body mt-4">
         <div class="d-flex flex-column gap-2">

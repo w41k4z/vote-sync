@@ -7,6 +7,7 @@ import { User } from '../../dto/user';
 import { Page } from '../../dto/response/page';
 import { UpdateUserRequest } from '../../dto/request/update-user.request';
 import { Pagination } from '../../pagination';
+import { ImportUsersRequest } from '../../dto/request/import-users.request';
 
 @Component({
   selector: 'app-users',
@@ -106,6 +107,10 @@ export class UsersComponent {
 
   deleteUser = (userId: number) => {
     return this.userService.deleteUser(userId);
+  };
+
+  importUsers = (request: ImportUsersRequest) => {
+    return this.userService.importUsers(request);
   };
 
   private updateUserListAndStats(newUser: User) {

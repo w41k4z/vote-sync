@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
@@ -74,9 +75,17 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse(null, "User deleted"));
     }
 
+    @PostMapping("/import")
+    public ResponseEntity<ApiResponse> importUsers(@RequestParam(required = true) MultipartFile file,
+            @RequestParam(required = true) Integer roleId) {
+        this.userService.importUsers(file, roleId);
+
+        return ResponseEntity.ok(new ApiResponse());
+    }
+
     @GetMapping("/assign-operators")
     public ResponseEntity<ApiResponse> assignOperators() {
         this.userService.assignOperators();
-        return ResponseEntity.ok(new ApiResponse(null, "Operators assigned"));
+        return ResponseEntity.ok(new ApiResponse(null, "Utilisateurs importés"));
     }
 }

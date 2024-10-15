@@ -8,6 +8,7 @@ import { Role } from '../../../dto/role';
 import { User } from '../../../dto/user';
 import { Page } from '../../../dto/response/page';
 import { DeleteDialogComponent } from '../../../components/delete-dialog/delete-dialog.component';
+import { ImportUsersRequest } from '../../../dto/request/import-users.request';
 
 @Component({
   selector: 'app-list-users',
@@ -27,6 +28,7 @@ export class ListUsersComponent {
     request: NewUserRequest
   ) => Promise<void>;
   @Input() onDeleteUser!: (userId: number) => Promise<unknown>;
+  @Input() onImportUsers!: (request: ImportUsersRequest) => Promise<unknown>;
   @Input() onFilter!: (
     filter: string | null,
     userTypeFilter: string,
@@ -47,7 +49,11 @@ export class ListUsersComponent {
 
   openAddNewUserDialog() {
     const dialogRef = this.dialog.open(UserFormDialogComponent, {
-      data: { roles: this.roles, userObjectHolder: this.userObjectHolder },
+      data: {
+        roles: this.roles,
+        userObjectHolder: this.userObjectHolder,
+        onImportUsers: this.onImportUsers,
+      },
     });
     dialogRef.afterClosed().subscribe((newUserRequest: NewUserRequest) => {
       if (newUserRequest) {
@@ -58,8 +64,6 @@ export class ListUsersComponent {
           .catch(() => {
             this.userObjectHolder = newUserRequest;
           });
-      } else {
-        this.userObjectHolder = null;
       }
     });
   }
@@ -73,7 +77,11 @@ export class ListUsersComponent {
     this.userObjectHolder.identifier = this.userLists[userIndex].identifier;
     this.userObjectHolder.password = this.userLists[userIndex].identifier;
     const dialogRef = this.dialog.open(UserFormDialogComponent, {
-      data: { roles: this.roles, userObjectHolder: this.userObjectHolder },
+      data: {
+        roles: this.roles,
+        userObjectHolder: this.userObjectHolder,
+        onImportUsers: this.onImportUsers,
+      },
     });
     dialogRef.afterClosed().subscribe((newUserRequest: NewUserRequest) => {
       if (newUserRequest) {

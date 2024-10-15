@@ -1,0 +1,30 @@
+<form [formGroup]="componentForm" class="user-import-dialog-content">
+    <h3 mat-dialog-title class="text-primary mb-3">Importer des utilisateurs</h3>
+    <div class="card card-body">
+        <div class="form-group">
+            <label for="role" class="form-label">Rôle</label>
+            <select id="role" class="form-select" formControlName="roleId" [ngClass]="{ 'is-invalid': submitted && f['roleId'].errors }">
+                <option *ngFor="let role of data.roles" value="{{role.id}}">{{ role.name | formatRole }}</option>
+            </select>
+            <div *ngIf="submitted && f['roleId'].errors" class="invalid-feedback">
+                <p *ngIf="f['roleId'].errors['required']" class="m-0">Le type d'utilisateur est requis</p>
+            </div>
+        </div>
+        <input 
+            class="form-control my-2" 
+            type="file" id="file" 
+            formControlName="file"
+            [ngClass]="{ 'is-invalid': submitted && f['file'].errors }"
+            accept=".xlsx, .xls, .csv"
+            (change)="setImportedFile($event)"
+        />
+        <div *ngIf="submitted && f['file'].errors" class="invalid-feedback">
+            <p *ngIf="f['file'].errors['required']" class="m-0">Le fichier est requis</p>
+        </div>
+    </div>
+    <mat-dialog-actions class="d-flex gap-2 justify-content-end">
+        <button class="btn btn-primary" (click)="confirm()" cdkFocusInitial>
+            Confirmer
+        </button>
+    </mat-dialog-actions>
+</form>

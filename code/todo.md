@@ -3,6 +3,7 @@
 	- Request time out should be handled (unreachable host)
 	- Localisation activation on the login page should be handled
 	- Global error handling to avoid crash
+- Back office error message displaying
 - Flutter does not have a way to parse response data from API directly to a dart object, so careful when changing the ApiResponse structure
 - Remove refresh token for CCID and manager (make CCID token expiration to something higher, like 7 days)
 - Server logging

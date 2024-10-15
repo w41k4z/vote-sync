@@ -7,6 +7,7 @@ import { UsersAndStatsPayload } from '../../../dto/response/user/users-and-stats
 import { NewUserRequest } from '../../../dto/request/new-user.request';
 import { SaveUserPayload } from '../../../dto/response/user/save-user-payload.response';
 import { UpdateUserRequest } from '../../../dto/request/update-user.request';
+import { ImportUsersRequest } from '../../../dto/request/import-users.request';
 
 @Injectable({
   providedIn: 'root',
@@ -82,5 +83,15 @@ export class UserService extends ApiCallService {
   async deleteUser(userId: number) {
     return (await this.deleteCall(`${Endpoints.USERS}?userId=${userId}`))
       .payload;
+  }
+
+  async importUsers(importUsersRequest: ImportUsersRequest) {
+    const formData = new FormData();
+    if (!importUsersRequest.file || !importUsersRequest.roleId) {
+      return;
+    }
+    formData.append('file', importUsersRequest.file);
+    formData.append('roleId', importUsersRequest.roleId.toString());
+    return (await this.postCall(`${Endpoints.USERS}/import`, formData)).payload;
   }
 }

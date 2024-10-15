@@ -1,9 +1,15 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { NewUserRequest } from '../../../../dto/request/new-user.request';
 import { Role } from '../../../../dto/role';
 import { FormContainerComponent } from '../../../../components/form-container/form-container.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserImportDialogComponent } from './user-import-dialog/user-import-dialog.component';
+import { ImportUsersRequest } from '../../../../dto/request/import-users.request';
 
 @Component({
   selector: 'app-add-new-user-dialog',
@@ -14,9 +20,14 @@ export class UserFormDialogComponent extends FormContainerComponent {
   newUser: NewUserRequest = new NewUserRequest();
 
   constructor(
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<UserFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { roles: Role[]; userObjectHolder: NewUserRequest | null }
+    public data: {
+      roles: Role[];
+      userObjectHolder: NewUserRequest | null;
+      onImportUsers: (request: ImportUsersRequest) => Promise<unknown>;
+    }
   ) {
     const userForm = new FormGroup({
       identifier: new FormControl(
@@ -62,8 +73,21 @@ export class UserFormDialogComponent extends FormContainerComponent {
     newUser.firstName = this.componentForm.value.firstName;
     newUser.password = this.componentForm.value.password;
     newUser.roleId = this.componentForm.value.roleId;
-    console.log(newUser);
     this.reset();
     this.dialogRef.close(newUser);
+  }
+
+  openImportDialog() {
+    const dialogRef = this.dialog.open(UserImportDialogComponent, {
+      data: { roles: this.data.roles },
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe((importUsersRequest: ImportUsersRequest) => {
+        if (importUsersRequest) {
+          this.data.onImportUsers(importUsersRequest);
+        }
+      });
   }
 }
