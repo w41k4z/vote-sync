@@ -58,6 +58,8 @@ export class ListUsersComponent {
           .catch(() => {
             this.userObjectHolder = newUserRequest;
           });
+      } else {
+        this.userObjectHolder = null;
       }
     });
   }
@@ -76,6 +78,8 @@ export class ListUsersComponent {
     dialogRef.afterClosed().subscribe((newUserRequest: NewUserRequest) => {
       if (newUserRequest) {
         this.onUpdateUser(userIndex, newUserRequest);
+        this.userObjectHolder = null;
+      } else {
         this.userObjectHolder = null;
       }
     });

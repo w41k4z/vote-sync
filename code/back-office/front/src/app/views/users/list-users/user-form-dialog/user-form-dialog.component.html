@@ -14,29 +14,48 @@
         <div class="d-flex flex-column gap-2">
             <div class="form-group">
                 <label for="role" class="form-label">Rôle</label>
-                <select id="role" class="form-select" [(ngModel)]="newUser.roleId">
+                <select id="role" class="form-select" formControlName="roleId" [ngClass]="{ 'is-invalid': submitted && f['roleId'].errors }">
                     <option *ngFor="let role of data.roles" value="{{role.id}}">{{ role.name | formatRole }}</option>
                 </select>
+                <div *ngIf="submitted && f['roleId'].errors" class="invalid-feedback">
+                    <p *ngIf="f['roleId'].errors['required']" class="m-0">Le type d'utilisateur est requis</p>
+                </div>
             </div>
             <div class="form-group">
                 <label for="identifier" class="form-label">Identifiant</label>
-                <input type="text" id="identifier" class="form-control" [(ngModel)]="newUser.identifier">
+                <input type="text" id="identifier" class="form-control" formControlName="identifier" [ngClass]="{ 'is-invalid': submitted && f['identifier'].errors }">
+                <div *ngIf="submitted && f['identifier'].errors" class="invalid-feedback">
+                    <p *ngIf="f['identifier'].errors['required']" class="m-0">L'identifiant est requis</p>
+                </div>
             </div>
             <div class="form-group">
                 <label for="password" class="form-label">Mot de passe</label>
-                <input type="text" id="password" class="form-control" [(ngModel)]="newUser.password">
+                <input type="text" id="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <p *ngIf="f['password'].errors['required']" class="m-0">Le mot de passe est requis</p>
+                </div>
             </div>
             <div class="form-group">
                 <label for="name" class="form-label">Nom</label>
-                <input type="text" id="name" class="form-control" [(ngModel)]="newUser.name">
+                <input type="text" id="name" class="form-control" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
+                <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                    <p *ngIf="f['name'].errors['required']" class="m-0">Le nom est requis</p>
+                </div>
             </div>
             <div class="form-group">
                 <label for="firstName" class="form-label">Prénom</label>
-                <input type="text" id="firstName" class="form-control" [(ngModel)]="newUser.firstName">
+                <input type="text" id="firstName" class="form-control" formControlName="firstName" [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }">
+                <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+                    <p *ngIf="f['firstName'].errors['required']" class="m-0">Le prénom est requis</p>
+                </div>
             </div>
             <div class="form-group">
                 <label for="contact" class="form-label">Contact</label>
-                <input type="text" id="contact" class="form-control" [(ngModel)]="newUser.contact">
+                <input type="text" id="contact" class="form-control" formControlName="contact" [ngClass]="{ 'is-invalid': submitted && f['contact'].errors }">
+                <div *ngIf="submitted && f['contact'].errors" class="invalid-feedback">
+                    <p *ngIf="f['contact'].errors['required']" class="m-0">Le contact est requis</p>
+                    <p *ngIf="f['contact'].errors['pattern']" class="m-0">Contact non valide (ex: 0349315928)</p>
+                </div>
             </div>
         </div>
     </main>

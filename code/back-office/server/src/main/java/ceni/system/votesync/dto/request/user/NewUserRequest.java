@@ -2,6 +2,7 @@ package ceni.system.votesync.dto.request.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -18,7 +19,7 @@ public class NewUserRequest {
 
     private String firstName;
 
-    @NotBlank(message = "Contact is required")
+    @Pattern(regexp = "^03[0-9]{1}[0-9]{2}[0-9]{3}[0-9]{2}$", message = "Contact is not valid. (Ex: 0349315928)")
     private String contact;
 
     @NotBlank(message = "Password is required")
