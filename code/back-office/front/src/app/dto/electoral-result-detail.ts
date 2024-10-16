@@ -10,7 +10,7 @@ export class ElectoralResultDetail {
   politicalEntityId: number;
   politicalEntity: string;
   candidateVotes: number;
-  imagePaths: string;
+  imagePath: string;
 
   constructor(
     id: number,
@@ -24,7 +24,7 @@ export class ElectoralResultDetail {
     politicalEntityId: number,
     politicalEntity: string,
     candidateVotes: number,
-    imagePaths: string
+    imagePath: string
   ) {
     this.id = id;
     this.electionId = electionId;
@@ -37,6 +37,6 @@ export class ElectoralResultDetail {
     this.politicalEntityId = politicalEntityId;
     this.politicalEntity = politicalEntity;
     this.candidateVotes = candidateVotes;
-    this.imagePaths = imagePaths;
+    this.imagePath = imagePath;
   }
 }

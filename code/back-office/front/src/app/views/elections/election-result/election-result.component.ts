@@ -11,7 +11,7 @@ import { ElectionResultService } from '../../../services/api/election/election-r
   styleUrl: './election-result.component.scss',
 })
 export class ElectionResultComponent {
-  results: string[] = ['Par bureau de vote', 'Par fokontany', 'Par municipale'];
+  results: string[] = ['Par bureau de vote', 'Par fokontany', 'Par commune'];
   current = 2;
   election: Election | null = null;
   electoralResults: ElectoralResult[] = [];
@@ -42,8 +42,6 @@ export class ElectionResultComponent {
             .then((payload) => {
               if (payload) {
                 this.electoralResults = payload.electoralResults;
-                console.log(payload);
-                console.log(this.electoralResults);
               }
             });
           break;

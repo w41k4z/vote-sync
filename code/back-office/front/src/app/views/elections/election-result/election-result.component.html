@@ -7,31 +7,43 @@
 </div>
 <section class="card card-body mt-4">
     <div *ngFor="let electoralResult of electoralResults">
-        <header>
-            <h5 class="text-primary">Municipal: <b class="text-black">{{ electoralResult.name | formatName }}</b></h5>
+        <header class="p-3">
+            <h5 class="text-primary">Commune: <b class="text-black">{{ electoralResult.name | formatName }}</b></h5>
             <table class="table table-borderless mt-4">
                 <tbody>
                     <tr>
                         <td>
-                            <h6 class="text-primary">Inscrits: <b class="text-black">{{electoralResult.registeredVoters | formatNumber}}</b></h6>
+                            <h6 class="text-primary">Inscrits:</h6>
                         </td>
                         <td>
-                            <h6 class="text-primary">Exprimés: <b class="text-black">{{electoralResult.validVotes| formatNumber}}</b></h6>
+                            <b class="text-black">{{electoralResult.registeredVoters | formatNumber}}</b>
+                        </td>
+                        <td>
+                            <h6 class="text-primary">Exprimés:</h6>
+                        </td>
+                        <td>
+                            <b class="text-black">{{electoralResult.validVotes| formatNumber}}</b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h6 class="text-primary">Blancs: <b class="text-black">{{electoralResult.blankVotes| formatNumber}}</b></h6>
+                            <h6 class="text-primary">Blancs:</h6>
                         </td>
                         <td>
-                            <h6 class="text-primary">Nuls: <b class="text-black">{{electoralResult.nullVotes | formatNumber}}</b></h6>
+                            <b class="text-black">{{electoralResult.blankVotes| formatNumber}}</b>
+                        </td>
+                        <td>
+                            <h6 class="text-primary">Nuls:</h6>
+                        </td>
+                        <td>
+                            <b class="text-black">{{electoralResult.nullVotes | formatNumber}}</b>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <h5 class="text-danger">Taux de participation: <b class="text-black">{{ (electoralResult.validVotes * 100 / electoralResult.registeredVoters).toString().slice(0, 6) }} %</b></h5>
         </header>
-        <main class="container mt-4">
+        <main class="container-fluid mt-4">
             <div class="row mb-3 table-header">
                 <div class="col-2 text-center">Numéro</div>
                 <div class="col-6 text-center">Candidats</div>
@@ -41,8 +53,8 @@
             <div class="row mb-1 table-content align-items-center" *ngFor="let detail of electoralResult.details">
                 <div class="col-2 text-center fw-bold">{{detail.candidateNumber}}</div>
                 <div class="col-6">
-                    <img src="../../../../assets/user.png" alt="" style="height: 40px; width: 40px;">
-                    <span class="ms-3">{{detail.candidateInformation + ' (' + detail.politicalEntity + ')'}}</span>
+                    <img src="{{ detail.imagePath | formatPublicUrl }}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                    <span class="ms-3 fw-bold">{{detail.candidateInformation + ' (' + detail.politicalEntity + ')'}}</span>
                 </div>
                 <div class="col-2 text-end fw-bold">{{detail.candidateVotes}}</div>
                 <div class="col-2 text-end fw-bold">{{ (detail.candidateVotes * 100 / electoralResult.validVotes).toString().slice(0, 5) }} %</div>
@@ -50,7 +62,7 @@
             <div class="row mt-2">
                 <div class="col-2"></div>
                 <div class="col-6 text-end fw-bold text-danger" style="font-size: larger;">Total</div>
-                <div class="col-2 text-end fw-bold" style="font-size: larger;">100</div>
+                <div class="col-2 text-end fw-bold" style="font-size: larger;">{{ electoralResult.validVotes }}</div>
                 <div class="col-2"></div>
             </div>
             <footer class="mt-5 d-flex gap-3 justify-content-center align-items-center">

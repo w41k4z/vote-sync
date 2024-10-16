@@ -32,6 +32,8 @@ import { PollingStationComponent } from './views/polling-station/polling-station
 import { FormatNamePipe } from './pipes/format-name.pipe';
 import { ElectionResultComponent } from './views/elections/election-result/election-result.component';
 import { UserImportDialogComponent } from './views/users/list-users/user-form-dialog/user-import-dialog/user-import-dialog.component';
+import { ElectionDialogComponent } from './views/elections/election-dialog/election-dialog.component';
+import { FormatPublicUrlPipe } from './pipes/format-public-url.pipe';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,8 @@ import { UserImportDialogComponent } from './views/users/list-users/user-form-di
     FormatNamePipe,
     ElectionResultComponent,
     UserImportDialogComponent,
+    ElectionDialogComponent,
+    FormatPublicUrlPipe,
   ],
   imports: [
     BrowserModule,

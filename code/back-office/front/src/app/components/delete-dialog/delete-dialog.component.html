@@ -7,8 +7,8 @@
         <p class="text-center">Voulez-vous vraiment supprimer cet enregistrement? Ce processus ne peut pas être annulé.
         </p>
     </div>
-    <div class="card-footer d-flex my-1 gap-2 justify-content-end">
-        <button class="btn btn-secondary" (click)="close()">Retour</button>
-        <button class="btn btn-danger" cdkFocusInitial (click)="confirm()">Confirmer</button>
+    <div class="card-footer d-flex py-3 gap-2">
+        <button class="btn btn-danger w-50" (click)="confirm()">Oui, je veux supprimer!</button>
+        <button class="btn btn-secondary w-50" cdkFocusInitial (click)="close()">Non, annuler l'opération</button>
     </div>
 </div>
