@@ -1,3 +1,8 @@
+- Electoral result:
+	- one page per results (local, legislative and presidential
+	- one page per results details (per polling station, per fokontany, ...)
+	- controller (add filtering functionality)
+	- id_municipalate and id_commune can be filtered in the fokontany and polling station endpoint
 - Server configuration for file storage, access and upload
 - Mobile App Error Handling (0%)
 	- Request time out should be handled (unreachable host)
@@ -10,3 +15,5 @@
 - Server logging
 - Mobile app permission requesting logic (request all, one after another, at once)
 - Design
+- Electoral result:
+	- add a condition to fetch wether live result or achived result based on the election state

@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ElectionService } from '../../../services/api/election/election.service';
 import { Election } from '../../../dto/election';
 import { ElectoralResult } from '../../../dto/electoral-result';
+import { ActivatedRoute } from '@angular/router';
 import { ElectionResultService } from '../../../services/api/election/election-result/election-result.service';
+import { ElectionService } from '../../../services/api/election/election.service';
 
 @Component({
-  selector: 'app-election-result',
-  templateUrl: './election-result.component.html',
-  styleUrl: './election-result.component.scss',
+  selector: 'app-municipal-result',
+  templateUrl: './municipal-result.component.html',
+  styleUrl: './municipal-result.component.scss',
 })
-export class ElectionResultComponent {
+export class MunicipalResultComponent {
   results: string[] = ['Par bureau de vote', 'Par fokontany', 'Par commune'];
   current = 2;
   election: Election | null = null;

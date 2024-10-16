@@ -15,7 +15,7 @@ import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
 import { UsersComponent } from './views/users/users.component';
 import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
-import { ElectionResultComponent } from './views/elections/election-result/election-result.component';
+import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
 
 const routes: Routes = [
   {
@@ -79,8 +79,8 @@ const routes: Routes = [
         data: { requiredPrivileges: [Privileges.ADMIN], title: 'Elections' },
       },
       {
-        path: 'elections/result/:electionId',
-        component: ElectionResultComponent,
+        path: 'elections/result/municipal/:electionId',
+        component: MunicipalResultComponent,
         data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
       },
     ],

@@ -28,7 +28,7 @@
                 <button class="btn btn-outline-primary">
                     Exporter
                 </button>
-                <button class="btn btn-primary" [routerLink]="[electionPath + '/result', election.id]">
+                <button class="btn btn-primary" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
                     Résultat
                 </button>
             </div>

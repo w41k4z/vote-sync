@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ElectionService } from '../../services/api/election/election.service';
 import { Election } from '../../dto/election';
 import { Paths } from '../../paths';
+import { ElectionType } from '../../dto/election-type';
 
 @Component({
   selector: 'app-elections',
@@ -19,5 +20,18 @@ export class ElectionsComponent {
         this.currentElections = payload.elections;
       }
     });
+  }
+
+  getRoutePathByElectionType(type: ElectionType) {
+    switch (type.type) {
+      case 'Presidentielle':
+        return `${this.electionPath}/result/presidential`;
+      case 'Legislative':
+        return `${this.electionPath}/result/legislative`;
+      case 'Locale':
+        return `${this.electionPath}/result/municipal`;
+      default:
+        throw new Error('Unknown election type');
+    }
   }
 }
