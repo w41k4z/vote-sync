@@ -32,6 +32,10 @@ SELECT
     r.id_bv,
     bv.code AS code_bv,
     bv.nom AS nom_bv,
+    lbv.id_fokontany,
+    lbv.id_commune,
+    lbv.id_district,
+    lbv.id_region,
     r.inscrits,
     r.blancs,
     r.nuls,
@@ -47,6 +51,8 @@ JOIN (
     ON r.id = dr.id_resultat
 JOIN bv
     ON r.id_bv = bv.id
+JOIN liste_bv lbv
+    ON lbv.id = bv.id
 WHERE r.etat = 10
 ;
 CREATE OR REPLACE VIEW bv_resultats AS
@@ -55,6 +61,10 @@ SELECT
     bv.id,
     bv.code,
     bv.nom,
+    rsbv.id_fokontany,
+    rsbv.id_commune,
+    rsbv.id_district,
+    rsbv.id_region,
     rsbv.inscrits,
     rsbv.blancs,
     rsbv.nuls,
@@ -62,6 +72,39 @@ SELECT
 FROM bv
 JOIN resultat_statistique_par_bv rsbv
     ON bv.id = rsbv.id_bv
+;
+CREATE OR REPLACE VIEW bv_resultats_election_locale AS
+SELECT
+    bvr.id_election,
+    bvr.id,
+    bvr.code,
+    bvr.nom,
+    bvr.id_fokontany,
+    mc.id AS id_municipalite,
+    bvr.id_district,
+    bvr.id_region,
+    bvr.inscrits,
+    bvr.blancs,
+    bvr.nuls,
+    bvr.exprimes
+FROM bv_resultats bvr
+JOIN communes cm
+    ON bvr.id_commune = cm.id
+JOIN municipalites mc
+    ON cm.id_municipalite = mc.id
+GROUP BY
+    bvr.id_election,
+    bvr.id,
+    bvr.code,
+    bvr.nom,
+    bvr.id_fokontany,
+    mc.id,
+    bvr.id_district,
+    bvr.id_region,
+    bvr.inscrits,
+    bvr.blancs,
+    bvr.nuls,
+    bvr.exprimes
 ;
 
 CREATE OR REPLACE VIEW resultats_par_fokontany AS
@@ -104,6 +147,9 @@ SELECT
     fk.id AS id_fokontany,
     fk.code AS code_fokontany,
     fk.nom AS nom_fokontany,
+    fk.id_commune,
+    rsbv.id_district,
+    rsbv.id_region,
     SUM(rsbv.inscrits) AS inscrits,
     SUM(rsbv.blancs) AS blancs,
     SUM(rsbv.nuls) AS nuls,
@@ -119,14 +165,20 @@ GROUP BY
     rsbv.id_election,
     fk.id,
     fk.code,
-    fk.nom
+    fk.nom,
+    fk.id_commune,
+    rsbv.id_district,
+    rsbv.id_region
 ;
-CREATE VIEW fokontany_resultats AS
+CREATE OR REPLACE VIEW fokontany_resultats AS
 SELECT
     rsfk.id_election,
     fk.id,
     fk.code,
     fk.nom,
+    fk.id_commune,
+    rsfk.id_district,
+    rsfk.id_region,
     rsfk.inscrits,
     rsfk.blancs,
     rsfk.nuls,
@@ -134,6 +186,37 @@ SELECT
 FROM fokontany fk
 JOIN resultat_statistique_par_fokontany rsfk
     ON fk.id = rsfk.id_fokontany
+;
+CREATE OR REPLACE VIEW fokontany_resultats_election_locale AS
+SELECT
+    fkr.id_election,
+    fkr.id,
+    fkr.code,
+    fkr.nom,
+    mc.id AS id_municipalite,
+    fkr.id_district,
+    fkr.id_region,
+    fkr.inscrits,
+    fkr.blancs,
+    fkr.nuls,
+    fkr.exprimes
+FROM fokontany_resultats fkr
+JOIN communes cm
+    ON fkr.id_commune = cm.id
+JOIN municipalites mc
+    ON cm.id_municipalite = mc.id
+GROUP BY
+    fkr.id_election,
+    fkr.id,
+    fkr.code,
+    fkr.nom,
+    mc.id,
+    fkr.id_district,
+    fkr.id_region,
+    fkr.inscrits,
+    fkr.blancs,
+    fkr.nuls,
+    fkr.exprimes
 ;
 
 
@@ -176,6 +259,8 @@ SELECT
     cm.id AS id_commune,
     cm.code AS code_commune,
     cm.nom AS nom_commune,
+    cm.id_district,
+    rsf.id_region,
     SUM(rsf.inscrits) AS inscrits,
     SUM(rsf.blancs) AS blancs,
     SUM(rsf.nuls) AS nuls,
@@ -189,14 +274,18 @@ GROUP BY
     rsf.id_election,
     cm.id,
     cm.code,
-    cm.nom
+    cm.nom,
+    cm.id_district,
+    rsf.id_region
 ;
-CREATE VIEW communes_resultats AS
+CREATE OR REPLACE VIEW communes_resultats AS
 SELECT
     rscm.id_election,
     cm.id,
     cm.code,
     cm.nom,
+    cm.id_district,
+    rscm.id_region,
     rscm.inscrits,
     rscm.blancs,
     rscm.nuls,
@@ -265,12 +354,13 @@ GROUP BY
     mc.code,
     mc.nom
 ;
-CREATE VIEW municipalites_resultats AS
+CREATE OR REPLACE VIEW municipalites_resultats AS
 SELECT
     rsmc.id_election,
     mc.id,
     mc.code,
     mc.nom,
+    mc.id_district,
     rsmc.inscrits,
     rsmc.blancs,
     rsmc.nuls,
@@ -335,12 +425,13 @@ GROUP BY
     d.code,
     d.nom
 ;
-CREATE VIEW districts_resultats AS
+CREATE OR REPLACE VIEW districts_resultats AS
 SELECT
     rsd.id_election,
     d.id,
     d.code,
     d.nom,
+    d.id_region,
     rsd.inscrits,
     rsd.blancs,
     rsd.nuls,

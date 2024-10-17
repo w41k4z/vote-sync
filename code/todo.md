@@ -1,5 +1,4 @@
 - Electoral result:
-	- one page per results (local, legislative and presidential
 	- controller (add filtering functionality)
 	- id_municipalate and id_commune can be filtered in the fokontany and polling station endpoint
 - Server configuration for file storage, access and upload

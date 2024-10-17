@@ -39,6 +39,8 @@
   
   1.578 (02/03/2021) pour les données spatiales recoltées
 
+UPDATE: 1695 
+
 - District:
   120 (13/03/2024) [https://www.ceni-madagascar.mg/wp-content/uploads/2024/03/Ampliation-decret-n%C2%B02024-582-repartition-des-sieges-pour-les-elections-legislatives.pdf]
   
