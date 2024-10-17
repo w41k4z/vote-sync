@@ -34,6 +34,7 @@ import { UserImportDialogComponent } from './views/users/list-users/user-form-di
 import { ElectionDialogComponent } from './views/elections/election-dialog/election-dialog.component';
 import { FormatPublicUrlPipe } from './pipes/format-public-url.pipe';
 import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
+import { MunicipalResultFilterComponent } from './views/elections/municipal-result/municipal-result-filter/municipal-result-filter.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { MunicipalResultComponent } from './views/elections/municipal-result/mun
     ElectionDialogComponent,
     FormatPublicUrlPipe,
     MunicipalResultComponent,
+    MunicipalResultFilterComponent,
   ],
   imports: [
     BrowserModule,

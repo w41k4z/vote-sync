@@ -1,8 +1,8 @@
 package ceni.system.votesync.service.domain.result;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PagedModel;
 
 import ceni.system.votesync.model.result.FokontanyResult;
 import ceni.system.votesync.model.result.PollingStationResult;
@@ -27,13 +27,13 @@ class ElectoralResultService {
         this.electionService = electionService;
     }
 
-    public List<PollingStationResult> getPollingStationResults(Integer electionId) {
+    public PagedModel<PollingStationResult> getPollingStationResults(Integer electionId, Pageable page) {
         Specification<PollingStationResult> spec = ElectoralResultSpecification.withElectionId(electionId);
-        return this.pollingStationResultRepository.findAll(spec);
+        return new PagedModel<>(this.pollingStationResultRepository.findAll(spec, page));
     }
 
-    public List<FokontanyResult> getFokontanyResults(Integer electionId) {
+    public PagedModel<FokontanyResult> getFokontanyResults(Integer electionId, Pageable page) {
         Specification<FokontanyResult> spec = ElectoralResultSpecification.withElectionId(electionId);
-        return this.fokontanyResultRepository.findAll(spec);
+        return new PagedModel<>(this.fokontanyResultRepository.findAll(spec, page));
     }
 }

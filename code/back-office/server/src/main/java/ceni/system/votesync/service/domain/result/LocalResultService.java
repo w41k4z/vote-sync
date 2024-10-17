@@ -1,9 +1,10 @@
 package ceni.system.votesync.service.domain.result;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import ceni.system.votesync.model.Election;
@@ -27,12 +28,12 @@ public class LocalResultService extends ElectoralResultService {
         this.municipalResultRepository = municipalResultRepository;
     }
 
-    public List<MunicipalResult> getMunicipalResults(Integer electionId) {
+    public PagedModel<MunicipalResult> getMunicipalResults(Integer electionId, Pageable page) {
         Optional<Election> election = this.electionService.getElection(electionId);
         if (!election.isEmpty() && !election.get().getType().isLocal()) {
             throw new IllegalArgumentException("The election type is not a local election");
         }
         Specification<MunicipalResult> spec = ElectoralResultSpecification.withElectionId(electionId);
-        return this.municipalResultRepository.findAll(spec);
+        return new PagedModel<>(this.municipalResultRepository.findAll(spec, page));
     }
 }

@@ -1,0 +1,106 @@
+<header class="p-3">
+    @if (currentResult == 0) {
+        <h5 class="text-primary">Bureau de vote: 
+            <b class="text-black">
+                {{ electoralResult.name | formatName }}
+            </b>
+        </h5>
+    }
+    @else if (currentResult == 1) {
+        <h5 class="text-primary">Fokontany:
+            <b class="text-black">
+                {{ electoralResult.name | formatName }}
+            </b>
+        </h5>
+    }
+    @else if (currentResult == 2) {
+        <h5 class="text-primary">Commune: 
+            <b class="text-black">
+                {{ electoralResult.name | formatName }}
+            </b>
+        </h5>
+    }
+    <table class="table table-borderless mt-4 w-50">
+        <tbody>
+            <tr>
+                <td>
+                    <h5 class="text-primary">Inscrits:</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{electoralResult.registeredVoters | formatNumber}}
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5 class="text-primary">Blancs:</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{electoralResult.blankVotes | formatNumber}}
+                    </b>
+                </td>
+                <td>
+                    <h5 class="text-danger">Soit</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{ (electoralResult.blankVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5 class="text-primary">Nuls:</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{electoralResult.nullVotes | formatNumber}}
+                    </b>
+                </td>
+                <td>
+                    <h5 class="text-danger">Soit</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5 class="text-primary">Exprimés:</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{electoralResult.validVotes | formatNumber}}
+                    </b>
+                </td>
+                <td>
+                    <h5 class="text-danger">Soit</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{ (electoralResult.validVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5 class="text-primary">Total des voix:</h5>
+                </td>
+                <td class="text-end">
+                    <b class="text-black">
+                        {{(electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber}}
+                    </b>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h5 class="text-center text-danger">Taux de participation: 
+        <b class="text-black text-end">
+            {{ (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) * 100 / electoralResult.registeredVoters | formatNumber }}%
+        </b>
+    </h5>
+</header>

@@ -7,6 +7,7 @@
 	- Request time out should be handled (unreachable host)
 	- Localisation activation on the login page should be handled
 	- Global error handling to avoid crash
+- Add spatial data to municipalites
 - Back office loading visual for data importation
 - Back office error message displaying
 - Flutter does not have a way to parse response data from API directly to a dart object, so careful when changing the ApiResponse structure

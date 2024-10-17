@@ -2,12 +2,15 @@ package ceni.system.votesync.controller.api;
 
 import java.util.HashMap;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.service.domain.result.LegislativeResultService;
 import ceni.system.votesync.service.domain.result.LocalResultService;
@@ -29,23 +32,26 @@ public class ElectoralResultController {
     }
 
     @GetMapping("/polling-station")
-    public ResponseEntity<ApiResponse> pollingStationResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> pollingStationResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.presidentialResultService.getPollingStationResults(electionId));
+        data.put("electoralResults", this.presidentialResultService.getPollingStationResults(electionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/fokontany")
-    public ResponseEntity<ApiResponse> fokontanyResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> fokontanyResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.presidentialResultService.getFokontanyResults(electionId));
+        data.put("electoralResults", this.presidentialResultService.getFokontanyResults(electionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/local/municipal")
-    public ResponseEntity<ApiResponse> localMunicipalResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> localMunicipalResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.localResultService.getMunicipalResults(electionId));
+        data.put("electoralResults", this.localResultService.getMunicipalResults(electionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
