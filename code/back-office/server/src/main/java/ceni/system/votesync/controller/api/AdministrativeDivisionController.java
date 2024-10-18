@@ -43,6 +43,21 @@ public class AdministrativeDivisionController {
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
+    @GetMapping("/municipality-districts")
+    public ResponseEntity<ApiResponse> getMunicipalityDistricts() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions", this.service.getMunicipalityDistrictsWithoutGeoJson());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
+    @GetMapping("/municipality-districts/by-region")
+    public ResponseEntity<ApiResponse> getMunicipalityDistrictsByRegionId(@RequestParam Integer upperDivisionId) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions",
+                this.service.getMunicipalityDistrictsByRegionIdWithoutGeoJson(upperDivisionId));
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
     @GetMapping("/communes")
     public ResponseEntity<ApiResponse> getCommunes() {
         HashMap<String, Object> payload = new HashMap<>();
@@ -55,6 +70,21 @@ public class AdministrativeDivisionController {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
                 this.service.getCommunesByDistrictIdWithoutGeoJson(upperDivisionId));
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
+    @GetMapping("/municipalities")
+    public ResponseEntity<ApiResponse> getMunicipalities() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions", this.service.getMunicipalitiesWithoutGeoJson());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
+    @GetMapping("/municipalities/by-district")
+    public ResponseEntity<ApiResponse> getMunicipalitiesByDistrictId(@RequestParam Integer upperDivisionId) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions",
+                this.service.getMunicipalitiesByDistrictIdWithoutGeoJson(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 

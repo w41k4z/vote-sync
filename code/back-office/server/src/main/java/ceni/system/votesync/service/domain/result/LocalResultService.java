@@ -8,24 +8,48 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import ceni.system.votesync.model.Election;
+import ceni.system.votesync.model.result.FokontanyLocalElectionResult;
 import ceni.system.votesync.model.result.MunicipalResult;
+import ceni.system.votesync.model.result.PollingStationLocalElectionResult;
+import ceni.system.votesync.repository.result.FokontanyLocalElectionResultRepository;
 import ceni.system.votesync.repository.result.FokontanyResultRepository;
 import ceni.system.votesync.repository.result.MunicipalResultRepository;
+import ceni.system.votesync.repository.result.PollingStationLocalElectionResultRepository;
 import ceni.system.votesync.repository.result.PollingStationResultRepository;
 import ceni.system.votesync.service.domain.ElectionService;
 import ceni.system.votesync.service.domain.specification.ElectoralResultSpecification;
 
 @Service
-public class LocalResultService extends ElectoralResultService {
+public class LocalResultService {
 
+    private PollingStationLocalElectionResultRepository pollingStationLocalElectionResultRepository;
+    private FokontanyLocalElectionResultRepository fokontanyLocalElectionResultRepository;
     private MunicipalResultRepository municipalResultRepository;
 
-    public LocalResultService(MunicipalResultRepository municipalResultRepository,
+    private ElectionService electionService;
+
+    public LocalResultService(PollingStationLocalElectionResultRepository pollingStationLocalElectionResultRepository,
+            FokontanyLocalElectionResultRepository fokontanyLocalElectionResultRepository,
+            MunicipalResultRepository municipalResultRepository,
             FokontanyResultRepository fokontanyResultRepository,
             PollingStationResultRepository pollingStationResultRepository,
             ElectionService electionService) {
-        super(fokontanyResultRepository, pollingStationResultRepository, electionService);
+        this.pollingStationLocalElectionResultRepository = pollingStationLocalElectionResultRepository;
+        this.fokontanyLocalElectionResultRepository = fokontanyLocalElectionResultRepository;
         this.municipalResultRepository = municipalResultRepository;
+        this.electionService = electionService;
+    }
+
+    public PagedModel<PollingStationLocalElectionResult> getPollingStationLocalElectionResults(Integer electionId,
+            Pageable page) {
+        Specification<PollingStationLocalElectionResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return new PagedModel<>(this.pollingStationLocalElectionResultRepository.findAll(spec, page));
+    }
+
+    public PagedModel<FokontanyLocalElectionResult> getFokontanyLocalElectionResults(Integer electionId,
+            Pageable page) {
+        Specification<FokontanyLocalElectionResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return new PagedModel<>(this.fokontanyLocalElectionResultRepository.findAll(spec, page));
     }
 
     public PagedModel<MunicipalResult> getMunicipalResults(Integer electionId, Pageable page) {

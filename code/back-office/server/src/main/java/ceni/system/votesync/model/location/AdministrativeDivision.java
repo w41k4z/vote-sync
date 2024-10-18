@@ -15,6 +15,8 @@ public class AdministrativeDivision {
     @Column(name = "nom")
     private String name;
 
+    private String code;
+
     private String geojson;
 
     private Integer upperDivisionId;

@@ -47,6 +47,23 @@ public class ElectoralResultController {
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
+    @GetMapping("/local/polling-station")
+    public ResponseEntity<ApiResponse> pollingStationLocalElectionResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("electoralResults",
+                this.localResultService.getPollingStationLocalElectionResults(electionId, pageable));
+        return ResponseEntity.ok(new ApiResponse(data, null));
+    }
+
+    @GetMapping("/local/fokontany")
+    public ResponseEntity<ApiResponse> fokontanyLocalElectionResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("electoralResults", this.localResultService.getFokontanyLocalElectionResults(electionId, pageable));
+        return ResponseEntity.ok(new ApiResponse(data, null));
+    }
+
     @GetMapping("/local/municipal")
     public ResponseEntity<ApiResponse> localMunicipalResults(@RequestParam Integer electionId,
             @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {

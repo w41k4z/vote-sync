@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 import ceni.system.votesync.model.location.Commune;
 import ceni.system.votesync.model.location.District;
 import ceni.system.votesync.model.location.Fokontany;
+import ceni.system.votesync.model.location.Municipality;
+import ceni.system.votesync.model.location.MunicipalityDistrict;
 import ceni.system.votesync.model.location.Region;
 import ceni.system.votesync.repository.location.CommuneRepository;
 import ceni.system.votesync.repository.location.DistrictRepository;
 import ceni.system.votesync.repository.location.FokontanyRepository;
+import ceni.system.votesync.repository.location.MunicipalityDistrictRepository;
+import ceni.system.votesync.repository.location.MunicipalityRepository;
 import ceni.system.votesync.repository.location.RegionRepository;
 
 @Service
@@ -18,15 +22,21 @@ public class AdministrativeDivisionService {
 
     private RegionRepository regionRepository;
     private DistrictRepository districtRepository;
+    private MunicipalityDistrictRepository municipalityDistrictRepository;
+    private MunicipalityRepository municipalityRepository;
     private CommuneRepository communeRepository;
     private FokontanyRepository fokontanyRepository;
 
     public AdministrativeDivisionService(RegionRepository regionRepository,
             DistrictRepository districtRepository,
+            MunicipalityDistrictRepository municipalityDistrictRepository,
+            MunicipalityRepository municipalityRepository,
             CommuneRepository communeRepository,
             FokontanyRepository fokontanyRepository) {
         this.regionRepository = regionRepository;
         this.districtRepository = districtRepository;
+        this.municipalityDistrictRepository = municipalityDistrictRepository;
+        this.municipalityRepository = municipalityRepository;
         this.communeRepository = communeRepository;
         this.fokontanyRepository = fokontanyRepository;
     }
@@ -41,6 +51,22 @@ public class AdministrativeDivisionService {
 
     public List<District> getDistrictsByRegionIdWithoutGeoJson(Integer regionId) {
         return this.districtRepository.findByUpperDivisionIdWithoutGeoJson(regionId);
+    }
+
+    public List<MunicipalityDistrict> getMunicipalityDistrictsWithoutGeoJson() {
+        return this.municipalityDistrictRepository.findAllWithoutGeoJson();
+    }
+
+    public List<MunicipalityDistrict> getMunicipalityDistrictsByRegionIdWithoutGeoJson(Integer regionId) {
+        return this.municipalityDistrictRepository.findByUpperDivisionIdWithoutGeoJson(regionId);
+    }
+
+    public List<Municipality> getMunicipalitiesWithoutGeoJson() {
+        return this.municipalityRepository.findAllWithoutGeoJson();
+    }
+
+    public List<Municipality> getMunicipalitiesByDistrictIdWithoutGeoJson(Integer districtId) {
+        return this.municipalityRepository.findByUpperDivisionIdWithoutGeoJson(districtId);
     }
 
     public List<Commune> getCommunesWithoutGeoJson() {

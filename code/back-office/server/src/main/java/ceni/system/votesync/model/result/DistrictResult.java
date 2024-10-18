@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.annotation.Immutable;
 
 import ceni.system.votesync.model.result.details.DistrictResultDetails;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -20,6 +21,12 @@ import lombok.EqualsAndHashCode;
 @Table(name = "districts_resultats")
 @Immutable
 public class DistrictResult extends ElectoralResult {
+
+    @Column(name = "id_region")
+    private Integer regionId;
+
+    @Column(name = "nom_region")
+    private String region;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumns({

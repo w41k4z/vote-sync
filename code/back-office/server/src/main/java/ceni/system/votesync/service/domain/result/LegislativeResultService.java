@@ -3,12 +3,16 @@ package ceni.system.votesync.service.domain.result;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import ceni.system.votesync.model.Election;
 import ceni.system.votesync.model.result.CommunalResult;
 import ceni.system.votesync.model.result.DistrictResult;
+import ceni.system.votesync.model.result.FokontanyResult;
+import ceni.system.votesync.model.result.PollingStationResult;
 import ceni.system.votesync.repository.result.CommunalResultRepository;
 import ceni.system.votesync.repository.result.DistrictResultRepository;
 import ceni.system.votesync.repository.result.FokontanyResultRepository;
@@ -17,19 +21,33 @@ import ceni.system.votesync.service.domain.ElectionService;
 import ceni.system.votesync.service.domain.specification.ElectoralResultSpecification;
 
 @Service
-public class LegislativeResultService extends ElectoralResultService {
+public class LegislativeResultService {
 
     private DistrictResultRepository districtResultRepository;
     private CommunalResultRepository communalResultRepository;
+    private FokontanyResultRepository fokontanyResultRepository;
+    private PollingStationResultRepository pollingStationResultRepository;
+
+    protected ElectionService electionService;
 
     public LegislativeResultService(DistrictResultRepository districtResultRepository,
             CommunalResultRepository communalResultRepository,
             FokontanyResultRepository fokontanyResultRepository,
             PollingStationResultRepository pollingStationResultRepository,
             ElectionService electionService) {
-        super(fokontanyResultRepository, pollingStationResultRepository, electionService);
         this.districtResultRepository = districtResultRepository;
         this.communalResultRepository = communalResultRepository;
+        this.electionService = electionService;
+    }
+
+    public PagedModel<PollingStationResult> getPollingStationResults(Integer electionId, Pageable page) {
+        Specification<PollingStationResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return new PagedModel<>(this.pollingStationResultRepository.findAll(spec, page));
+    }
+
+    public PagedModel<FokontanyResult> getFokontanyResults(Integer electionId, Pageable page) {
+        Specification<FokontanyResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        return new PagedModel<>(this.fokontanyResultRepository.findAll(spec, page));
     }
 
     public List<CommunalResult> getCommunalResults(Integer electionId) {

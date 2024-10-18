@@ -6,6 +6,19 @@ SELECT
 FROM DUAL
 ;
 
+CREATE OR REPLACE VIEW v_district_municipalites AS
+SELECT
+    d.id,
+    d.code,
+    d.id_region,
+    mc.nom_district AS nom,
+    d.geojson,
+    d.etat
+FROM municipalites mc
+JOIN districts d
+    ON mc.id_district = d.id
+;
+
 CREATE OR REPLACE VIEW stat_utilisateur AS
 SELECT
     id_role,
