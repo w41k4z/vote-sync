@@ -5,6 +5,7 @@ import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/polling_station_election.dart';
 import 'package:vote_sync/models/voter.dart';
+import 'package:vote_sync/services/api/api_call_service.dart';
 import 'package:vote_sync/services/data/domain/candidate_domain_service.dart';
 import 'package:vote_sync/services/data/domain/election_domain_service.dart';
 import 'package:vote_sync/services/data/domain/polling_station_domain_service.dart';
@@ -53,6 +54,7 @@ class DatabaseManager {
     List<Voter> voters,
     List<Candidate> candidates,
   ) async {
+    ApiCallService callService = ApiCallService();
     await database.transaction((tsx) async {
       await GetIt.I
           .get<PollingStationDomainService>()
@@ -65,6 +67,7 @@ class DatabaseManager {
       CandidateDomainService candidateDomainService =
           GetIt.I.get<CandidateDomainService>();
       for (Candidate candidate in candidates) {
+        await candidate.downloadPCandidateImage(callService);
         await candidateDomainService.create(tsx, candidate);
       }
     });

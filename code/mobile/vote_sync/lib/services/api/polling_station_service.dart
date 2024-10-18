@@ -1,7 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/endpoints.dart';
-import 'package:vote_sync/config/env.dart';
 import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/models/candidate.dart';
@@ -9,7 +8,6 @@ import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/polling_station_election.dart';
 import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
-import 'package:vote_sync/services/local_storage_service.dart';
 import 'package:vote_sync/services/location_service.dart';
 
 class PollingStationService extends ApiCallService {
@@ -70,12 +68,5 @@ class PollingStationService extends ApiCallService {
       "voters": voters,
       "candidates": candidates
     };
-  }
-
-  void downloadPollingStationFile(String filePath) async {
-    LocalStorageService localStorageService =
-        GetIt.I.get<LocalStorageService>();
-    String localFilePath = "${localStorageService.appDocDir.path}/$filePath";
-    filePath = "${Env.BASE_URL}/$filePath";
   }
 }

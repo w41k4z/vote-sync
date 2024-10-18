@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _getPollingStationAndElection() async {
     final appInstance = GetIt.I.get<AppInstance>();
-    Database database = await GetIt.I.get<DatabaseManager>().database;
+    Database database = GetIt.I.get<DatabaseManager>().database;
     String pollingStationId = appInstance.getPollingStationId();
     String electionId = appInstance.getElectionId();
     final storedPollingStation = await GetIt.I

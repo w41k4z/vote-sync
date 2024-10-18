@@ -29,7 +29,7 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
   }
 
   Future<void> _filter(int page, String nic) async {
-    Database databaseInstance = await GetIt.I.get<DatabaseManager>().database;
+    Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     Map<String, dynamic> result = await GetIt.I
         .get<VoterDomainService>()
         .findRegisteredVoters(database: databaseInstance, page: page, nic: nic);

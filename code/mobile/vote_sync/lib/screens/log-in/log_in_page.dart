@@ -171,7 +171,7 @@ class _LogInPageState extends State<LogInPage> {
         ),
       );
     } on DioException catch (e) {
-      appInstance.logout();
+      await appInstance.logout();
       if (!mounted) return;
       _showSnackBarError(e.response?.data["message"]);
     } finally {

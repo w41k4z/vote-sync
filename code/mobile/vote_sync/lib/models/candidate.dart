@@ -1,3 +1,8 @@
+import 'package:get_it/get_it.dart';
+import 'package:vote_sync/config/env.dart';
+import 'package:vote_sync/services/api/api_call_service.dart';
+import 'package:vote_sync/services/local_storage_service.dart';
+
 class Candidate {
   int id;
   int registrationId;
@@ -63,5 +68,13 @@ class Candidate {
       'image_path': imagePath,
       'polling_station_id': pollingStationId,
     };
+  }
+
+  Future<void> downloadPCandidateImage(ApiCallService callService) async {
+    LocalStorageService localStorageService =
+        GetIt.I.get<LocalStorageService>();
+    String localFilePath = "${localStorageService.appDocDir.path}/$imagePath";
+    String filePath = "${Env.BASE_URL}/public/$imagePath";
+    await callService.downloadFile(filePath, localFilePath);
   }
 }
