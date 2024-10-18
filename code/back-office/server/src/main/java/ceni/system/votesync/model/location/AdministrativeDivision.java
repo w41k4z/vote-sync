@@ -24,14 +24,15 @@ public class AdministrativeDivision {
     public AdministrativeDivision() {
     }
 
-    public AdministrativeDivision(Integer id, String name, Integer upperDivisionId) {
+    public AdministrativeDivision(Integer id, String name, String code, Integer upperDivisionId) {
         this.id = id;
         this.name = name;
+	this.code = code;
         this.upperDivisionId = upperDivisionId;
     }
 
-    public AdministrativeDivision(Integer id, String name, Integer upperDivisionId, String geoJson) {
-        this(id, name, upperDivisionId);
+    public AdministrativeDivision(Integer id, String name, String code, Integer upperDivisionId, String geoJson) {
+        this(id, name, code, upperDivisionId);
         this.geojson = geoJson;
     }
 }

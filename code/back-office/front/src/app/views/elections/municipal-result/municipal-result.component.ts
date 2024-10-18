@@ -17,7 +17,7 @@ export class MunicipalResultComponent {
   error$: Observable<string | null>;
   message$: Observable<string | null>;
   results: string[] = ['Par bureau de vote', 'Par fokontany', 'Par commune'];
-  current = 2;
+  current = 0;
   election: Election | null = null;
   electoralResults: ElectoralResult[] = [];
   page: Page | null = null;

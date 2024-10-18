@@ -24,6 +24,9 @@ JOIN candidats c
 JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
 WHERE r.etat = 10
+ORDER BY
+    r.id_election,
+    ec.numero_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_bv AS
 SELECT
@@ -92,7 +95,7 @@ SELECT
     mc.id AS id_municipalite,
     mc.nom AS nom_municipalite,
     bvr.id_district,
-    bvr.nom_district,
+    mc.nom_district,
     bvr.id_region,
     bvr.nom_region,
     bvr.inscrits,
@@ -114,7 +117,7 @@ GROUP BY
     mc.id,
     mc.nom,
     bvr.id_district,
-    bvr.nom_district,
+    mc.nom_district,
     bvr.id_region,
     bvr.nom_region,
     bvr.inscrits,
@@ -221,7 +224,7 @@ SELECT
     mc.id AS id_municipalite,
     mc.nom AS nom_municipalite,
     fkr.id_district,
-    fkr.nom_district,
+    mc.nom_district,
     fkr.id_region,
     fkr.nom_region,
     fkr.inscrits,
@@ -241,7 +244,7 @@ GROUP BY
     mc.id,
     mc.nom,
     fkr.id_district,
-    fkr.nom_district,
+    mc.nom_district,
     fkr.id_region,
     fkr.nom_region,
     fkr.inscrits,
@@ -375,7 +378,7 @@ SELECT
     mc.code AS code_municipalite,
     mc.nom AS nom_municipalite,
     mc.id_district,
-    rsf.nom_district,
+    mc.nom_district,
     rsf.id_region,
     rsf.nom_region,
     SUM(rsf.inscrits) AS inscrits,
@@ -395,7 +398,7 @@ GROUP BY
     mc.code,
     mc.nom,
     mc.id_district,
-    rsf.nom_district,
+    mc.nom_district,
     rsf.id_region,
     rsf.nom_region
 ;
@@ -406,7 +409,7 @@ SELECT
     mc.code,
     mc.nom,
     mc.id_district,
-    rsmc.nom_district,
+    mc.nom_district,
     rsmc.id_region,
     rsmc.nom_region,
     rsmc.inscrits,

@@ -37,7 +37,7 @@ export class MunicipalResultService extends ApiCallService {
     }
     return (
       await this.getCall<ElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/fokontany${param}`
+        `${Endpoints.ELECTION_RESULTS}/local/fokontany${param}`
       )
     ).payload;
   }
@@ -56,7 +56,7 @@ export class MunicipalResultService extends ApiCallService {
     }
     return (
       await this.getCall<ElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/polling-station${param}`
+        `${Endpoints.ELECTION_RESULTS}/local/polling-station${param}`
       )
     ).payload;
   }
