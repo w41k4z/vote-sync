@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center option">
-    <div class="d-flex justify-content-center align-items-center gap-3">
+    <div class="d-flex justify-content-center option-content align-items-center gap-3">
         <button class="type" [ngClass]="current == i ? 'active' : ''" *ngFor="let type of results; index as i" (click)="handleResultChange(i)">
             {{ type }}
         </button>

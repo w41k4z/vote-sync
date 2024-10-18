@@ -1,0 +1,11 @@
+@import "../../../../theme.scss";
+
+.dialog-content {
+    padding: 15px 35px 0px 35px;
+    background-color: $content-background;
+
+    main {
+        max-height: 325px;
+        overflow-y: scroll;
+    }
+}

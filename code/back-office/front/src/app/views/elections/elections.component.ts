@@ -3,6 +3,8 @@ import { ElectionService } from '../../services/api/election/election.service';
 import { Election } from '../../dto/election';
 import { Paths } from '../../paths';
 import { ElectionType } from '../../dto/election-type';
+import { MatDialog } from '@angular/material/dialog';
+import { ElectionDialogComponent } from './election-dialog/election-dialog.component';
 
 @Component({
   selector: 'app-elections',
@@ -14,7 +16,10 @@ export class ElectionsComponent {
   currentElections: Election[] = [];
   electionHistory: Election[] = [];
 
-  constructor(private electionService: ElectionService) {
+  constructor(
+    private electionService: ElectionService,
+    public dialog: MatDialog
+  ) {
     this.electionService.getCurrentElections().then((payload) => {
       if (payload) {
         this.currentElections = payload.elections;
@@ -33,5 +38,10 @@ export class ElectionsComponent {
       default:
         throw new Error('Unknown election type');
     }
+  }
+
+  openAddDialog() {
+    const dialogRef = this.dialog.open(ElectionDialogComponent);
+    this.dialog.afterAllClosed.subscribe(() => {});
   }
 }

@@ -1,7 +1,7 @@
 <section *ngIf="currentElections.length > 0" class="card card-body content mb-3">
     <div class="content-header d-flex justify-content-between align-items-center">
         <h5>Election en cours</h5>
-        <button class="btn btn-outline-primary">
+        <button class="btn btn-outline-primary" (click)="openAddDialog()">
             <i class="bi bi-plus-lg"></i>
         </button>
     </div>
@@ -28,7 +28,7 @@
                 <button class="btn btn-outline-primary">
                     Exporter
                 </button>
-                <button class="btn btn-primary" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
+                <button class="btn btn-outline-primary" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
                     Résultat
                 </button>
             </div>
