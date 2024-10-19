@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/page_content.dart';
 import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/services/data/database_manager.dart';
@@ -47,6 +48,22 @@ class _CandidatePageState extends State<CandidatePage> {
       bottomSheet: const Copyright(),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (newValue) {},
+              decoration: InputDecoration(
+                hintText: 'Rechercher...',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: candidates.isEmpty
                 ? const Center(
@@ -75,25 +92,40 @@ class _CandidatePageState extends State<CandidatePage> {
 
   Widget _candidateCard({required Candidate candidate}) {
     return Card(
-      elevation: 4,
-      margin: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildImage(candidate),
-          const SizedBox(height: 16),
-          _buildCandidateInfo(candidate),
-        ],
+      margin: const EdgeInsets.symmetric(
+        horizontal: 10.0,
+        vertical: 5.0,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            _buildImage(candidate),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTitle(candidate),
+                  const SizedBox(height: 8),
+                  _buildSubtitle(candidate),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ),
+            _buildCandidateNumber(candidate),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildImage(Candidate candidate) {
     return Container(
-      height: 200,
-      width: double.infinity,
+      height: 50,
+      width: 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
         image: DecorationImage(
           fit: BoxFit.cover,
           image: FileImage(File(
@@ -103,36 +135,37 @@ class _CandidatePageState extends State<CandidatePage> {
     );
   }
 
-  Widget _buildCandidateInfo(Candidate candidate) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Registration ID: ${candidate.registrationId}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+  Widget _buildTitle(Candidate candidate) {
+    return Text(
+      candidate.information,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildSubtitle(Candidate candidate) {
+    return Text(
+      '${candidate.politicalEntity} (${candidate.politicalEntityDescription})',
+    );
+  }
+
+  Widget _buildCandidateNumber(Candidate candidate) {
+    return Container(
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: AppColors.primaryGreen,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text(
+          candidate.candidateNumber.toString(),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.white,
+                fontSize: 20,
+              ),
         ),
-        const SizedBox(height: 4),
-        Text('Registration Date: ${candidate.registrationDate}'),
-        const SizedBox(height: 4),
-        Text('Candidate Number: ${candidate.candidateNumber}'),
-        const SizedBox(height: 4),
-        Text('Information: ${candidate.information}'),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Entité politique:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(
-              '${candidate.politicalEntity} (${candidate.politicalEntityDescription})',
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

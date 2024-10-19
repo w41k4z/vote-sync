@@ -91,7 +91,7 @@ class AppDrawer extends StatelessWidget {
                   : Colors.grey[400],
             ),
             title: Text(
-              'Liste des candidates',
+              'Liste des candidats',
               style: TextStyle(
                 color: activeItem == PageContent.CANDIDATES
                     ? AppColors.primaryGreen
