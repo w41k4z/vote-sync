@@ -33,7 +33,11 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
     Map<String, dynamic> result = await GetIt.I
         .get<VoterDomainService>()
         .findRegisteredVoters(
-            database: databaseInstance, hasVoted: 10, page: page, nic: nic);
+            database: databaseInstance,
+            condition: ">=",
+            hasVoted: 10,
+            page: page,
+            nic: nic);
     List<Voter> registeredVoters = result['voters'];
     int pages = result['totalPages'];
     setState(() {
