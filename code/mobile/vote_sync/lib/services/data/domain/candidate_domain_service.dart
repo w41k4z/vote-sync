@@ -10,8 +10,15 @@ class CandidateDomainService {
     );
   }
 
-  Future<List<Candidate>> findAll(Database database) async {
-    final List<Map<String, dynamic>> maps = await database.query('candidates');
+  Future<List<Candidate>> findAll(Database database, String information) async {
+    String query = "SELECT * FROM candidates";
+    List<dynamic> arguments = [];
+    if (information.isNotEmpty) {
+      query += " WHERE information LIKE ?";
+      arguments.add('%$information%');
+    }
+    final List<Map<String, dynamic>> maps =
+        await database.rawQuery(query, arguments);
     return List.generate(maps.length, (i) {
       return Candidate.fromMap(maps[i]);
     });

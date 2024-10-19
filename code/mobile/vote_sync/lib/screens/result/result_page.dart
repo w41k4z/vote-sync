@@ -10,12 +10,12 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Candidats'),
+        title: const Text('Résultats'),
       ),
       drawer: const AppDrawer(activeItem: PageContent.RESULT),
       bottomSheet: const Copyright(),
       body: const Center(
-        child: Text('Candidats'),
+        child: Text('Résultats'),
       ),
     );
   }

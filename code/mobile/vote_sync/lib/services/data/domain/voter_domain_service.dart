@@ -58,4 +58,14 @@ class VoterDomainService {
     };
     return result;
   }
+
+  Future<void> register(
+      {required Database database, required Voter voter}) async {
+    voter.registrationDate = DateTime.now().toString();
+    voter.hasVoted = 10;
+    String query =
+        "UPDATE voters set registration_date = ?, has_voted = ? WHERE id = ?";
+    await database
+        .rawUpdate(query, [voter.registrationDate, voter.hasVoted, voter.id]);
+  }
 }

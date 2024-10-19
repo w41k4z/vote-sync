@@ -22,18 +22,21 @@ class CandidatePage extends StatefulWidget {
 class _CandidatePageState extends State<CandidatePage> {
   List<Candidate> candidates = [];
   LocalStorageService localStorageService = GetIt.I.get<LocalStorageService>();
+  String informationFilter = '';
 
   @override
   void initState() {
     super.initState();
-    _getCandidates();
+    _filter(informationFilter);
   }
 
-  Future<void> _getCandidates() async {
+  Future<void> _filter(String newInformationFilter) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
-    List<Candidate> result =
-        await GetIt.I.get<CandidateDomainService>().findAll(databaseInstance);
+    List<Candidate> result = await GetIt.I
+        .get<CandidateDomainService>()
+        .findAll(databaseInstance, newInformationFilter);
     setState(() {
+      informationFilter = newInformationFilter;
       candidates = result;
     });
   }
@@ -51,7 +54,9 @@ class _CandidatePageState extends State<CandidatePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              onChanged: (newValue) {},
+              onChanged: (newValue) {
+                _filter(newValue);
+              },
               decoration: InputDecoration(
                 hintText: 'Rechercher...',
                 prefixIcon: const Icon(Icons.search),
@@ -125,11 +130,13 @@ class _CandidatePageState extends State<CandidatePage> {
       height: 50,
       width: 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: const BorderRadius.all(Radius.circular(15.0)),
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: FileImage(File(
-              "${localStorageService.appDocDir.path}/${candidate.imagePath}")),
+          image: FileImage(
+            File(
+                "${localStorageService.appDocDir.path}/${candidate.imagePath}"),
+          ),
         ),
       ),
     );
@@ -153,17 +160,14 @@ class _CandidatePageState extends State<CandidatePage> {
   Widget _buildCandidateNumber(Candidate candidate) {
     return Container(
       padding: const EdgeInsets.all(7),
-      decoration: BoxDecoration(
-        color: AppColors.primaryGreen,
-        borderRadius: BorderRadius.circular(10),
-      ),
       child: Center(
         child: Text(
           candidate.candidateNumber.toString(),
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.white,
-                fontSize: 20,
-              ),
+          style: const TextStyle(
+            color: AppColors.primaryGreen,
+            fontSize: 18,
+            fontWeight: FontWeight.w900,
+          ),
         ),
       ),
     );

@@ -25,7 +25,7 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
   @override
   void initState() {
     super.initState();
-    _getRegisteredVoters();
+    _filter(currentPage, nicFilter);
   }
 
   Future<void> _filter(int page, String nic) async {
@@ -43,8 +43,14 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
     });
   }
 
-  void _getRegisteredVoters() async {
-    await _filter(currentPage, nicFilter);
+  Future<void> _register(int index) async {
+    Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
+    await GetIt.I
+        .get<VoterDomainService>()
+        .register(database: databaseInstance, voter: voters[index]);
+    setState(() {
+      voters.removeAt(index);
+    });
   }
 
   @override
@@ -155,8 +161,8 @@ class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {
-                // Action on button press (register voter)
+              onPressed: () async {
+                await _register(index);
               },
               child: const Text('Enregistrer'),
             ),

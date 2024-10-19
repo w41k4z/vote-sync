@@ -51,7 +51,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double bottomSheetHeight = Copyright.height;
     return Scaffold(
-      appBar: AppBar(title: const Text('Accueil')),
+      appBar: AppBar(
+        title: const Text('Accueil'),
+      ),
       drawer: const AppDrawer(activeItem: PageContent.HOME),
       bottomSheet: const Copyright(),
       backgroundColor: AppColors.neutralBackgroundColor,
