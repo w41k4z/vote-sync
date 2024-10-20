@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.Role;
-import ceni.system.votesync.model.User;
-import ceni.system.votesync.service.domain.UserService;
+import ceni.system.votesync.model.entity.Role;
+import ceni.system.votesync.model.entity.User;
+import ceni.system.votesync.service.entity.user.UserService;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ceni.system.votesync.model.function.RegisteredCandidate;
-import ceni.system.votesync.repository.EntityRepository;
+import ceni.system.votesync.repository.base.EntityRepository;
 
 public interface RegisteredCandidateRepository extends EntityRepository<RegisteredCandidate, Integer> {
 

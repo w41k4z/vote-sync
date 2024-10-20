@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ceni.system.votesync.dto.ApiResponse;
-import ceni.system.votesync.service.domain.AdministrativeDivisionService;
+import ceni.system.votesync.service.entity.location.AdministrativeDivisionService;
 
 @RestController
 @RequestMapping("/api/administrative-divisions")

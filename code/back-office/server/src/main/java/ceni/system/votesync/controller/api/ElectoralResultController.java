@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
-import ceni.system.votesync.service.domain.result.LegislativeResultService;
-import ceni.system.votesync.service.domain.result.LocalResultService;
-import ceni.system.votesync.service.domain.result.PresidentialResultService;
+import ceni.system.votesync.service.entity.result.LegislativeResultService;
+import ceni.system.votesync.service.entity.result.LocalResultService;
+import ceni.system.votesync.service.entity.result.PresidentialResultService;
 
 @RequestMapping("/api/elections/results")
 @RestController

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ceni.system.votesync.dto.ApiResponse;
-import ceni.system.votesync.service.domain.RoleService;
+import ceni.system.votesync.service.entity.role.RoleService;
 
 import java.util.HashMap;
 

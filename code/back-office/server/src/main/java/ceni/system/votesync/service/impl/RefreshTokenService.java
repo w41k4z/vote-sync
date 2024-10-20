@@ -5,10 +5,10 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.RefreshToken;
-import ceni.system.votesync.model.User;
-import ceni.system.votesync.repository.RefreshTokenRepository;
-import ceni.system.votesync.service.domain.UserService;
+import ceni.system.votesync.model.entity.RefreshToken;
+import ceni.system.votesync.model.entity.User;
+import ceni.system.votesync.repository.entity.RefreshTokenRepository;
+import ceni.system.votesync.service.entity.user.UserService;
 import ceni.system.votesync.service.spec.AbstractJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

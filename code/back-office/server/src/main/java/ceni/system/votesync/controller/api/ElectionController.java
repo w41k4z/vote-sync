@@ -20,8 +20,8 @@ import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.election.ConfigureElectionRequest;
 import ceni.system.votesync.dto.request.election.UpdateElectionRequest;
-import ceni.system.votesync.model.Election;
-import ceni.system.votesync.service.domain.ElectionService;
+import ceni.system.votesync.model.entity.Election;
+import ceni.system.votesync.service.entity.election.ElectionService;
 
 @RequestMapping("/api/elections")
 @RestController

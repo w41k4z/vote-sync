@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ceni.system.votesync.model.Role;
-import ceni.system.votesync.model.User;
-import ceni.system.votesync.repository.UserRepository;
+import ceni.system.votesync.model.entity.Role;
+import ceni.system.votesync.model.entity.User;
+import ceni.system.votesync.repository.entity.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

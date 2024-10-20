@@ -1,10 +1,9 @@
-- Object mapping for:
-	- local election polling station result
-	- local election fokontany result
+- Exporting state value to a constant class
+- Upload registered electors by a chunk of 10
 - Electoral result:
 	- controller (add filtering functionality)
 	- id_municipalate and id_commune can be filtered in the fokontany and polling station endpoint
-- Server configuration for file storage, access and upload
+- Back-office reponsive mobile drawer
 - Mobile App Error Handling (0%)
 	- Request time out should be handled (unreachable host)
 	- Localisation activation on the login page should be handled

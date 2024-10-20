@@ -20,8 +20,8 @@ import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.user.NewUserRequest;
 import ceni.system.votesync.dto.request.user.UpdateUserRequest;
-import ceni.system.votesync.service.domain.UserService;
-import ceni.system.votesync.service.domain.UserStatService;
+import ceni.system.votesync.service.entity.user.UserService;
+import ceni.system.votesync.service.entity.user.UserStatService;
 import jakarta.validation.Valid;
 
 @RequestMapping("/api/users")
@@ -58,7 +58,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<ApiResponse> createNewUser(@Valid @RequestBody NewUserRequest request) {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("user", this.userService.createNewUser(request));
+        payload.put("user", this.userService.registerNewUser(request));
         return new ResponseEntity<>(new ApiResponse(payload, "User created"), HttpStatus.CREATED);
     }
 

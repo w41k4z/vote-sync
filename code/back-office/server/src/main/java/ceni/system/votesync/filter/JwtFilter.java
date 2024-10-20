@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.google.gson.Gson;
 
 import ceni.system.votesync.dto.ApiResponse;
-import ceni.system.votesync.model.User;
+import ceni.system.votesync.model.entity.User;
 import ceni.system.votesync.service.impl.AppJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

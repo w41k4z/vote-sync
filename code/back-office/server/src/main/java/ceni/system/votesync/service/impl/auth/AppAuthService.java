@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import ceni.system.votesync.config.Authority;
-import ceni.system.votesync.model.Role;
-import ceni.system.votesync.model.User;
+import ceni.system.votesync.model.entity.Role;
+import ceni.system.votesync.model.entity.User;
 import ceni.system.votesync.service.impl.AppJwtService;
 import ceni.system.votesync.service.impl.RefreshTokenService;
 import ceni.system.votesync.service.spec.auth.AuthService;

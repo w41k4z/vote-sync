@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.Role;
-import ceni.system.votesync.model.User;
+import ceni.system.votesync.model.entity.Role;
+import ceni.system.votesync.model.entity.User;
 import ceni.system.votesync.service.spec.AbstractJwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

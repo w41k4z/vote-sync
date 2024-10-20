@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ceni.system.votesync.dto.ApiResponse;
-import ceni.system.votesync.dto.request.AuthenticationRequest;
-import ceni.system.votesync.dto.request.LogOutRequest;
-import ceni.system.votesync.dto.request.NewAccessTokenRequest;
+import ceni.system.votesync.dto.request.auth.AuthenticationRequest;
+import ceni.system.votesync.dto.request.auth.LogOutRequest;
+import ceni.system.votesync.dto.request.auth.NewAccessTokenRequest;
 import ceni.system.votesync.service.impl.RefreshTokenService;
 import ceni.system.votesync.service.impl.auth.AppAuthService;
 import jakarta.validation.Valid;

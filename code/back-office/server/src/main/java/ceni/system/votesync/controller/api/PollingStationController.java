@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.NearestPollingStationRequest;
-import ceni.system.votesync.model.Election;
+import ceni.system.votesync.model.entity.Election;
 import ceni.system.votesync.model.function.RegisteredCandidate;
 import ceni.system.votesync.model.view.VPollingStation;
 import ceni.system.votesync.model.view.VRegisteredVoter;
-import ceni.system.votesync.service.domain.AdministrativeDivisionService;
-import ceni.system.votesync.service.domain.CandidateService;
-import ceni.system.votesync.service.domain.ElectionService;
-import ceni.system.votesync.service.domain.PollingStationService;
-import ceni.system.votesync.service.domain.VoterService;
+import ceni.system.votesync.service.entity.candidate.CandidateService;
+import ceni.system.votesync.service.entity.election.ElectionService;
+import ceni.system.votesync.service.entity.location.AdministrativeDivisionService;
+import ceni.system.votesync.service.entity.location.PollingStationService;
+import ceni.system.votesync.service.entity.voter.VoterService;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
