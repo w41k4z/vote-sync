@@ -5,6 +5,7 @@ import { Paths } from '../../paths';
 import { ElectionType } from '../../dto/election-type';
 import { MatDialog } from '@angular/material/dialog';
 import { ElectionDialogComponent } from './election-dialog/election-dialog.component';
+import { ConfigureElectionRequest } from '../../dto/request/ConfigureElectionRequest';
 
 @Component({
   selector: 'app-elections',
@@ -40,8 +41,22 @@ export class ElectionsComponent {
     }
   }
 
+  async configureElection(request: ConfigureElectionRequest) {
+    return this.electionService.configureElection(request).then((payload) => {
+      if (payload) {
+        this.currentElections.push(payload.election);
+      }
+    });
+  }
+
   openAddDialog() {
     const dialogRef = this.dialog.open(ElectionDialogComponent);
-    this.dialog.afterAllClosed.subscribe(() => {});
+    dialogRef
+      .afterClosed()
+      .subscribe((confifureElectionRequest: ConfigureElectionRequest) => {
+        if (confifureElectionRequest) {
+          this.configureElection(confifureElectionRequest);
+        }
+      });
   }
 }

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { env } from '../../environment/env';
+import { env } from '../../../environment/env';
 
 @Pipe({
   name: 'formatPublicUrl',

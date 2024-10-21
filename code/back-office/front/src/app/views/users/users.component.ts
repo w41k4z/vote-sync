@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserService } from '../../services/api/user/user.service';
 import { UserStat } from '../../dto/user-stat';
-import { NewUserRequest } from '../../dto/request/new-user.request';
+import { NewUserRequest } from '../../dto/request/user/new-user.request';
 import { User } from '../../dto/user';
 import { Page } from '../../dto/response/page';
-import { UpdateUserRequest } from '../../dto/request/update-user.request';
+import { UpdateUserRequest } from '../../dto/request/user/update-user.request';
 import { Pagination } from '../../pagination';
-import { ImportUsersRequest } from '../../dto/request/import-users.request';
+import { ImportUsersRequest } from '../../dto/request/user/import-users.request';
 
 @Component({
   selector: 'app-users',

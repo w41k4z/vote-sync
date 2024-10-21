@@ -2,20 +2,20 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserFormDialogComponent } from './user-form-dialog/user-form-dialog.component';
-import { NewUserRequest } from '../../../dto/request/new-user.request';
+import { NewUserRequest } from '../../../dto/request/user/new-user.request';
 import { RoleService } from '../../../services/api/role/role.service';
 import { Role } from '../../../dto/role';
 import { User } from '../../../dto/user';
 import { Page } from '../../../dto/response/page';
 import { DeleteDialogComponent } from '../../../components/delete-dialog/delete-dialog.component';
-import { ImportUsersRequest } from '../../../dto/request/import-users.request';
+import { ImportUsersRequest } from '../../../dto/request/user/import-users.request';
 
 @Component({
-  selector: 'app-list-users',
-  templateUrl: './list-users.component.html',
-  styleUrl: './list-users.component.scss',
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrl: './user-list.component.scss',
 })
-export class ListUsersComponent {
+export class UserListComponent {
   @Input() loading$!: Observable<Boolean>;
   @Input() error$!: Observable<string | null>;
   @Input() message$!: Observable<string | null>;

@@ -16,19 +16,28 @@ import ceni.system.votesync.model.entity.Election;
 import ceni.system.votesync.model.entity.ElectionType;
 import ceni.system.votesync.repository.entity.ElectionRepository;
 import ceni.system.votesync.exception.ElectionNotFoundException;
+import ceni.system.votesync.exception.ElectionTypeNotFoundException;
 import ceni.system.votesync.exception.ImpossibleOperationException;
+import ceni.system.votesync.service.entity.election.ElectionTypeService;
 
 @Service
 public class ElectionService {
 
     private ElectionRepository repository;
+    private ElectionTypeService electionTypeService;
 
-    public ElectionService(ElectionRepository repository) {
+    public ElectionService(ElectionRepository repository, ElectionTypeService electionTypeService) {
         this.repository = repository;
+        this.electionTypeService = electionTypeService;
     }
 
     public Election configureElection(ConfigureElectionRequest request) {
         Election election = new Election();
+        ElectionType electionType = this.electionTypeService.getElectionTypeById(request.getElectionTypeId())
+                .orElseThrow(
+                        () -> new ElectionTypeNotFoundException(
+                                "Election type not found. Id: " + request.getElectionTypeId()));
+        election.setType(electionType);
         election.setName(request.getName());
         election.setStartDate(Date.valueOf(request.getStartDate()));
         election.setState(State.PENDING);

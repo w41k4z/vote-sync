@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { UserListPayload } from '../../../dto/response/user/user-list-payload.response';
 import { Endpoints } from '../../../endpoints';
 import { UsersAndStatsPayload } from '../../../dto/response/user/users-and-stats-payload.response';
-import { NewUserRequest } from '../../../dto/request/new-user.request';
+import { NewUserRequest } from '../../../dto/request/user/new-user.request';
 import { SaveUserPayload } from '../../../dto/response/user/save-user-payload.response';
-import { UpdateUserRequest } from '../../../dto/request/update-user.request';
-import { ImportUsersRequest } from '../../../dto/request/import-users.request';
+import { UpdateUserRequest } from '../../../dto/request/user/update-user.request';
+import { ImportUsersRequest } from '../../../dto/request/user/import-users.request';
 
 @Injectable({
   providedIn: 'root',

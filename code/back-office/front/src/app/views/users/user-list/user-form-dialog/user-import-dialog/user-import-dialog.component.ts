@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Role } from '../../../../../dto/role';
 import { FormContainerComponent } from '../../../../../components/form-container/form-container.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ImportUsersRequest } from '../../../../../dto/request/import-users.request';
+import { ImportUsersRequest } from '../../../../../dto/request/user/import-users.request';
 
 @Component({
   selector: 'app-user-import-dialog',
@@ -32,11 +32,7 @@ export class UserImportDialogComponent extends FormContainerComponent {
     this.importedFile = event.target.files[0];
   }
 
-  confirm(): void {
-    this.submitting();
-    if (this.componentForm.invalid || !this.importedFile) {
-      return;
-    }
+  override onConfirm(): void {
     const importUsersRequest = new ImportUsersRequest();
     importUsersRequest.roleId = this.componentForm.value.roleId;
     importUsersRequest.file = this.importedFile;

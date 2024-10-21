@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Paths } from '../../../paths';
+import { Paths } from '../../../../paths';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs';
 

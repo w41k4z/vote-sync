@@ -4,12 +4,12 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { NewUserRequest } from '../../../../dto/request/new-user.request';
+import { NewUserRequest } from '../../../../dto/request/user/new-user.request';
 import { Role } from '../../../../dto/role';
 import { FormContainerComponent } from '../../../../components/form-container/form-container.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserImportDialogComponent } from './user-import-dialog/user-import-dialog.component';
-import { ImportUsersRequest } from '../../../../dto/request/import-users.request';
+import { ImportUsersRequest } from '../../../../dto/request/user/import-users.request';
 
 @Component({
   selector: 'app-add-new-user-dialog',
@@ -61,11 +61,7 @@ export class UserFormDialogComponent extends FormContainerComponent {
     super(userForm);
   }
 
-  confirm(): void {
-    this.submitting();
-    if (this.componentForm.invalid) {
-      return;
-    }
+  override onConfirm(): void {
     const newUser = new NewUserRequest();
     newUser.identifier = this.componentForm.value.identifier;
     newUser.contact = this.componentForm.value.contact;
@@ -73,7 +69,6 @@ export class UserFormDialogComponent extends FormContainerComponent {
     newUser.firstName = this.componentForm.value.firstName;
     newUser.password = this.componentForm.value.password;
     newUser.roleId = this.componentForm.value.roleId;
-    this.reset();
     this.dialogRef.close(newUser);
   }
 

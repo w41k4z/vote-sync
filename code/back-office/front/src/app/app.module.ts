@@ -8,31 +8,31 @@ import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { LogInComponent } from './views/log-in/log-in.component';
-import { FullPageLayoutComponent } from './layouts/full-page-layout/full-page-layout.component';
-import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
+import { FullPageLayoutComponent } from './components//layouts/full-page-layout/full-page-layout.component';
+import { AppLayoutComponent } from './components//layouts/app-layout/app-layout.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './filter/token.interceptor';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { PermissionDeniedComponent } from './views/permission-denied/permission-denied.component';
 import { HomeComponent } from './views/home/home.component';
-import { HeaderComponent } from './layouts/app-layout/header/header.component';
-import { SideBarComponent } from './layouts/app-layout/side-bar/side-bar.component';
+import { HeaderComponent } from './components/layouts/app-layout/header/header.component';
+import { SideBarComponent } from './components//layouts/app-layout/side-bar/side-bar.component';
 import { UsersComponent } from './views/users/users.component';
-import { ListUsersComponent } from './views/users/list-users/list-users.component';
-import { FormatRolePipe } from './pipes/format-role.pipe';
+import { UserListComponent } from './views/users/user-list/user-list.component';
+import { FormatRolePipe } from './pipes/format-role/format-role.pipe';
 import { UsersStatComponent } from './views/users/users-stat/users-stat.component';
-import { UserFormDialogComponent } from './views/users/list-users/user-form-dialog/user-form-dialog.component';
+import { UserFormDialogComponent } from './views/users/user-list/user-form-dialog/user-form-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { UserFiltersComponent } from './views/users/list-users/user-filters/user-filters.component';
-import { FormatNumberPipe } from './pipes/format-number.pipe';
+import { UserFiltersComponent } from './views/users/user-list/user-filters/user-filters.component';
+import { FormatNumberPipe } from './pipes/format-number/format-number.pipe';
 import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
-import { FormatNamePipe } from './pipes/format-name.pipe';
-import { UserImportDialogComponent } from './views/users/list-users/user-form-dialog/user-import-dialog/user-import-dialog.component';
+import { FormatNamePipe } from './pipes/format-name/format-name.pipe';
+import { UserImportDialogComponent } from './views/users/user-list/user-form-dialog/user-import-dialog/user-import-dialog.component';
 import { ElectionDialogComponent } from './views/elections/election-dialog/election-dialog.component';
-import { FormatPublicUrlPipe } from './pipes/format-public-url.pipe';
+import { FormatPublicUrlPipe } from './pipes/format-public-url/format-public-url.pipe';
 import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
 import { MunicipalResultFilterComponent } from './views/elections/municipal-result/municipal-result-filter/municipal-result-filter.component';
 
@@ -49,7 +49,7 @@ import { MunicipalResultFilterComponent } from './views/elections/municipal-resu
     HeaderComponent,
     SideBarComponent,
     UsersComponent,
-    ListUsersComponent,
+    UserListComponent,
     UsersStatComponent,
     UserFormDialogComponent,
     DeleteDialogComponent,

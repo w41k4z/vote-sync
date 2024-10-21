@@ -6,7 +6,7 @@
         ></app-users-stat>
     </section>
     <section class="card card-body mt-sm-2 mt-lg-0 user-list">
-        <app-list-users
+        <app-user-list
             [userLists]="users"
             [page]="page"
             [pageSize]="pageSize"
@@ -20,6 +20,6 @@
             [onFilter]="filterUsers"
             [onNextPage]="nextPage"
             [onPreviousPage]="previousPage"
-        ></app-list-users>
+        ></app-user-list>
     </section>
 </div>

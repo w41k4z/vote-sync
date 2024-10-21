@@ -1,5 +1,5 @@
-import { Paths } from '../../../paths';
-import { Privileges } from '../../../privileges';
+import { Paths } from '../../../../paths';
+import { Privileges } from '../../../../privileges';
 
 export const menuItems = [
   {

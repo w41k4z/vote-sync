@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Paths } from '../../../paths';
 import { menuItems } from './items';
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-side-bar',

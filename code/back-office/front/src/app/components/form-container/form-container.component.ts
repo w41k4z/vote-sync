@@ -20,4 +20,17 @@ export class FormContainerComponent {
     this.submitted = false;
     this.componentForm.reset();
   }
+
+  onConfirm() {
+    console.log('Confirm method to implement');
+  }
+
+  confirm() {
+    this.submitting();
+    if (this.componentForm.invalid) {
+      return;
+    }
+    this.onConfirm();
+    this.reset();
+  }
 }

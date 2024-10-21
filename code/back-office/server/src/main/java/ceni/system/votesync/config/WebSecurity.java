@@ -56,7 +56,8 @@ public class WebSecurity {
                         "/test/**", "/auth/**", "/api/polling-stations/nearest")
                 .permitAll()
                 // Admin endpoints
-                .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**")
+                .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**",
+                        "/api/election-types/**")
                 .hasAuthority(Authority.ADMIN)
                 // PollingStationManager endpoints
                 .requestMatchers("/api/polling-stations/data/**")
