@@ -1,5 +1,7 @@
+- Add election_id column to the voter table in the mobile app database
 - Exporting state value to a constant class
 - Upload registered electors by a chunk of 10
+- Add alert checking for temporal pattern after voters registration
 - Electoral result:
 	- controller (add filtering functionality)
 	- id_municipalate and id_commune can be filtered in the fokontany and polling station endpoint

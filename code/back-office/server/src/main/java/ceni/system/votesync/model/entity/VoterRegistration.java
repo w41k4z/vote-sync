@@ -1,5 +1,7 @@
 package ceni.system.votesync.model.entity;
 
+import java.sql.Date;
+
 import ceni.system.votesync.model.base.entity.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,11 +22,15 @@ public class VoterRegistration extends AbstractEntity<Integer> {
     @Column(name = "id_election")
     private Integer electionId;
 
-    @Column(name = "nom")
-    private String name;
+    @Column(name = "id_bv")
+    private Integer pollingStationId;
 
-    @Column(name = "prenom")
-    private String firstName;
+    @Column(name = "id_electeur")
+    private Integer voterId;
 
-    private Integer gender;
+    @Column(name = "vote")
+    private Integer hasVoted;
+
+    @Column(name = "date_enregistrement")
+    private Date registrationDate;
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import ceni.system.votesync.model.entity.User;
 import ceni.system.votesync.repository.base.EntityRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends EntityRepository<User, Integer> {
 

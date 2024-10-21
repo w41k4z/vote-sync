@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.NearestPollingStationRequest;
+import ceni.system.votesync.dto.request.RegisterVoterRequest;
 import ceni.system.votesync.model.entity.Election;
 import ceni.system.votesync.model.function.RegisteredCandidate;
 import ceni.system.votesync.model.view.VPollingStation;
@@ -82,7 +83,7 @@ public class PollingStationController {
         if (pollingStation == null) {
             return ResponseEntity.badRequest().body(new ApiResponse(null, "Polling station not found"));
         }
-        List<VRegisteredVoter> voters = this.voterService.getRegisteredVoters(electionId, pollingStationId);
+        List<VRegisteredVoter> voters = this.voterService.getRecordedVoters(electionId, pollingStationId);
         List<RegisteredCandidate> candidates = this.candidateService.getRegisteredCandidates(electionId,
                 pollingStationId);
         election.setCandidates(candidates.size());
@@ -94,4 +95,9 @@ public class PollingStationController {
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
+    @PostMapping("/register-voters")
+    public ResponseEntity<ApiResponse> registerVoters(@RequestBody RegisterVoterRequest[] registration) {
+        this.voterService.registerVoters(registration);
+        return ResponseEntity.ok(new ApiResponse(null, null));
+    }
 }
