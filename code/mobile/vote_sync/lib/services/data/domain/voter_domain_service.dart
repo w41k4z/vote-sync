@@ -68,4 +68,26 @@ class VoterDomainService {
     await database
         .rawUpdate(query, [voter.registrationDate, voter.hasVoted, voter.id]);
   }
+
+  Future<bool> hasUnsyncedVoters({required Database database}) async {
+    final List<Map<String, dynamic>> maps =
+        await database.query('voters', where: "has_voted = 10");
+    return maps.isNotEmpty;
+  }
+
+  Future<void> unregister(
+      {required Database database, required Voter voter}) async {
+    voter.registrationDate = null;
+    voter.hasVoted = 0;
+    String query =
+        "UPDATE voters set registration_date = NULL, has_voted = ? WHERE id = ?";
+    await database.rawUpdate(query, [voter.hasVoted, voter.id]);
+  }
+
+  Future<List<int>> totalPagesAndRows(
+      {required Database database, int size = 10}) async {
+    final result = await database.rawQuery('SELECT COUNT(*) FROM voters');
+    int totalRows = Sqflite.firstIntValue(result) ?? 0;
+    return [max((totalRows / size).ceil(), 1), totalRows];
+  }
 }

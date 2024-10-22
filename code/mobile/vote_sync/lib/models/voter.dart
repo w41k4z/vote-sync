@@ -6,6 +6,7 @@ class Voter {
   int gender;
   int hasVoted;
   int pollingStationId;
+  int electionId;
   String? registrationDate; // Voting date
 
   Voter({
@@ -16,6 +17,7 @@ class Voter {
     required this.gender,
     required this.hasVoted,
     required this.pollingStationId,
+    required this.electionId,
     this.registrationDate,
   });
 
@@ -29,6 +31,7 @@ class Voter {
       gender: json['gender'],
       hasVoted: 0,
       pollingStationId: pollingStationId,
+      electionId: json['electionId'],
     );
   }
 
@@ -42,6 +45,7 @@ class Voter {
       gender: json['gender'],
       hasVoted: json['has_voted'],
       pollingStationId: json['polling_station_id'],
+      electionId: json['election_id'],
       registrationDate: json['registration_date'],
     );
   }
@@ -55,7 +59,12 @@ class Voter {
       'gender': gender,
       'has_voted': hasVoted,
       'polling_station_id': pollingStationId,
+      'election_id': electionId,
       'registration_date': registrationDate,
     };
+  }
+
+  bool isSynchronized() {
+    return hasVoted > 10;
   }
 }

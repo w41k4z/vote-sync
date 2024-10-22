@@ -21,6 +21,7 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
   String nicFilter = '';
   int currentPage = 1;
   int totalPages = 1;
+  bool hasUnsyncedVoters = false;
 
   @override
   void initState() {
@@ -30,23 +31,36 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
 
   Future<void> _filter(int page, String nic) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
-    Map<String, dynamic> result = await GetIt.I
-        .get<VoterDomainService>()
-        .findRegisteredVoters(
-            database: databaseInstance,
-            condition: ">=",
-            hasVoted: 10,
-            page: page,
-            nic: nic);
+    VoterDomainService voterDomainService = GetIt.I.get<VoterDomainService>();
+    Map<String, dynamic> result = await voterDomainService.findRegisteredVoters(
+        database: databaseInstance,
+        condition: ">=",
+        hasVoted: 10,
+        page: page,
+        nic: nic);
     List<Voter> registeredVoters = result['voters'];
     int pages = result['totalPages'];
+    bool hasUnsynced =
+        await voterDomainService.hasUnsyncedVoters(database: databaseInstance);
     setState(() {
       currentPage = page;
       voters = registeredVoters;
       totalPages = pages;
       nicFilter = nic;
+      hasUnsyncedVoters = hasUnsynced;
     });
   }
+
+  void _unregister(Voter voter) async {
+    Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
+    await GetIt.I
+        .get<VoterDomainService>()
+        .unregister(database: databaseInstance, voter: voter);
+    voters.remove(voter);
+    setState(() {});
+  }
+
+  void _sync() {}
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +90,13 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
               ),
             ),
           ),
+          hasUnsyncedVoters
+              ? const SizedBox(height: 10)
+              : const SizedBox.shrink(),
+          hasUnsyncedVoters ? _syncButton() : const SizedBox.shrink(),
+          hasUnsyncedVoters
+              ? const SizedBox(height: 10)
+              : const SizedBox.shrink(),
           Expanded(
             child: voters.isEmpty
                 ? const Center(
@@ -148,9 +169,63 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
                   fontWeight: FontWeight.bold,
                 )),
             subtitle: Text('CIN: ${voter.nic}'),
+            trailing: voter.isSynchronized()
+                ? IconButton(
+                    icon: const Icon(
+                      Icons.check_circle,
+                      color: AppColors.primaryGreen,
+                    ),
+                    onPressed: () => {},
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.sync_problem,
+                        color: AppColors.redDanger,
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.redDanger,
+                        ),
+                        onPressed: () => {_unregister(voter)},
+                      ),
+                    ],
+                  ),
           ),
         );
       },
+    );
+  }
+
+  Widget _syncButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          backgroundColor: AppColors.primaryGreen,
+          padding: const EdgeInsets.all(8.0),
+        ),
+        onPressed: () {
+          print('Square Button Pressed');
+        },
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.sync, size: 28, color: Colors.white),
+            SizedBox(width: 10), // Spacing between icon and text
+            Text(
+              'Tout synchroniser',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

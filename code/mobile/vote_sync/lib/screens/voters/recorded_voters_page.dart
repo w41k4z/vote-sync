@@ -9,14 +9,14 @@ import 'package:vote_sync/services/data/domain/voter_domain_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
-class RegisteredVotersPage extends StatefulWidget {
-  const RegisteredVotersPage({super.key});
+class RecordedVotersPage extends StatefulWidget {
+  const RecordedVotersPage({super.key});
 
   @override
-  State<RegisteredVotersPage> createState() => _RegisteredVotersPageState();
+  State<RecordedVotersPage> createState() => _RecordedVotersPageState();
 }
 
-class _RegisteredVotersPageState extends State<RegisteredVotersPage> {
+class _RecordedVotersPageState extends State<RecordedVotersPage> {
   List<Voter> voters = [];
   String nicFilter = '';
   int currentPage = 1;

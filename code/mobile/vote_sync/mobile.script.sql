@@ -28,6 +28,7 @@ CREATE TABLE voters (
     gender INTEGER NOT NULL,
     has_voted INTEGER NOT NULL -- 0: No, 10: Yes, 20: Synchronized
     polling_station_id INTEGER NOT NULL,
+    election_id INTEGER NOT NULL,
     registration_date TEXT,
     FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
 );
