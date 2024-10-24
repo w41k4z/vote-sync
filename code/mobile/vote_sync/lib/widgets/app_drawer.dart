@@ -7,7 +7,7 @@ import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/screens/log-in/log_in_page.dart';
 import 'package:vote_sync/screens/result/result_page.dart';
 import 'package:vote_sync/screens/voters/recorded_voters_page.dart';
-import 'package:vote_sync/screens/voters/voters_turnout_page.dart';
+import 'package:vote_sync/screens/voters/registered/registered_voters_page.dart';
 import 'package:vote_sync/services/app_instance.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -122,7 +122,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                    builder: (context) => const VotersTurnoutPage()),
+                    builder: (context) => const RegisteredVotersPage()),
               );
             },
           ),

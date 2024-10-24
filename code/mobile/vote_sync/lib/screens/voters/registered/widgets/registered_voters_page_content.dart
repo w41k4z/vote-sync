@@ -1,41 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/voter.dart';
-import 'package:vote_sync/services/app_instance.dart';
-import 'package:vote_sync/services/database_manager.dart';
-import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
-class RecordedVotersPage extends StatefulWidget {
-  const RecordedVotersPage({super.key});
+class RegisteredVotersPageContentWidget extends StatelessWidget {
+  final List<Voter> voters;
+  final int currentPage;
+  final int totalPages;
+  final String nicFilter;
+  final bool hasUnsyncedVoters;
+  final Future<void> Function(int page, String nic) filter;
+  final void Function(Voter voter) unregister;
+  final Widget syncButtonWidget;
 
-  @override
-  State<RecordedVotersPage> createState() => _RecordedVotersPageState();
-}
-
-class _RecordedVotersPageState extends State<RecordedVotersPage> {
-  List<Voter> voters = [];
-  String nicFilter = '';
-  int currentPage = 1;
-  int totalPages = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    _filter(currentPage, nicFilter);
-  }
+  const RegisteredVotersPageContentWidget({
+    super.key,
+    required this.voters,
+    required this.currentPage,
+    required this.totalPages,
+    required this.nicFilter,
+    required this.hasUnsyncedVoters,
+    required this.filter,
+    required this.unregister,
+    required this.syncButtonWidget,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Electeurs inscrits'),
+        title: const Text('Electeurs enregistrés'),
       ),
-      drawer: const AppDrawer(activeItem: Pages.REGISTERED_VOTERS),
+      drawer: const AppDrawer(activeItem: Pages.VOTERS_TURNOUT),
       bottomSheet: const Copyright(),
       body: Column(
         children: [
@@ -43,7 +41,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onChanged: (newValue) {
-                _filter(1, newValue);
+                filter(1, newValue);
               },
               decoration: InputDecoration(
                 hintText: 'Rechercher par identifiant CIN',
@@ -57,6 +55,13 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
               ),
             ),
           ),
+          hasUnsyncedVoters
+              ? const SizedBox(height: 10)
+              : const SizedBox.shrink(),
+          hasUnsyncedVoters ? syncButtonWidget : const SizedBox.shrink(),
+          hasUnsyncedVoters
+              ? const SizedBox(height: 10)
+              : const SizedBox.shrink(),
           Expanded(
             child: voters.isEmpty
                 ? const Center(
@@ -78,7 +83,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
                   onPressed: () {
                     int page =
                         currentPage - 1 > 0 ? currentPage - 1 : totalPages;
-                    _filter(page, nicFilter);
+                    filter(page, nicFilter);
                   },
                 ),
                 Text(
@@ -92,7 +97,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
                   onPressed: () {
                     int page =
                         currentPage + 1 <= totalPages ? currentPage + 1 : 1;
-                    _filter(page, nicFilter);
+                    filter(page, nicFilter);
                   },
                 ),
               ],
@@ -104,36 +109,6 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
         ],
       ),
     );
-  }
-
-  Future<void> _filter(int page, String nic) async {
-    AppInstance appInstance = GetIt.I.get<AppInstance>();
-    Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
-    Map<String, dynamic> result =
-        await GetIt.I.get<VoterRepositoryService>().findRegisteredVoters(
-              database: databaseInstance,
-              pollingStationId: appInstance.getPollingStationId(),
-              electionId: appInstance.getElectionId(),
-              condition: ">=",
-              page: page,
-              nic: nic,
-            );
-    List<Voter> registeredVoters = result['voters'];
-    int pages = result['totalPages'];
-    setState(() {
-      currentPage = page;
-      voters = registeredVoters;
-      totalPages = pages;
-      nicFilter = nic;
-    });
-  }
-
-  Future<void> _register(int index) async {
-    Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
-    await GetIt.I
-        .get<VoterRepositoryService>()
-        .register(database: databaseInstance, voter: voters[index]);
-    setState(() {});
   }
 
   Widget _votersList() {
@@ -159,20 +134,29 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
                   fontWeight: FontWeight.bold,
                 )),
             subtitle: Text('CIN: ${voter.nic}'),
-            trailing: voter.isRegistered()
-                ? null
-                : ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryGreen,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+            trailing: voter.isSynchronized()
+                ? IconButton(
+                    icon: const Icon(
+                      Icons.check_circle,
+                      color: AppColors.primaryGreen,
                     ),
-                    onPressed: () async {
-                      await _register(index);
-                    },
-                    child: const Text('Enregistrer'),
+                    onPressed: () => {},
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.sync_problem,
+                        color: AppColors.redDanger,
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.redDanger,
+                        ),
+                        onPressed: () => {unregister(voter)},
+                      ),
+                    ],
                   ),
           ),
         );

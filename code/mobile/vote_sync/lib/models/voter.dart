@@ -64,6 +64,10 @@ class Voter {
     };
   }
 
+  bool isRegistered() {
+    return hasVoted > 0;
+  }
+
   bool isSynchronized() {
     return hasVoted > 10;
   }

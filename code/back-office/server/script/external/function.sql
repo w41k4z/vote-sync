@@ -1,6 +1,7 @@
 CREATE TYPE registered_candidate AS OBJECT (
     id NUMBER, -- candidate id for future use
     id_enregistrement NUMBER, -- registration id for future use
+    id_election NUMBER,
     numero_candidat NUMBER,
     information_candidat VARCHAR2(100),
     entite_politique VARCHAR2(50),
@@ -35,6 +36,7 @@ BEGIN
             registered_candidate(
                 cp.id_candidat,
                 cp.id_enregistrement,
+                cp.id_election,
                 cp.numero_candidat,
                 cp.information_candidat,
                 cp.entite_politique,
@@ -52,6 +54,7 @@ BEGIN
             registered_candidate(
                 cl.id_candidat,
                 cl.id_enregistrement,
+                cl.id_election,
                 cl.numero_candidat,
                 cl.information_candidat,
                 cl.entite_politique,
@@ -79,6 +82,7 @@ BEGIN
             registered_candidate(
                 cl.id_candidat,
                 cl.id_enregistrement,
+                cl.id_election,
                 cl.numero_candidat,
                 cl.information_candidat,
                 cl.entite_politique,

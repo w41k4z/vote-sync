@@ -43,6 +43,7 @@ class DatabaseTableInit {
     CREATE TABLE candidates (
         id INTEGER PRIMARY KEY,
         registration_id INTEGER NOT NULL,
+        election_id INTEGER NOT NULL,
         registration_date TEXT NOT NULL,
         candidate_number INTEGER NOT NULL,
         information TEXT NOT NULL,

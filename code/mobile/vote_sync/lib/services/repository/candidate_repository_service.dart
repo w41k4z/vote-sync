@@ -10,11 +10,17 @@ class CandidateRepositoryService {
     );
   }
 
-  Future<List<Candidate>> findAll(Database database, String information) async {
-    String query = "SELECT * FROM candidates";
-    List<dynamic> arguments = [];
+  Future<List<Candidate>> findAll({
+    required Database database,
+    required String pollingStationId,
+    required String electionId,
+    String information = '',
+  }) async {
+    String query =
+        "SELECT * FROM candidates WHERE polling_station_id = ? AND election_id = ?";
+    List<dynamic> arguments = [pollingStationId, electionId];
     if (information.isNotEmpty) {
-      query += " WHERE information LIKE ?";
+      query += " AND information LIKE ?";
       arguments.add('%$information%');
     }
     final List<Map<String, dynamic>> maps =

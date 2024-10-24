@@ -13,15 +13,10 @@ class VoterRepositoryService {
     );
   }
 
-  Future<List<Voter>> findAll(Database database) async {
-    final List<Map<String, dynamic>> maps = await database.query('voters');
-    return List.generate(maps.length, (i) {
-      return Voter.fromMap(maps[i]);
-    });
-  }
-
   Future<Map<String, dynamic>> findRegisteredVoters({
     required Database database,
+    required String pollingStationId,
+    required String electionId,
     int hasVoted = 0,
     String condition = "=",
     int page = 1,
@@ -29,11 +24,12 @@ class VoterRepositoryService {
     String nic = "",
   }) async {
     final offset = (page - 1) * size;
-    String rawQuery = 'SELECT * FROM voters WHERE has_voted $condition ?';
+    String rawQuery =
+        'SELECT * FROM voters WHERE polling_station_id = ? AND election_id = ? AND has_voted $condition ? ORDER BY nic ASC';
     String rawCountQuery =
-        'SELECT COUNT(*) AS voters FROM voters WHERE has_voted $condition ?';
-    List<dynamic> arguments = [hasVoted];
-    List<dynamic> countArguments = [hasVoted];
+        'SELECT COUNT(*) AS voters FROM voters WHERE polling_station_id = ? AND election_id = ? AND has_voted $condition ?';
+    List<dynamic> arguments = [pollingStationId, electionId, hasVoted];
+    List<dynamic> countArguments = [pollingStationId, electionId, hasVoted];
     if (nic.isNotEmpty) {
       rawQuery += ' AND nic LIKE ?';
       rawCountQuery += ' AND nic LIKE ?';
@@ -88,8 +84,14 @@ class VoterRepositoryService {
   }
 
   Future<List<int>> totalPagesAndRows(
-      {required Database database, int size = 10}) async {
-    final result = await database.rawQuery('SELECT COUNT(*) FROM voters');
+      {required Database database,
+      int size = 10,
+      String condition = "=",
+      int hasVoted = 0}) async {
+    final result = await database.rawQuery(
+      'SELECT COUNT(*) FROM voters WHERE has_voted $condition ?',
+      [hasVoted],
+    );
     int totalRows = Sqflite.firstIntValue(result) ?? 0;
     return [max((totalRows / size).ceil(), 1), totalRows];
   }

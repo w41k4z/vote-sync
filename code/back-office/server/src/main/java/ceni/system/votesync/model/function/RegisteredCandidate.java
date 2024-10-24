@@ -20,6 +20,9 @@ public class RegisteredCandidate {
 
     @Column(name = "id_enregistrement")
     private Integer registrationId;
+	
+    @Column(name = "id_election")
+    private Integer electionId;
 
     @Column(name = "date_enregistrement")
     private Date registrationDate;

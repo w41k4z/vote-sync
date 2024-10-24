@@ -6,6 +6,7 @@ import 'package:vote_sync/services/local_storage_service.dart';
 class Candidate {
   int id;
   int registrationId;
+  int electionId;
   String registrationDate;
   int candidateNumber;
   String information;
@@ -17,6 +18,7 @@ class Candidate {
   Candidate({
     required this.id,
     required this.registrationId,
+    required this.electionId,
     required this.registrationDate,
     required this.candidateNumber,
     required this.information,
@@ -31,6 +33,7 @@ class Candidate {
     return Candidate(
       id: json['id'],
       registrationId: json['registrationId'],
+      electionId: json['electionId'],
       registrationDate: json['registrationDate'],
       candidateNumber: json['candidateNumber'],
       information: json['information'],
@@ -46,6 +49,7 @@ class Candidate {
     return Candidate(
       id: json['id'],
       registrationId: json['registration_id'],
+      electionId: json['election_id'],
       registrationDate: json['registration_date'],
       candidateNumber: json['candidate_number'],
       information: json['information'],
@@ -60,6 +64,7 @@ class Candidate {
     return {
       'id': id,
       'registration_id': registrationId,
+      'election_id': electionId,
       'registration_date': registrationDate,
       'candidate_number': candidateNumber,
       'information': information,

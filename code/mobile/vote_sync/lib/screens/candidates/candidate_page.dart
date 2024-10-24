@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/candidate.dart';
+import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/services/repository/candidate_repository_service.dart';
 import 'package:vote_sync/services/local_storage_service.dart';
@@ -31,10 +32,15 @@ class _CandidatePageState extends State<CandidatePage> {
   }
 
   Future<void> _filter(String newInformationFilter) async {
+    AppInstance appInstance = GetIt.I.get<AppInstance>();
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
-    List<Candidate> result = await GetIt.I
-        .get<CandidateRepositoryService>()
-        .findAll(databaseInstance, newInformationFilter);
+    List<Candidate> result =
+        await GetIt.I.get<CandidateRepositoryService>().findAll(
+              database: databaseInstance,
+              pollingStationId: appInstance.getPollingStationId(),
+              electionId: appInstance.getElectionId(),
+              information: newInformationFilter,
+            );
     setState(() {
       informationFilter = newInformationFilter;
       candidates = result;
