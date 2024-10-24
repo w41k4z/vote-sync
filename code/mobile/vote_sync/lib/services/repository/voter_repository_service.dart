@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:sqflite/sqflite.dart';
-import 'package:vote_sync/config/env.dart';
+import 'package:vote_sync/env.dart';
 import 'package:vote_sync/models/voter.dart';
 
-class VoterDomainService {
+class VoterRepositoryService {
   Future<void> create(Transaction tsx, Voter voter) async {
     await tsx.insert(
       "voters",
@@ -77,6 +77,9 @@ class VoterDomainService {
 
   Future<void> unregister(
       {required Database database, required Voter voter}) async {
+    if (voter.hasVoted > 10) {
+      throw Exception("Cannot unregister a voter who has been synced");
+    }
     voter.registrationDate = null;
     voter.hasVoted = 0;
     String query =

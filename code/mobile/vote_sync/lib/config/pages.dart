@@ -1,4 +1,4 @@
-class PageContent {
+class Pages {
   static const String HOME = 'HOME';
   static const String CANDIDATES = 'CANDIDATES';
   static const String REGISTERED_VOTERS = 'REGISTERED_VOTERS';

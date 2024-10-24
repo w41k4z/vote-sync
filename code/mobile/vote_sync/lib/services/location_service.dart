@@ -1,4 +1,7 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:vote_sync/exceptions/location/device_location_service_disabled_exception.dart';
+import 'package:vote_sync/exceptions/location/location_permission_denied_exception.dart';
+import 'package:vote_sync/exceptions/location/location_permission_denied_forever_exception.dart';
 
 class LocationService {
   Future<Position> getCurrentLocation() async {
@@ -7,20 +10,19 @@ class LocationService {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      throw Exception('Les services de localisation sont désactivés.');
+      throw const DeviceLocationServiceDisabledException();
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        throw Exception('Les permissions de localisation sont refusées');
+        throw const LocationPermissionDeniedException();
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      throw Exception(
-          'Les permissions de localisation sont permanentement refusées, nous ne pouvons pas demander les permissions.');
+      throw const LocationPermissionDeniedForeverException();
     }
 
     return await Geolocator.getCurrentPosition();

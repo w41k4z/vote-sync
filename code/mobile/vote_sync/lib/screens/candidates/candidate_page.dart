@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/candidate.dart';
-import 'package:vote_sync/services/data/database_manager.dart';
-import 'package:vote_sync/services/data/domain/candidate_domain_service.dart';
+import 'package:vote_sync/services/database_manager.dart';
+import 'package:vote_sync/services/repository/candidate_repository_service.dart';
 import 'package:vote_sync/services/local_storage_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
@@ -33,7 +33,7 @@ class _CandidatePageState extends State<CandidatePage> {
   Future<void> _filter(String newInformationFilter) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     List<Candidate> result = await GetIt.I
-        .get<CandidateDomainService>()
+        .get<CandidateRepositoryService>()
         .findAll(databaseInstance, newInformationFilter);
     setState(() {
       informationFilter = newInformationFilter;
@@ -47,7 +47,7 @@ class _CandidatePageState extends State<CandidatePage> {
       appBar: AppBar(
         title: const Text('Candidats'),
       ),
-      drawer: const AppDrawer(activeItem: PageContent.CANDIDATES),
+      drawer: const AppDrawer(activeItem: Pages.CANDIDATES),
       bottomSheet: const Copyright(),
       body: Column(
         children: [

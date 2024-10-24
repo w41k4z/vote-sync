@@ -1,18 +1,17 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:vote_sync/models/polling_station_election.dart';
+import 'package:vote_sync/models/election.dart';
 
-class ElectionDomainService {
-  Future<PollingStationElections> create(
-      Transaction tsx, PollingStationElections pollingStationElections) async {
+class ElectionRepositoryService {
+  Future<Election> create(Transaction tsx, Election election) async {
     await tsx.insert(
       "polling_station_elections",
-      pollingStationElections.toMap(),
+      election.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    return pollingStationElections;
+    return election;
   }
 
-  Future<PollingStationElections?> findById(
+  Future<Election?> findById(
       Database database, int pollingStationElectionId) async {
     final List<Map<String, dynamic>> maps = await database.query(
       'polling_station_elections',
@@ -20,7 +19,7 @@ class ElectionDomainService {
       whereArgs: [pollingStationElectionId],
     );
     if (maps.isNotEmpty) {
-      return PollingStationElections.fromMap(maps.first);
+      return Election.fromMap(maps.first);
     }
     return null;
   }

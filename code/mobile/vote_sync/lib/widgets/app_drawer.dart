@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/screens/candidates/candidate_page.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/screens/log-in/log_in_page.dart';
@@ -43,14 +43,14 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.home,
-              color: activeItem == PageContent.HOME
+              color: activeItem == Pages.HOME
                   ? AppColors.primaryGreen
                   : Colors.grey[400],
             ),
             title: Text(
               'Accueil',
               style: TextStyle(
-                color: activeItem == PageContent.HOME
+                color: activeItem == Pages.HOME
                     ? AppColors.primaryGreen
                     : Colors.grey[400],
               ),
@@ -64,14 +64,14 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.person_add_alt,
-              color: activeItem == PageContent.REGISTERED_VOTERS
+              color: activeItem == Pages.REGISTERED_VOTERS
                   ? AppColors.primaryGreen
                   : Colors.grey[400],
             ),
             title: Text(
               'Liste des inscrits',
               style: TextStyle(
-                color: activeItem == PageContent.REGISTERED_VOTERS
+                color: activeItem == Pages.REGISTERED_VOTERS
                     ? AppColors.primaryGreen
                     : Colors.grey[400],
               ),
@@ -86,14 +86,14 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.how_to_reg,
-              color: activeItem == PageContent.CANDIDATES
+              color: activeItem == Pages.CANDIDATES
                   ? AppColors.primaryGreen
                   : Colors.grey[400],
             ),
             title: Text(
               'Liste des candidats',
               style: TextStyle(
-                color: activeItem == PageContent.CANDIDATES
+                color: activeItem == Pages.CANDIDATES
                     ? AppColors.primaryGreen
                     : Colors.grey[400],
               ),
@@ -107,14 +107,14 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.fact_check,
-              color: activeItem == PageContent.VOTERS_TURNOUT
+              color: activeItem == Pages.VOTERS_TURNOUT
                   ? AppColors.primaryGreen
                   : Colors.grey[400],
             ),
             title: Text(
               'Enregistrement',
               style: TextStyle(
-                color: activeItem == PageContent.VOTERS_TURNOUT
+                color: activeItem == Pages.VOTERS_TURNOUT
                     ? AppColors.primaryGreen
                     : Colors.grey[400],
               ),
@@ -129,14 +129,14 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.bar_chart,
-              color: activeItem == PageContent.RESULT
+              color: activeItem == Pages.RESULT
                   ? AppColors.primaryGreen
                   : Colors.grey[400],
             ),
             title: Text(
               "Résultat",
               style: TextStyle(
-                color: activeItem == PageContent.RESULT
+                color: activeItem == Pages.RESULT
                     ? AppColors.primaryGreen
                     : Colors.grey[400],
               ),

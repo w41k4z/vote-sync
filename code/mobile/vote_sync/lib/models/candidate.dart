@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:vote_sync/config/env.dart';
+import 'package:vote_sync/env.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
 import 'package:vote_sync/services/local_storage_service.dart';
 
@@ -70,7 +70,7 @@ class Candidate {
     };
   }
 
-  Future<void> downloadPCandidateImage(ApiCallService callService) async {
+  Future<void> downloadCandidateImage(ApiCallService callService) async {
     LocalStorageService localStorageService =
         GetIt.I.get<LocalStorageService>();
     String localFilePath = "${localStorageService.appDocDir.path}/$imagePath";

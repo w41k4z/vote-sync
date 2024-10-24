@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:vote_sync/config/env.dart';
+import 'package:vote_sync/env.dart';
 import 'package:vote_sync/filters/auth_interceptor.dart';
 
 class ApiCallService {

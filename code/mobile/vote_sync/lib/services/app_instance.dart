@@ -1,8 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/services/secure_storage_service.dart';
 import 'package:vote_sync/services/token_service.dart';
 
 class AppInstance {
+  static String ACCESS_TOKEN_KEY = 'accessToken';
+  static String POLLING_STATION_ID_KEY = 'pollingStationId';
+  static String ELECTION_ID_KEY = 'electionId';
+
   String? _accessToken;
   String? _pollingStationId;
   String? _electionId;
@@ -18,12 +24,10 @@ class AppInstance {
     return _accessToken != null;
   }
 
-  bool isPollingStationIdSet() {
-    return _pollingStationId != null;
-  }
-
-  bool isElectionIdSet() {
-    return _electionId != null;
+  bool hasAccess() {
+    return isUserAuthenticated() &&
+        _pollingStationId != null &&
+        _electionId != null;
   }
 
   Future<void> grantAccess(

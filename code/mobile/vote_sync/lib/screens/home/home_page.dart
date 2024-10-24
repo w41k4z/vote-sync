@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/polling_station.dart';
-import 'package:vote_sync/models/polling_station_election.dart';
+import 'package:vote_sync/models/election.dart';
 import 'package:vote_sync/screens/home/home_page_card_info.dart';
 import 'package:vote_sync/services/app_instance.dart';
-import 'package:vote_sync/services/data/database_manager.dart';
-import 'package:vote_sync/services/data/domain/election_domain_service.dart';
-import 'package:vote_sync/services/data/domain/polling_station_domain_service.dart';
+import 'package:vote_sync/services/database_manager.dart';
+import 'package:vote_sync/services/repository/election_repository_service.dart';
+import 'package:vote_sync/services/repository/polling_station_repository_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PollingStation? pollingStation;
-  PollingStationElections? election;
+  Election? election;
 
   @override
   void initState() {
@@ -36,10 +36,10 @@ class _HomePageState extends State<HomePage> {
     String pollingStationId = appInstance.getPollingStationId();
     String electionId = appInstance.getElectionId();
     final storedPollingStation = await GetIt.I
-        .get<PollingStationDomainService>()
+        .get<PollingStationRepositoryService>()
         .findById(database, int.parse(pollingStationId));
     final storedElection = await GetIt.I
-        .get<ElectionDomainService>()
+        .get<ElectionRepositoryService>()
         .findById(database, int.parse(electionId));
     setState(() {
       pollingStation = storedPollingStation;
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Accueil'),
       ),
-      drawer: const AppDrawer(activeItem: PageContent.HOME),
+      drawer: const AppDrawer(activeItem: Pages.HOME),
       bottomSheet: const Copyright(),
       backgroundColor: AppColors.neutralBackgroundColor,
       body: Padding(

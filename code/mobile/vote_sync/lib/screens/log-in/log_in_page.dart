@@ -4,17 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
+import 'package:vote_sync/screens/log-in/widgets/log_in_page_content.dart';
 import 'package:vote_sync/services/api/auth_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
-import 'package:vote_sync/services/data/database_manager.dart';
+import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/widgets/error/global_error_handler.dart';
-import 'package:vote_sync/widgets/copyright.dart';
-import 'package:vote_sync/screens/log-in/form/log_in_page_form.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
+import 'package:vote_sync/widgets/error/snack_bar_error.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -31,6 +30,18 @@ class _LogInPageState extends State<LogInPage> {
   String selectedElectionId = '';
   String password = '';
 
+  PollingStationDTO get selectedPollingStationDTO {
+    return pollingStations.firstWhere(
+      (element) => element.code == selectedPollingStationCode,
+    );
+  }
+
+  ElectionDTO get selectedElectionDTO {
+    return elections.firstWhere(
+      (element) => element.id.toString() == selectedElectionId,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,73 +50,18 @@ class _LogInPageState extends State<LogInPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    return RefreshIndicator(
-      color: AppColors.primaryGreen,
-      backgroundColor: Colors.white,
-      onRefresh: () async {
-        await _getNearestPollingStationAndCurrentElections();
-      },
-      child: Scaffold(
-        backgroundColor: AppColors.primaryGreen,
-        body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: SizedBox(
-            height: screenHeight,
-            child: _pageContent(),
-          ),
-        ),
-      ),
+    return LogInPageContentWidget(
+      pollingStationDTOs: pollingStations,
+      electionDTOs: elections,
+      onRefresh: _getNearestPollingStationAndCurrentElections,
+      handlePollingStationSelect: _handlePollingStationSelect,
+      handleElectionSelect: _handleElectionSelect,
+      handlePasswordInputChange: _handlePasswordInputChange,
+      handleFormSubmit: _handleFormSubmit,
     );
   }
 
-  Widget _pageContent() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: LogInPageForm(
-            pollingStations: pollingStations,
-            elections: elections,
-            onPollingStationSelect: _handlePollingStationsChange,
-            onElectionSelect: _handleElectionSelect,
-            onPasswordInputChange: _handlePasswordInputChange,
-            onSubmit: _handleFormSubmit,
-          ),
-        ),
-        const Copyright()
-      ],
-    );
-  }
-
-  Future<void> _getNearestPollingStationAndCurrentElections() async {
-    context.loaderOverlay.show();
-    PollingStationService pollingStationService =
-        GetIt.I.get<PollingStationService>();
-    try {
-      List<dynamic> payload = await pollingStationService
-          .getNearestPollingStationAndCurrentElections();
-      setState(() {
-        pollingStations = payload[0];
-        elections = payload[1];
-        context.loaderOverlay.hide();
-      });
-    } on DioException catch (e) {
-      log(e.toString());
-      if (e.type == DioExceptionType.connectionError) {
-        _showInternetAccessErrorDialog();
-      } else {
-        _showSnackBarError(e.toString());
-      }
-    } catch (e) {
-      log(e.toString());
-      _showSnackBarError(e.toString());
-    } finally {
-      if (mounted) context.loaderOverlay.hide();
-    }
-  }
-
-  void _handlePollingStationsChange(String newValue) {
+  void _handlePollingStationSelect(String newValue) {
     setState(() {
       selectedPollingStationCode = newValue;
     });
@@ -124,6 +80,44 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   void _handleFormSubmit() async {
+    await _submitForm();
+  }
+
+  Future<void> _getNearestPollingStationAndCurrentElections() async {
+    context.loaderOverlay.show();
+    PollingStationService pollingStationService =
+        GetIt.I.get<PollingStationService>();
+    try {
+      List<dynamic> payload = await pollingStationService
+          .getNearestPollingStationAndCurrentElections();
+      setState(() {
+        pollingStations = payload[0];
+        elections = payload[1];
+        context.loaderOverlay.hide();
+      });
+    } on DioException catch (e) {
+      log(e.toString());
+      // Removes flutter lint warning about context usage with async call
+      // (Care to always make sure to await the async call before using context)
+      if (!mounted) return;
+      if (e.type == DioExceptionType.connectionError) {
+        GlobalErrorHandler.internetAccessErrorDialog(
+          context: context,
+          onRetry: _getNearestPollingStationAndCurrentElections,
+        );
+      } else {
+        SnackBarError.show(context: context, message: e.toString());
+      }
+    } catch (e) {
+      log(e.toString());
+      if (!mounted) return;
+      SnackBarError.show(context: context, message: e.toString());
+    } finally {
+      if (mounted) context.loaderOverlay.hide();
+    }
+  }
+
+  Future<void> _submitForm() async {
     context.loaderOverlay.show();
     AuthService authService = GetIt.I.get<AuthService>();
     AppInstance appInstance = GetIt.I.get<AppInstance>();
@@ -131,7 +125,10 @@ class _LogInPageState extends State<LogInPage> {
         password.isEmpty ||
         selectedElectionId.isEmpty) {
       context.loaderOverlay.hide();
-      _showSnackBarError("Veuillez remplir tous les champs");
+      SnackBarError.show(
+        context: context,
+        message: 'Veuillez remplir tous les champs',
+      );
       return;
     }
     try {
@@ -147,23 +144,18 @@ class _LogInPageState extends State<LogInPage> {
           accessToken, pollingStationDTO.id.toString(), selectedElectionId);
 
       DatabaseManager databaseManager = GetIt.I.get<DatabaseManager>();
-      bool isDatabasePopulated =
-          await databaseManager.isDatabasePopulated(pollingStationDTO.id);
-
+      bool isDatabasePopulated = await databaseManager.isDatabasePopulated(
+          pollingStationDTO.id, electionDTO.id);
       if (!isDatabasePopulated) {
         // Fetching the polling station data
         PollingStationService pollingStationService =
             GetIt.I.get<PollingStationService>();
         final data = await pollingStationService.getPollingStationData(
             pollingStationDTO.id, int.parse(electionDTO.id.toString()));
-
         // Populating the app database
         await databaseManager.populateDatabase(data["pollingStation"],
             data["election"], data["voters"], data["candidates"]);
       }
-
-      // Removes flutter lint warning about context usage with async call
-      // (Care to always make sure to await the async call before using context)
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -171,52 +163,30 @@ class _LogInPageState extends State<LogInPage> {
         ),
       );
     } on DioException catch (e) {
+      log(e.toString());
       await appInstance.logout();
       if (!mounted) return;
-      _showSnackBarError(e.response?.data["message"]);
+      if (e.type == DioExceptionType.connectionError) {
+        GlobalErrorHandler.internetAccessErrorDialog(
+          context: context,
+          onRetry: _handleFormSubmit,
+        );
+      } else {
+        SnackBarError.show(
+          context: context,
+          message: e.response?.data["message"],
+        );
+      }
+    } catch (e) {
+      log(e.toString());
+      await appInstance.logout();
+      if (!mounted) return;
+      SnackBarError.show(
+        context: context,
+        message: e.toString(),
+      );
     } finally {
       context.loaderOverlay.hide();
     }
-  }
-
-  PollingStationDTO get selectedPollingStationDTO {
-    return pollingStations.firstWhere(
-      (element) => element.code == selectedPollingStationCode,
-    );
-  }
-
-  ElectionDTO get selectedElectionDTO {
-    return elections.firstWhere(
-      (element) => element.id.toString() == selectedElectionId,
-    );
-  }
-
-  void _showInternetAccessErrorDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GlobalErrorHandler.internetAccessErrorDialog(
-          context: context,
-          onRetry: () {
-            _getNearestPollingStationAndCurrentElections();
-          },
-        );
-      },
-    );
-  }
-
-  void _showSnackBarError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        backgroundColor: AppColors.secondaryWhite,
-        content: Center(
-          child: Text(
-            message,
-            style: const TextStyle(color: AppColors.redDanger),
-          ),
-        ),
-      ),
-    );
   }
 }

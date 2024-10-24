@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/models/candidate.dart';
 
-class CandidateDomainService {
+class CandidateRepositoryService {
   Future<void> create(Transaction tsx, Candidate candidate) async {
     await tsx.insert(
       "candidates",

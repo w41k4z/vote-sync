@@ -1,4 +1,4 @@
-class PollingStationElections {
+class Election {
   int id;
   String electionType;
   String name;
@@ -6,7 +6,7 @@ class PollingStationElections {
   int candidates;
   int pollingStationId;
 
-  PollingStationElections({
+  Election({
     required this.id,
     required this.electionType,
     required this.name,
@@ -16,9 +16,8 @@ class PollingStationElections {
   });
 
   // API mapping
-  factory PollingStationElections.fromJson(
-      Map<String, dynamic> json, int pollingStationId) {
-    return PollingStationElections(
+  factory Election.fromJson(Map<String, dynamic> json, int pollingStationId) {
+    return Election(
       id: json['id'],
       electionType: json['type']["type"],
       name: json['name'],
@@ -29,8 +28,8 @@ class PollingStationElections {
   }
 
   // Database mapping
-  factory PollingStationElections.fromMap(Map<String, dynamic> json) {
-    return PollingStationElections(
+  factory Election.fromMap(Map<String, dynamic> json) {
+    return Election(
       id: json['id'],
       electionType: json['election_type'],
       name: json['name'],

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/voter.dart';
-import 'package:vote_sync/services/data/database_manager.dart';
-import 'package:vote_sync/services/data/domain/voter_domain_service.dart';
+import 'package:vote_sync/services/database_manager.dart';
+import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
@@ -31,7 +31,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
   Future<void> _filter(int page, String nic) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     Map<String, dynamic> result = await GetIt.I
-        .get<VoterDomainService>()
+        .get<VoterRepositoryService>()
         .findRegisteredVoters(database: databaseInstance, page: page, nic: nic);
     List<Voter> registeredVoters = result['voters'];
     int pages = result['totalPages'];
@@ -46,7 +46,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
   Future<void> _register(int index) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     await GetIt.I
-        .get<VoterDomainService>()
+        .get<VoterRepositoryService>()
         .register(database: databaseInstance, voter: voters[index]);
     setState(() {
       voters.removeAt(index);
@@ -59,7 +59,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
       appBar: AppBar(
         title: const Text('Electeurs inscrits'),
       ),
-      drawer: const AppDrawer(activeItem: PageContent.REGISTERED_VOTERS),
+      drawer: const AppDrawer(activeItem: Pages.REGISTERED_VOTERS),
       bottomSheet: const Copyright(),
       body: Column(
         children: [

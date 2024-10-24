@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
-import 'package:vote_sync/config/page_content.dart';
+import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/voter.dart';
-import 'package:vote_sync/services/data/database_manager.dart';
-import 'package:vote_sync/services/data/domain/voter_domain_service.dart';
+import 'package:vote_sync/services/database_manager.dart';
+import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
 
@@ -23,6 +23,9 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
   int totalPages = 1;
   bool hasUnsyncedVoters = false;
 
+  int totalItems = 10; // Total items to sync
+  int syncedItems = 0;
+
   @override
   void initState() {
     super.initState();
@@ -31,17 +34,19 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
 
   Future<void> _filter(int page, String nic) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
-    VoterDomainService voterDomainService = GetIt.I.get<VoterDomainService>();
-    Map<String, dynamic> result = await voterDomainService.findRegisteredVoters(
-        database: databaseInstance,
-        condition: ">=",
-        hasVoted: 10,
-        page: page,
-        nic: nic);
+    VoterRepositoryService voterRepositoryService =
+        GetIt.I.get<VoterRepositoryService>();
+    Map<String, dynamic> result =
+        await voterRepositoryService.findRegisteredVoters(
+            database: databaseInstance,
+            condition: ">=",
+            hasVoted: 10,
+            page: page,
+            nic: nic);
     List<Voter> registeredVoters = result['voters'];
     int pages = result['totalPages'];
-    bool hasUnsynced =
-        await voterDomainService.hasUnsyncedVoters(database: databaseInstance);
+    bool hasUnsynced = await voterRepositoryService.hasUnsyncedVoters(
+        database: databaseInstance);
     setState(() {
       currentPage = page;
       voters = registeredVoters;
@@ -54,13 +59,57 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
   void _unregister(Voter voter) async {
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     await GetIt.I
-        .get<VoterDomainService>()
+        .get<VoterRepositoryService>()
         .unregister(database: databaseInstance, voter: voter);
     voters.remove(voter);
     setState(() {});
   }
 
-  void _sync() {}
+  void _syncRegisteredVoters() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent dismissal until task is done
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Syncing Items... ($syncedItems / $totalItems)',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 16),
+                  LinearProgressIndicator(
+                    value: syncedItems / totalItems,
+                    minHeight: 8,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    // Simulate the sync process
+    for (int i = 1; i <= totalItems; i++) {
+      await Future.delayed(Duration(seconds: 1)); // Simulate delay
+      setState(() {
+        syncedItems = i; // Update the synced items count
+      });
+
+      // Update the dialog's UI
+      (context as Element).markNeedsBuild();
+      print(i);
+    }
+
+    // Close the dialog after completion
+    print("Vita");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +117,7 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
       appBar: AppBar(
         title: const Text('Electeurs enregistrés'),
       ),
-      drawer: const AppDrawer(activeItem: PageContent.VOTERS_TURNOUT),
+      drawer: const AppDrawer(activeItem: Pages.VOTERS_TURNOUT),
       bottomSheet: const Copyright(),
       body: Column(
         children: [
@@ -211,7 +260,12 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
           padding: const EdgeInsets.all(8.0),
         ),
         onPressed: () {
-          print('Square Button Pressed');
+          showDialog(
+            context: context,
+            builder: (context) {
+              return _syncAlertDialog(context);
+            },
+          );
         },
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -226,6 +280,33 @@ class _VotersTurnoutPageState extends State<VotersTurnoutPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _syncAlertDialog(BuildContext alertContext) {
+    return AlertDialog(
+      title: const Text('Synchronisation des données'),
+      content: const Text(
+          'Voulez-vous vraiment synchroniser les données? Les données synchronisées ne pourront plus être modifiées.'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(alertContext).pop();
+          },
+          child: const Text('Annuler'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(alertContext).pop();
+            _syncRegisteredVoters();
+          },
+          child: const Text(
+            'Synchroniser',
+            style: TextStyle(
+                color: AppColors.primaryGreen, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
     );
   }
 }

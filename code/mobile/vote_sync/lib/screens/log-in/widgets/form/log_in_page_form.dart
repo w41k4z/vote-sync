@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/dto/polling_station_dto.dart';
-import 'package:vote_sync/screens/log-in/form/log_in_election_selection.dart';
-import 'package:vote_sync/screens/log-in/form/log_in_form_logo.dart';
-import 'package:vote_sync/screens/log-in/form/log_in_password_input.dart';
-import 'package:vote_sync/screens/log-in/form/log_in_submit_button.dart';
-import 'package:vote_sync/screens/log-in/form/log_in_polling_station_select.dart';
+import 'package:vote_sync/screens/log-in/widgets/form/log_in_election_selection.dart';
+import 'package:vote_sync/screens/log-in/widgets/form/log_in_form_logo.dart';
+import 'package:vote_sync/screens/log-in/widgets/form/log_in_password_input.dart';
+import 'package:vote_sync/screens/log-in/widgets/form/log_in_submit_button.dart';
+import 'package:vote_sync/screens/log-in/widgets/form/log_in_polling_station_select.dart';
 
 class LogInPageForm extends StatelessWidget {
   final List<PollingStationDTO> pollingStations;

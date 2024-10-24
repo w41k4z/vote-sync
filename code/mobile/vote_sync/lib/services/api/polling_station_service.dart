@@ -5,7 +5,7 @@ import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/models/polling_station.dart';
-import 'package:vote_sync/models/polling_station_election.dart';
+import 'package:vote_sync/models/election.dart';
 import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
 import 'package:vote_sync/services/location_service.dart';
@@ -50,8 +50,8 @@ class PollingStationService extends ApiCallService {
     final payload = response.data["payload"];
     PollingStation pollingStation =
         PollingStation.fromJson(payload["pollingStation"]);
-    PollingStationElections election = PollingStationElections.fromJson(
-        payload["election"], pollingStation.id);
+    Election election =
+        Election.fromJson(payload["election"], pollingStation.id);
     List<Voter> voters = [];
     payload["voters"].forEach((rawVoter) {
       Voter voter = Voter.fromJson(rawVoter, pollingStation.id);
