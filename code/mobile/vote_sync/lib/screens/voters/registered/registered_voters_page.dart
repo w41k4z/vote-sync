@@ -6,9 +6,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/screens/voters/registered/widgets/registered_voters_page_content.dart';
+import 'package:vote_sync/services/api/polling_station_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/services/repository/voter_repository_service.dart';
+import 'package:vote_sync/widgets/error/snack_bar_error.dart';
 
 class RegisteredVotersPage extends StatefulWidget {
   const RegisteredVotersPage({super.key});
@@ -91,10 +93,10 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
 
   void _syncRegisteredVoters() async {
     ProgressDialog progressDialog = ProgressDialog(context: context);
-    Database dabataseInstance = GetIt.I.get<DatabaseManager>().database;
+    Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     List<int> totalPagesAndRows =
         await GetIt.I.get<VoterRepositoryService>().totalPagesAndRows(
-              database: dabataseInstance,
+              database: databaseInstance,
               condition: ">=",
               hasVoted: 10,
             );
@@ -105,7 +107,6 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
       msg: 'Synchronisation en cours...',
       completed: Completed(
         completedMsg: 'Synchronisation terminée',
-        completionDelay: 1500,
       ),
       barrierColor: Colors.black.withOpacity(0.5),
       backgroundColor: AppColors.cardGreyBackground,
@@ -115,26 +116,58 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
       valueFontWeight: FontWeight.bold,
     );
     AppInstance appInstance = GetIt.I.get<AppInstance>();
+    PollingStationService pollingStationService =
+        GetIt.I.get<PollingStationService>();
     VoterRepositoryService voterRepositoryService =
         GetIt.I.get<VoterRepositoryService>();
     int synced = 0;
+    int errors = 0;
+    int updated = 0;
     for (int i = 1; i <= totalPages; i++) {
       Map<String, dynamic> result =
           await voterRepositoryService.findRegisteredVoters(
-        database: dabataseInstance,
+        database: databaseInstance,
         pollingStationId: appInstance.getPollingStationId(),
         electionId: appInstance.getElectionId(),
-        condition: ">=",
+        condition: "=",
         hasVoted: 10,
         size: 10,
         page: i,
       );
       List<Voter> votersChunk = result['voters'];
-      // sync operation
+      try {
+        await pollingStationService.registerVoters(votersChunk);
+        voterRepositoryService.syncVoters(
+          database: databaseInstance,
+          voters: votersChunk,
+        );
+        if (updated == voters.length) continue;
+        for (Voter updatedVoter in votersChunk) {
+          int index = voters.indexWhere((voter) => voter.id == updatedVoter.id);
+          if (index != -1) {
+            voters[index].hasVoted = 20;
+            updated++;
+          }
+        }
+      } catch (e) {
+        errors += votersChunk.length;
+      }
       synced += votersChunk.length;
       progressDialog.update(value: synced);
     }
-    await _filter(currentPage, nicFilter);
+    if (errors > 0 && mounted) {
+      final data = errors > 1 ? 'données' : 'donné';
+      SnackBarError.show(
+        context: context,
+        message:
+            'Erreur lors de la synchronisation. $errors $data non synchronisés.',
+      );
+    }
+    bool hasUnsynced = await voterRepositoryService.hasUnsyncedVoters(
+        database: databaseInstance);
+    setState(() {
+      hasUnsyncedVoters = hasUnsynced;
+    });
   }
 
   Widget _syncButton() {
@@ -192,7 +225,9 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
           child: const Text(
             'Synchroniser',
             style: TextStyle(
-                color: AppColors.primaryGreen, fontWeight: FontWeight.bold),
+              color: AppColors.primaryGreen,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],

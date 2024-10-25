@@ -95,4 +95,18 @@ class VoterRepositoryService {
     int totalRows = Sqflite.firstIntValue(result) ?? 0;
     return [max((totalRows / size).ceil(), 1), totalRows];
   }
+
+  void syncVoters(
+      {required Database database, required List<Voter> voters}) async {
+    String query = "UPDATE voters set has_voted = ? WHERE id = ?";
+    for (Voter voter in voters) {
+      voter.hasVoted = 20;
+      await database.rawUpdate(query, [20, voter.id]);
+    }
+  }
+
+  void reinitialize(Database database) {
+    database
+        .rawUpdate("UPDATE VOTERS SET registration_date=NULL, has_voted=0", []);
+  }
 }

@@ -1,6 +1,6 @@
 package ceni.system.votesync.dto.request;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,5 +18,5 @@ public class RegisterVoterRequest {
     private Integer pollingStationId;
 
     @NotNull(message = "The registration date is required")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate;
 }

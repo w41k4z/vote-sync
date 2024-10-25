@@ -64,12 +64,34 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.person_add_alt,
-              color: activeItem == Pages.REGISTERED_VOTERS
+              color: activeItem == Pages.RECORDED_VOTERS
                   ? AppColors.primaryGreen
                   : Colors.grey[400],
             ),
             title: Text(
               'Liste des inscrits',
+              style: TextStyle(
+                color: activeItem == Pages.RECORDED_VOTERS
+                    ? AppColors.primaryGreen
+                    : Colors.grey[400],
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (context) => const RecordedVotersPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.fact_check,
+              color: activeItem == Pages.REGISTERED_VOTERS
+                  ? AppColors.primaryGreen
+                  : Colors.grey[400],
+            ),
+            title: Text(
+              'Enregistrement',
               style: TextStyle(
                 color: activeItem == Pages.REGISTERED_VOTERS
                     ? AppColors.primaryGreen
@@ -79,7 +101,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                    builder: (context) => const RecordedVotersPage()),
+                    builder: (context) => const RegisteredVotersPage()),
               );
             },
           ),
@@ -101,28 +123,6 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const CandidatePage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.fact_check,
-              color: activeItem == Pages.VOTERS_TURNOUT
-                  ? AppColors.primaryGreen
-                  : Colors.grey[400],
-            ),
-            title: Text(
-              'Enregistrement',
-              style: TextStyle(
-                color: activeItem == Pages.VOTERS_TURNOUT
-                    ? AppColors.primaryGreen
-                    : Colors.grey[400],
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                    builder: (context) => const RegisteredVotersPage()),
               );
             },
           ),

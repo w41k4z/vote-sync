@@ -1,6 +1,6 @@
 package ceni.system.votesync.service.entity.voter;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class VoterService {
             VoterRegistration voter = this.voterRegistrationRepository
                     .findByElectionIdAndVoterId(request.getElectionId(), request.getId());
             voter.setHasVoted(State.CLOSED);
-            voter.setRegistrationDate(Date.valueOf(request.getRegistrationDate()));
+            voter.setRegistrationDate(Timestamp.valueOf(request.getRegistrationDate()));
             voters.add(voter);
         }
         this.voterRegistrationRepository.saveAll(voters);

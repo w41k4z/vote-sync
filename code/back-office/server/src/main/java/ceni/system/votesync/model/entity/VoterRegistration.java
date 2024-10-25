@@ -1,6 +1,6 @@
 package ceni.system.votesync.model.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import ceni.system.votesync.model.base.entity.AbstractEntity;
 import jakarta.persistence.Column;
@@ -32,5 +32,5 @@ public class VoterRegistration extends AbstractEntity<Integer> {
     private Integer hasVoted;
 
     @Column(name = "date_enregistrement")
-    private Date registrationDate;
+    private Timestamp registrationDate;
 }

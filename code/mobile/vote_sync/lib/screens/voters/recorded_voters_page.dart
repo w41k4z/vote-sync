@@ -35,7 +35,7 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
       appBar: AppBar(
         title: const Text('Electeurs inscrits'),
       ),
-      drawer: const AppDrawer(activeItem: Pages.REGISTERED_VOTERS),
+      drawer: const AppDrawer(activeItem: Pages.RECORDED_VOTERS),
       bottomSheet: const Copyright(),
       body: Column(
         children: [
@@ -114,7 +114,6 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
               database: databaseInstance,
               pollingStationId: appInstance.getPollingStationId(),
               electionId: appInstance.getElectionId(),
-              condition: ">=",
               page: page,
               nic: nic,
             );
@@ -133,7 +132,9 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
     await GetIt.I
         .get<VoterRepositoryService>()
         .register(database: databaseInstance, voter: voters[index]);
-    setState(() {});
+    setState(() {
+      voters.removeAt(index);
+    });
   }
 
   Widget _votersList() {

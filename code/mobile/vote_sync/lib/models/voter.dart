@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Voter {
   int id;
   String nic;
@@ -61,6 +63,17 @@ class Voter {
       'polling_station_id': pollingStationId,
       'election_id': electionId,
       'registration_date': registrationDate,
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'electionId': electionId,
+      'pollingStationId': pollingStationId,
+      'registrationDate': DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(
+        DateTime.parse(registrationDate ?? '1970-01-01 00:00:00'),
+      ),
     };
   }
 

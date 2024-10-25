@@ -69,4 +69,11 @@ class PollingStationService extends ApiCallService {
       "candidates": candidates
     };
   }
+
+  Future<void> registerVoters(List<Voter> voters) async {
+    await postCall(
+      '$pollingStationEndpoint/register-voters',
+      voters.map((voter) => voter.toJson()).toList(),
+    );
+  }
 }

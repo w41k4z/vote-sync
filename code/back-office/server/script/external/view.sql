@@ -81,3 +81,5 @@ SELECT
 FROM enregistrement_electeurs ee
 JOIN electeurs e
     ON ee.id_electeur = e.id
+WHERE ee.vote < 10
+;

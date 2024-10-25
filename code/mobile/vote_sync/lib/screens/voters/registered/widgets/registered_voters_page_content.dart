@@ -33,7 +33,7 @@ class RegisteredVotersPageContentWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Electeurs enregistrés'),
       ),
-      drawer: const AppDrawer(activeItem: Pages.VOTERS_TURNOUT),
+      drawer: const AppDrawer(activeItem: Pages.REGISTERED_VOTERS),
       bottomSheet: const Copyright(),
       body: Column(
         children: [
