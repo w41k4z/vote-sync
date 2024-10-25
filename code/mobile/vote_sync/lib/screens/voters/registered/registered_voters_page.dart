@@ -163,10 +163,8 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
             'Erreur lors de la synchronisation. $errors $data non synchronisés.',
       );
     }
-    bool hasUnsynced = await voterRepositoryService.hasUnsyncedVoters(
-        database: databaseInstance);
     setState(() {
-      hasUnsyncedVoters = hasUnsynced;
+      hasUnsyncedVoters = false;
     });
   }
 
