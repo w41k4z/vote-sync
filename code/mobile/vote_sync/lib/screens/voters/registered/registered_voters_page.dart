@@ -94,13 +94,15 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
   }
 
   void _syncRegisteredVoters() async {
+    String condition = "=";
+    int hasVoted = 10;
     ProgressDialog progressDialog = ProgressDialog(context: context);
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
     List<int> totalPagesAndRows =
         await GetIt.I.get<VoterRepositoryService>().totalPagesAndRows(
               database: databaseInstance,
-              condition: "=",
-              hasVoted: 10,
+              condition: condition,
+              hasVoted: hasVoted,
             );
     int totalPages = totalPagesAndRows[0];
     int totalRows = totalPagesAndRows[1];
@@ -131,8 +133,8 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
         database: databaseInstance,
         pollingStationId: appInstance.getPollingStationId(),
         electionId: appInstance.getElectionId(),
-        condition: "=",
-        hasVoted: 10,
+        condition: condition,
+        hasVoted: hasVoted,
         size: 10,
         page: i,
       );
