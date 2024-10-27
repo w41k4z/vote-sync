@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/election.dart';
@@ -56,7 +55,6 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: const AppDrawer(activeItem: Pages.HOME),
       bottomSheet: const Copyright(),
-      backgroundColor: AppColors.neutralBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -71,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                   "Date: ${election?.electionDate}"
                 ],
               ),
+              const SizedBox(height: 5),
 
               // Participants (Candidats et electeurs)
               HomePageCardInfo(
@@ -78,12 +77,14 @@ class _HomePageState extends State<HomePage> {
                 title: "Candidats",
                 content: ["${election?.candidates} candidats"],
               ),
+              const SizedBox(height: 5),
 
               HomePageCardInfo(
                 iconData: Icons.people,
                 title: "Electeurs",
                 content: ["${pollingStation?.registeredVoters} électeurs"],
               ),
+              const SizedBox(height: 5),
 
               // Bureau de vote
               HomePageCardInfo(
@@ -91,6 +92,7 @@ class _HomePageState extends State<HomePage> {
                 title: "Bureau de vote",
                 content: ["${pollingStation?.name}"],
               ),
+              const SizedBox(height: 5),
 
               // Fokontany
               HomePageCardInfo(
@@ -98,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                 title: "Fokontany",
                 content: ["${pollingStation?.fokontany}"],
               ),
+              const SizedBox(height: 5),
 
               // Commune
               HomePageCardInfo(
@@ -105,6 +108,7 @@ class _HomePageState extends State<HomePage> {
                 title: "Commune",
                 content: ["${pollingStation?.commune}"],
               ),
+              const SizedBox(height: 5),
 
               // District
               HomePageCardInfo(
@@ -112,6 +116,7 @@ class _HomePageState extends State<HomePage> {
                 title: "District",
                 content: ["${pollingStation?.district}"],
               ),
+              const SizedBox(height: 5),
 
               // Region
               HomePageCardInfo(

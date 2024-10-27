@@ -25,7 +25,7 @@ class VoterRepositoryService {
   }) async {
     final offset = (page - 1) * size;
     String rawQuery =
-        'SELECT * FROM voters WHERE polling_station_id = ? AND election_id = ? AND has_voted $condition ? ORDER BY nic ASC';
+        'SELECT * FROM voters WHERE polling_station_id = ? AND election_id = ? AND has_voted $condition ?';
     String rawCountQuery =
         'SELECT COUNT(*) AS voters FROM voters WHERE polling_station_id = ? AND election_id = ? AND has_voted $condition ?';
     List<dynamic> arguments = [pollingStationId, electionId, hasVoted];
@@ -36,7 +36,7 @@ class VoterRepositoryService {
       arguments.add('$nic%');
       countArguments.add('$nic%');
     }
-    rawQuery += ' LIMIT ? OFFSET ?';
+    rawQuery += ' ORDER BY nic ASC LIMIT ? OFFSET ?';
     arguments.add(size);
     arguments.add(offset);
     final List<Map<String, dynamic>> maps = await database.rawQuery(

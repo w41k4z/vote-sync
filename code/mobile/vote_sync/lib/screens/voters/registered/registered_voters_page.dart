@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sn_progress_dialog/options/completed.dart';
@@ -10,6 +11,7 @@ import 'package:vote_sync/services/api/polling_station_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/services/repository/voter_repository_service.dart';
+import 'package:vote_sync/widgets/error/global_error_handler.dart';
 import 'package:vote_sync/widgets/error/snack_bar_error.dart';
 
 class RegisteredVotersPage extends StatefulWidget {
@@ -97,7 +99,7 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
     List<int> totalPagesAndRows =
         await GetIt.I.get<VoterRepositoryService>().totalPagesAndRows(
               database: databaseInstance,
-              condition: ">=",
+              condition: "=",
               hasVoted: 10,
             );
     int totalPages = totalPagesAndRows[0];
@@ -149,6 +151,21 @@ class RegisteredVotersPageState extends State<RegisteredVotersPage> {
             updated++;
           }
         }
+      } on DioException catch (e) {
+        if (!mounted) return;
+        progressDialog.close();
+        if (e.type == DioExceptionType.connectionError) {
+          GlobalErrorHandler.internetAccessErrorDialog(
+            context: context,
+            onRetry: _syncRegisteredVoters,
+          );
+        } else {
+          SnackBarError.show(
+            context: context,
+            message: e.response?.data["message"],
+          );
+        }
+        return;
       } catch (e) {
         errors += votersChunk.length;
       }

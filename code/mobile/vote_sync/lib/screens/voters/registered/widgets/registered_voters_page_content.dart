@@ -123,10 +123,10 @@ class RegisteredVotersPageContentWidget extends StatelessWidget {
           ),
           child: ListTile(
             leading: const CircleAvatar(
-              backgroundColor: AppColors.primaryGreen,
+              backgroundColor: AppColors.backgroundColor,
               child: Icon(
                 Icons.person,
-                color: AppColors.backgroundColor,
+                color: Colors.black,
               ),
             ),
             title: Text('${voter.firstName} ${voter.name}',

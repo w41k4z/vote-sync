@@ -10,25 +10,25 @@ class GlobalErrorHandler {
           return PopScope(
             canPop: false,
             child: AlertDialog(
-              backgroundColor: AppColors.redDanger,
               icon: const Icon(
                 Icons.wifi_off,
-                color: Colors.white,
+                color: AppColors.redDanger,
                 size: 45,
               ),
               content: const Text(
                 'Connexion à internet impossible. Veuillez vérifier votre connexion et réessayer',
                 style: TextStyle(
                   fontSize: 17,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 textAlign: TextAlign.center,
               ),
               actions: <Widget>[
                 TextButton.icon(
                   style: TextButton.styleFrom(
-                    backgroundColor: AppColors.secondaryWhite,
-                    foregroundColor: AppColors.redDanger,
+                    side: const BorderSide(
+                      color: AppColors.redDanger,
+                    ),
                   ),
                   icon: const Icon(
                     Icons.refresh,

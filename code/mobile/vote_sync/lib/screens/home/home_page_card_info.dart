@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vote_sync/config/app_colors.dart';
 
 class HomePageCardInfo extends StatelessWidget {
   final Color color;
@@ -14,9 +13,9 @@ class HomePageCardInfo extends StatelessWidget {
     super.key,
     this.color = Colors.white,
     required this.iconData,
-    this.iconColor = AppColors.primaryGreen,
+    this.iconColor = Colors.black,
     required this.title,
-    this.titleColor = AppColors.primaryGreen,
+    this.titleColor = Colors.black,
     required this.content,
     this.contenTextColor = Colors.black,
   });
@@ -32,7 +31,7 @@ class HomePageCardInfo extends StatelessWidget {
           children: [
             Icon(
               iconData,
-              size: 40,
+              size: 35,
               color: iconColor,
             ),
             const SizedBox(width: 20),
@@ -43,7 +42,7 @@ class HomePageCardInfo extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: titleColor,
                     ),
@@ -52,7 +51,7 @@ class HomePageCardInfo extends StatelessWidget {
                     Text(
                       each,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         color: contenTextColor,
                       ),
                     ),

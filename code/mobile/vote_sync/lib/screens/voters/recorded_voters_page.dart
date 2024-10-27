@@ -149,10 +149,10 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
           ),
           child: ListTile(
             leading: const CircleAvatar(
-              backgroundColor: AppColors.primaryGreen,
+              backgroundColor: AppColors.backgroundColor,
               child: Icon(
                 Icons.person,
-                color: AppColors.backgroundColor,
+                color: Colors.black,
               ),
             ),
             title: Text('${voter.firstName} ${voter.name}',
@@ -164,8 +164,10 @@ class _RecordedVotersPageState extends State<RecordedVotersPage> {
                 ? null
                 : ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryGreen,
-                      foregroundColor: Colors.white,
+                      side: const BorderSide(
+                        color: AppColors.primaryGreen,
+                      ),
+                      foregroundColor: AppColors.primaryGreen,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
