@@ -56,4 +56,7 @@ public class VPollingStation {
 
     @Transient
     private Integer voters;
+    
+    @Transient
+    private Integer candidates;
 }

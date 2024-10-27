@@ -1,6 +1,3 @@
-- Add election_id column to the voter table in the mobile app database
-- Exporting state value to a constant class
-- Upload registered electors by a chunk of 10
 - Add alert checking for temporal pattern after voters registration
 - Electoral result:
 	- controller (add filtering functionality)
@@ -13,9 +10,7 @@
 - Back office loading visual for data importation
 - Back office error message displaying
 - Flutter does not have a way to parse response data from API directly to a dart object, so careful when changing the ApiResponse structure
-- Remove refresh token for CCID and manager (make CCID token expiration to something higher, like 7 days)
 - Server logging
-- Mobile app permission requesting logic (request all, one after another, at once)
 - Design
 - Electoral result:
 	- add a condition to fetch wether live result or achived result based on the election state

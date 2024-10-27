@@ -10,12 +10,15 @@ class PollingStationRepositoryService {
     );
   }
 
-  Future<PollingStation?> findById(
-      Database database, int pollingStationId) async {
+  Future<PollingStation?> findByIdAndElectionId(
+    Database database,
+    int pollingStationId,
+    int electionId,
+  ) async {
     final List<Map<String, dynamic>> maps = await database.query(
       'polling_stations',
-      where: 'id = ?',
-      whereArgs: [pollingStationId],
+      where: 'id = ? AND election_id = ?',
+      whereArgs: [pollingStationId, electionId],
     );
     if (maps.isNotEmpty) {
       return PollingStation.fromMap(maps.first);

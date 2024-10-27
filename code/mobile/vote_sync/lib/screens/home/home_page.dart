@@ -36,7 +36,11 @@ class _HomePageState extends State<HomePage> {
     String electionId = appInstance.getElectionId();
     final storedPollingStation = await GetIt.I
         .get<PollingStationRepositoryService>()
-        .findById(database, int.parse(pollingStationId));
+        .findByIdAndElectionId(
+          database,
+          int.parse(pollingStationId),
+          int.parse(electionId),
+        );
     final storedElection = await GetIt.I
         .get<ElectionRepositoryService>()
         .findById(database, int.parse(electionId));
@@ -75,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               HomePageCardInfo(
                 iconData: Icons.person_pin_rounded,
                 title: "Candidats",
-                content: ["${election?.candidates} candidats"],
+                content: ["${pollingStation?.candidates} candidats"],
               ),
               const SizedBox(height: 5),
 

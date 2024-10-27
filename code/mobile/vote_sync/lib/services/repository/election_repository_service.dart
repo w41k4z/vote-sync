@@ -4,7 +4,7 @@ import 'package:vote_sync/models/election.dart';
 class ElectionRepositoryService {
   Future<Election> create(Transaction tsx, Election election) async {
     await tsx.insert(
-      "polling_station_elections",
+      "elections",
       election.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -14,7 +14,7 @@ class ElectionRepositoryService {
   Future<Election?> findById(
       Database database, int pollingStationElectionId) async {
     final List<Map<String, dynamic>> maps = await database.query(
-      'polling_station_elections',
+      'elections',
       where: 'id = ?',
       whereArgs: [pollingStationElectionId],
     );

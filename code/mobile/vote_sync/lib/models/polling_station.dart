@@ -1,5 +1,6 @@
 class PollingStation {
   int id;
+  int electionId;
   String code;
   String name;
   String voteCenter;
@@ -8,9 +9,11 @@ class PollingStation {
   String district;
   String region;
   int registeredVoters;
+  int candidates;
 
   PollingStation({
     required this.id,
+    required this.electionId,
     required this.code,
     required this.name,
     required this.voteCenter,
@@ -19,12 +22,14 @@ class PollingStation {
     required this.district,
     required this.region,
     required this.registeredVoters,
+    required this.candidates,
   });
 
   // API mapping
-  factory PollingStation.fromJson(Map<String, dynamic> json) {
+  factory PollingStation.fromJson(Map<String, dynamic> json, int electionId) {
     return PollingStation(
       id: json['id'],
+      electionId: electionId,
       code: json['pollingStationCode'],
       name: json['pollingStation'],
       voteCenter: json['votingCenter'],
@@ -33,6 +38,7 @@ class PollingStation {
       district: json['district'],
       region: json['region'],
       registeredVoters: json['voters'],
+      candidates: json['candidates'],
     );
   }
 
@@ -40,6 +46,7 @@ class PollingStation {
   factory PollingStation.fromMap(Map<String, dynamic> json) {
     return PollingStation(
       id: json['id'],
+      electionId: json['election_id'],
       code: json['code'],
       name: json['name'],
       voteCenter: json['vote_center'],
@@ -48,12 +55,14 @@ class PollingStation {
       district: json['district'],
       region: json['region'],
       registeredVoters: json['registered_voters'],
+      candidates: json['candidates'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'election_id': electionId,
       'code': code,
       'name': name,
       'vote_center': voteCenter,
@@ -62,6 +71,7 @@ class PollingStation {
       'district': district,
       'region': region,
       'registered_voters': registeredVoters,
+      'candidates': candidates,
     };
   }
 }

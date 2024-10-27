@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,7 +36,4 @@ public class Election extends AbstractEntity<Integer> {
 
     @Column(name = "etat")
     private Integer state;
-
-    @Transient
-    private Integer candidates;
 }

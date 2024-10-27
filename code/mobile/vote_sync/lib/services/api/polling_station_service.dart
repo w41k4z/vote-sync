@@ -48,10 +48,13 @@ class PollingStationService extends ApiCallService {
     final response = await getCall(
         '$pollingStationEndpoint/data/$electionId/$pollingStationId');
     final payload = response.data["payload"];
-    PollingStation pollingStation =
-        PollingStation.fromJson(payload["pollingStation"]);
-    Election election =
-        Election.fromJson(payload["election"], pollingStation.id);
+    PollingStation pollingStation = PollingStation.fromJson(
+      payload["pollingStation"],
+      electionId,
+    );
+    Election election = Election.fromJson(
+      payload["election"],
+    );
     List<Voter> voters = [];
     payload["voters"].forEach((rawVoter) {
       Voter voter = Voter.fromJson(rawVoter, pollingStation.id);

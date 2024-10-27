@@ -29,7 +29,7 @@ class DatabaseManager {
         // Tables
         await db.execute(DatabaseTableInit.CREATE_POLLING_STATION_TABLE);
         await db.execute(
-          DatabaseTableInit.CREATE_POLLING_STATION_ELECTION_TABLE,
+          DatabaseTableInit.CREATE_ELECTION_TABLE,
         );
         await db.execute(DatabaseTableInit.CREATE_VOTER_TABLE);
         await db.execute(DatabaseTableInit.CREATE_CANDIDATE_TABLE);
@@ -47,10 +47,16 @@ class DatabaseManager {
     ElectionRepositoryService electionRepositoryService =
         GetIt.I.get<ElectionRepositoryService>();
 
-    PollingStation? pollingStation = await pollingStationRepositoryService
-        .findById(database, pollingStationId);
-    Election? election =
-        await electionRepositoryService.findById(database, electionId);
+    Election? election = await electionRepositoryService.findById(
+      database,
+      electionId,
+    );
+    PollingStation? pollingStation =
+        await pollingStationRepositoryService.findByIdAndElectionId(
+      database,
+      pollingStationId,
+      electionId,
+    );
     return pollingStation != null && election != null;
   }
 
@@ -61,8 +67,8 @@ class DatabaseManager {
     List<Candidate> candidates,
   ) async {
     await database.transaction((tsx) async {
-      await _persistPollingStation(tsx, pollingStation);
       await _persistElection(tsx, election);
+      await _persistPollingStation(tsx, pollingStation);
       await _persistVoters(tsx, voters);
       await _persistCandidates(tsx, candidates);
     });
