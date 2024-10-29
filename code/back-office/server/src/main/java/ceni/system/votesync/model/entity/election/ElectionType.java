@@ -1,4 +1,4 @@
-package ceni.system.votesync.model.entity;
+package ceni.system.votesync.model.entity.election;
 
 import ceni.system.votesync.config.ElectionTypeId;
 import jakarta.persistence.Column;

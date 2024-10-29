@@ -10,16 +10,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import ceni.system.votesync.config.SystemUserDetails;
 import ceni.system.votesync.model.entity.Role;
 import ceni.system.votesync.model.entity.User;
 import ceni.system.votesync.service.entity.user.UserService;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class SystemUserDetailsService implements UserDetailsService {
 
     private UserService userService;
 
-    public CustomUserDetailsService(UserService userService) {
+    public SystemUserDetailsService(UserService userService) {
         this.userService = userService;
     }
 
@@ -34,13 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User: `" + username + "` not found");
         }
-        return new org.springframework.security.core.userdetails.User(
+        return new SystemUserDetails(
+                user.getName(),
+                user.getFirstName(),
                 username,
                 user.getPassword(),
-                true,
-                true,
-                true,
-                true,
                 this.getGrantedAuthority(user.getRole()));
     }
 }

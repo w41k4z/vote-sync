@@ -23,7 +23,7 @@ JOIN candidats c
     ON ec.id_candidat = c.id
 JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
-WHERE r.etat = 10
+WHERE r.etat = 20
 ORDER BY
     r.id_election,
     ec.numero_candidat
@@ -60,7 +60,7 @@ JOIN bv
     ON r.id_bv = bv.id
 JOIN liste_bv lbv
     ON lbv.id = bv.id
-WHERE r.etat = 10
+WHERE r.etat = 20
 ;
 CREATE OR REPLACE VIEW bv_resultats AS
 SELECT

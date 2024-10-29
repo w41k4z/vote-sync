@@ -1,4 +1,4 @@
-package ceni.system.votesync.model.entity;
+package ceni.system.votesync.model.entity.election;
 
 import java.sql.Date;
 
@@ -35,5 +35,5 @@ public class Election extends AbstractEntity<Integer> {
     private Date endDate;
 
     @Column(name = "etat")
-    private Integer state;
+    private Integer status;
 }

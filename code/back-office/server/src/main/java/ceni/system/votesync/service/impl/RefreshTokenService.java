@@ -22,11 +22,12 @@ public class RefreshTokenService extends AbstractJwtService<String> {
 
     private RefreshTokenRepository repository;
 
-    private AppJwtService jwtService;
+    private SystemJwtService jwtService;
 
     private UserService userService;
 
-    public RefreshTokenService(RefreshTokenRepository repository, AppJwtService jwtService, UserService userService) {
+    public RefreshTokenService(RefreshTokenRepository repository, SystemJwtService jwtService,
+            UserService userService) {
         this.repository = repository;
         this.jwtService = jwtService;
         this.userService = userService;

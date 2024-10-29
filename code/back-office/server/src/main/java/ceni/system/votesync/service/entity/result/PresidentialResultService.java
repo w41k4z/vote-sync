@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.entity.Election;
+import ceni.system.votesync.model.entity.election.Election;
 import ceni.system.votesync.model.view.result.GlobalResult;
 import ceni.system.votesync.model.view.result.ProvincialResult;
 import ceni.system.votesync.model.view.result.RegionalResult;

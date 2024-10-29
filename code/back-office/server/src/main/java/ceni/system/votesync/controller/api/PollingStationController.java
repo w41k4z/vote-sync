@@ -14,7 +14,7 @@ import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.NearestPollingStationRequest;
 import ceni.system.votesync.dto.request.RegisterVoterRequest;
-import ceni.system.votesync.model.entity.Election;
+import ceni.system.votesync.model.entity.election.Election;
 import ceni.system.votesync.model.function.RegisteredCandidate;
 import ceni.system.votesync.model.view.VPollingStation;
 import ceni.system.votesync.model.view.VRegisteredVoter;

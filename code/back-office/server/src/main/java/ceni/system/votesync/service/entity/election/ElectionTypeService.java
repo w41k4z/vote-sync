@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.entity.ElectionType;
+import ceni.system.votesync.model.entity.election.ElectionType;
 import ceni.system.votesync.repository.entity.ElectionTypeRepository;
 
 @Service

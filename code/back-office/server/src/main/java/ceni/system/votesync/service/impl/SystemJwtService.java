@@ -14,12 +14,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class AppJwtService extends AbstractJwtService<User> {
+public class SystemJwtService extends AbstractJwtService<User> {
 
     @Override
     public String generateToken(User user, Long BONUS_TIME) {
         Map<String, Object> claims = new HashMap<>();
         String authority = user.getRole().getName();
+        claims.put("userInformation", user.getName() + " " + user.getFirstName());
         claims.put("authority", authority);
         return Jwts
                 .builder()

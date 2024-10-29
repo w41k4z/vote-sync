@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.model.entity.User;
-import ceni.system.votesync.service.impl.AppJwtService;
+import ceni.system.votesync.service.impl.SystemJwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,9 +28,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    private AppJwtService jwtService;
+    private SystemJwtService jwtService;
 
-    public JwtFilter(AppJwtService jwtService) {
+    public JwtFilter(SystemJwtService jwtService) {
         this.jwtService = jwtService;
     }
 

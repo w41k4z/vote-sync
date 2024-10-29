@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.entity.Election;
+import ceni.system.votesync.model.entity.election.Election;
 import ceni.system.votesync.model.view.result.FokontanyLocalElectionResult;
 import ceni.system.votesync.model.view.result.MunicipalResult;
 import ceni.system.votesync.model.view.result.PollingStationLocalElectionResult;

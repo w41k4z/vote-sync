@@ -11,14 +11,19 @@ import { filter, map, mergeMap } from 'rxjs';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  pageTitle = '';
+  pageTitle = 'Accueil';
+  userInformation: string | null = null;
+  userAuthority: string | null = null;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
-  ) {}
+  ) {
+    this.userInformation = this.authService.getUserInformation();
+    this.userAuthority = this.authService.getUserPrivilege();
+  }
 
   ngOnInit(): void {
     this.router.events

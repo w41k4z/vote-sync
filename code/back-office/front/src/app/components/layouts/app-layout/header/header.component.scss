@@ -10,35 +10,13 @@ section {
     padding: 10px 30px;
 
     header {
-        // border: 1px solid $grey-section;
-    
         .left-header {
             .nav-button-toggle {
                 display: none;
             }
         }
     
-        .right-header {
-            .search-bar {
-                border-radius: 35px !important;
-                background-color: #e8e7e4;
-                border-radius: 10px;
-                padding: 1px 15px;
-        
-                i {
-                    color: #9ca3af;
-                }
-        
-                input {
-                    border: none;
-                    outline: none;
-                    background-color: #e8e7e4;
-                    border-radius: 10px;
-                    padding: 5px 10px;
-                    width: 100%;
-                }
-            }
-    
+        .right-header {    
             .log-out-btn {
                 border-radius: 20px;
                 padding: 3px 10px;
@@ -51,6 +29,7 @@ section {
                     font-size: small;
                 }
             }
+
         }
     
     }

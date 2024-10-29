@@ -27,6 +27,14 @@ export class AuthService extends ApiCallService {
     return decoded.authority;
   }
 
+  getUserInformation() {
+    if (!this.accessToken) {
+      return null;
+    }
+    const decoded: AppJwt = jwtDecode(this.accessToken);
+    return decoded.userInformation;
+  }
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
     if (localStorage.getItem('accessToken')) {

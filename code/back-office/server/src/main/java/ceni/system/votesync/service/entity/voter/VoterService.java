@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ceni.system.votesync.config.State;
+import ceni.system.votesync.config.Status;
 import ceni.system.votesync.dto.request.RegisterVoterRequest;
 import ceni.system.votesync.model.entity.VoterRegistration;
 import ceni.system.votesync.model.view.VRegisteredVoter;
@@ -36,7 +36,7 @@ public class VoterService {
         for (RegisterVoterRequest request : registration) {
             VoterRegistration voter = this.voterRegistrationRepository
                     .findByElectionIdAndVoterId(request.getElectionId(), request.getId());
-            voter.setHasVoted(State.CLOSED);
+            voter.setHasVoted(Status.CLOSED);
             voter.setRegistrationDate(Timestamp.valueOf(request.getRegistrationDate()));
             voters.add(voter);
         }

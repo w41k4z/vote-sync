@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.entity.Election;
+import ceni.system.votesync.model.entity.election.Election;
 import ceni.system.votesync.model.view.result.CommunalResult;
 import ceni.system.votesync.model.view.result.DistrictResult;
 import ceni.system.votesync.model.view.result.FokontanyResult;

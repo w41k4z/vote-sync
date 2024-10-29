@@ -13,17 +13,17 @@ import ceni.system.votesync.dto.request.auth.AuthenticationRequest;
 import ceni.system.votesync.dto.request.auth.LogOutRequest;
 import ceni.system.votesync.dto.request.auth.NewAccessTokenRequest;
 import ceni.system.votesync.service.impl.RefreshTokenService;
-import ceni.system.votesync.service.impl.auth.AppAuthService;
+import ceni.system.votesync.service.impl.auth.SystemAuthService;
 import jakarta.validation.Valid;
 
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
 
-    private AppAuthService authService;
+    private SystemAuthService authService;
     private RefreshTokenService refreshTokenService;
 
-    public AuthenticationController(AppAuthService authService, RefreshTokenService refreshTokenService) {
+    public AuthenticationController(SystemAuthService authService, RefreshTokenService refreshTokenService) {
         this.authService = authService;
         this.refreshTokenService = refreshTokenService;
     }

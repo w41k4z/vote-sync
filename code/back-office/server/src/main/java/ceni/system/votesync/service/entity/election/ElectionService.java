@@ -9,16 +9,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.config.State;
+import ceni.system.votesync.config.Status;
 import ceni.system.votesync.dto.request.election.ConfigureElectionRequest;
 import ceni.system.votesync.dto.request.election.UpdateElectionRequest;
-import ceni.system.votesync.model.entity.Election;
-import ceni.system.votesync.model.entity.ElectionType;
 import ceni.system.votesync.repository.entity.ElectionRepository;
 import ceni.system.votesync.exception.ElectionNotFoundException;
 import ceni.system.votesync.exception.ElectionTypeNotFoundException;
 import ceni.system.votesync.exception.ImpossibleOperationException;
-import ceni.system.votesync.service.entity.election.ElectionTypeService;
+import ceni.system.votesync.model.entity.election.Election;
+import ceni.system.votesync.model.entity.election.ElectionType;
 
 @Service
 public class ElectionService {
@@ -40,7 +39,7 @@ public class ElectionService {
         election.setType(electionType);
         election.setName(request.getName());
         election.setStartDate(Date.valueOf(request.getStartDate()));
-        election.setState(State.PENDING);
+        election.setStatus(Status.PENDING);
         return this.repository.save(election);
     }
 
@@ -51,7 +50,7 @@ public class ElectionService {
         }
         Election existingElection = this.repository.findById(request.getId()).orElseThrow(
                 () -> new ElectionNotFoundException("Election not found. Id: " + request.getId()));
-        if (existingElection.getState() == State.CLOSED) {
+        if (existingElection.getStatus() == Status.CLOSED) {
             throw new ImpossibleOperationException("Election is already closed and can not be updated");
         }
         ElectionType type = new ElectionType();
@@ -65,7 +64,7 @@ public class ElectionService {
     public void deleteElection(Integer electionId) {
         Election existingElection = this.repository.findById(electionId).orElseThrow(
                 () -> new ElectionNotFoundException("Election not found. Id: " + electionId));
-        if (existingElection.getState() == State.CLOSED) {
+        if (existingElection.getStatus() == Status.CLOSED) {
             throw new ImpossibleOperationException("Election is already closed and can not be updated");
         }
         this.repository.deleteById(electionId);
