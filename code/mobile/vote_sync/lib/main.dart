@@ -56,9 +56,9 @@ class App extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: Colors.white,
+        cursorColor: AppColors.primaryGreen,
         selectionColor: Colors.grey,
-        selectionHandleColor: Colors.white,
+        selectionHandleColor: AppColors.primaryGreen,
       ),
     );
   }
