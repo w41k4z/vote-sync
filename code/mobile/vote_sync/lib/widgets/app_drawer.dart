@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
-import 'package:vote_sync/screens/candidates/candidate_page.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/screens/log-in/log_in_page.dart';
 import 'package:vote_sync/screens/result/result_page.dart';
@@ -102,27 +101,6 @@ class AppDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                     builder: (context) => const RegisteredVotersPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.how_to_reg,
-              color: activeItem == Pages.CANDIDATES
-                  ? AppColors.primaryGreen
-                  : Colors.grey[400],
-            ),
-            title: Text(
-              'Liste des candidats',
-              style: TextStyle(
-                color: activeItem == Pages.CANDIDATES
-                    ? AppColors.primaryGreen
-                    : Colors.grey[400],
-              ),
-            ),
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const CandidatePage()),
               );
             },
           ),

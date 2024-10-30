@@ -1,4 +1,10 @@
 - Add alert checking for temporal pattern after voters registration
+- Type of anomaly:
+	- missing voters registrations and existence of result
+	- permanent alert for active elections:
+		- total number of polling stations missing result
+	- incoherence:
+		- 
 - Electoral result:
 	- controller (add filtering functionality)
 	- id_municipalate and id_commune can be filtered in the fokontany and polling station endpoint
