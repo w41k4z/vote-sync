@@ -17,10 +17,10 @@ class ResultBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      height: 55,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.primaryGreen,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -33,7 +33,6 @@ class ResultBottomNavigationBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Scan Icon (Left)
           IconButton(
             icon: Icon(
               FontAwesomeIcons.fileLines,
@@ -46,14 +45,14 @@ class ResultBottomNavigationBar extends StatelessWidget {
           GestureDetector(
             onTap: onUploadPressed,
             child: Container(
-              height: 50,
-              width: 50,
+              height: 45,
+              width: 45,
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen,
+                color: Colors.white,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primaryGreen.withOpacity(0.6),
+                    color: Colors.white.withOpacity(0.6),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -61,8 +60,8 @@ class ResultBottomNavigationBar extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.cloud_upload,
-                size: 35,
-                color: Colors.white,
+                size: 30,
+                color: AppColors.primaryGreen,
               ),
             ),
           ),
