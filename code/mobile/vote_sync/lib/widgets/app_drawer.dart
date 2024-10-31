@@ -17,7 +17,7 @@ class AppDrawer extends StatelessWidget {
   void _handleLogout(BuildContext context) async {
     await GetIt.I.get<AppInstance>().logout();
     if (!context.mounted) return;
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const LogInPage(),
       ),
@@ -55,7 +55,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const HomePage()),
               );
             },
@@ -76,7 +76,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (context) => const RecordedVotersPage()),
               );
@@ -98,7 +98,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (context) => const RegisteredVotersPage()),
               );
@@ -120,7 +120,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const ResultPage()),
               );
             },

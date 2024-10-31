@@ -6,7 +6,6 @@ class PollingStationRepositoryService {
     await tsx.insert(
       "polling_stations",
       pollingStation.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 

@@ -9,7 +9,6 @@ class VoterRepositoryService {
     await tsx.insert(
       "voters",
       voter.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 

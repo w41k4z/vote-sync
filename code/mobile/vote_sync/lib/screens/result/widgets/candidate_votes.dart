@@ -11,6 +11,7 @@ class CandidateVotes {
     required List<Candidate> candidates,
     required LocalStorageService localStorageService,
   }) {
+    print(candidates);
     return _candidatesList(candidates, localStorageService);
   }
 

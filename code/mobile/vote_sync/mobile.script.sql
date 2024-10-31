@@ -6,9 +6,9 @@ CREATE TABLE elections (
 );
 
 CREATE TABLE polling_stations (
-    id INTEGER NOT NULL,
-    election_id INTEGER NOT NULL,
-    code TEXT UNIQUE NOT NULL,
+    id INTEGER,
+    election_id INTEGER,
+    code TEXT NOT NULL,
     name TEXT NOT NULL,
     vote_center TEXT NOT NULL,
     fokontany TEXT NOT NULL,
@@ -17,29 +17,32 @@ CREATE TABLE polling_stations (
     region TEXT NOT NULL,
     registered_voters INTEGER NOT NULL,
     candidates INTEGER NOT NULL,
-    PRIMARY KEY(id, election_id)
+    PRIMARY KEY(id, election_id),
+    FOREIGN KEY(election_id) REFERENCES elections(id)
 );
 
 CREATE TABLE voters (
-    id INTEGER PRIMARY KEY,
-    nic TEXT UNIQUE NOT NULL,
+    id INTEGER,
+    nic TEXT NOT NULL,
     name TEXT NOT NULL,
     first_name TEXT,
     gender INTEGER NOT NULL,
     has_voted INTEGER NOT NULL -- 0: No, 10: Yes, 20: Synchronized
     polling_station_id INTEGER NOT NULL,
-    election_id INTEGER NOT NULL,
+    election_id INTEGER,
     registration_date TEXT,
-    FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
+    PRIMARY KEY(id, election_id),
+    FOREIGN KEY(election_id) REFERENCES elections(id),
+    FOREIGN KEY(polling_station_id) REFERENCES polling_stations(id)
 );
 CREATE INDEX idx_voters_name ON voters(name);
 CREATE INDEX idx_voters_first_name ON voters(first_name);
 CREATE INDEX idx_voters_has_voted ON voters(has_voted);
 
 CREATE TABLE candidates (
-    id INTEGER PRIMARY KEY,
+    id INTEGER,
     registration_id INTEGER NOT NULL,
-    election_id INTEGER NOT NULL,
+    election_id INTEGER,
     registration_date TEXT NOT NULL,
     candidate_number INTEGER NOT NULL,
     information TEXT NOT NULL,
@@ -47,5 +50,7 @@ CREATE TABLE candidates (
     political_entity_description TEXT NOT NULL,
     image_path TEXT NOT NULL,
     polling_station_id INTEGER NOT NULL,
-    FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
+    PRIMARY KEY(id, election_id, polling_station_id),
+    FOREIGN KEY(election_id) REFERENCES elections(id),
+    FOREIGN KEY(polling_station_id) REFERENCES polling_stations(id)
 );

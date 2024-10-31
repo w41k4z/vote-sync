@@ -10,9 +10,9 @@ class DatabaseTableInit {
 
   static const String CREATE_POLLING_STATION_TABLE = '''
     CREATE TABLE polling_stations (
-        id INTEGER NOT NULL,
-        election_id INTEGER NOT NULL,
-        code TEXT UNIQUE NOT NULL,
+        id INTEGER,
+        election_id INTEGER,
+        code TEXT NOT NULL,
         name TEXT NOT NULL,
         vote_center TEXT NOT NULL,
         fokontany TEXT NOT NULL,
@@ -22,30 +22,32 @@ class DatabaseTableInit {
         registered_voters INTEGER NOT NULL,
         candidates INTEGER NOT NULL,
         PRIMARY KEY(id, election_id),
-        FOREIGN KEY (election_id) REFERENCES elections (id)
+        FOREIGN KEY(election_id) REFERENCES elections(id)
     )
   ''';
 
   static const String CREATE_VOTER_TABLE = '''
     CREATE TABLE voters (
-        id INTEGER PRIMARY KEY,
-        nic TEXT UNIQUE NOT NULL,
+        id INTEGER,
+        nic TEXT NOT NULL,
         name TEXT NOT NULL,
         first_name TEXT,
         gender INTEGER NOT NULL,
         has_voted INTEGER NOT NULL,
         polling_station_id INTEGER NOT NULL,
-        election_id INTEGER NOT NULL,
+        election_id INTEGER,
         registration_date TEXT,
+        PRIMARY KEY(id, election_id),
+        FOREIGN KEY(election_id) REFERENCES elections(id),
         FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
     )
   ''';
 
   static const String CREATE_CANDIDATE_TABLE = '''
     CREATE TABLE candidates (
-        id INTEGER PRIMARY KEY,
+        id INTEGER,
         registration_id INTEGER NOT NULL,
-        election_id INTEGER NOT NULL,
+        election_id INTEGER,
         registration_date TEXT NOT NULL,
         candidate_number INTEGER NOT NULL,
         information TEXT NOT NULL,
@@ -53,6 +55,8 @@ class DatabaseTableInit {
         political_entity_description TEXT NOT NULL,
         image_path TEXT NOT NULL,
         polling_station_id INTEGER NOT NULL,
+        PRIMARY KEY(id, election_id, polling_station_id),
+        FOREIGN KEY(election_id) REFERENCES elections(id),
         FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)
     )
   ''';

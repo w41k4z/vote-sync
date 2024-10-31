@@ -14,7 +14,6 @@ import 'package:vote_sync/config/init/database_index_init.dart';
 import 'package:vote_sync/config/init/database_table_init.dart';
 
 class DatabaseManager {
-  static const _databaseVersion = 1;
   static const _databaseName = 'vote_sync.db';
   final Database database;
 
@@ -24,7 +23,7 @@ class DatabaseManager {
     String path = join(await getDatabasesPath(), _databaseName);
     return openDatabase(
       path,
-      version: _databaseVersion,
+      version: 1,
       onCreate: (db, version) async {
         // Tables
         await db.execute(DatabaseTableInit.CREATE_POLLING_STATION_TABLE);

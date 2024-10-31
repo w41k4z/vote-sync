@@ -6,7 +6,6 @@ class CandidateRepositoryService {
     await tsx.insert(
       "candidates",
       candidate.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 

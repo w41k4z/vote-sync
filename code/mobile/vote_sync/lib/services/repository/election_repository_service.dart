@@ -6,17 +6,16 @@ class ElectionRepositoryService {
     await tsx.insert(
       "elections",
       election.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
     return election;
   }
 
-  Future<Election?> findById(
-      Database database, int pollingStationElectionId) async {
+  Future<Election?> findById(Database database, int electionId) async {
     final List<Map<String, dynamic>> maps = await database.query(
       'elections',
       where: 'id = ?',
-      whereArgs: [pollingStationElectionId],
+      whereArgs: [electionId],
     );
     if (maps.isNotEmpty) {
       return Election.fromMap(maps.first);
