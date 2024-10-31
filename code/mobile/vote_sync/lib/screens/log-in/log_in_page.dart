@@ -145,7 +145,7 @@ class _LogInPageState extends State<LogInPage> {
 
       DatabaseManager databaseManager = GetIt.I.get<DatabaseManager>();
       bool isDatabasePopulated = await databaseManager.isDatabasePopulated(
-          pollingStationDTO.id, electionDTO.id);
+          pollingStationDTO.id.toString(), electionDTO.id.toString());
       if (!isDatabasePopulated) {
         // Fetching the polling station data
         PollingStationService pollingStationService =

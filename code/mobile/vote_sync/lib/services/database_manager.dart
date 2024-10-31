@@ -40,7 +40,8 @@ class DatabaseManager {
     );
   }
 
-  Future<bool> isDatabasePopulated(int pollingStationId, int electionId) async {
+  Future<bool> isDatabasePopulated(
+      String pollingStationId, String electionId) async {
     PollingStationRepositoryService pollingStationRepositoryService =
         GetIt.I.get<PollingStationRepositoryService>();
     ElectionRepositoryService electionRepositoryService =

@@ -38,12 +38,12 @@ class _HomePageState extends State<HomePage> {
         .get<PollingStationRepositoryService>()
         .findByIdAndElectionId(
           database,
-          int.parse(pollingStationId),
-          int.parse(electionId),
+          pollingStationId,
+          electionId,
         );
     final storedElection = await GetIt.I
         .get<ElectionRepositoryService>()
-        .findById(database, int.parse(electionId));
+        .findById(database, electionId);
     setState(() {
       pollingStation = storedPollingStation;
       election = storedElection;

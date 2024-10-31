@@ -28,4 +28,18 @@ class CandidateRepositoryService {
       return Candidate.fromMap(maps[i]);
     });
   }
+
+  Future<void> updateVote({
+    required Database database,
+    required Candidate candidate,
+  }) async {
+    String query =
+        "UPDATE candidates SET votes = ? where id = ? AND election_id = ? AND polling_station_id = ?";
+    await database.rawUpdate(query, [
+      candidate.votes,
+      candidate.id,
+      candidate.electionId,
+      candidate.pollingStationId,
+    ]);
+  }
 }

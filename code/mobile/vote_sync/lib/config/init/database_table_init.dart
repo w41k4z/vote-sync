@@ -21,6 +21,9 @@ class DatabaseTableInit {
         region TEXT NOT NULL,
         registered_voters INTEGER NOT NULL,
         candidates INTEGER NOT NULL,
+        nulls INTEGER NOT NULL,
+        blanks INTEGER NOT NULL,
+        CHECK(nulls >= 0 AND blanks >= 0),
         PRIMARY KEY(id, election_id),
         FOREIGN KEY(election_id) REFERENCES elections(id)
     )
@@ -55,6 +58,8 @@ class DatabaseTableInit {
         political_entity_description TEXT NOT NULL,
         image_path TEXT NOT NULL,
         polling_station_id INTEGER NOT NULL,
+        votes INTEGER NOT NULL,
+        CHECK(votes >= 0),
         PRIMARY KEY(id, election_id, polling_station_id),
         FOREIGN KEY(election_id) REFERENCES elections(id),
         FOREIGN KEY (polling_station_id) REFERENCES polling_stations(id)

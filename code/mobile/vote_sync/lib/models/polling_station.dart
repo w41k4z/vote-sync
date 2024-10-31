@@ -10,6 +10,8 @@ class PollingStation {
   String region;
   int registeredVoters;
   int candidates;
+  int nulls;
+  int blanks;
 
   PollingStation({
     required this.id,
@@ -23,6 +25,8 @@ class PollingStation {
     required this.region,
     required this.registeredVoters,
     required this.candidates,
+    required this.nulls,
+    required this.blanks,
   });
 
   // API mapping
@@ -39,6 +43,8 @@ class PollingStation {
       region: json['region'],
       registeredVoters: json['voters'],
       candidates: json['candidates'],
+      nulls: 0,
+      blanks: 0,
     );
   }
 
@@ -56,6 +62,8 @@ class PollingStation {
       region: json['region'],
       registeredVoters: json['registered_voters'],
       candidates: json['candidates'],
+      nulls: json['nulls'],
+      blanks: json['blanks'],
     );
   }
 
@@ -72,6 +80,8 @@ class PollingStation {
       'region': region,
       'registered_voters': registeredVoters,
       'candidates': candidates,
+      'nulls': nulls,
+      'blanks': nulls,
     };
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:vote_sync/config/app_colors.dart';
@@ -11,7 +10,6 @@ class CandidateVotes {
     required List<Candidate> candidates,
     required LocalStorageService localStorageService,
   }) {
-    print(candidates);
     return _candidatesList(candidates, localStorageService);
   }
 
@@ -22,7 +20,6 @@ class CandidateVotes {
     return List.generate(candidates.length, (index) {
       return _candidateCard(
         candidate: candidates[index],
-        votes: Random().nextInt(700),
         localStorageService: localStorageService,
       );
     });
@@ -30,7 +27,6 @@ class CandidateVotes {
 
   static Widget _candidateCard({
     required Candidate candidate,
-    required int votes,
     required LocalStorageService localStorageService,
   }) {
     return Card(
@@ -55,7 +51,7 @@ class CandidateVotes {
                 ],
               ),
             ),
-            _buildCandidateVotes(candidate, votes),
+            _buildCandidateVotes(candidate),
           ],
         ),
       ),
@@ -112,10 +108,10 @@ class CandidateVotes {
     );
   }
 
-  static Widget _buildCandidateVotes(Candidate candidate, int votes) {
+  static Widget _buildCandidateVotes(Candidate candidate) {
     return Center(
       child: Text(
-        votes.toString(),
+        candidate.votes.toString(),
         style: const TextStyle(
           color: AppColors.primaryGreen,
           fontSize: 18,

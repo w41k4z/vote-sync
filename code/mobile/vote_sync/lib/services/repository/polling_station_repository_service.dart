@@ -11,8 +11,8 @@ class PollingStationRepositoryService {
 
   Future<PollingStation?> findByIdAndElectionId(
     Database database,
-    int pollingStationId,
-    int electionId,
+    String pollingStationId,
+    String electionId,
   ) async {
     final List<Map<String, dynamic>> maps = await database.query(
       'polling_stations',
@@ -23,5 +23,19 @@ class PollingStationRepositoryService {
       return PollingStation.fromMap(maps.first);
     }
     return null;
+  }
+
+  Future<void> updateNullAndBlankVotes({
+    required Database database,
+    required PollingStation pollingStation,
+  }) async {
+    String query =
+        "UPDATE polling_stations SET nulls = ?, blanks = ? WHERE id = ? AND election_id = ?";
+    await database.rawUpdate(query, [
+      pollingStation.nulls,
+      pollingStation.blanks,
+      pollingStation.id,
+      pollingStation.electionId,
+    ]);
   }
 }

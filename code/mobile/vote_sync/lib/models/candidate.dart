@@ -14,6 +14,7 @@ class Candidate {
   String politicalEntityDescription;
   String imagePath;
   int pollingStationId;
+  int votes;
 
   Candidate({
     required this.id,
@@ -26,6 +27,7 @@ class Candidate {
     required this.politicalEntityDescription,
     required this.imagePath,
     required this.pollingStationId,
+    required this.votes,
   });
 
   // API mapping
@@ -41,6 +43,7 @@ class Candidate {
       politicalEntityDescription: json['politicalEntityDescription'],
       imagePath: json['imagePath'],
       pollingStationId: pollingStationId,
+      votes: 0,
     );
   }
 
@@ -57,6 +60,7 @@ class Candidate {
       politicalEntityDescription: json['political_entity_description'],
       imagePath: json['image_path'],
       pollingStationId: json['polling_station_id'],
+      votes: json['votes'],
     );
   }
 
@@ -72,6 +76,7 @@ class Candidate {
       'political_entity_description': politicalEntityDescription,
       'image_path': imagePath,
       'polling_station_id': pollingStationId,
+      'votes': votes,
     };
   }
 

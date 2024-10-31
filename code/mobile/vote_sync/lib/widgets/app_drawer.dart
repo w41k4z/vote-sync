@@ -17,10 +17,11 @@ class AppDrawer extends StatelessWidget {
   void _handleLogout(BuildContext context) async {
     await GetIt.I.get<AppInstance>().logout();
     if (!context.mounted) return;
-    Navigator.of(context).push(
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const LogInPage(),
       ),
+      (Route<dynamic> route) => false,
     );
   }
 

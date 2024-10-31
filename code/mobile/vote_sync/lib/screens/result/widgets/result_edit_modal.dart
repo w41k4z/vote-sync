@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:vote_sync/config/app_colors.dart';
+import 'package:vote_sync/models/candidate.dart';
 
 class ResultEditModal extends StatefulWidget {
   final int nullVotes;
   final int blankVotes;
+  final List<Candidate> candidates;
 
   const ResultEditModal({
     super.key,
     required this.nullVotes,
     required this.blankVotes,
+    required this.candidates,
   });
 
   @override
@@ -28,14 +31,21 @@ class _ResultEditModalState extends State<ResultEditModal> {
         TextEditingController(text: widget.nullVotes.toString());
     _blankVotesController =
         TextEditingController(text: widget.blankVotes.toString());
-    _candidatesControllers =
-        List.generate(4, (index) => TextEditingController(text: '0'));
+    _candidatesControllers = List.generate(
+      widget.candidates.length,
+      (index) => TextEditingController(
+        text: widget.candidates[index].votes.toString(),
+      ),
+    );
   }
 
   @override
   void dispose() {
     _nullVotesController.dispose();
     _blankVotesController.dispose();
+    for (int i = 0; i < _candidatesControllers.length; i++) {
+      _candidatesControllers[i].dispose();
+    }
     super.dispose();
   }
 
@@ -78,17 +88,16 @@ class _ResultEditModalState extends State<ResultEditModal> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    final nulls =
-                        double.tryParse(_nullVotesController.text) ?? 0;
+                    final nulls = int.tryParse(_nullVotesController.text) ?? 0;
                     final blanks =
-                        double.tryParse(_blankVotesController.text) ?? 0;
+                        int.tryParse(_blankVotesController.text) ?? 0;
                     Navigator.pop(
                       context,
                       {
                         'nullVotes': nulls,
                         'blankVotes': blanks,
                         'candidates': _candidatesControllers
-                            .map((e) => double.tryParse(e.text) ?? 0)
+                            .map((e) => int.tryParse(e.text) ?? 0)
                             .toList()
                       },
                     );
@@ -120,7 +129,7 @@ class _ResultEditModalState extends State<ResultEditModal> {
       controller: controller,
       keyboardType: const TextInputType.numberWithOptions(
         decimal: false,
-        signed: true,
+        signed: false,
       ),
       decoration: InputDecoration(
         labelText: label,
@@ -132,8 +141,11 @@ class _ResultEditModalState extends State<ResultEditModal> {
         if (value == null || value.isEmpty) {
           return 'Veillez entrer une valeur';
         }
-        if (double.tryParse(value) == null) {
+        if (int.tryParse(value) == null) {
           return 'Entrez une valeur numérique valide';
+        }
+        if (int.parse(value) < 0) {
+          return 'Entrez une valeur positive';
         }
         return null;
       },

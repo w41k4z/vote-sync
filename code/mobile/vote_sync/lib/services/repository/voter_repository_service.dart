@@ -108,4 +108,16 @@ class VoterRepositoryService {
     database
         .rawUpdate("UPDATE VOTERS SET registration_date=NULL, has_voted=0", []);
   }
+
+  Future<List<int>> getVotersCountAndRegisteredCount({
+    required Database database,
+  }) async {
+    String query1 = "SELECT COUNT(*) FROM VOTERS";
+    final result1 = await database.rawQuery(query1);
+    int voters = Sqflite.firstIntValue(result1) ?? 0;
+    String query2 = "SELECT COUNT(*) FROM VOTERS WHERE has_voted >= 10";
+    final result2 = await database.rawQuery(query2);
+    int registered = Sqflite.firstIntValue(result2) ?? 0;
+    return [voters, registered];
+  }
 }

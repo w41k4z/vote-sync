@@ -11,7 +11,7 @@ class ElectionRepositoryService {
     return election;
   }
 
-  Future<Election?> findById(Database database, int electionId) async {
+  Future<Election?> findById(Database database, String electionId) async {
     final List<Map<String, dynamic>> maps = await database.query(
       'elections',
       where: 'id = ?',
