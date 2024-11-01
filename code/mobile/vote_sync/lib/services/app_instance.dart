@@ -1,6 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:get_it/get_it.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:vote_sync/services/repository/candidate_repository_service.dart';
+import 'package:vote_sync/services/repository/polling_station_repository_service.dart';
+import 'package:vote_sync/services/repository/polling_station_result_image_repository_service.dart';
+import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/services/secure_storage_service.dart';
 import 'package:vote_sync/services/token_service.dart';
 
@@ -64,5 +69,34 @@ class AppInstance {
     await GetIt.I.get<TokenService>().clearToken();
     _accessToken = null;
     _pollingStationId = null;
+    _electionId = null;
+  }
+
+  Future<void> deleteData() async {
+    Database database = GetIt.I.get<Database>();
+    await database.transaction((tsx) async {
+      await GetIt.I
+          .get<PollingStationResultImageRepositoryService>()
+          .deleteImages(
+            transaction: tsx,
+            electionId: _electionId!,
+            pollingStationId: _pollingStationId!,
+          );
+      await GetIt.I.get<VoterRepositoryService>().deleteAll(
+            transaction: tsx,
+            electionId: _electionId!,
+            pollingStationId: _pollingStationId!,
+          );
+      await GetIt.I.get<CandidateRepositoryService>().deleteAll(
+            transaction: tsx,
+            electionId: _electionId!,
+            pollingStationId: _pollingStationId!,
+          );
+      await GetIt.I.get<PollingStationRepositoryService>().delete(
+          transaction: tsx,
+          pollingStationId: _pollingStationId!,
+          electionId: _electionId!);
+    });
+    logout();
   }
 }

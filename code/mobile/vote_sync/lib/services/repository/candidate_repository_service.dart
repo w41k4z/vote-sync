@@ -42,4 +42,16 @@ class CandidateRepositoryService {
       candidate.pollingStationId,
     ]);
   }
+
+  Future<void> deleteAll({
+    required Transaction transaction,
+    required String electionId,
+    required String pollingStationId,
+  }) async {
+    await transaction.delete(
+      "candidates",
+      where: "election_id = ? AND polling_station_id = ?",
+      whereArgs: [electionId, pollingStationId],
+    );
+  }
 }

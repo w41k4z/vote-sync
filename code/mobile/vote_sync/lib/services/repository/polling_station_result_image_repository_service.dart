@@ -9,6 +9,12 @@ class PollingStationResultImageRepositoryService {
     required List<String> imagesPath,
   }) async {
     List<PollingStationResultImage> pollingStationResultImages = [];
+    List<PollingStationResultImage> existingResultImages =
+        await findAllByPollingStationIdAndElectionId(
+      database: database,
+      pollingStationId: pollingStationId,
+      electionId: electionId,
+    );
     await database.transaction((tsx) async {
       await tsx.delete(
         "polling_station_result_images",
@@ -33,6 +39,10 @@ class PollingStationResultImageRepositoryService {
         pollingStationResultImages.add(pollingStationResultImage);
       }
     });
+    for (PollingStationResultImage existingResultImage
+        in existingResultImages) {
+      await existingResultImage.deleteImage();
+    }
     return pollingStationResultImages;
   }
 
@@ -50,5 +60,33 @@ class PollingStationResultImageRepositoryService {
     return List.generate(maps.length, (i) {
       return PollingStationResultImage.fromMap(maps[i]);
     });
+  }
+
+  Future<void> deleteImages({
+    required Transaction transaction,
+    required String electionId,
+    required String pollingStationId,
+  }) async {
+    final List<Map<String, dynamic>> maps = await transaction.query(
+      'polling_station_result_images',
+      where: 'polling_station_id = ? AND election_id = ?',
+      whereArgs: [pollingStationId, electionId],
+    );
+    List<PollingStationResultImage> pollingStationResultImages =
+        List.generate(maps.length, (i) {
+      return PollingStationResultImage.fromMap(maps[i]);
+    });
+    for (PollingStationResultImage pollingStationResultImage
+        in pollingStationResultImages) {
+      await pollingStationResultImage.deleteImage();
+    }
+    await transaction.delete(
+      "polling_station_result_images",
+      where: "polling_station_id = ? AND election_id = ?",
+      whereArgs: [
+        pollingStationId,
+        electionId,
+      ],
+    );
   }
 }

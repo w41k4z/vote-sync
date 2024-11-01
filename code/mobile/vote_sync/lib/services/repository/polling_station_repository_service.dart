@@ -9,6 +9,23 @@ class PollingStationRepositoryService {
     );
   }
 
+  Future<void> sync({
+    required Database database,
+    required PollingStation pollingStation,
+  }) async {
+    pollingStation.synced = 20;
+    String query =
+        "UPDATE polling_stations SET synced = ? WHERE id = ? AND election_id = ?";
+    await database.rawUpdate(
+      query,
+      [
+        pollingStation.synced,
+        pollingStation.id,
+        pollingStation.electionId,
+      ],
+    );
+  }
+
   Future<PollingStation?> findByIdAndElectionId(
     Database database,
     String pollingStationId,
@@ -37,5 +54,17 @@ class PollingStationRepositoryService {
       pollingStation.id,
       pollingStation.electionId,
     ]);
+  }
+
+  Future<void> delete({
+    required Transaction transaction,
+    required String pollingStationId,
+    required String electionId,
+  }) async {
+    await transaction.delete(
+      "polling_stations",
+      where: "id = ? AND election_id = ?",
+      whereArgs: [pollingStationId, electionId],
+    );
   }
 }

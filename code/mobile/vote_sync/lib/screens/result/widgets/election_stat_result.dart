@@ -77,6 +77,7 @@ class ElectionStatResult {
                         : '0',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: AppColors.redDanger,
                     ),
                   ),
                   const SizedBox(width: 5),
@@ -104,6 +105,7 @@ class ElectionStatResult {
                         : '0',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: AppColors.redDanger,
                     ),
                   ),
                   const SizedBox(width: 5),
@@ -151,6 +153,7 @@ class ElectionStatResult {
               validVotes.toString(),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                color: AppColors.primaryGreen,
               ),
             ),
             const SizedBox(width: 5),

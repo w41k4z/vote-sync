@@ -145,16 +145,16 @@ class RegisteredVotersPageContentWidget extends StatelessWidget {
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.sync_problem,
-                        color: AppColors.redDanger,
-                      ),
                       IconButton(
                         icon: const Icon(
                           Icons.delete,
                           color: AppColors.redDanger,
                         ),
                         onPressed: () => {unregister(voter)},
+                      ),
+                      const Icon(
+                        Icons.sync_problem,
+                        color: AppColors.redDanger,
                       ),
                     ],
                   ),

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/endpoints.dart';
@@ -9,10 +10,13 @@ import 'package:vote_sync/models/election.dart';
 import 'package:vote_sync/models/polling_station_result_image.dart';
 import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
+import 'package:vote_sync/services/local_storage_service.dart';
 import 'package:vote_sync/services/location_service.dart';
+import 'package:path/path.dart' as path;
 
 class PollingStationService extends ApiCallService {
   final String pollingStationEndpoint = Endpoints.POLLING_STATIONS;
+  final String resultEndpoint = Endpoints.POLLING_STATIONS;
 
   Future<List<dynamic>> getNearestPollingStationAndCurrentElections() async {
     LocationService locationService = GetIt.I.get<LocationService>();
@@ -82,7 +86,39 @@ class PollingStationService extends ApiCallService {
   }
 
   Future<void> sendResults(
-      PollingStation pollingStation,
-      List<Candidate> candidates,
-      List<PollingStationResultImage> pollingStationResultImages) async {}
+    PollingStation pollingStation,
+    int registered,
+    List<Candidate> candidates,
+    List<PollingStationResultImage> pollingStationResultImages,
+    LocalStorageService localStorageService,
+  ) async {
+    FormData formData = FormData.fromMap({
+      'electionId': pollingStation.electionId,
+      'pollingStationId': pollingStation.id,
+      'nulls': pollingStation.nulls,
+      'blanks': pollingStation.blanks,
+      'registered': registered,
+      'candidates': candidates
+          .map((candidate) => {
+                'id': candidate.id,
+                'votes': candidate.votes,
+              })
+          .toList(),
+      'images': [
+        for (PollingStationResultImage image in pollingStationResultImages)
+          await MultipartFile.fromFile(
+            path.join(localStorageService.appDocDir.path, image.imagePath),
+            filename: image.imagePath.split('/').last,
+          ),
+      ],
+    });
+
+    await postCall(
+      '$resultEndpoint/upload',
+      formData,
+      options: Options(
+        contentType: 'multipart/form-data',
+      ),
+    );
+  }
 }

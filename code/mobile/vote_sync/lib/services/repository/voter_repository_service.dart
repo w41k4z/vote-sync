@@ -115,9 +115,21 @@ class VoterRepositoryService {
     String query1 = "SELECT COUNT(*) FROM VOTERS";
     final result1 = await database.rawQuery(query1);
     int voters = Sqflite.firstIntValue(result1) ?? 0;
-    String query2 = "SELECT COUNT(*) FROM VOTERS WHERE has_voted >= 10";
+    String query2 = "SELECT COUNT(*) FROM VOTERS WHERE has_voted = 20";
     final result2 = await database.rawQuery(query2);
     int registered = Sqflite.firstIntValue(result2) ?? 0;
     return [voters, registered];
+  }
+
+  Future<void> deleteAll({
+    required Transaction transaction,
+    required String electionId,
+    required String pollingStationId,
+  }) async {
+    await transaction.delete(
+      'voters',
+      where: 'election_id = ? AND polling_station_id = ?',
+      whereArgs: [electionId, pollingStationId],
+    );
   }
 }

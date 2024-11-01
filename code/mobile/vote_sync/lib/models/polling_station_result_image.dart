@@ -46,4 +46,12 @@ class PollingStationResultImage {
     await imageFile.copy(localFilePath);
     imagePath = newImagePath;
   }
+
+  Future<void> deleteImage() async {
+    LocalStorageService localStorageService =
+        GetIt.I.get<LocalStorageService>();
+    File imageFile =
+        File(path.join(localStorageService.appDocDir.path, imagePath));
+    await imageFile.delete();
+  }
 }

@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/models/polling_station.dart';
@@ -13,6 +16,7 @@ import 'package:vote_sync/screens/result/widgets/result_bottom_navigation_bar.da
 import 'package:vote_sync/screens/result/widgets/result_edit_modal.dart';
 import 'package:vote_sync/screens/result/widgets/result_image_scanner.dart';
 import 'package:vote_sync/screens/result/widgets/result_images.dart';
+import 'package:vote_sync/services/api/polling_station_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/services/repository/candidate_repository_service.dart';
@@ -22,6 +26,7 @@ import 'package:vote_sync/services/repository/polling_station_result_image_repos
 import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
 import 'package:vote_sync/widgets/copyright.dart';
+import 'package:vote_sync/widgets/error/global_error_handler.dart';
 import 'package:vote_sync/widgets/error/snack_bar_error.dart';
 import 'package:vote_sync/screens/result/widgets/qr_code_scanner_page.dart'; // Add this import
 
@@ -84,17 +89,43 @@ class _ResultPageState extends State<ResultPage> {
     });
   }
 
-  Future<void> _updateResult() async {
+  int _checkResult() {
+    int result = 0;
     int totalVotes = 0;
+    int invalidVotes = pollingStation!.nulls + pollingStation!.blanks;
     for (Candidate candidate in candidates) {
       totalVotes += candidate.votes;
     }
-    totalVotes += pollingStation!.nulls;
-    totalVotes += pollingStation!.blanks;
-    if (totalVotes > registered) {
-      String message =
-          "Le total des votes dépasse le nombre d'électeurs enregistrés.";
-      SnackBarError.show(context: context, message: message);
+    totalVotes += invalidVotes;
+    if (totalVotes != registered) {
+      result = -1;
+      GlobalErrorHandler.warningDialog(
+        context: context,
+        message:
+            "Le total des votes est différent du nombre des électeurs enregistrés. Veuillez vérifier les votes des candidats, les votes nuls et les votes blancs.",
+        onDismiss: () {},
+      );
+    }
+    return result;
+  }
+
+  Future<void> _updateResult(dynamic updateResult) async {
+    int previousNulls = pollingStation!.nulls;
+    int previousBlanks = pollingStation!.blanks;
+    List<int> previousCandidatesVotes =
+        candidates.map((candidate) => candidate.votes).toList();
+    pollingStation!.nulls = updateResult['nullVotes'];
+    pollingStation!.blanks = updateResult['blankVotes'];
+    for (int i = 0; i < candidates.length; i++) {
+      candidates[i].votes = updateResult['candidates'][i];
+    }
+    int result = _checkResult();
+    if (result == -1) {
+      pollingStation!.nulls = previousNulls;
+      pollingStation!.blanks = previousBlanks;
+      for (int i = 0; i < candidates.length; i++) {
+        candidates[i].votes = previousCandidatesVotes[i];
+      }
       return;
     }
     Database databaseInstance = GetIt.I.get<DatabaseManager>().database;
@@ -112,6 +143,60 @@ class _ResultPageState extends State<ResultPage> {
           database: databaseInstance,
           pollingStation: pollingStation!,
         );
+    setState(() {});
+  }
+
+  Future<void> _uploadResults() async {
+    if (images.isEmpty) {
+      GlobalErrorHandler.warningDialog(
+        context: context,
+        message: "Veuillez scanner les images des résultats.",
+        onDismiss: () {},
+      );
+      return;
+    }
+    int result = _checkResult();
+    if (result == -1) return;
+    ProgressDialog progressDialog = ProgressDialog(context: context);
+    progressDialog.show(
+      max: 1,
+      msg: 'Envoi des résultats...',
+      barrierColor: Colors.black.withOpacity(0.5),
+      backgroundColor: AppColors.cardGreyBackground,
+      progressValueColor: AppColors.primaryGreen,
+      progressBgColor: Colors.grey,
+    );
+    try {
+      await GetIt.I.get<PollingStationService>().sendResults(
+            pollingStation!,
+            registered,
+            candidates,
+            images,
+            localStorageService,
+          );
+      progressDialog.update(value: 1);
+      await GetIt.I.get<PollingStationRepositoryService>().sync(
+            database: GetIt.I.get<DatabaseManager>().database,
+            pollingStation: pollingStation!,
+          );
+      setState(() {});
+    } on DioException catch (e) {
+      if (!mounted) return;
+      progressDialog.close();
+      if (e.type == DioExceptionType.connectionError) {
+        GlobalErrorHandler.internetAccessErrorDialog(
+          context: context,
+          onRetry: _uploadResults,
+        );
+      } else {
+        SnackBarError.show(
+          context: context,
+          message: e.response?.data["message"],
+        );
+      }
+    } catch (e) {
+      if (mounted) SnackBarError.show(context: context, message: e.toString());
+    }
   }
 
   @override
@@ -130,8 +215,8 @@ class _ResultPageState extends State<ResultPage> {
           ? null
           : ResultBottomNavigationBar(onScanPressed: () async {
               await _scanQrCode();
-            }, onUploadPressed: () {
-              print('Upload pressed');
+            }, onUploadPressed: () async {
+              await _uploadResults();
             }, onEditPressed: () {
               _showResultEditModal();
             }),
@@ -191,12 +276,7 @@ class _ResultPageState extends State<ResultPage> {
       ),
     ).then((result) async {
       if (result != null) {
-        pollingStation!.nulls = result['nullVotes'];
-        pollingStation!.blanks = result['blankVotes'];
-        for (int i = 0; i < candidates.length; i++) {
-          candidates[i].votes = result['candidates'][i];
-        }
-        await _updateResult();
+        await _updateResult(result);
       }
     });
   }
