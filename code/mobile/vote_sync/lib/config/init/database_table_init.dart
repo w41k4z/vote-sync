@@ -23,6 +23,7 @@ class DatabaseTableInit {
         candidates INTEGER NOT NULL,
         nulls INTEGER NOT NULL,
         blanks INTEGER NOT NULL,
+        synced INTEGER NOT NULL,
         CHECK(nulls >= 0 AND blanks >= 0),
         PRIMARY KEY(id, election_id),
         FOREIGN KEY(election_id) REFERENCES elections(id)

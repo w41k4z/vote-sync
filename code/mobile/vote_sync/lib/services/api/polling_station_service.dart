@@ -6,6 +6,7 @@ import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/models/candidate.dart';
 import 'package:vote_sync/models/polling_station.dart';
 import 'package:vote_sync/models/election.dart';
+import 'package:vote_sync/models/polling_station_result_image.dart';
 import 'package:vote_sync/models/voter.dart';
 import 'package:vote_sync/services/api/api_call_service.dart';
 import 'package:vote_sync/services/location_service.dart';
@@ -79,4 +80,9 @@ class PollingStationService extends ApiCallService {
       voters.map((voter) => voter.toJson()).toList(),
     );
   }
+
+  Future<void> sendResults(
+      PollingStation pollingStation,
+      List<Candidate> candidates,
+      List<PollingStationResultImage> pollingStationResultImages) async {}
 }

@@ -12,6 +12,7 @@ class PollingStation {
   int candidates;
   int nulls;
   int blanks;
+  int synced;
 
   PollingStation({
     required this.id,
@@ -27,6 +28,7 @@ class PollingStation {
     required this.candidates,
     required this.nulls,
     required this.blanks,
+    required this.synced,
   });
 
   // API mapping
@@ -45,6 +47,7 @@ class PollingStation {
       candidates: json['candidates'],
       nulls: 0,
       blanks: 0,
+      synced: 0,
     );
   }
 
@@ -64,6 +67,7 @@ class PollingStation {
       candidates: json['candidates'],
       nulls: json['nulls'],
       blanks: json['blanks'],
+      synced: json['synced'],
     );
   }
 
@@ -82,6 +86,11 @@ class PollingStation {
       'candidates': candidates,
       'nulls': nulls,
       'blanks': nulls,
+      'synced': synced,
     };
+  }
+
+  bool isSynced() {
+    return synced == 20;
   }
 }

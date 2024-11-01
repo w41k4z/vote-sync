@@ -21,6 +21,7 @@ import 'package:vote_sync/services/repository/polling_station_repository_service
 import 'package:vote_sync/services/repository/polling_station_result_image_repository_service.dart';
 import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/widgets/app_drawer.dart';
+import 'package:vote_sync/widgets/copyright.dart';
 import 'package:vote_sync/widgets/error/snack_bar_error.dart';
 import 'package:vote_sync/screens/result/widgets/qr_code_scanner_page.dart'; // Add this import
 
@@ -115,18 +116,25 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isResultSynced = false;
+    if (pollingStation != null) {
+      isResultSynced = pollingStation!.isSynced();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Résultat'),
       ),
       drawer: const AppDrawer(activeItem: Pages.RESULT),
-      bottomNavigationBar: ResultBottomNavigationBar(onScanPressed: () async {
-        await _scanQrCode();
-      }, onUploadPressed: () {
-        print('Upload pressed');
-      }, onEditPressed: () {
-        _showResultEditModal();
-      }),
+      bottomSheet: isResultSynced ? const Copyright() : null,
+      bottomNavigationBar: isResultSynced
+          ? null
+          : ResultBottomNavigationBar(onScanPressed: () async {
+              await _scanQrCode();
+            }, onUploadPressed: () {
+              print('Upload pressed');
+            }, onEditPressed: () {
+              _showResultEditModal();
+            }),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: SingleChildScrollView(
