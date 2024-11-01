@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vote_sync/config/app_colors.dart';
 
 class ResultImageScanner extends StatefulWidget {
@@ -18,10 +20,29 @@ class _ResultImageScannerState extends State<ResultImageScanner> {
   Future<void> _takePicture() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      setState(() {
-        _capturedImages.add(File(photo.path));
-      });
+      final File imageFile = File(photo.path);
+      XFile? compressedImage = await _compressToWebP(imageFile);
+      if (compressedImage != null) {
+        imageFile.delete();
+        setState(() {
+          _capturedImages.add(File(compressedImage.path));
+        });
+      }
     }
+  }
+
+  Future<XFile?> _compressToWebP(File imageFile) async {
+    final tempDir = await getTemporaryDirectory();
+    final String targetPath =
+        '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.webp';
+    return await FlutterImageCompress.compressAndGetFile(
+      imageFile.absolute.path,
+      targetPath,
+      format: CompressFormat.webp,
+      quality: 70,
+      minWidth: 1200, // Resize width for A4/A3 paper (adjust as needed)
+      minHeight: 1600, // Resize height for A4/A3 paper (adjust as needed)
+    );
   }
 
   void _removeImage(int index) {

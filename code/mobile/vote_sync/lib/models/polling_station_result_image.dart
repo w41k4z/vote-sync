@@ -36,7 +36,8 @@ class PollingStationResultImage {
     LocalStorageService localStorageService =
         GetIt.I.get<LocalStorageService>();
     final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    String newImagePath = '$electionId/result/$pollingStationId/$timestamp';
+    String newImagePath =
+        '$electionId/result/$pollingStationId/$electionId-$pollingStationId-$timestamp.webp';
     String localFilePath = path.join(
       localStorageService.appDocDir.path,
       newImagePath,
@@ -50,8 +51,10 @@ class PollingStationResultImage {
   Future<void> deleteImage() async {
     LocalStorageService localStorageService =
         GetIt.I.get<LocalStorageService>();
-    File imageFile =
-        File(path.join(localStorageService.appDocDir.path, imagePath));
+    File imageFile = File(path.join(
+      localStorageService.appDocDir.path,
+      imagePath,
+    ));
     await imageFile.delete();
   }
 }
