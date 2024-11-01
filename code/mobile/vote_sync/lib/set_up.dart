@@ -12,6 +12,7 @@ import 'package:vote_sync/services/location_service.dart';
 import 'package:vote_sync/services/repository/candidate_repository_service.dart';
 import 'package:vote_sync/services/repository/election_repository_service.dart';
 import 'package:vote_sync/services/repository/polling_station_repository_service.dart';
+import 'package:vote_sync/services/repository/polling_station_result_image_repository_service.dart';
 import 'package:vote_sync/services/repository/voter_repository_service.dart';
 import 'package:vote_sync/services/secure_storage_service.dart';
 import 'package:vote_sync/services/token_service.dart';
@@ -49,6 +50,9 @@ class SetUp {
   static Future<void> _registerRepositoryServices() async {
     GetIt.I.registerLazySingleton<PollingStationRepositoryService>(
       () => PollingStationRepositoryService(),
+    );
+    GetIt.I.registerLazySingleton<PollingStationResultImageRepositoryService>(
+      () => PollingStationResultImageRepositoryService(),
     );
     GetIt.I.registerLazySingleton<VoterRepositoryService>(
       () => VoterRepositoryService(),

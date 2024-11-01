@@ -26,10 +26,10 @@ class DatabaseManager {
       version: 1,
       onCreate: (db, version) async {
         // Tables
+        await db.execute(DatabaseTableInit.CREATE_ELECTION_TABLE);
         await db.execute(DatabaseTableInit.CREATE_POLLING_STATION_TABLE);
         await db.execute(
-          DatabaseTableInit.CREATE_ELECTION_TABLE,
-        );
+            DatabaseTableInit.CREATE_POLLING_STATION_RESULT_IMAGE_TABLE);
         await db.execute(DatabaseTableInit.CREATE_VOTER_TABLE);
         await db.execute(DatabaseTableInit.CREATE_CANDIDATE_TABLE);
         // Indexes

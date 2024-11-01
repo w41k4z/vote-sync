@@ -24,6 +24,15 @@ CREATE TABLE polling_stations (
     FOREIGN KEY(election_id) REFERENCES elections(id)
 );
 
+CREATE TABLE polling_station_result_images (
+    polling_station_id INTEGER,
+    election_id INTEGER,
+    image_path TEXT,
+    PRIMARY KEY(polling_station_id, election_id, image_path),
+    FOREIGN KEY(polling_station_id) REFERENCES polling_stations(id),
+    FOREIGN KEY(election_id) REFERENCES elections(id)
+);
+
 CREATE TABLE voters (
     id INTEGER,
     nic TEXT NOT NULL,

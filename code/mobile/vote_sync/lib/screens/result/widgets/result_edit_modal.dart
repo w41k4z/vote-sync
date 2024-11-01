@@ -74,7 +74,9 @@ class _ResultEditModalState extends State<ResultEditModal> {
               const SizedBox(height: 15),
               for (int i = 0; i < 4; i++) ...[
                 _buildNumberInputField(
-                    _candidatesControllers[i], 'Candidat N° ${i + 1}'),
+                  _candidatesControllers[i],
+                  widget.candidates[i].politicalEntity,
+                ),
                 if (i != 3) const SizedBox(height: 16),
               ],
               const SizedBox(height: 24),
