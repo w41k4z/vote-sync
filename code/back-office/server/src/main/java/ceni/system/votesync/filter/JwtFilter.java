@@ -96,5 +96,3 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
-// eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdHkiOiJNQU5BR0VSIiwic3ViIjoibWFuYWdlciIsImlhdCI6MTcyNTg3ODE2MiwiZXhwIjoxNzI1ODc4NDYyfQ.qdIKK3W57ZENOz4hNB8ji6JHSxsQCY0sGOrluebNxK0

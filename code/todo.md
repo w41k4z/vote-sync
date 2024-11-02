@@ -21,3 +21,6 @@
 - Electoral result:
 	- add a condition to fetch wether live result or achived result based on the election state
 - Adding version to endpoints
+- Closing election
+	- Migrate data to the datawarehouse
+	- Truncate resultats, details_resultats, details_resultats_importes and resultat_images

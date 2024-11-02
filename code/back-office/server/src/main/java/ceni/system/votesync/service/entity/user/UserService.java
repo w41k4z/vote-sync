@@ -25,15 +25,8 @@ import ceni.system.votesync.service.entity.role.RoleService;
 import ceni.system.votesync.exception.UserNotFoundException;
 import ceni.system.votesync.exception.RoleNotFoundException;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.transaction.annotation.Transactional;
-
 @Service
 public class UserService {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private UserFactory userFactory;
 
@@ -136,8 +129,7 @@ public class UserService {
         }
     }
 
-    @Transactional
     public void assignOperators() {
-        this.entityManager.createNativeQuery("CALL assign_operators_to_polling_stations()").executeUpdate();
+        this.repository.assignOperators();
     }
 }

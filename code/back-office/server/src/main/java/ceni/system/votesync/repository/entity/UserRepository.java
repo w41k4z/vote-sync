@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import ceni.system.votesync.model.entity.User;
@@ -24,4 +25,7 @@ public interface UserRepository extends EntityRepository<User, Integer> {
             @Param("contact") String contact,
             @Param("password") String password,
             @Param("identifier") String identifier);
+
+    @Procedure(procedureName = "assign_operators_to_polling_stations")
+    void assignOperators();
 }

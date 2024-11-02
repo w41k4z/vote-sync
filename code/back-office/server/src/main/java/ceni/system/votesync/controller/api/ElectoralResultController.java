@@ -6,12 +6,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.Gson;
 
 import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
+import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
+import ceni.system.votesync.service.entity.result.ElectoralResultUploadService;
 import ceni.system.votesync.service.entity.result.LegislativeResultService;
 import ceni.system.votesync.service.entity.result.LocalResultService;
 import ceni.system.votesync.service.entity.result.PresidentialResultService;
@@ -23,12 +30,24 @@ public class ElectoralResultController {
     private PresidentialResultService presidentialResultService;
     private LegislativeResultService legislativeResultService;
     private LocalResultService localResultService;
+    private ElectoralResultUploadService electoralResultUploadService;
 
     public ElectoralResultController(PresidentialResultService presidentialResultService,
-            LegislativeResultService legislativeResultService, LocalResultService localResultService) {
+            LegislativeResultService legislativeResultService, LocalResultService localResultService,
+            ElectoralResultUploadService electoralResultUploadService) {
         this.presidentialResultService = presidentialResultService;
         this.legislativeResultService = legislativeResultService;
         this.localResultService = localResultService;
+        this.electoralResultUploadService = electoralResultUploadService;
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<ApiResponse> uploadResult(@RequestParam String result,
+            @RequestPart MultipartFile[] images) {
+        Gson gson = new Gson();
+        UploadElectoralResultRequest resultObject = gson.fromJson(result, UploadElectoralResultRequest.class);
+        this.electoralResultUploadService.uploadResult(resultObject, images);
+        return ResponseEntity.badRequest().body(new ApiResponse(null, "Not implemented yet"));
     }
 
     @GetMapping("/polling-station")

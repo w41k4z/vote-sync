@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
@@ -16,7 +18,7 @@ import 'package:path/path.dart' as path;
 
 class PollingStationService extends ApiCallService {
   final String pollingStationEndpoint = Endpoints.POLLING_STATIONS;
-  final String resultEndpoint = Endpoints.POLLING_STATIONS;
+  final String resultEndpoint = Endpoints.ELECTORAL_RESULTS;
 
   Future<List<dynamic>> getNearestPollingStationAndCurrentElections() async {
     LocationService locationService = GetIt.I.get<LocationService>();
@@ -92,18 +94,19 @@ class PollingStationService extends ApiCallService {
     List<PollingStationResultImage> pollingStationResultImages,
     LocalStorageService localStorageService,
   ) async {
+    Map<String, String> candidatesJson = {};
+    for (Candidate candidate in candidates) {
+      candidatesJson[candidate.id.toString()] = candidate.votes.toString();
+    }
     FormData formData = FormData.fromMap({
-      'electionId': pollingStation.electionId,
-      'pollingStationId': pollingStation.id,
-      'nulls': pollingStation.nulls,
-      'blanks': pollingStation.blanks,
-      'registered': registered,
-      'candidates': candidates
-          .map((candidate) => {
-                'id': candidate.id,
-                'votes': candidate.votes,
-              })
-          .toList(),
+      'result': jsonEncode({
+        'electionId': pollingStation.electionId.toString(),
+        'pollingStationId': pollingStation.id.toString(),
+        'nulls': pollingStation.nulls.toString(),
+        'blanks': pollingStation.blanks.toString(),
+        'registered': registered.toString(),
+        'candidates': candidatesJson,
+      }),
       'images': [
         for (PollingStationResultImage image in pollingStationResultImages)
           await MultipartFile.fromFile(

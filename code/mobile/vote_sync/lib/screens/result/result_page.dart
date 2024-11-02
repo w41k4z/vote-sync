@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -181,6 +182,7 @@ class _ResultPageState extends State<ResultPage> {
           );
       setState(() {});
     } on DioException catch (e) {
+      log(e.toString());
       if (!mounted) return;
       progressDialog.close();
       if (e.type == DioExceptionType.connectionError) {
@@ -195,6 +197,8 @@ class _ResultPageState extends State<ResultPage> {
         );
       }
     } catch (e) {
+      log(e.toString());
+      progressDialog.close();
       if (mounted) SnackBarError.show(context: context, message: e.toString());
     }
   }
