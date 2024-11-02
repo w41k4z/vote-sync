@@ -16,6 +16,7 @@ import { UsersComponent } from './views/users/users.component';
 import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
 import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
+import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,14 @@ const routes: Routes = [
         path: 'elections/result/municipal/:electionId',
         component: MunicipalResultComponent,
         data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
+      },
+      {
+        path: 'result-validations',
+        component: ResultValidationsComponent,
+        data: {
+          requiredPrivileges: [Privileges.ADMIN, Privileges.OPERATOR],
+          title: 'Validation',
+        },
       },
     ],
   },

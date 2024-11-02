@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.service.entity.result.ElectoralResultUploadService;
 import ceni.system.votesync.service.entity.result.LegislativeResultService;
 import ceni.system.votesync.service.entity.result.LocalResultService;
+import ceni.system.votesync.service.entity.result.PendingElectoralResultService;
 import ceni.system.votesync.service.entity.result.PresidentialResultService;
 
 @RequestMapping("/api/elections/results")
@@ -31,14 +33,17 @@ public class ElectoralResultController {
     private LegislativeResultService legislativeResultService;
     private LocalResultService localResultService;
     private ElectoralResultUploadService electoralResultUploadService;
+    private PendingElectoralResultService pendingElectoralResultService;
 
     public ElectoralResultController(PresidentialResultService presidentialResultService,
             LegislativeResultService legislativeResultService, LocalResultService localResultService,
-            ElectoralResultUploadService electoralResultUploadService) {
+            ElectoralResultUploadService electoralResultUploadService,
+            PendingElectoralResultService pendingElectoralResultService) {
         this.presidentialResultService = presidentialResultService;
         this.legislativeResultService = legislativeResultService;
         this.localResultService = localResultService;
         this.electoralResultUploadService = electoralResultUploadService;
+        this.pendingElectoralResultService = pendingElectoralResultService;
     }
 
     @PostMapping("/upload")
@@ -47,6 +52,20 @@ public class ElectoralResultController {
         Gson gson = new Gson();
         UploadElectoralResultRequest resultObject = gson.fromJson(result, UploadElectoralResultRequest.class);
         this.electoralResultUploadService.uploadResult(resultObject, images);
+        return ResponseEntity.badRequest().body(new ApiResponse(null, "Not implemented yet"));
+    }
+
+    @GetMapping("/pending/{electionId}")
+    public ResponseEntity<ApiResponse> pendingResults(@PathVariable Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("electoralResults",
+                this.pendingElectoralResultService.getPendingElectoralResults(electionId, pageable));
+        return ResponseEntity.ok(new ApiResponse(data, null));
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<ApiResponse> validateResult() {
         return ResponseEntity.badRequest().body(new ApiResponse(null, "Not implemented yet"));
     }
 

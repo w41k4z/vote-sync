@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.exception.InvalidElectoralResultException;
 import ceni.system.votesync.model.entity.election.result.Result;
-import ceni.system.votesync.model.entity.election.result.ResultDetails;
+import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.model.entity.election.result.ResultImage;
 import ceni.system.votesync.repository.entity.result.ElectoralResultDetailsUploadRepository;
 import ceni.system.votesync.repository.entity.result.ElectoralResultImageUploadRepository;
@@ -41,7 +41,7 @@ public class ElectoralResultUploadService {
         this.checkResultValidity(request);
         Result result = Result.fromUploadElectoralResultRequest(request);
         this.electoralResultUploadRepository.save(result);
-        List<ResultDetails> details = ResultDetails.fromUploadElectoralResultRequestAndResultId(request,
+        List<ImportedResultDetails> details = ImportedResultDetails.fromUploadElectoralResultRequestAndResultId(request,
                 result.getId());
         this.electoralResultDetailsUploadRepository.saveAll(details);
         for (MultipartFile image : images) {

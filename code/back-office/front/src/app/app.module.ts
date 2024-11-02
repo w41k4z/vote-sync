@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { CarouselModule } from 'primeng/carousel';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 import { AppComponent } from './app.component';
 import { LogInComponent } from './views/log-in/log-in.component';
@@ -35,6 +38,7 @@ import { ElectionDialogComponent } from './views/elections/election-dialog/elect
 import { FormatPublicUrlPipe } from './pipes/format-public-url/format-public-url.pipe';
 import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
 import { MunicipalResultFilterComponent } from './views/elections/municipal-result/municipal-result-filter/municipal-result-filter.component';
+import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +68,7 @@ import { MunicipalResultFilterComponent } from './views/elections/municipal-resu
     FormatPublicUrlPipe,
     MunicipalResultComponent,
     MunicipalResultFilterComponent,
+    ResultValidationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +79,9 @@ import { MunicipalResultFilterComponent } from './views/elections/municipal-resu
     MatDialogActions,
     MatInputModule,
     LeafletModule,
+    CarouselModule,
+    DialogModule,
+    ButtonModule,
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),

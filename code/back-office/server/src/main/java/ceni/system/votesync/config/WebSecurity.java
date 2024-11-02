@@ -57,9 +57,12 @@ public class WebSecurity {
                                 .requestMatchers("/error/**", "/public/**",
                                                 "/test/**", "/auth/**", "/api/polling-stations/nearest")
                                 .permitAll()
-                                // PollingStationManager endpoints
+                                // PollingStation Manager endpoints
                                 .requestMatchers("/api/polling-stations/data/**", "/api/elections/results/upload")
                                 .hasAnyAuthority(Authority.MANAGER, Authority.ADMIN)
+                                // Operator endpoints
+                                .requestMatchers("/api/elections/results/pending/**", "/api/elections/results/validate")
+                                .hasAnyAuthority(Authority.OPERATOR, Authority.ADMIN)
                                 // Admin endpoints
                                 .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**",
                                                 "/api/election-types/**")

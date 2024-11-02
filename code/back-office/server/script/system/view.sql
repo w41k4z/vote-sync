@@ -75,3 +75,21 @@ ORDER BY
     cv.nom,
     bv.code
 ;
+
+CREATE OR REPLACE VIEW resultats_en_attente AS
+SELECT
+    rs.id,
+    rs.id_election,
+    rs.id_bv,
+    bv.nom AS nom_bv,
+    u.identifiant AS identifiant_operateur_validateur,
+    rs.inscrits,
+    rs.blancs,
+    rs.nuls
+FROM resultats rs
+JOIN bv
+    ON rs.id_bv = bv.id
+JOIN utilisateurs u
+    ON bv.id_operateur_validateur = u.id
+WHERE rs.etat = 0
+;

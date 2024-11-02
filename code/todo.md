@@ -1,3 +1,5 @@
+- Find a way to export the political entity in the "details_resultats" table
+- Page to choose election first before validation page
 - Add alert checking for temporal pattern after voters registration
 - Type of anomaly:
 	- missing voters registrations and existence of result
