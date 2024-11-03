@@ -1,6 +1,7 @@
-- Join current election with the "resultats_en_attente"
-- Find a way to export the political entity in the "details_resultats" table
-- Page to choose election first before validation page
+- Stat
+	- avg voters vs avg registered
+	- abstention rate (100% - avg participation rate)
+	- cover rate (mobile app usage vs imported data)
 - Add alert checking for temporal pattern after voters registration
 - Type of anomaly:
 	- missing voters registrations and existence of result

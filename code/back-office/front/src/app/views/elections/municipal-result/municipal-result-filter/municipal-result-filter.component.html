@@ -1,4 +1,56 @@
-<header class="p-3">
+<header class="px-3 py-1">
+    <section class="filter mb-5 d-flex justify-content-center">
+        <table classe="table table-borderless table-responsive">
+            <thead>
+                <tr>
+                    <th class="col">Région</th>
+                    <th class="col">District</th>
+                    <th class="col">Commune</th>
+                    <th class="col">Fokontany</th>
+                    <th class="col"></th>
+                    <th class="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="form-select" id="region">
+                            <option value="*">Toutes les régions</option>
+                            <option>Analamanga</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="district">
+                            <option value="*">Tous les districts</option>
+                            <option>Antananarivo I</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="commune">
+                            <option value="*">Toutes les communes</option>
+                            <option>Antananarivo Avaradrano</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="fokontany">
+                            <option value="*">Tous les fokontany</option>
+                            <option>Anosipatrana</option>
+                        </select>
+                    </td>
+                    <td class="px-1">
+                        <button class="btn btn-outline-primary d-flex gap-2 align-items-center">
+                            <span>Filtrer</span>
+                            <i class="bi bi-filter" style="font-size: medium;"></i>
+                        </button>
+                    </td>
+                    <td class="px-1">
+                        <button class="btn btn-outline-primary d-flex gap-2 align-items-center">
+                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf" style="font-size: medium;"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
     <section class="d-flex justify-content-between">
         <div>
             <h5 class="text-primary">Région:
