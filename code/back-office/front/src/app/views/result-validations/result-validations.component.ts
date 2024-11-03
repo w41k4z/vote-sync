@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { PeendingElectoralResult } from '../../dto/pending-electoral-result';
+import { Observable } from 'rxjs';
 import { PendingElectoralResultService } from '../../services/api/election/election-result/pending-electoral-result.service';
 import { Page } from '../../dto/response/page';
+import { Router } from '@angular/router';
+import { Paths } from '../../paths';
 
 @Component({
   selector: 'app-result-validations',
@@ -9,22 +12,26 @@ import { Page } from '../../dto/response/page';
   styleUrl: './result-validations.component.scss',
 })
 export class ResultValidationsComponent {
+  loading$: Observable<Boolean>;
+  error$: Observable<string | null>;
+  message$: Observable<string | null>;
   pendingElectoralResults: PeendingElectoralResult[] = [];
   page: Page | null = null;
-
-  displayImageDialog: boolean = false;
-  selectedImage: any;
+  pageSize = 5;
 
   constructor(
+    private router: Router,
     private pendingElectoralResultService: PendingElectoralResultService
   ) {
+    this.loading$ = pendingElectoralResultService.loading$;
+    this.error$ = pendingElectoralResultService.error$;
+    this.message$ = pendingElectoralResultService.message$;
     this.filter();
   }
 
   filter(page: number = 0) {
-    let electionId = '1';
     this.pendingElectoralResultService
-      .getPendingElectoralResults(page, 1, electionId)
+      .getPendingElectoralResults(page, this.pageSize)
       .then((payload) => {
         if (payload) {
           this.pendingElectoralResults = payload.electoralResults.content;
@@ -49,8 +56,9 @@ export class ResultValidationsComponent {
     }
   };
 
-  showImage(image: { imagePath: string }) {
-    this.selectedImage = image;
-    this.displayImageDialog = true;
+  viewResult(pendingElectoralResult: PeendingElectoralResult) {
+    this.router.navigate([`${Paths.RESULT_VALIDATIONS}/form`], {
+      state: { pendingElectoralResult },
+    });
   }
 }

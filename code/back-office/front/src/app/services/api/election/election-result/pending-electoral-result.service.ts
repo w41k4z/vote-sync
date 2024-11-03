@@ -12,15 +12,11 @@ export class PendingElectoralResultService extends ApiCallService {
     super(httpClient);
   }
 
-  async getPendingElectoralResults(
-    page: number,
-    size: number,
-    electionId: string
-  ) {
+  async getPendingElectoralResults(page: number, size: number) {
     let param = `?page=${page}&size=${size}`;
     return (
       await this.getCall<PeendingElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/pending/${electionId}${param}`
+        `${Endpoints.ELECTION_RESULTS}/pending${param}`
       )
     ).payload;
   }

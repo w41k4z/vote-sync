@@ -17,6 +17,7 @@ import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
 import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
+import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
 
 const routes: Routes = [
   {
@@ -89,7 +90,15 @@ const routes: Routes = [
         component: ResultValidationsComponent,
         data: {
           requiredPrivileges: [Privileges.ADMIN, Privileges.OPERATOR],
-          title: 'Validation',
+          title: 'Résultat en attente',
+        },
+      },
+      {
+        path: 'result-validations/form',
+        component: ResultValidationFormComponent,
+        data: {
+          requiredPrivileges: [Privileges.ADMIN, Privileges.OPERATOR],
+          title: 'Formulaire de validation',
         },
       },
     ],

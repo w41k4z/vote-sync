@@ -52,13 +52,13 @@ export const menuItems = [
   },
   {
     title: 'Résultat',
-    permitted: [Privileges.ADMIN, Privileges.OPERATOR],
+    permitted: [Privileges.OPERATOR],
     children: [
       {
         path: Paths.RESULT_VALIDATIONS,
         icon: 'bi bi-file-earmark-break',
         title: 'Validation',
-        permitted: [Privileges.ADMIN, Privileges.OPERATOR],
+        permitted: [Privileges.OPERATOR],
       },
     ],
   },

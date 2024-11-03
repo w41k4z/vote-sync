@@ -7,12 +7,8 @@ import jakarta.persistence.criteria.Predicate;
 
 public class PendingElectoralResultSpecification {
 
-    public static Specification<PendingElectoralResult> withElectionIdAndUserIdentifier(Integer electionId,
-            String userIdentifier) {
-        return (root, query, criteriaBuilder) -> {
-            Predicate electionIdPredicate = criteriaBuilder.equal(root.get("electionId"), electionId);
-            Predicate userIdentifierPredicate = criteriaBuilder.equal(root.get("operatorIdentifier"), userIdentifier);
-            return criteriaBuilder.and(electionIdPredicate, userIdentifierPredicate);
-        };
+    public static Specification<PendingElectoralResult> withUserIdentifier(String userIdentifier) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("operatorIdentifier"),
+                userIdentifier);
     }
 }

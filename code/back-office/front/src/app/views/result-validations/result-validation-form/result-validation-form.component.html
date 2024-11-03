@@ -1,0 +1,46 @@
+<section class="content card card-body">
+    <div class="row">
+        <p-carousel [value]="pendingElectoralResult.images" [numScroll]="1" [circular]="true" class="col-md-5">
+            <ng-template let-image pTemplate="item">
+                <div class="border-1 surface-border border-round image-holder" (click)="showImage(image)">
+                    <img src="{{ image.imagePath | formatPublicUrl }}" class="img img-fluid" />
+                </div>
+            </ng-template>
+        </p-carousel>
+        <div class="verification-form col-md-7">
+            <div class="result-stat card card-body">
+                <h5 class="text-center fw-bold">{{ pendingElectoralResult.pollingStation | formatName }}</h5>
+                <div class="row mt-2">
+                    <div class="mb-3 col-md-4">
+                        <label for="blank" class="form-label">Blancs</label>
+                        <input type="number" id="blank" class="form-control" [value]="pendingElectoralResult.blankVotes" />
+                    </div>
+                    <div class="mb-3 col-md-4">
+                        <label for="nulls" class="form-label">Nuls</label>
+                        <input type="number" id="nulls" class="form-control" [value]="pendingElectoralResult.nullVotes" />
+                    </div>
+                    <div class="mb-3 col-md-4">
+                        <label for="registered" class="form-label">Enregistrés</label>
+                        <input type="number" id="registered" class="form-control" [value]="pendingElectoralResult.registeredVoters" />
+                    </div>
+                </div>
+            </div>
+            <div class="result-details card card-body mt-2">
+                <h5 class="text-center fw-bold">Candidats</h5>
+                <div class="row mt-2">
+                    <div class="mb-3 col-md-4" *ngFor="let detail of pendingElectoralResult.details">
+                        <label for="votes-{{ detail.id }}" class="form-label">{{ detail.candidateInformation }}</label>
+                        <input type="number" id="votes-{{ detail.id }}" class="form-control" [value]="detail.votes" />
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-3 mb-2 fw-semi-bold" *ngIf="pendingElectoralResult.status == 0" style="font-size: large;">Valider</button>
+        </div>
+    </div>
+
+    <!-- Image view -->
+    <p-dialog [(visible)]="displayImageDialog" [modal]="true">
+        <img [src]="selectedImage?.imagePath | formatPublicUrl" class="img img-fluid"
+            style="object-fit: contain; z-index: 1000;" />
+    </p-dialog>
+</section>

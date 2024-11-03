@@ -19,10 +19,10 @@ public class PendingElectoralResultService {
         this.pendingElectoralResultRepository = pendingElectoralResultRepository;
     }
 
-    public PagedModel<PendingElectoralResult> getPendingElectoralResults(Integer electionId, Pageable page) {
+    public PagedModel<PendingElectoralResult> getPendingElectoralResults(Pageable page) {
         UserDetails activeUser = AuthService.getActiveUser();
         Specification<PendingElectoralResult> spec = PendingElectoralResultSpecification
-                .withElectionIdAndUserIdentifier(electionId, activeUser.getUsername());
+                .withUserIdentifier(activeUser.getUsername());
         return new PagedModel<>(this.pendingElectoralResultRepository.findAll(spec, page));
     }
 }

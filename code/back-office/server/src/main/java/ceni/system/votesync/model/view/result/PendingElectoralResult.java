@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.annotation.Immutable;
 
-import ceni.system.votesync.model.entity.election.result.ResultDetails;
 import ceni.system.votesync.model.entity.election.result.ResultImage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +30,9 @@ public class PendingElectoralResult {
     @Column(name = "id_election")
     private Integer electionId;
 
+    @Column(name = "nom_election")
+    private String election;
+
     @Column(name = "id_bv")
     private Integer pollingStationId;
 
@@ -51,9 +53,12 @@ public class PendingElectoralResult {
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_resultat")
-    private List<ResultDetails> details;
+    private List<VResultDetails> details;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_resultat")
     private List<ResultImage> images;
+
+    @Column(name = "etat")
+    private Integer status;
 }

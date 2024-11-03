@@ -1,0 +1,20 @@
+@import "../../../../theme.scss";
+
+.content {
+    background-color: $content-background;
+    padding: 20px 20px 0 20px;
+    border-radius: 15px;
+}
+
+.verification-form {
+    .result-stat {
+        background-color: #fff;
+    }
+
+    .result-details {
+        background-color: #fff;
+        border-radius: 20px 0 0 0;
+        max-height: 275px;
+        overflow-y: auto;
+    }
+}

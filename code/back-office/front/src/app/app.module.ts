@@ -39,6 +39,7 @@ import { FormatPublicUrlPipe } from './pipes/format-public-url/format-public-url
 import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
 import { MunicipalResultFilterComponent } from './views/elections/municipal-result/municipal-result-filter/municipal-result-filter.component';
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
+import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ResultValidationsComponent } from './views/result-validations/result-va
     MunicipalResultComponent,
     MunicipalResultFilterComponent,
     ResultValidationsComponent,
+    ResultValidationFormComponent,
   ],
   imports: [
     BrowserModule,

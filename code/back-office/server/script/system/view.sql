@@ -80,16 +80,37 @@ CREATE OR REPLACE VIEW resultats_en_attente AS
 SELECT
     rs.id,
     rs.id_election,
+    e.nom AS nom_election,
     rs.id_bv,
     bv.nom AS nom_bv,
     u.identifiant AS identifiant_operateur_validateur,
     rs.inscrits,
     rs.blancs,
-    rs.nuls
+    rs.nuls,
+    rs.etat
 FROM resultats rs
+JOIN elections e
+    ON rs.id_election = e.id
 JOIN bv
     ON rs.id_bv = bv.id
 JOIN utilisateurs u
     ON bv.id_operateur_validateur = u.id
-WHERE rs.etat = 0
+WHERE e.etat < 20 -- Pas encore validé
+;
+
+CREATE OR REPLACE VIEW v_details_resultats AS
+SELECT
+    dr.*,
+    c.id AS id_candidat,
+    c.information AS information_candidat,
+    ep.id AS id_entite_politique,
+    ep.nom AS nom_entite_politique,
+    ep.description AS description_entite_politique
+FROM details_resultats dr
+JOIN enregistrement_candidats ec
+    ON dr.id_enregistrement_candidat = ec.id
+JOIN candidats c
+    ON ec.id_candidat = c.id
+JOIN entites_politiques ep
+    ON c.id_entite_politique = ep.id
 ;

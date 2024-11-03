@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,12 +54,11 @@ public class ElectoralResultController {
         return ResponseEntity.badRequest().body(new ApiResponse(null, "Not implemented yet"));
     }
 
-    @GetMapping("/pending/{electionId}")
-    public ResponseEntity<ApiResponse> pendingResults(@PathVariable Integer electionId,
-            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+    @GetMapping("/pending")
+    public ResponseEntity<ApiResponse> pendingResults(@PageableDefault(size = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("electoralResults",
-                this.pendingElectoralResultService.getPendingElectoralResults(electionId, pageable));
+                this.pendingElectoralResultService.getPendingElectoralResults(pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
