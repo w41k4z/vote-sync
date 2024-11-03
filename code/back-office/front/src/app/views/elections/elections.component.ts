@@ -5,7 +5,7 @@ import { Paths } from '../../paths';
 import { ElectionType } from '../../dto/election-type';
 import { MatDialog } from '@angular/material/dialog';
 import { ElectionDialogComponent } from './election-dialog/election-dialog.component';
-import { ConfigureElectionRequest } from '../../dto/request/ConfigureElectionRequest';
+import { ConfigureElectionRequest } from '../../dto/request/configure-election-request';
 
 @Component({
   selector: 'app-elections',

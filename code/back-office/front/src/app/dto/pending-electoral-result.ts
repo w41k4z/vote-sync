@@ -1,4 +1,4 @@
-export class PeendingElectoralResult {
+export class PendingElectoralResult {
   id: number;
   electionId: number;
   election: string;

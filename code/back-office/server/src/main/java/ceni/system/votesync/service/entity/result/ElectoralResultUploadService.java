@@ -1,12 +1,17 @@
 package ceni.system.votesync.service.entity.result;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import ceni.system.votesync.config.Status;
+import ceni.system.votesync.dto.request.result.ElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
+import ceni.system.votesync.exception.ElectoralResultNotFoundException;
 import ceni.system.votesync.exception.InvalidElectoralResultException;
 import ceni.system.votesync.model.entity.election.result.Result;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
@@ -36,6 +41,26 @@ public class ElectoralResultUploadService {
         this.fileStorageService = fileStorageService;
     }
 
+    public Optional<Result> getResultById(Integer resultId) {
+        return this.electoralResultUploadRepository.findById(resultId);
+    }
+
+    @Transactional
+    public void updateResult(Integer resultId, Integer blankVotes, Integer nullVotes, Integer registeredVoters,
+            Map<Integer, Integer> resultDetails) {
+        Result result = this.getResultById(resultId)
+                .orElseThrow(
+                        () -> new ElectoralResultNotFoundException("Result not found. Id: " + resultId));
+        result.setBlankVotes(blankVotes);
+        result.setNullVotes(nullVotes);
+        result.setRegisteredVoters(registeredVoters);
+        result.setStatus(Status.CLOSED);
+        resultDetails.forEach((resultDetailId, votes) -> {
+            this.electoralResultDetailsUploadRepository.updateById(resultDetailId, votes);
+        });
+        this.electoralResultUploadRepository.save(result);
+    }
+
     @Transactional
     public void uploadResult(UploadElectoralResultRequest request, MultipartFile[] images) {
         this.checkResultValidity(request);
@@ -56,7 +81,7 @@ public class ElectoralResultUploadService {
         this.electoralResultDetailsUploadRepository.importElectoralResultDetails();
     }
 
-    private void checkResultValidity(UploadElectoralResultRequest request) {
+    public void checkResultValidity(ElectoralResultRequest request) {
         boolean isValid = request.isValid();
         if (!isValid) {
             throw new InvalidElectoralResultException("Invalid result. Total votes do not match registered voters");

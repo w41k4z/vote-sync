@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
+import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
 import ceni.system.votesync.service.entity.result.ElectoralResultUploadService;
 import ceni.system.votesync.service.entity.result.LegislativeResultService;
 import ceni.system.votesync.service.entity.result.LocalResultService;
@@ -51,11 +53,12 @@ public class ElectoralResultController {
         Gson gson = new Gson();
         UploadElectoralResultRequest resultObject = gson.fromJson(result, UploadElectoralResultRequest.class);
         this.electoralResultUploadService.uploadResult(resultObject, images);
-        return ResponseEntity.badRequest().body(new ApiResponse(null, "Not implemented yet"));
+        return ResponseEntity.ok(new ApiResponse(null, "Result uploaded successfully"));
     }
 
     @GetMapping("/pending")
-    public ResponseEntity<ApiResponse> pendingResults(@PageableDefault(size = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+    public ResponseEntity<ApiResponse> pendingResults(
+            @PageableDefault(size = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("electoralResults",
                 this.pendingElectoralResultService.getPendingElectoralResults(pageable));
@@ -63,8 +66,9 @@ public class ElectoralResultController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<ApiResponse> validateResult() {
-        return ResponseEntity.badRequest().body(new ApiResponse(null, "Not implemented yet"));
+    public ResponseEntity<ApiResponse> validateResult(@RequestBody ValidateElectoralResultRequest request) {
+        this.pendingElectoralResultService.validateElectoralResult(request);
+        return ResponseEntity.ok(new ApiResponse(null, "Result validated successfully"));
     }
 
     @GetMapping("/polling-station")

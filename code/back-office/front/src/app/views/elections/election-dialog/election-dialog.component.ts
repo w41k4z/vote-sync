@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ConfigureElectionRequest } from '../../../dto/request/ConfigureElectionRequest';
+import { ConfigureElectionRequest } from '../../../dto/request/configure-election-request';
 import { ElectionType } from '../../../dto/election-type';
 import { FormContainerComponent } from '../../../components/form-container/form-container.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';

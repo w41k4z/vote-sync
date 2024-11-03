@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PeendingElectoralResult } from '../../dto/pending-electoral-result';
+import { PendingElectoralResult } from '../../dto/pending-electoral-result';
 import { Observable } from 'rxjs';
 import { PendingElectoralResultService } from '../../services/api/election/election-result/pending-electoral-result.service';
 import { Page } from '../../dto/response/page';
@@ -15,7 +15,7 @@ export class ResultValidationsComponent {
   loading$: Observable<Boolean>;
   error$: Observable<string | null>;
   message$: Observable<string | null>;
-  pendingElectoralResults: PeendingElectoralResult[] = [];
+  pendingElectoralResults: PendingElectoralResult[] = [];
   page: Page | null = null;
   pageSize = 5;
 
@@ -56,7 +56,7 @@ export class ResultValidationsComponent {
     }
   };
 
-  viewResult(pendingElectoralResult: PeendingElectoralResult) {
+  viewResult(pendingElectoralResult: PendingElectoralResult) {
     this.router.navigate([`${Paths.RESULT_VALIDATIONS}/form`], {
       state: { pendingElectoralResult },
     });

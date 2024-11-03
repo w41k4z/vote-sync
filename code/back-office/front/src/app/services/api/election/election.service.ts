@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { CurrentElectionsPayload } from '../../../dto/response/election/current-elections-payload.response';
 import { Endpoints } from '../../../endpoints';
 import { Election } from '../../../dto/election';
-import { ConfigureElectionRequest } from '../../../dto/request/ConfigureElectionRequest';
+import { ConfigureElectionRequest } from '../../../dto/request/configure-election-request';
 import { SaveElectionPayload } from '../../../dto/response/election/save-election-payload.response';
 
 @Injectable({

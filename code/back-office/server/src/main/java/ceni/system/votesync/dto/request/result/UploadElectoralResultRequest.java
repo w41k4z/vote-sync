@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UploadElectoralResultRequest {
+public class UploadElectoralResultRequest implements ElectoralResultRequest {
 
     private Integer electionId;
     private Integer pollingStationId;
@@ -18,15 +18,13 @@ public class UploadElectoralResultRequest {
     private Integer registered;
     private Map<Integer, Integer> candidates;
 
-    public int getInvalidVotes() {
+    @Override
+    public Integer getInvalidVotes() {
         return this.nulls + this.blanks;
     }
 
-    public int getTotalVotes() {
+    @Override
+    public Integer getTotalVotes() {
         return this.candidates.values().stream().mapToInt(Integer::intValue).sum() + this.getInvalidVotes();
-    }
-
-    public boolean isValid() {
-        return this.getTotalVotes() == this.registered;
     }
 }

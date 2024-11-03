@@ -13,15 +13,15 @@
                 <div class="row mt-2">
                     <div class="mb-3 col-md-4">
                         <label for="blank" class="form-label">Blancs</label>
-                        <input type="number" id="blank" class="form-control" [value]="pendingElectoralResult.blankVotes" />
+                        <input type="number" id="blank" class="form-control" [(ngModel)]="pendingElectoralResult.blankVotes" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <label for="nulls" class="form-label">Nuls</label>
-                        <input type="number" id="nulls" class="form-control" [value]="pendingElectoralResult.nullVotes" />
+                        <input type="number" id="nulls" class="form-control" [(ngModel)]="pendingElectoralResult.nullVotes" />
                     </div>
                     <div class="mb-3 col-md-4">
                         <label for="registered" class="form-label">Enregistrés</label>
-                        <input type="number" id="registered" class="form-control" [value]="pendingElectoralResult.registeredVoters" />
+                        <input type="number" id="registered" class="form-control" [(ngModel)]="pendingElectoralResult.registeredVoters" />
                     </div>
                 </div>
             </div>
@@ -30,11 +30,24 @@
                 <div class="row mt-2">
                     <div class="mb-3 col-md-4" *ngFor="let detail of pendingElectoralResult.details">
                         <label for="votes-{{ detail.id }}" class="form-label">{{ detail.candidateInformation }}</label>
-                        <input type="number" id="votes-{{ detail.id }}" class="form-control" [value]="detail.votes" />
+                        <input type="number" id="votes-{{ detail.id }}" class="form-control" [(ngModel)]="detail.votes" />
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100 mt-3 mb-2 fw-semi-bold" *ngIf="pendingElectoralResult.status == 0" style="font-size: large;">Valider</button>
+            <div class="notification mt-3">
+                <div class="error-message" *ngIf="error$ | async as error">
+                    <p class="m-0">{{ error }}</p>
+                </div>
+                <div class="info-message" *ngIf="message$ | async as message">
+                    <p class="m-0">{{ message }}</p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-2 mb-2" (click)="submit()" *ngIf="pendingElectoralResult.status == 0" style="font-size: large;">
+                <span *ngIf="loading$ | async; else text" class="spinner-border text-white" role="status"></span>
+                <ng-template #text>
+                    <p class="m-0 fw-semibold">Valider</p>
+                </ng-template>
+            </button>
         </div>
     </div>
 

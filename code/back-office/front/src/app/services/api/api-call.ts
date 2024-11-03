@@ -14,11 +14,11 @@ export class ApiCallService {
   protected baseUrl = env.baseUrl;
   protected httpClient: HttpClient;
 
-  private loadingSubject = new BehaviorSubject<boolean>(false);
+  protected loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
-  private errorSubject = new BehaviorSubject<string | null>(null);
+  protected errorSubject = new BehaviorSubject<string | null>(null);
   public error$ = this.errorSubject.asObservable();
-  private messageSubject = new BehaviorSubject<string | null>(null);
+  protected messageSubject = new BehaviorSubject<string | null>(null);
   public message$ = this.messageSubject.asObservable();
 
   protected constructor(httpClient: HttpClient) {

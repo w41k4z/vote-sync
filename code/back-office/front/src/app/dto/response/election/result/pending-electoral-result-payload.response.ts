@@ -1,10 +1,10 @@
-import { PeendingElectoralResult } from '../../../pending-electoral-result';
+import { PendingElectoralResult } from '../../../pending-electoral-result';
 import { PagedModel } from '../../paged-model-payload.response';
 
-export class PeendingElectoralResultPayload {
-  electoralResults: PagedModel<PeendingElectoralResult>;
+export class PendingElectoralResultPayload {
+  electoralResults: PagedModel<PendingElectoralResult>;
 
-  constructor(electoralResults: PagedModel<PeendingElectoralResult>) {
+  constructor(electoralResults: PagedModel<PendingElectoralResult>) {
     this.electoralResults = electoralResults;
   }
 }
