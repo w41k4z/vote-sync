@@ -27,6 +27,7 @@ dependencies:
   mobile_scanner: ^6.0.2
   image_picker: ^1.1.2
   flutter_image_compress: ^2.3.0
+  flutter_native_splash: ^2.4.2
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +38,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+
+flutter_native_splash:
+  background_image: assets/images/splash.png
