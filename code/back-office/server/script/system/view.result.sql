@@ -10,6 +10,7 @@ SELECT
     c.information AS information_candidat,
     ep.id AS id_entite_politique,
     ep.nom AS nom_entite_politique,
+    ep.description AS description_entite_politique,
     dr.voix AS voix_candidat,
     ec.chemin_photo AS chemin_photo_candidat
 FROM details_resultats dr
@@ -138,6 +139,7 @@ SELECT
     rbv.information_candidat,
     rbv.id_entite_politique,
     rbv.nom_entite_politique,
+    rbv.description_entite_politique,
     SUM(rbv.voix_candidat) AS voix_candidat,
     rbv.chemin_photo_candidat
 FROM resultats_par_bv rbv
@@ -157,6 +159,7 @@ GROUP BY
     rbv.information_candidat,
     rbv.id_entite_politique,
     rbv.nom_entite_politique,
+    rbv.description_entite_politique,
     rbv.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_fokontany AS
@@ -267,6 +270,7 @@ SELECT
     rfk.information_candidat,
     rfk.id_entite_politique,
     rfk.nom_entite_politique,
+    rfk.description_entite_politique,
     SUM(rfk.voix_candidat) AS voix_candidat,
     rfk.chemin_photo_candidat
 FROM resultats_par_fokontany rfk
@@ -284,6 +288,7 @@ GROUP BY
     rfk.information_candidat,
     rfk.id_entite_politique,
     rfk.nom_entite_politique,
+    rfk.description_entite_politique,
     rfk.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_commune AS
@@ -349,6 +354,7 @@ SELECT
     rfk.information_candidat,
     rfk.id_entite_politique,
     rfk.nom_entite_politique,
+    rfk.description_entite_politique,
     SUM(rfk.voix_candidat) AS voix_candidat,
     rfk.chemin_photo_candidat
 FROM resultats_par_fokontany rfk
@@ -368,6 +374,7 @@ GROUP BY
     rfk.information_candidat,
     rfk.id_entite_politique,
     rfk.nom_entite_politique,
+    rfk.description_entite_politique,
     rfk.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_municipalite AS
@@ -435,6 +442,7 @@ SELECT
     rcm.information_candidat,
     rcm.id_entite_politique,
     rcm.nom_entite_politique,
+    rcm.description_entite_politique,
     SUM(rcm.voix_candidat) AS voix_candidat,
     rcm.chemin_photo_candidat
 FROM resultats_par_commune rcm
@@ -452,6 +460,7 @@ GROUP BY
     rcm.information_candidat,
     rcm.id_entite_politique,
     rcm.nom_entite_politique,
+    rcm.description_entite_politique,
     rcm.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_district AS
@@ -511,6 +520,7 @@ SELECT
     rds.information_candidat,
     rds.id_entite_politique,
     rds.nom_entite_politique,
+    rds.description_entite_politique,
     SUM(rds.voix_candidat) AS voix_candidat,
     rds.chemin_photo_candidat
 FROM resultats_par_district rds
@@ -528,6 +538,7 @@ GROUP BY
     rds.information_candidat,
     rds.id_entite_politique,
     rds.nom_entite_politique,
+    rds.description_entite_politique,
     rds.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_region AS
@@ -580,6 +591,7 @@ SELECT
     rrg.information_candidat,
     rrg.id_entite_politique,
     rrg.nom_entite_politique,
+    rrg.description_entite_politique,
     SUM(rrg.voix_candidat) AS voix_candidat,
     rrg.chemin_photo_candidat
 FROM resultats_par_region rrg
@@ -596,6 +608,7 @@ GROUP BY
     rrg.information_candidat,
     rrg.id_entite_politique,
     rrg.nom_entite_politique,
+    rrg.description_entite_politique,
     rrg.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_province AS
@@ -648,6 +661,7 @@ SELECT
     rpp.information_candidat,
     rpp.id_entite_politique,
     rpp.nom_entite_politique,
+    rpp.description_entite_politique,
     SUM(rpp.voix_candidat) AS voix_candidat,
     rpp.chemin_photo_candidat
 FROM resultats_par_province rpp
@@ -658,6 +672,7 @@ GROUP BY
     rpp.information_candidat,
     rpp.id_entite_politique,
     rpp.nom_entite_politique,
+    rpp.description_entite_politique,
     rpp.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_election AS
