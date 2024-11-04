@@ -1,11 +1,11 @@
-<section *ngIf="currentElections.length > 0" class="card card-body content mb-3">
+<section class="card card-body content mb-3">
     <div class="content-header d-flex justify-content-between align-items-center">
         <h5>Election en cours</h5>
         <button class="btn btn-outline-primary" (click)="openAddDialog()">
             <i class="bi bi-plus-lg"></i>
         </button>
     </div>
-    <ul class="list">
+    <ul class="list" *ngIf="currentElections.length > 0; else empty">
         <li class="item" *ngFor="let election of currentElections">
             <div class="details">
                 <span class="list-type">
@@ -17,7 +17,7 @@
                 </span>
                 <span class="list-column">
                     <i class="me-2 bi bi-calendar-plus"></i>
-                    <span>{{ election.startDate.toString() }}</span>
+                    <span>{{ election.startDate }}</span>
                 </span>
                 <span class="in-progress">
                     <span>En cours</span>
@@ -25,15 +25,22 @@
                 </span>
             </div>
             <div class="action d-flex align-items-center gap-1">
-                <button class="btn btn-outline-primary">
-                    Exporter
+                <button class="btn btn-outline-primary d-flex gap-2 align-items-center" (click)="clotureElection(election)">
+                    <p class="m-0">Cloturer</p>
+                    <span *ngIf="isCloturing;" class="spinner-border text-primary" role="status"></span>
                 </button>
-                <button class="btn btn-outline-primary" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
+                <button class="btn btn-outline-warning">
+                    Importer
+                </button>
+                <button class="btn btn-outline-info" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
                     Résultat
                 </button>
             </div>
         </li>
     </ul>
+    <ng-template #empty>
+        <p class="mb-3 text-center text-danger">Pas d'élection en cours</p>
+    </ng-template>
 </section>
 
 <section class="card card-body content">
@@ -53,19 +60,19 @@
     </div> -->
     <!-- <ng-template #content> -->
         <ul class="list">
-            <li class="item">
+            <li class="item" *ngFor="let election of electionHistory">
                 <div class="details">
                     <span class="list-type">
                         <i class="me-2 bi bi-envelope"></i>
-                        <span>Legislative</span>
+                        <span>{{ election.type.type }}</span>
                     </span>
                     <span class="list-column">
                         <i class="me-2 bi bi-calendar-plus"></i>
-                        <span>29/05/2024</span>
+                        <span>{{ election.startDate }}</span>
                     </span>
                     <span class="list-column">
                         <i class="me-2 bi bi-calendar-x"></i>
-                        <span>20/06/2024</span>
+                        <span>{{ election.endDate }}</span>
                     </span>
                     <span class="completed">
                         <span>Cloturé</span>
@@ -73,32 +80,7 @@
                     </span>
                 </div>
                 <div class="action d-flex align-items-center gap-1">
-                    <button class="btn btn-primary">
-                        Résultat provisoire
-                    </button>
-                </div>
-            </li>
-            <li class="item">
-                <div class="details">
-                    <span class="list-type">
-                        <i class="me-2 bi bi-envelope"></i>
-                        <span>Presidentielle</span>
-                    </span>
-                    <span class="list-column">
-                        <i class="me-2 bi bi-calendar-plus"></i>
-                        <span>19/12/2023</span>
-                    </span>
-                    <span class="list-column">
-                        <i class="me-2 bi bi-calendar-x"></i>
-                        <span>16/01/2024</span>
-                    </span>
-                    <span class="completed">
-                        <span>Cloturé</span>
-                        <i class="ms-1 bi bi-check2-all"></i>
-                    </span>
-                </div>
-                <div class="action d-flex align-items-center gap-1">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
                         Résultat provisoire
                     </button>
                 </div>

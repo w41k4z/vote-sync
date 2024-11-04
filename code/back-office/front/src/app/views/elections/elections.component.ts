@@ -6,6 +6,7 @@ import { ElectionType } from '../../dto/election-type';
 import { MatDialog } from '@angular/material/dialog';
 import { ElectionDialogComponent } from './election-dialog/election-dialog.component';
 import { ConfigureElectionRequest } from '../../dto/request/configure-election-request';
+import { electionData } from './static-data';
 
 @Component({
   selector: 'app-elections',
@@ -13,9 +14,10 @@ import { ConfigureElectionRequest } from '../../dto/request/configure-election-r
   styleUrl: './elections.component.scss',
 })
 export class ElectionsComponent {
+  isCloturing = false;
   electionPath = Paths.ELECTIONS;
   currentElections: Election[] = [];
-  electionHistory: Election[] = [];
+  electionHistory: Election[] = electionData;
 
   constructor(
     private electionService: ElectionService,
@@ -58,5 +60,17 @@ export class ElectionsComponent {
           this.configureElection(confifureElectionRequest);
         }
       });
+  }
+
+  clotureElection(election: Election) {
+    this.isCloturing = true;
+    setTimeout(() => {
+      this.isCloturing = false;
+      this.currentElections = this.currentElections.filter(
+        (currentElection) => currentElection.id !== election.id
+      );
+      election.endDate = new Date().toISOString().split('T')[0];
+      this.electionHistory.unshift(election);
+    }, 2000);
   }
 }
