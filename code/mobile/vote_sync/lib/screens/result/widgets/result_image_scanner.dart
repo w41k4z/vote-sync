@@ -39,7 +39,7 @@ class _ResultImageScannerState extends State<ResultImageScanner> {
       imageFile.absolute.path,
       targetPath,
       format: CompressFormat.webp,
-      quality: 70,
+      quality: 90,
       minWidth: 1200, // Resize width for A4/A3 paper (adjust as needed)
       minHeight: 1600, // Resize height for A4/A3 paper (adjust as needed)
     );

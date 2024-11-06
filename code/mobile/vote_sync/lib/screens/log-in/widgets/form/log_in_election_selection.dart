@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/dto/election_dto.dart';
 
 class LogInElectionSelectWidget extends StatelessWidget {
@@ -17,7 +16,7 @@ class LogInElectionSelectWidget extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.secondaryWhite),
+        border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownButtonFormField<String>(
@@ -25,7 +24,7 @@ class LogInElectionSelectWidget extends StatelessWidget {
           border: InputBorder.none,
           contentPadding: EdgeInsets.all(15),
           prefixIcon: Icon(Icons.calendar_today),
-          prefixIconColor: Colors.white,
+          prefixIconColor: Colors.black,
         ),
         items: elections.isEmpty
             ? const <DropdownMenuItem<String>>[
@@ -47,11 +46,11 @@ class LogInElectionSelectWidget extends StatelessWidget {
         },
         hint: const Text(
           "Election en cours",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+          style: TextStyle(color: Colors.black, fontSize: 16),
         ),
-        dropdownColor: theme.colorScheme.onSurface.withOpacity(0.9),
-        style: const TextStyle(color: Colors.white),
-        iconEnabledColor: Colors.white,
+        dropdownColor: theme.colorScheme.onPrimary,
+        style: const TextStyle(color: Colors.black),
+        iconEnabledColor: Colors.black,
       ),
     );
   }

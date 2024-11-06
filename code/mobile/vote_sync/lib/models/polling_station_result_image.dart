@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:get_it/get_it.dart';
@@ -55,6 +56,10 @@ class PollingStationResultImage {
       localStorageService.appDocDir.path,
       imagePath,
     ));
-    await imageFile.delete();
+    try {
+      await imageFile.delete();
+    } on PathNotFoundException catch (e) {
+      log(e.toString());
+    }
   }
 }

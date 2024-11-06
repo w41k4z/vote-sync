@@ -16,13 +16,10 @@ class PollingStationResultImageRepositoryService {
       electionId: electionId,
     );
     await database.transaction((tsx) async {
-      await tsx.delete(
-        "polling_station_result_images",
-        where: "polling_station_id = ? AND election_id = ?",
-        whereArgs: [
-          pollingStationId,
-          electionId,
-        ],
+      await deleteImages(
+        transaction: tsx,
+        electionId: electionId,
+        pollingStationId: pollingStationId,
       );
       for (String imagePath in imagesPath) {
         PollingStationResultImage pollingStationResultImage =

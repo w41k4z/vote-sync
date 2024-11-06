@@ -80,6 +80,8 @@ class _ResultPageState extends State<ResultPage> {
         .get<VoterRepositoryService>()
         .getVotersCountAndRegisteredCount(
           database: databaseInstance,
+          electionId: appInstance.getElectionId(),
+          pollingStationId: appInstance.getPollingStationId(),
         );
     setState(() {
       pollingStation = pollingStationResult;

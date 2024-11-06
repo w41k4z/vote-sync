@@ -111,12 +111,18 @@ class VoterRepositoryService {
 
   Future<List<int>> getVotersCountAndRegisteredCount({
     required Database database,
+    required String electionId,
+    required String pollingStationId,
   }) async {
-    String query1 = "SELECT COUNT(*) FROM VOTERS";
-    final result1 = await database.rawQuery(query1);
+    String query1 =
+        "SELECT COUNT(*) FROM VOTERS WHERE election_id = ? AND polling_station_id = ?";
+    final result1 =
+        await database.rawQuery(query1, [electionId, pollingStationId]);
     int voters = Sqflite.firstIntValue(result1) ?? 0;
-    String query2 = "SELECT COUNT(*) FROM VOTERS WHERE has_voted = 20";
-    final result2 = await database.rawQuery(query2);
+    String query2 =
+        "SELECT COUNT(*) FROM VOTERS WHERE has_voted = 20 AND election_id = ? AND polling_station_id = ?";
+    final result2 =
+        await database.rawQuery(query2, [electionId, pollingStationId]);
     int registered = Sqflite.firstIntValue(result2) ?? 0;
     return [voters, registered];
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vote_sync/config/app_colors.dart';
 
 class LogInSubmitButtonWidget extends StatelessWidget {
   final Function() onSubmit;
@@ -16,7 +17,7 @@ class LogInSubmitButtonWidget extends StatelessWidget {
         width: MediaQuery.of(context).size.width, // 100% width
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFDF1515), // Red button
+            backgroundColor: AppColors.primaryGreen, // Red button
             padding: const EdgeInsets.symmetric(vertical: 15),
           ),
           onPressed: () {

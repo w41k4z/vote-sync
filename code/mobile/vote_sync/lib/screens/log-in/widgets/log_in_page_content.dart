@@ -35,7 +35,7 @@ class LogInPageContentWidget extends StatelessWidget {
         await onRefresh();
       },
       child: Scaffold(
-        backgroundColor: AppColors.primaryGreen,
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: SizedBox(
