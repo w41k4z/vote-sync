@@ -1,0 +1,82 @@
+<li class="dropdown"><a href="#"><span>Traitement</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+           <li><a href="/saisie">Saisie</a></li>
+           <li><a href="/resultat">resultat</a></li>
+       
+          <li><a href="/marquage">Exploitation</a></li>
+          <li><a href="/correction">Correction</a></li>
+          <li><a href="/redressement">Anomalies</a></li>
+          <li><a href="/initialisation">ré initialisation de saisie par code BV</a></li>
+          <li><a href="/tcarence">Carence et inexploitable</a></li>
+          
+        </ul>
+      </li>
+      <li class="dropdown"><a href="#"><span>Situation des saisies</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+          
+          <li><a href="/remontee">Remontée par BV</a></li>
+          <li><a href="/restant"> BV Restant</a></li>
+       
+          <li><a href="/suivi">Suivi de BV par District </a></li>    
+          <li><a href="/listeanomalie">Suivi des anomalies par BV par district</a></li>
+       
+       
+          <li><a href="/carinex">Suivi des carence et inexploitable</a></li>
+       
+          
+        </ul>
+      </li>
+      <!--li class="dropdown"><a href="#"><span>Imprimés SRMV</span> <i class="bi bi-chevron-down"></i></a>
+      <ul>
+ 
+<li><a href="/listsrmv">Liste des membres</a></li>
+        <li><a href="/addSRMV">Saisie des membres</a></li>
+        <li><a href="/cloture">Cloture des travaux</a></li>
+        <li><a href="/bordereau">Bordereau récapitulatif </a></li>
+        <li><a href="/carence">PV de carence </a></li>
+        <li><a href="/vide">PV de base vide </a></li>
+   
+      </ul>
+      </li-->
+      <li class="dropdown"><a href="#"><span>Compilations</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+        
+          <li><a href="/etat_bvcompil">Compilation par   BV</a></li>
+          <li><a href="/listebvcompile">Compilation de BV/Commune</a></li>
+          <li><a href="/compilcom">Compilation par Commune</a></li>
+            <li><a href="/compildist">Compilation de Commune/District</a></li>
+            <!--li><a href="/result_par_com">Compilation par liste commune</a></li-->
+        </ul>
+        </li>
+
+
+        
+      </ul>
+      </li>
+       
+        {% elif request.user.role  != '1' %}
+        <li class="dropdown"><a href="#"><span>Traitement</span> <i class="bi bi-chevron-down"></i></a>
+          <ul>
+           
+            <li><a href="/saisie">Saisie</a></li>
+         
+            <li><a href="/correction">Correction</a></li>
+            <li><a href="/redressement">Anomalies</a></li>
+        
+  
+            
+          </ul>
+        </li>
+        <li class="dropdown"><a href="#"><span>Situation des saisies</span> <i class="bi bi-chevron-down"></i></a>
+          <ul>
+            
+         
+  <li><a href="/etat_bv">Imprime par BV</a></li>
+          </ul>
+        </li>
+        {%endif%}
+     
+          
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->

@@ -58,10 +58,9 @@ BEGIN
 
     migrate_polling_station_results(election_id);
     migrate_fokontany_results(election_id);
+    migrate_communal_results(election_id);
     IF type_election = 'Locale' THEN
         migrate_municipal_results(election_id);
-    ELSE
-        migrate_communal_results(election_id);
     END IF;
     migrate_district_results(election_id);
     migrate_regional_results(election_id);
