@@ -16,9 +16,9 @@ import ceni.system.votesync.exception.InvalidElectoralResultException;
 import ceni.system.votesync.model.entity.election.result.Result;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.model.entity.election.result.ResultImage;
-import ceni.system.votesync.repository.entity.result.ElectoralResultDetailsUploadRepository;
-import ceni.system.votesync.repository.entity.result.ElectoralResultImageUploadRepository;
-import ceni.system.votesync.repository.entity.result.ElectoralResultUploadRepository;
+import ceni.system.votesync.repository.entity.election.result.ElectoralResultDetailsUploadRepository;
+import ceni.system.votesync.repository.entity.election.result.ElectoralResultImageUploadRepository;
+import ceni.system.votesync.repository.entity.election.result.ElectoralResultUploadRepository;
 import ceni.system.votesync.service.FileStorageService;
 
 @Service

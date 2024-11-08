@@ -2,8 +2,7 @@ package ceni.system.votesync.service.entity.result;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import ceni.system.votesync.model.view.result.PendingElectoralResult;
-import jakarta.persistence.criteria.Predicate;
+import ceni.system.votesync.model.view.election.result.PendingElectoralResult;
 
 public class PendingElectoralResultSpecification {
 

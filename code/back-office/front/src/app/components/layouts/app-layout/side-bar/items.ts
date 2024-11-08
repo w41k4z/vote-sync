@@ -34,13 +34,13 @@ export const menuItems = [
   },
   {
     title: 'Parametrage',
-    permitted: [Privileges.ADMIN],
+    permitted: [Privileges.ADMIN, Privileges.CCID],
     children: [
       {
         path: Paths.ELECTIONS,
         icon: 'bi bi-archive',
         title: 'Elections',
-        permitted: [Privileges.ADMIN],
+        permitted: [Privileges.ADMIN, Privileges.CCID],
       },
       {
         path: Paths.POLLING_STATIONS,

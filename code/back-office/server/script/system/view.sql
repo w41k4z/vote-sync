@@ -114,3 +114,25 @@ JOIN candidats c
 JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
 ;
+
+CREATE OR REPLACE VIEW elections_resultats_bv_info AS
+SELECT
+    e.id,
+    COUNT(rs.id_bv) AS nombre_bv,
+    (SELECT COUNT(id) FROM bv) AS nombre_total_bv
+FROM elections e
+JOIN resultats rs
+    ON e.id = rs.id_election
+    AND rs.etat >= 20
+GROUP BY e.id
+;
+
+CREATE OR REPLACE VIEW v_elections AS
+SELECT
+    e.*,
+    ersbvi.nombre_bv,
+    ersbvi.nombre_total_bv
+FROM elections e
+JOIN elections_resultats_bv_info ersbvi
+    ON e.id = ersbvi.id
+;

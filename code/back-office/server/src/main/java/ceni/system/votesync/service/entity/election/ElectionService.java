@@ -12,21 +12,26 @@ import org.springframework.stereotype.Service;
 import ceni.system.votesync.config.Status;
 import ceni.system.votesync.dto.request.election.ConfigureElectionRequest;
 import ceni.system.votesync.dto.request.election.UpdateElectionRequest;
-import ceni.system.votesync.repository.entity.ElectionRepository;
 import ceni.system.votesync.exception.ElectionNotFoundException;
 import ceni.system.votesync.exception.ElectionTypeNotFoundException;
 import ceni.system.votesync.exception.ImpossibleOperationException;
 import ceni.system.votesync.model.entity.election.Election;
 import ceni.system.votesync.model.entity.election.ElectionType;
+import ceni.system.votesync.model.view.election.VElection;
+import ceni.system.votesync.repository.entity.election.ElectionRepository;
+import ceni.system.votesync.repository.view.election.VElectionRepository;
 
 @Service
 public class ElectionService {
 
     private ElectionRepository repository;
+    private VElectionRepository vrepository;
     private ElectionTypeService electionTypeService;
 
-    public ElectionService(ElectionRepository repository, ElectionTypeService electionTypeService) {
+    public ElectionService(ElectionRepository repository,
+            VElectionRepository vrepository, ElectionTypeService electionTypeService) {
         this.repository = repository;
+        this.vrepository = vrepository;
         this.electionTypeService = electionTypeService;
     }
 
@@ -74,9 +79,9 @@ public class ElectionService {
         return this.repository.findById(electionId);
     }
 
-    public List<Election> getCurrentElections() {
-        Specification<Election> spec = ElectionSpecification.currentElection();
-        return this.repository.findAll(spec);
+    public List<VElection> getCurrentElections() {
+        Specification<VElection> spec = ElectionSpecification.currentElection();
+        return this.vrepository.findAll(spec);
     }
 
     public PagedModel<Election> getElectionsHistory(Pageable pageable) {

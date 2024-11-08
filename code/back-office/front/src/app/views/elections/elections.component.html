@@ -1,95 +1,13 @@
-<section class="card card-body content mb-3">
-    <div class="content-header d-flex justify-content-between align-items-center">
-        <h5>Election en cours</h5>
-        <button class="btn btn-outline-primary" (click)="openAddDialog()">
-            <i class="bi bi-plus-lg"></i>
-        </button>
-    </div>
-    <ul class="list" *ngIf="currentElections.length > 0; else empty">
-        <li class="item" *ngFor="let election of currentElections">
-            <div class="details">
-                <span class="list-type">
-                    <i class="me-2 bi bi-envelope"></i>
-                    <span>{{ election.type.type }}</span>
-                </span>
-                <span class="list-column">
-                    <span><b>{{ election.name }}</b></span>
-                </span>
-                <span class="list-column">
-                    <i class="me-2 bi bi-calendar-plus"></i>
-                    <span>{{ election.startDate }}</span>
-                </span>
-                <span class="in-progress">
-                    <span>En cours</span>
-                    <i class="ms-1 bi bi-arrow-repeat"></i>
-                </span>
-            </div>
-            <div class="action d-flex align-items-center gap-1">
-                <button class="btn btn-outline-primary d-flex gap-2 align-items-center" (click)="clotureElection(election)">
-                    <p class="m-0">Cloturer</p>
-                    <span *ngIf="isCloturing;" class="spinner-border text-primary" role="status"></span>
-                </button>
-                <button class="btn btn-outline-warning">
-                    Importer
-                </button>
-                <button class="btn btn-outline-info" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
-                    Résultat
-                </button>
-            </div>
-        </li>
-    </ul>
-    <ng-template #empty>
-        <p class="mb-3 text-center text-danger">Pas d'élection en cours</p>
-    </ng-template>
-</section>
+<app-current-election-list
+    [currentElections]="currentElections"
+    [openAddDialog]="openAddDialog"
+    [onClotureElection]="clotureElection"
+    [routePathByElectionType]="routePathByElectionType"
+>
+</app-current-election-list>
 
-<section class="card card-body content">
-    <div class="content-header">
-        <h5>Archive des élections</h5>
-    </div>
-    <!-- <div class="notification">
-        <div class="error-message" *ngIf="error$ | async as error">
-            <p class="m-0">{{ error }}</p>
-        </div>
-        <div class="info-message" *ngIf="message$ | async as message">
-            <p class="m-0">{{ message }}</p>
-        </div>
-    </div>
-    <div *ngIf="loading$ | async; else content" class="w-100 my-5 d-flex justify-content-center">
-        <div class="spinner-border text-primary" role="status"></div>
-    </div> -->
-    <!-- <ng-template #content> -->
-        <ul class="list">
-            <li class="item" *ngFor="let election of electionHistory">
-                <div class="details">
-                    <span class="list-type">
-                        <i class="me-2 bi bi-envelope"></i>
-                        <span>{{ election.type.type }}</span>
-                    </span>
-                    <span class="list-column">
-                        <i class="me-2 bi bi-calendar-plus"></i>
-                        <span>{{ election.startDate }}</span>
-                    </span>
-                    <span class="list-column">
-                        <i class="me-2 bi bi-calendar-x"></i>
-                        <span>{{ election.endDate }}</span>
-                    </span>
-                    <span class="completed">
-                        <span>Cloturé</span>
-                        <i class="ms-1 bi bi-check2-all"></i>
-                    </span>
-                </div>
-                <div class="action d-flex align-items-center gap-1">
-                    <button class="btn btn-primary" [routerLink]="[getRoutePathByElectionType(election.type), election.id]">
-                        Résultat provisoire
-                    </button>
-                </div>
-            </li>
-        </ul>
-        <footer class="mt-3 mb-2 d-flex gap-3 justify-content-center align-items-center">
-            <i class="bi bi-arrow-left-circle" ></i>
-            <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">1</span></b> sur 1</p>
-            <i class="bi bi-arrow-right-circle" ></i>
-        </footer>
-    <!-- </ng-template> -->
-</section>
+<app-archive-election-list
+    [electionHistory]="electionHistory"
+    [routePathByElectionType]="routePathByElectionType"
+>    
+</app-archive-election-list>

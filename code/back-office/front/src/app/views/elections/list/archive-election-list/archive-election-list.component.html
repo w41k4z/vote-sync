@@ -1,0 +1,37 @@
+<section class="card card-body content">
+    <div class="content-header">
+        <h5>Archive des élections</h5>
+    </div>
+    <ul class="list">
+        <li class="item" *ngFor="let election of electionHistory">
+            <div class="details">
+                <span class="list-type">
+                    <i class="me-2 bi bi-envelope"></i>
+                    <span>{{ election.name }}</span>
+                </span>
+                <span class="list-column">
+                    <i class="me-2 bi bi-calendar-plus"></i>
+                    <span>{{ election.startDate }}</span>
+                </span>
+                <span class="list-column">
+                    <i class="me-2 bi bi-calendar-x"></i>
+                    <span>{{ election.endDate }}</span>
+                </span>
+                <span class="completed">
+                    <span>Cloturé</span>
+                    <i class="ms-1 bi bi-check2-all"></i>
+                </span>
+            </div>
+            <div class="action d-flex align-items-center gap-1">
+                <button class="btn btn-primary" [routerLink]="[routePathByElectionType(election.type), election.id]">
+                    Résultat provisoire
+                </button>
+            </div>
+        </li>
+    </ul>
+    <footer class="mt-3 mb-2 d-flex gap-3 justify-content-center align-items-center">
+        <i class="bi bi-arrow-left-circle"></i>
+        <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">1</span></b> sur 1</p>
+        <i class="bi bi-arrow-right-circle"></i>
+    </footer>
+</section>

@@ -7,16 +7,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import ceni.system.votesync.model.entity.election.Election;
-import ceni.system.votesync.model.view.result.GlobalResult;
-import ceni.system.votesync.model.view.result.ProvincialResult;
-import ceni.system.votesync.model.view.result.RegionalResult;
-import ceni.system.votesync.repository.view.result.CommunalResultRepository;
-import ceni.system.votesync.repository.view.result.DistrictResultRepository;
-import ceni.system.votesync.repository.view.result.FokontanyResultRepository;
-import ceni.system.votesync.repository.view.result.GlobalResultRepository;
-import ceni.system.votesync.repository.view.result.PollingStationResultRepository;
-import ceni.system.votesync.repository.view.result.ProvincialResultRepository;
-import ceni.system.votesync.repository.view.result.RegionalResultRepository;
+import ceni.system.votesync.model.view.election.result.GlobalResult;
+import ceni.system.votesync.model.view.election.result.ProvincialResult;
+import ceni.system.votesync.model.view.election.result.RegionalResult;
+import ceni.system.votesync.repository.view.election.result.CommunalResultRepository;
+import ceni.system.votesync.repository.view.election.result.DistrictResultRepository;
+import ceni.system.votesync.repository.view.election.result.FokontanyResultRepository;
+import ceni.system.votesync.repository.view.election.result.GlobalResultRepository;
+import ceni.system.votesync.repository.view.election.result.PollingStationResultRepository;
+import ceni.system.votesync.repository.view.election.result.ProvincialResultRepository;
+import ceni.system.votesync.repository.view.election.result.RegionalResultRepository;
 import ceni.system.votesync.service.entity.election.ElectionService;
 import ceni.system.votesync.exception.WrongElectionTypeException;
 

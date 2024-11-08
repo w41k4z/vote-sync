@@ -21,6 +21,7 @@ import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.election.ConfigureElectionRequest;
 import ceni.system.votesync.dto.request.election.UpdateElectionRequest;
 import ceni.system.votesync.model.entity.election.Election;
+import ceni.system.votesync.model.view.election.VElection;
 import ceni.system.votesync.service.entity.election.ElectionService;
 
 @RequestMapping("/api/elections")
@@ -64,7 +65,7 @@ public class ElectionController {
     @GetMapping("/current")
     public ResponseEntity<ApiResponse> getCurrentElections() {
         HashMap<String, Object> data = new HashMap<>();
-        List<Election> currentElections = this.service.getCurrentElections();
+        List<VElection> currentElections = this.service.getCurrentElections();
         String message = currentElections.isEmpty() ? "No current election" : "";
         data.put("elections", currentElections);
         return ResponseEntity.ok(new ApiResponse(data, message));

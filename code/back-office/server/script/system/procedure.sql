@@ -24,6 +24,13 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE PROCEDURE delete_election (
+    election_id NUMBER
+) AS
+BEGIN
+END;
+/
+
 CREATE OR REPLACE PROCEDURE import_electoral_result_details AS
 BEGIN
     INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix) (

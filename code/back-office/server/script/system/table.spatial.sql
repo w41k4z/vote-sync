@@ -38,6 +38,7 @@ CREATE TABLE municipalites (
     code CHAR(6) UNIQUE NOT NULL,
     nom VARCHAR2(50) UNIQUE NOT NULL,
     geojson CLOB,
+    etat NUMBER NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(id_district) REFERENCES districts(id)
 );

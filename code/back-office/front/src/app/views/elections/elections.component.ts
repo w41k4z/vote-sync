@@ -30,7 +30,7 @@ export class ElectionsComponent {
     });
   }
 
-  getRoutePathByElectionType(type: ElectionType) {
+  routePathByElectionType = (type: ElectionType) => {
     switch (type.type) {
       case 'Presidentielle':
         return `${this.electionPath}/result/presidential`;
@@ -41,9 +41,9 @@ export class ElectionsComponent {
       default:
         throw new Error('Unknown election type');
     }
-  }
+  };
 
-  async configureElection(request: ConfigureElectionRequest) {
+  private async configureElection(request: ConfigureElectionRequest) {
     return this.electionService.configureElection(request).then((payload) => {
       if (payload) {
         this.currentElections.push(payload.election);
@@ -51,7 +51,7 @@ export class ElectionsComponent {
     });
   }
 
-  openAddDialog() {
+  openAddDialog = () => {
     const dialogRef = this.dialog.open(ElectionDialogComponent);
     dialogRef
       .afterClosed()
@@ -60,17 +60,13 @@ export class ElectionsComponent {
           this.configureElection(confifureElectionRequest);
         }
       });
-  }
+  };
 
-  clotureElection(election: Election) {
-    this.isCloturing = true;
-    setTimeout(() => {
-      this.isCloturing = false;
-      this.currentElections = this.currentElections.filter(
-        (currentElection) => currentElection.id !== election.id
-      );
-      election.endDate = new Date().toISOString().split('T')[0];
-      this.electionHistory.unshift(election);
-    }, 2000);
-  }
+  clotureElection = async (election: Election) => {
+    this.currentElections = this.currentElections.filter(
+      (currentElection) => currentElection.id !== election.id
+    );
+    election.endDate = new Date().toISOString().split('T')[0];
+    this.electionHistory.unshift(election);
+  };
 }

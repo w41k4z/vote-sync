@@ -1,0 +1,28 @@
+Seul un administrateur peut intéragir avec cette page
+
+- Page
+	- CRUD des utilisateurs
+		- Utilisation de "Oracle Text" capable de supporter la recherche plein texte (possibilité utilisation de mot clé)
+		- Filtre entièrement back-office pour optimiser l'application
+		- La suppression supprime directement l'utilisateur (les operations liés aux utilisateurs sont toutes dénormaliser
+dans des tables qui ne peuvent plus etre modifier)
+
+	- Statistique
+		- Permet de voir une vue global des utilisateurs
+			- aide à la décision si manque d'operateur de saisie par exemple, ou beaucoup trop...
+
+- Ajout
+	- Permet de creer un utilisateur (generalement conçu pour les administrateurs, operateurs de saisie et chef CID
+car en faible quantité)
+
+- Import 
+	- Permet d'importer les utilisateurs (generalement conçu pour les membres de bureau de vote)
+
+
+Regle de gestion d'utilisation et de gestion:
+	- Pour les membres de bureau de vote et chef CID, leur identifiants doivent être le code de bureau de vote pour
+les membres du bureau de vote, et le code district pour les chefs CID
+	- Lors de l'import de nouveau utilisateurs, l'ancien est directement remplacé (par exemple un ancien
+membre de bureau de vote avec le code 10101010, si un nouveau utilisateur est importé, il est directement supprimé,
+sachant que ses informations sont déja denormaliser/historiser)
+

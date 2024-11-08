@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
-import ceni.system.votesync.model.view.result.PendingElectoralResult;
-import ceni.system.votesync.repository.view.result.PendingElectoralResultRepository;
+import ceni.system.votesync.model.view.election.result.PendingElectoralResult;
+import ceni.system.votesync.repository.view.election.result.PendingElectoralResultRepository;
 import ceni.system.votesync.service.spec.auth.AuthService;
 
 @Service

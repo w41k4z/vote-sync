@@ -1,0 +1,52 @@
+<section class="card card-body content mb-3">
+    <div
+        class="content-header d-flex justify-content-between align-items-center">
+        <h5>Election en cours</h5>
+        <button class="btn btn-outline-primary" (click)="openAddDialog()">
+            <i class="bi bi-plus-lg"></i>
+        </button>
+    </div>
+    <ul class="list" *ngIf="currentElections.length > 0; else empty">
+        <li class="item" *ngFor="let election of currentElections">
+            <div class="details">
+                <span class="list-type">
+                    <i class="me-2 bi bi-envelope"></i>
+                    <span>{{ election.name }}</span>
+                </span>
+                <span class="list-column">
+                    <i class="me-2 bi bi-calendar-plus"></i>
+                    <span>{{ election.startDate }}</span>
+                </span>
+                <span class="list-column text-white" style="background-color: #5cb85c;">
+                    <i class="me-2 bi bi-box-seam"></i>
+                    <span><b>{{ election.pollingStationCount }}</b> / {{ election.totalPollingStationCount }}</span>
+                </span>
+                <span class="in-progress">
+                    <span>En cours</span>
+                    <i class="ms-1 bi bi-arrow-repeat"></i>
+                </span>
+                <button class="btn btn-outline-secondary">
+                    Importer
+                </button>
+                <button class="btn btn-outline-dark"
+                    [routerLink]="[routePathByElectionType(election.type), election.id]">
+                    Résultat
+                </button>
+                <button
+                    class="btn btn-outline-primary d-flex gap-2 align-items-center"
+                    (click)="clotureElection(election)">
+                    <p class="m-0">Cloturer</p>
+                    <span *ngIf="isCloturing;" class="spinner-border spinner-border-sm text-dark"
+                        role="status"></span>
+                </button>
+            </div>
+            <div class="action item-action">
+                    <i class="bi bi-pencil-square text-warning"></i>
+                    <i class="ms-3 bi bi-trash3 text-danger"></i>
+            </div>
+        </li>
+    </ul>
+    <ng-template #empty>
+        <p class="mb-3 text-center text-danger">Pas d'élection en cours</p>
+    </ng-template>
+</section>

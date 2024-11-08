@@ -1,0 +1,190 @@
+<header class="px-3 py-1">
+    <section class="filter mb-5 d-flex justify-content-center">
+        <table classe="table table-borderless table-responsive">
+            <thead>
+                <tr>
+                    <th class="col">Région</th>
+                    <th class="col">District</th>
+                    <th class="col">Commune</th>
+                    <th class="col">Fokontany</th>
+                    <th class="col"></th>
+                    <th class="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="form-select" id="region">
+                            <option value="*">Toutes les régions</option>
+                            <option>Analamanga</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="district">
+                            <option value="*">Tous les districts</option>
+                            <option>Antananarivo I</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="commune">
+                            <option value="*">Toutes les communes</option>
+                            <option>Antananarivo Avaradrano</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="fokontany">
+                            <option value="*">Tous les fokontany</option>
+                            <option>Anosipatrana</option>
+                        </select>
+                    </td>
+                    <td class="px-1">
+                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center">
+                            <span>Filtrer</span>
+                            <i class="bi bi-filter" style="font-size: medium;"></i>
+                        </button>
+                    </td>
+                    <td class="px-1">
+                        <button class="btn btn-outline-primary d-flex gap-2 align-items-center">
+                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf" style="font-size: medium;"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="row">
+        <div class="col-md-7">
+            <h5>Région:
+                <span class="text-black">
+                    {{ electoralResult.region | formatName }}
+                </span>
+            </h5>
+            <h5>District:
+                <span class="text-black">
+                    {{ electoralResult.district | formatName }}
+                </span>
+            </h5>
+            @if (currentResult == 0) {
+                <h5>Commune: 
+                    <span class="text-black">
+                        {{ electoralResult.municipality | formatName }}
+                    </span>
+                </h5>
+                <h5>Fokontany: 
+                    <span class="text-black">
+                        {{ electoralResult.fokontany | formatName }}
+                    </span>
+                </h5>
+                <h5 class="mt-4">Bureau de vote: 
+                    <b class="text-black">
+                        {{ electoralResult.name | formatName }}
+                    </b>
+                </h5>
+            }
+            @else if (currentResult == 1) {
+                <h5>Commune:
+                    <span class="text-black">
+                        {{ electoralResult.municipality | formatName }}
+                    </span>
+                </h5>
+                <h5 class="mt-4">Fokontany:
+                    <b class="text-black">
+                        {{ electoralResult.name | formatName }}
+                    </b>
+                </h5>
+            }
+            @else if (currentResult == 2) {
+                <h5 class="mt-4">Commune: 
+                    <b class="text-black">
+                        {{ electoralResult.name | formatName }}
+                    </b>
+                </h5>
+            }
+            <h5 class="text-danger mt-4">Taux de participation:
+                <b class="text-black text-end">
+                    {{ (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) * 100 /
+                    electoralResult.registeredVoters | formatNumber }}%
+                </b>
+            </h5>
+        </div>
+        <div class="col-md-5">
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h5>Inscrits:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.registeredVoters | formatNumber}}
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Blancs:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.blankVotes | formatNumber}}
+                            </b>
+                        </td>
+                        <td>
+                            <h5 class="text-danger">Soit</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{ (electoralResult.blankVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Nuls:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.nullVotes | formatNumber}}
+                            </b>
+                        </td>
+                        <td>
+                            <h5 class="text-danger">Soit</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Exprimés:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.validVotes | formatNumber}}
+                            </b>
+                        </td>
+                        <td>
+                            <h5 class="text-danger">Soit</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{ (electoralResult.validVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Total des voix:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{(electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber}}
+                            </b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</header>

@@ -1,0 +1,61 @@
+@import "../../../../../theme.scss";
+
+section {
+    border-radius: 20px;
+    background-color: $content-background;
+}
+
+h5 {
+    margin: 0;
+}
+
+.type {
+    padding: 2px 15px;
+    background-color: transparent;
+    border: 1px solid grey;
+    border-radius: 5px;
+    transition: all 0.1s ease;
+    border: 1px solid $primary;
+}
+
+.type:hover {
+    background-color: $primary;
+    color: white;
+    cursor: pointer;
+}
+
+.active {
+    background-color: $primary;
+    color: white !important;
+    font-weight: normal;
+}
+
+.active:hover {
+    background-color: $primary;
+    color: white !important;
+    font-weight: normal;
+}
+
+header {
+    table {
+        width: fit-content;
+    }
+}
+
+.container-fluid {
+    .table-header {
+        font-weight: 500;
+        font-size: larger;
+        background-color: $primary;
+        color: #FFFFFF;
+
+        div {
+            border-right: 1px solid #FFFFFF;
+            padding: 5px;
+        }
+    }
+
+    .table-content:hover {
+        background-color: $neutral-background;
+    }
+}

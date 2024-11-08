@@ -1,8 +1,14 @@
 -- Election locale 05 Novembre 2024
 insert into elections (id, id_type_election, nom, date_debut, etat)
 values (1, 3, 'Election municipale 2024', TO_DATE('2024-11-05', 'YYYY-MM-DD'), 0);
-insert into elections (id, id_type_election, nom, date_debut, etat)
-values (2, 3, 'Election communale 2024', TO_DATE('2024-11-05', 'YYYY-MM-DD'), 0);
+
+-- Election législative 29 Mai 2024
+insert into elections (id, id_type_election, nom, date_debut, date_fin, etat)
+values (2, 2, 'Election legislative 2024', TO_DATE('2024-05-29', 'YYYY-MM-DD'), TO_DATE('2024-06-12', 'YYYY-MM-DD'), 20);
+
+-- Election présidentielle 29 Mai 2024
+insert into elections (id, id_type_election, nom, date_debut, date_fin, etat)
+values (3, 1, 'Election presidentielle 2023', TO_DATE('2023-11-16', 'YYYY-MM-DD'), TO_DATE('2023-12-15', 'YYYY-MM-DD'), 20);
 
 -- Entité politique
 INSERT INTO entites_politiques (nom, description)

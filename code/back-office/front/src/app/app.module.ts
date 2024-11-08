@@ -36,10 +36,13 @@ import { FormatNamePipe } from './pipes/format-name/format-name.pipe';
 import { UserImportDialogComponent } from './views/users/user-list/user-form-dialog/user-import-dialog/user-import-dialog.component';
 import { ElectionDialogComponent } from './views/elections/election-dialog/election-dialog.component';
 import { FormatPublicUrlPipe } from './pipes/format-public-url/format-public-url.pipe';
-import { MunicipalResultComponent } from './views/elections/municipal-result/municipal-result.component';
-import { MunicipalResultFilterComponent } from './views/elections/municipal-result/municipal-result-filter/municipal-result-filter.component';
+import { MunicipalResultComponent } from './views/elections/result/municipal-result/municipal-result.component';
+import { MunicipalResultFilterComponent } from './views/elections/result/municipal-result/municipal-result-filter/municipal-result-filter.component';
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
+import { CurrentElectionListComponent } from './views/elections/list/current-election-list/current-election-list.component';
+import { ArchiveElectionListComponent } from './views/elections/list/archive-election-list/archive-election-list.component';
+import { ElectionImportDialogComponent } from './views/elections/list/current-election-list/election-import-dialog/election-import-dialog.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +74,9 @@ import { ResultValidationFormComponent } from './views/result-validations/result
     MunicipalResultFilterComponent,
     ResultValidationsComponent,
     ResultValidationFormComponent,
+    CurrentElectionListComponent,
+    ArchiveElectionListComponent,
+    ElectionImportDialogComponent,
   ],
   imports: [
     BrowserModule,
