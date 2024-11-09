@@ -55,7 +55,10 @@ SELECT
     d.id AS id_district,
     d.nom AS nom_district,
     r.id AS id_region,
-    r.nom AS nom_region
+    r.nom AS nom_region,
+    u.nom AS nom_operateur,
+    u.prenom AS prenom_operateur,
+    u.contact AS contact_operateur
 FROM bv
 JOIN cv
     ON bv.id_cv = cv.id
@@ -67,6 +70,8 @@ JOIN districts d
     ON cm.id_district = d.id
 JOIN regions r
     ON d.id_region = r.id
+LEFT JOIN utilisateurs u
+    ON bv.id_operateur_validateur = u.id
 ORDER BY
     r.nom,
     d.nom,
@@ -115,13 +120,14 @@ JOIN entites_politiques ep
     ON c.id_entite_politique = ep.id
 ;
 
+-- expected to be used with current elections
 CREATE OR REPLACE VIEW elections_resultats_bv_info AS
 SELECT
     e.id,
-    COUNT(rs.id_bv) AS nombre_bv,
+    COALESCE(COUNT(rs.id_bv), 0) AS nombre_bv,
     (SELECT COUNT(id) FROM bv) AS nombre_total_bv
 FROM elections e
-JOIN resultats rs
+LEFT JOIN resultats rs
     ON e.id = rs.id_election
     AND rs.etat >= 20
 GROUP BY e.id

@@ -7,6 +7,8 @@ export class PollingStation {
   commune: string;
   district: string;
   region: string;
+  operatorName: string;
+  operatorFirstName: string;
 
   constructor(
     id: number,
@@ -16,7 +18,9 @@ export class PollingStation {
     fokontany: string,
     commune: string,
     district: string,
-    region: string
+    region: string,
+    operatorName: string,
+    operatorFirstName: string
   ) {
     this.id = id;
     this.pollingStationCode = pollingStationCode;
@@ -26,5 +30,7 @@ export class PollingStation {
     this.commune = commune;
     this.district = district;
     this.region = region;
+    this.operatorName = operatorName;
+    this.operatorFirstName = operatorFirstName;
   }
 }

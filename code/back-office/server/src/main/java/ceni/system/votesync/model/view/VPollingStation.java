@@ -54,9 +54,15 @@ public class VPollingStation {
     @Column(name = "nom_region")
     private String region;
 
+    @Column(name = "nom_operateur")
+    private String operatorName;
+
+    @Column(name = "prenom_operateur")
+    private String operatorFirstName;
+
     @Transient
     private Integer voters;
-    
+
     @Transient
     private Integer candidates;
 }

@@ -67,4 +67,17 @@ class PollingStationRepositoryService {
       whereArgs: [pollingStationId, electionId],
     );
   }
+
+  Future<void> deleteResults({
+    required Transaction transaction,
+    required String pollingStationId,
+    required String electionId,
+  }) async {
+    String query =
+        "UPDATE polling_stations SET synced = 0, nulls = 0, blanks = 0 WHERE id = ? AND election_id = ?";
+    await transaction.rawUpdate(
+      query,
+      [pollingStationId, electionId],
+    );
+  }
 }

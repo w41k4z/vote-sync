@@ -125,4 +125,9 @@ export class PollingStationComponent {
       }
     }
   };
+
+  async assignOperators() {
+    await this.pollingStationService.assignOperators();
+    this.filter(this.page?.number);
+  }
 }

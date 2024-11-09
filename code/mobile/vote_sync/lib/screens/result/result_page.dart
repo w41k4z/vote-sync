@@ -237,7 +237,8 @@ class _ResultPageState extends State<ResultPage> {
                     images: images,
                   ),
                 ] +
-                _columnWidgets(),
+                _columnWidgets() +
+                [SizedBox(height: isResultSynced ? Copyright.height + 5 : 0)],
           ),
         ),
       ),

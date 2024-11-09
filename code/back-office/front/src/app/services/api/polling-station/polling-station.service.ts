@@ -49,4 +49,8 @@ export class PollingStationService extends ApiCallService {
       )
     ).payload;
   }
+
+  async assignOperators() {
+    return await this.getCall<any>(`${Endpoints.USERS}/assign-operators`);
+  }
 }

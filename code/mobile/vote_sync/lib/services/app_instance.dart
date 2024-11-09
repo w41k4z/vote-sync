@@ -2,6 +2,7 @@
 
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/services/repository/candidate_repository_service.dart';
 import 'package:vote_sync/services/repository/polling_station_repository_service.dart';
 import 'package:vote_sync/services/repository/polling_station_result_image_repository_service.dart';
@@ -98,5 +99,28 @@ class AppInstance {
           electionId: _electionId!);
     });
     logout();
+  }
+
+  Future<void> deleteResults() async {
+    Database databaseInstace = GetIt.I.get<DatabaseManager>().database;
+    await databaseInstace.transaction((tsx) async {
+      await GetIt.I.get<CandidateRepositoryService>().deleteResults(
+            transaction: tsx,
+            electionId: _electionId!,
+            pollingStationId: _pollingStationId!,
+          );
+      await GetIt.I.get<PollingStationRepositoryService>().deleteResults(
+            transaction: tsx,
+            electionId: _electionId!,
+            pollingStationId: _pollingStationId!,
+          );
+      await GetIt.I
+          .get<PollingStationResultImageRepositoryService>()
+          .deleteImages(
+            transaction: tsx,
+            electionId: _electionId!,
+            pollingStationId: _pollingStationId!,
+          );
+    });
   }
 }

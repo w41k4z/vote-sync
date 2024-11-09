@@ -2,13 +2,9 @@
 
 .content {
     background-color: $content-background;
-    
-    .filter-button {
-        width: -webkit-fill-available;
-    }
 
     select {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 500;
     }
 
@@ -16,7 +12,7 @@
         overflow-x: auto;
 
         tbody {
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 500;
         }
     }

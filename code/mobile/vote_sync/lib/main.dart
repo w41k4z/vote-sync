@@ -8,7 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
-import 'package:vote_sync/screens/log-in/log_in_page.dart';
+import 'package:vote_sync/screens/log-in/widgets/with_location/log_in_page.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/set_up.dart';
 import 'package:vote_sync/widgets/loading_spinner.dart';

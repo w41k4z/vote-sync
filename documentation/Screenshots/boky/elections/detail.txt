@@ -1,0 +1,12 @@
+- Page
+	- configuration d'une élection
+	- imporation des résultats
+	- liste historique des élections
+
+- consultation résultat election
+	- exportation pdf résultat élection
+
+Regle de gestion:
+- election cloturer non modifiable ou supprimable
+- election en cours toujours modifiable: type, date, label
+- suppression d'une election, possible si pas encore de résultat ou enregistrement candidat

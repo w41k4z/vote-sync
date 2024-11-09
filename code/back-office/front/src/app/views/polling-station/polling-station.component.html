@@ -1,6 +1,10 @@
 <section class="card card-body content">
-    <header>
+    <header class="d-flex align-items-center justify-content-between">
         <h5 class="text-primary">Liste et emplacement des bureaux de vote</h5>
+        <button class="btn btn-outline-secondary d-flex align-items-center gap-2" (click)="assignOperators()">
+            <i class="bi bi-gear"></i>
+            <p class="m-0">Assigner les opérateurs</p>
+        </button>
     </header>
     <div class="notification">
         <div class="error-message" *ngIf="error$ | async as error">
@@ -44,9 +48,11 @@
                                 </select>
                             </td>
                             <td></td>
-                            <td></td>
                             <td>
-                                <button class="btn btn-outline-primary filter-button" (click)="filter()">Filtrer</button>
+                                <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center w-100 justify-content-center" (click)="filter()">
+                                    <span>Filtrer</span>
+                                    <i class="bi bi-filter" style="font-size: medium;"></i>
+                                </button>
                             </td>
                         </tr>
                     </thead>
@@ -56,9 +62,8 @@
                             <th scope="col">District</th>
                             <th scope="col">Commune</th>
                             <th scope="col">Fokontany</th>
-                            <th scope="col">Centre de vote</th>
-                            <th scope="col">Code</th>
                             <th scope="col">Bureau de vote</th>
+                            <th scope="col">Opérateur</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,9 +72,8 @@
                             <td>{{pollingStation.district | formatName}}</td>
                             <td>{{pollingStation.commune | formatName}}</td>
                             <td>{{pollingStation.fokontany | formatName}}</td>
-                            <td>{{pollingStation.votingCenter | formatName}}</td>
-                            <td>{{pollingStation.pollingStationCode}}</td>
                             <td>{{pollingStation.pollingStation | formatName}}</td>
+                            <td>{{pollingStation.operatorName + ' ' + pollingStation.operatorFirstName}}</td>
                         </tr>
                     </tbody>
                 </table>

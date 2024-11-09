@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
-import 'package:vote_sync/screens/log-in/log_in_page.dart';
+import 'package:vote_sync/screens/log-in/widgets/with_location/log_in_page.dart';
 import 'package:vote_sync/screens/result/result_page.dart';
 import 'package:vote_sync/screens/voters/recorded_voters_page.dart';
 import 'package:vote_sync/screens/voters/registered/registered_voters_page.dart';
@@ -23,6 +23,19 @@ class AppDrawer extends StatelessWidget {
       ),
       (Route<dynamic> route) => false,
     );
+  }
+
+  void _handleDeleteResults(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return _deletionWarningDialog(buildContext, () {
+            GetIt.I.get<AppInstance>().deleteResults();
+            Navigator.of(buildContext).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          });
+        });
   }
 
   @override
@@ -130,9 +143,6 @@ class AppDrawer extends StatelessWidget {
           Expanded(
             child: Container(),
           ),
-          const Divider(
-            color: Color.fromARGB(255, 219, 223, 219),
-          ),
           ListTile(
             leading: const Icon(
               Icons.logout,
@@ -140,12 +150,87 @@ class AppDrawer extends StatelessWidget {
             ),
             title: const Text('Se deconnecter'),
             trailing: const Icon(
-              Icons.directions_run_rounded,
+              Icons.arrow_forward_ios,
               color: AppColors.redDanger,
             ),
             textColor: AppColors.redDanger,
             onTap: () {
               _handleLogout(context);
+            },
+          ),
+          const Divider(
+            color: Color.fromARGB(255, 219, 223, 219),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.warning,
+              color: Color(0xFFFFC107),
+            ),
+            title: const Text('Supprimer les résultats'),
+            textColor: const Color(0xFFFFC107),
+            onTap: () {
+              _handleDeleteResults(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _deletionWarningDialog(BuildContext buildContext, Function onDelete) {
+    return PopScope(
+      canPop: false,
+      child: AlertDialog(
+        icon: const Icon(
+          Icons.warning,
+          color: AppColors.redDanger,
+          size: 45,
+        ),
+        content: const Text(
+          "Êtes-vous sûr de vouloir supprimer les résultats ? Cette action est irréversible.",
+          style: TextStyle(
+            fontSize: 17,
+            color: Colors.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: <Widget>[
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              side: const BorderSide(
+                color: Colors.black,
+              ),
+            ),
+            icon: const Icon(
+              Icons.close,
+              color: Colors.black,
+            ),
+            label: const Text(
+              'Annuler',
+              style: TextStyle(color: Colors.black),
+            ),
+            onPressed: () {
+              Navigator.of(buildContext).pop();
+            },
+          ),
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              side: const BorderSide(
+                color: AppColors.redDanger,
+              ),
+            ),
+            icon: const Icon(
+              Icons.delete,
+              color: AppColors.redDanger,
+            ),
+            label: const Text(
+              'Supprimer',
+              style: TextStyle(color: AppColors.redDanger),
+            ),
+            onPressed: () {
+              Navigator.of(buildContext).pop();
+              onDelete();
             },
           ),
         ],

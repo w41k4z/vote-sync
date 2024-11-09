@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Election } from '../../../../dto/election';
 import { ElectionType } from '../../../../dto/election-type';
+import { MatDialog } from '@angular/material/dialog';
+import { ElectionImportDialogComponent } from './election-import-dialog/election-import-dialog.component';
 
 @Component({
   selector: 'app-current-election-list',
@@ -14,6 +16,8 @@ export class CurrentElectionListComponent {
   @Input() routePathByElectionType!: (type: ElectionType) => string;
   isCloturing = false;
 
+  constructor(private dialog: MatDialog) {}
+
   clotureElection = async (election: Election) => {
     this.isCloturing = true;
     setTimeout(() => {
@@ -21,4 +25,16 @@ export class CurrentElectionListComponent {
       this.isCloturing = false;
     }, 2000);
   };
+
+  openImportDialog(election: Election) {
+    const dialogRef = this.dialog.open(ElectionImportDialogComponent, {
+      data: { election: election },
+    });
+
+    dialogRef.afterClosed().subscribe((importedResultFile) => {
+      if (importedResultFile) {
+        console.log(importedResultFile);
+      }
+    });
+  }
 }
