@@ -1,36 +1,34 @@
-<section class="row">
-    <div 
-        style="height: 400px;"
-        class="col-md-9" 
-        leaflet [leafletOptions]="options" 
-        [leafletLayersControl]="layersControl"
-        [leafletLayers]="geojsonLayers"
+<section class="board card card-content p-2 mb-1">
+    <div
+      style="height: 200px; width: 100%"
+      class="col-md-6 px-2"
+      leaflet
+      [leafletOptions]="options"
+      [leafletLayersControl]="layersControl"
+      [leafletLayers]="geojsonLayers"
     ></div>
-    <div class="election-stat mt-sm-2 mt-md-0 col-md-3 px-2 d-flex flex-column justify-content-between gap-2">
-        <div class="stat">
-            <div class="d-flex flex-row gap-4 align-items-center w-auto">
-                <i class="bi bi-envelope-check text-success"></i>
-                <p class="m-0 text-end"><b>3</b> Elections</p>
-            </div>
+</section>
+<section class="row">
+    <section class="col-md-6 p-3">
+        <div class="board card card-content">
+            <canvas
+            class="w-100"
+            baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="'line'"
+            ></canvas>
         </div>
-        <div class="stat">
-            <h5>Electeurs</h5>
-            <div class="d-flex flex-row gap-4 align-items-center w-auto">
-                <i class="bi bi-people text-info"></i>
-                <p class="m-0 text-end"><b>18 000 000</b> Inscrits</p>
-            </div>
-            <div class="d-flex flex-row gap-4 align-items-center w-auto">
-                <i class="bi bi-person-check text-primary"></i>
-                <p class="m-0 text-end"><b>8 500 000</b> Enregistrés</p>
-            </div>
+    </section>
+    <section class="col-md-6 p-3">
+        <div class="board card card-content">
+          <canvas
+            class="w-100"
+            baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="'bar'"
+          ></canvas>
         </div>
-        <div class="stat d-flex flex-row gap-4 align-items-center w-auto">
-            <i class="bi bi-envelope-check"></i>
-            <p class="m-0"><b>3</b> Elections</p>
-        </div>
-        <div class="stat d-flex flex-row gap-4 align-items-center w-auto">
-            <i class="bi bi-envelope-check"></i>
-            <p class="m-0"><b>3</b> Elections</p>
-        </div>
-    </div>
+    </section>
 </section>

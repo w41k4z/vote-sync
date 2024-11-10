@@ -18,6 +18,7 @@ import { PollingStationComponent } from './views/polling-station/polling-station
 import { MunicipalResultComponent } from './views/elections/result/municipal-result/municipal-result.component';
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
+import { AlertComponent } from './views/alert/alert.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,14 @@ const routes: Routes = [
         data: {
           requiredPrivileges: [Privileges.ADMIN],
           title: 'Tableau de bord',
+        },
+      },
+      {
+        path: 'alerts',
+        component: AlertComponent,
+        data: {
+          requiredPrivileges: Privileges.ALL,
+          title: 'Alertes',
         },
       },
       {

@@ -1,0 +1,11 @@
+La gestion des résultats est la plus importante, elle se déroule après l’enregistrement des votes
+des électeurs.
+
+- interface mobile de consultation et modification des résultats par le membre du bureau électoral du bureau de vote
+- Scan des documents de résultats: les documents à scanner comprennent un code qr, le scan commence donc par la verification
+de la validité de ce code qr au serveur centrale, apres une verification correcte, l'utilisateur peut scanner les documents
+- Validation de la cohérence des données: les resultats saisies seront verifier, le resultat ne peut etre envoyer en cas
+d'incoherence de résultat.
+- Réception des resultats envoyé par les operateurs de saisie (les OS auront une page pour voir la liste de resultat qu'ils
+doivent valider) dans la back-office
+- formulaire de validation de résultat dans la back-office par les OS (image scanné vs formulaire de saisie)

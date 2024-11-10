@@ -1,0 +1,10 @@
+Comme l'identifiant des membres de bureau de vote sont rattaché aux code de bureau de vote, nous avons mis en place
+- une fonctionnalité de localisation pour scanner les bureaux de vote aux alentours (par defaut 250m de rayon),
+donc pas besoin de saisir l'identifiant, il suffit de choisir le bureau de vote et entrer le mot de passe
+- si pas acces à la localisation, il y a qaund meme un autre interface de saisie d'identifiant et de mot de passe. (
+Ceci permet donc à l'application de rester flexible et peut toujours etre utiliser n'importe où)
+- apres authentification via l'application mobile, les données essentiels pour l'application mobile seront mise en cache
+dans le base de donnée interne de l'application, pour une indépendance en réseau durant la plupart de son utilisation.
+- consultation des électeurs inscrits dans un bureau de vote
+- filtrer et enregistrer les electeurs inscrits
+- synchronisation de la liste des électeurs enregistrés vers la base de donnée centrale

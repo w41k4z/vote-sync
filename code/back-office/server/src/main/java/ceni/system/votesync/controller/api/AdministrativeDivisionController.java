@@ -28,6 +28,13 @@ public class AdministrativeDivisionController {
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
+    @GetMapping("/regions/stats")
+    public ResponseEntity<ApiResponse> getRegionsStat() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions", this.service.getRegions());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
     @GetMapping("/districts")
     public ResponseEntity<ApiResponse> getDistricts() {
         HashMap<String, Object> payload = new HashMap<>();

@@ -8,7 +8,7 @@ import {
   geoJSON,
 } from 'leaflet';
 import { AdministrativeDivisionService } from '../../services/api/administrative-division/administrative-division.service';
-
+import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -19,8 +19,9 @@ export class DashboardComponent {
 
   constructor(private service: AdministrativeDivisionService) {
     this.service.getRegionsStat().then((payload) => {
+      console.log(payload);
       if (payload) {
-        for (let region of payload.administrativeDivisionStats) {
+        for (let region of payload.administrativeDivisions) {
           const geojson = JSON.parse(region.geojson);
           this.geojsonLayers.push(
             geoJSON(geojson, {
@@ -35,16 +36,16 @@ export class DashboardComponent {
                 popupHtml += '</thead>';
                 popupHtml += '<tbody>';
                 popupHtml += '<tr>';
-                popupHtml += '<td>Districts</td>';
-                popupHtml += '<td class="text-end">10</td>';
+                popupHtml += '<td>Abstention</td>';
+                popupHtml += '<td class="text-end text-danger">10%</td>';
                 popupHtml += '</tr>';
                 popupHtml += '<tr>';
-                popupHtml += '<td>Communes</td>';
-                popupHtml += '<td class="text-end">1000</td>';
+                popupHtml += '<td>Couverture</td>';
+                popupHtml += '<td class="text-end">40%</td>';
                 popupHtml += '</tr>';
                 popupHtml += '<tr>';
-                popupHtml += '<td>Fokontany</td>';
-                popupHtml += '<td class="text-end">10000</td>';
+                popupHtml += '<td>Alertes</td>';
+                popupHtml += '<td class="text-end">2</td>';
                 popupHtml += '</tr>';
                 popupHtml += '</tbody>';
                 popupHtml += '</table>';
@@ -89,5 +90,41 @@ export class DashboardComponent {
         [46.8, -121.7],
       ]),
     },
+  };
+
+  public lineChartData: ChartConfiguration<'line'>['data'] = {
+    labels: ['Presidentielle 2023', 'Legisltative 2024', 'Municipale 2024'],
+    datasets: [
+      {
+        data: [35, 20, 40],
+        label: 'Inscrits',
+        fill: true,
+        tension: 0.5,
+        borderColor: 'black',
+        backgroundColor: 'rgba(255,0,0,0.3)',
+      },
+      {
+        data: [30, 19, 32],
+        label: 'Enregistrés',
+        fill: true,
+        tension: 0.5,
+        borderColor: 'black',
+        backgroundColor: 'rgba(255,255,0,0.3)',
+      },
+    ],
+  };
+  public lineChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+  };
+
+  public barChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: ['Presidentielle 2023', 'Legisltative 2024', 'Municipale 2024'],
+    datasets: [
+      { data: [20, 10, 25], label: 'Homme' },
+      { data: [10, 9, 15], label: 'Femme' },
+    ],
+  };
+  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: false,
   };
 }

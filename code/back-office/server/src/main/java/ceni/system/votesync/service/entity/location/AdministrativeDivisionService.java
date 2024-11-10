@@ -41,6 +41,10 @@ public class AdministrativeDivisionService {
         this.fokontanyRepository = fokontanyRepository;
     }
 
+    public List<Region> getRegions() {
+        return this.regionRepository.findAll();
+    }	
+
     public List<Region> getRegionsWithoutGeoJson() {
         return this.regionRepository.findAllWithoutGeoJson();
     }

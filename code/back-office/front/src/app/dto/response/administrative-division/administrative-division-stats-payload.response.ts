@@ -1,9 +1,9 @@
 import { AdministrativeDivisionStats } from '../../administrative-division-stats';
 
 export class AdministrativeDivisionStatsPayload {
-  administrativeDivisionStats: AdministrativeDivisionStats[];
+  administrativeDivisions: AdministrativeDivisionStats[];
 
-  constructor(administrativeDivisionStats: AdministrativeDivisionStats[]) {
-    this.administrativeDivisionStats = administrativeDivisionStats;
+  constructor(administrativeDivisions: AdministrativeDivisionStats[]) {
+    this.administrativeDivisions = administrativeDivisions;
   }
 }

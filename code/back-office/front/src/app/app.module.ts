@@ -43,6 +43,12 @@ import { ResultValidationFormComponent } from './views/result-validations/result
 import { CurrentElectionListComponent } from './views/elections/list/current-election-list/current-election-list.component';
 import { ArchiveElectionListComponent } from './views/elections/list/archive-election-list/archive-election-list.component';
 import { ElectionImportDialogComponent } from './views/elections/list/current-election-list/election-import-dialog/election-import-dialog.component';
+import { AlertComponent } from './views/alert/alert.component';
+import {
+  BaseChartDirective,
+  provideCharts,
+  withDefaultRegisterables,
+} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -77,6 +83,7 @@ import { ElectionImportDialogComponent } from './views/elections/list/current-el
     CurrentElectionListComponent,
     ArchiveElectionListComponent,
     ElectionImportDialogComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,10 +97,12 @@ import { ElectionImportDialogComponent } from './views/elections/list/current-el
     CarouselModule,
     DialogModule,
     ButtonModule,
+    BaseChartDirective,
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),
     provideAnimationsAsync(),
+    provideCharts(withDefaultRegisterables()),
   ],
   bootstrap: [AppComponent],
 })

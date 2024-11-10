@@ -1,0 +1,20 @@
+Existence du module est pour le suivi des incidents tout au long du procéssus électoral.
+
+Pour assurer la régularité et un bon suivi des incidents, cette fonctionnalité est nécessaire pour la
+partie back-office.
+
+Le système est automatiquement en mesure d’alerter:
+
+● les patterns temporels:
+Exemple : Un pic soudain de votes est enregistré en dehors des heures d'ouverture des
+bureaux de vote.
+
+● les incohérences des données: les données incoherents ne seront pas enregistrés, mais une alerte sera notifié
+Exemple : Les résultats électoraux d'un bureau de vote montrent un total de 700 votes, mais
+les listes électorales ne comptent que 600 électeurs
+
+● Non synchronisation: les données résultats sont deja enregistrés, mais aucun enregistrement des électeurs n'a été fait
+(ceci concerne surtout les données importés via l'interface d'importation des résultats)
+
+
+

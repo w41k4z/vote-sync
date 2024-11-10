@@ -1,0 +1,10 @@
+- Page liste et emplacement des bureaux de votes
+	- permet de consulter aussi les bureaux de vote assigné aux opérateurs de saisie
+
+- Assignation des opérateurs de saisie
+	- nous avons opté une approche automatique pour assurer une équilibre de charge pour les operateurs de saisie,
+en utilisant l'algorithme round-robin, un algorithme de répartition circulaire.
+
+
+Les operations de creation, modification ou suppression des divisions administrative ont été intentionnelement non-implementé
+puisque ces données sont injecté dans la base dès le début comme donné essentiel à son fonctionnement.

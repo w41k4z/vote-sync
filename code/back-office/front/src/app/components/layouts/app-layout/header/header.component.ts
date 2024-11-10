@@ -14,6 +14,7 @@ export class HeaderComponent {
   pageTitle = 'Accueil';
   userInformation: string | null = null;
   userAuthority: string | null = null;
+  alertsPath = Paths.ALERTS;
 
   constructor(
     private authService: AuthService,

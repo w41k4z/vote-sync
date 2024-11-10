@@ -1,32 +1,8 @@
 @import "../../../theme.scss";
 
-// for the table element, add borders
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
 
-thead th, thead td, tbody th, tbody td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.election-stat {
-
-  .stat {
-    border-radius: 20px;
-    padding: 5px 20px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.175);
-  }
-
-  p {
-    font-size: medium;
-  }
-
-  i {
-    font-size: xx-large;
-  }
-
+.board {
+    background-color: $content-background;
+    padding: 20px 20px 0 20px;
+    border-radius: 15px;
 }
