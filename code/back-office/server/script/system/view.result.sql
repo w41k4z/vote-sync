@@ -137,6 +137,8 @@ GROUP BY
     a.id_election,
     a.id_bv
 ;
+CREATE OR REPLACE VIEW stat_electeur_homme_par_bv AS
+
 
 CREATE OR REPLACE VIEW resultats_par_fokontany AS
 SELECT

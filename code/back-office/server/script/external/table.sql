@@ -42,6 +42,9 @@ CREATE TABLE electeurs (
     nom VARCHAR2(50) NOT NULL,
     prenom VARCHAR2(50),
     genre SMALLINT NOT NULL, -- 0: Homme, 1: Femme
+    handicape SMALLINT NOT NULL, -- 0: Non, 1: Oui
+    malvoyant SMALLINT NOT NULL, -- 0: Non, 1: Oui
+    date_naissance NOT NULL,
     PRIMARY KEY(id)
 );
 

@@ -83,3 +83,47 @@ JOIN electeurs e
     ON ee.id_electeur = e.id
 WHERE ee.vote < 20
 ;
+
+CREATE OR REPLACE VIEW v_electeurs_details AS
+SELECT
+    id,
+    cin,
+    handicape,
+    malvoyant,
+    -- Colonnes pour les hommes et les femmes en fonction de l'âge (moins de 36 ans / 36 ans et plus)
+    CASE
+        WHEN genre = 0 AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_naissance) < 36 THEN 1
+        ELSE 0
+    END AS homme_moins_36,
+    CASE
+        WHEN genre = 1 AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_naissance) < 36 THEN 1
+        ELSE 0
+    END AS femme_moins_36,
+    CASE
+        WHEN genre = 0 AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_naissance) >= 36 THEN 1
+        ELSE 0
+    END AS homme_36_plus,
+    CASE
+        WHEN genre = 1 AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_naissance) >= 36 THEN 1
+        ELSE 0
+    END AS femme_36_plus,
+    -- Colonnes pour les hommes et les femmes avec handicap
+    CASE
+        WHEN genre = 0 AND handicape = 1 THEN 1
+        ELSE 0
+    END AS homme_handicape,
+    CASE
+        WHEN genre = 1 AND handicape = 1 THEN 1
+        ELSE 0
+    END AS femme_handicape,
+    -- Colonnes pour les hommes et les femmes malvoyants
+    CASE
+        WHEN genre = 0 AND malvoyant = 1 THEN 1
+        ELSE 0
+    END AS homme_malvoyant,
+    CASE
+        WHEN genre = 1 AND malvoyant = 1 THEN 1
+        ELSE 0
+    END AS femme_malvoyant
+FROM
+    electeurs;
