@@ -24,10 +24,29 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE PROCEDURE delete_election (
+
+CREATE OR REPLACE PROCEDURE import_electoral_results (
     election_id NUMBER
 ) AS
 BEGIN
+    INSERT INTO resultats(id_election, id_bv, inscrits, blancs, nuls, etat)
+    (
+        SELECT
+            election_id,
+            bv.id,
+            rsi.inscrits,
+            rsi.blancs,
+            rsi.nuls,
+            0
+        FROM resultats_importes rsi
+        JOIN bv
+            ON rsi.code_bv = bv.code
+        WHERE rsi.id_election = election_id
+    );
+
+    import_electoral_result_details();
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE resultats_importes';
+    COMMIT;
 END;
 /
 
@@ -45,6 +64,7 @@ BEGIN
             ON ec.id_election = rs.id_election
             AND ec.id_candidat = drsi.id_candidat
     );
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE details_resultats_importes';
 END;
 /
 
@@ -100,7 +120,13 @@ BEGIN
         nom_region,
         inscrits,
         blancs,
-        nuls
+        nuls,
+        nom_operateur,
+        prenom_operateur,
+        contact_operateur,
+        nom_membre_bv,
+        prenom_membre_bv,
+        contact_membre_bv
     ) (
         SELECT
             bvrs.id_election,
@@ -113,8 +139,20 @@ BEGIN
             bvrs.nom_region,
             bvrs.inscrits,
             bvrs.blancs,
-            bvrs.nuls
+            bvrs.nuls,
+            u.nom AS nom_operateur,
+            u.prenom AS prenom_operateur,
+            u.contact AS contact_operateur,
+            u2.nom AS nom_membre_bv,
+            u2.prenom AS prenom_membre_bv,
+            u2.contact AS contact_membre_bv
         FROM bv_resultats bvrs
+        JOIN bv
+            ON bvrs.id = bv.id
+        LEFT JOIN utilisateurs u
+            ON bv.id_operateur_validateur = u.id
+        LEFT JOIN utilisateurs u2
+            ON bv.code = u2.identifiant
         WHERE id_election = election_id
     );
 

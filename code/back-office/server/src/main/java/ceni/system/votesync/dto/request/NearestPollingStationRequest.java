@@ -12,5 +12,5 @@ public class NearestPollingStationRequest {
     @NotNull(message = "Latitude is required")
     private Double latitude;
 
-    private Double range = 250.;
+    private Double range = 25000.;
 }

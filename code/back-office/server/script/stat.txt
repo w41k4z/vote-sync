@@ -1,0 +1,18 @@
+- Table: 48
+- Vues: 46
+- Procedure: 19
+- Fonction: 2
+Total: 113
+
+
+- Classe de configuration: 12
+- Controlleur: 10
+- Classe de transfert de donnée: 10
+- Classe d'exception: 9
+- Modele: 48
+- Classe d'acces à la base de donnée: 44
+- Classe de service: 34
+Total: 167
+
+
+- Ecran: 16

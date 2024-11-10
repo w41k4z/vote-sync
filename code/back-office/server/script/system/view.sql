@@ -58,7 +58,10 @@ SELECT
     r.nom AS nom_region,
     u.nom AS nom_operateur,
     u.prenom AS prenom_operateur,
-    u.contact AS contact_operateur
+    u.contact AS contact_operateur,
+    u2.nom AS nom_membre_bv,
+    u2.prenom AS prenom_membre_bv,
+    u2.contact AS contact_membre_bv
 FROM bv
 JOIN cv
     ON bv.id_cv = cv.id
@@ -72,6 +75,8 @@ JOIN regions r
     ON d.id_region = r.id
 LEFT JOIN utilisateurs u
     ON bv.id_operateur_validateur = u.id
+LEFT JOIN utilisateurs u2
+    ON bv.code = u2.identifiant
 ORDER BY
     r.nom,
     d.nom,
@@ -133,6 +138,7 @@ LEFT JOIN resultats rs
 GROUP BY e.id
 ;
 
+-- expected to be used with current elections
 CREATE OR REPLACE VIEW v_elections AS
 SELECT
     e.*,

@@ -126,6 +126,17 @@ GROUP BY
     bvr.nuls,
     bvr.exprimes
 ;
+CREATE OR REPLACE VIEW alertes_stat_par_bv AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY a.id_bv) AS id,
+    a.id_election,
+    a.id_bv,
+    COUNT(a.titre) AS nombre_alertes
+FROM alertes a
+GROUP BY
+    a.id_election,
+    a.id_bv
+;
 
 CREATE OR REPLACE VIEW resultats_par_fokontany AS
 SELECT
@@ -255,6 +266,21 @@ GROUP BY
     fkr.nuls,
     fkr.exprimes
 ;
+CREATE OR REPLACE VIEW alertes_stat_par_fokontany AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY fk.id) AS id,
+    a_bv.id_election,
+    fk.id AS id_fokontany,
+    SUM(a_bv.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_bv a_bv
+JOIN cv
+    ON a_bv.id_bv = cv.id
+JOIN fokontany fk
+    ON cv.id_fokontany = fk.id
+GROUP BY
+    a_bv.id_election,
+    fk.id
+;
 
 
 -- Presidential election and legislative election only
@@ -338,6 +364,21 @@ SELECT
 FROM communes cm
 JOIN resultat_statistique_par_commune rscm
     ON cm.id = rscm.id_commune
+;
+CREATE OR REPLACE VIEW alertes_stat_par_commune AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY cm.id) AS id,
+    a_fk.id_election,
+    cm.id AS id_commune,
+    SUM(a_fk.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_fokontany a_fk
+JOIN fokontany fk
+    ON a_fk.id_fokontany = fk.id
+JOIN communes cm
+    ON fk.id_commune = cm.id
+GROUP BY
+    a_fk.id_election,
+    cm.id
 ;
 
 
@@ -427,6 +468,23 @@ FROM municipalites mc
 JOIN resultat_statistique_par_municipalite rsmc
     ON mc.id = rsmc.id_municipalite
 ;
+CREATE OR REPLACE VIEW alertes_stat_par_municipalite AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY mc.id) AS id,
+    a_fk.id_election,
+    mc.id AS id_municipalite,
+    SUM(a_fk.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_fokontany a_fk
+JOIN fokontany fk
+    ON a_fk.id_fokontany = fk.id
+JOIN communes cm
+    ON fk.id_commune = cm.id
+JOIN municipalites mc
+    ON cm.id_municipalite = mc.id
+GROUP BY
+    a_fk.id_election,
+    mc.id
+;
 
 
 -- Presidential election and legislative election only
@@ -505,6 +563,21 @@ FROM districts d
 JOIN resultat_statistique_par_district rsd
     ON d.id = rsd.id_district
 ;
+CREATE OR REPLACE VIEW alertes_stat_par_district AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY d.id) AS id,
+    a_cm.id_election,
+    d.id AS id_district,
+    SUM(a_cm.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_commune a_cm
+JOIN communes cm
+    ON a_cm.id_commune = cm.id
+JOIN districts d
+    ON cm.id_district = d.id
+GROUP BY
+    a_cm.id_election,
+    d.id
+;
 
 
 -- Presidential election only
@@ -577,6 +650,21 @@ FROM regions r
 JOIN resultat_statistique_par_region rsr
     ON r.id = rsr.id_region
 ;
+CREATE OR REPLACE VIEW alertes_stat_par_region AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY r.id) AS id,
+    a_cd.id_election,
+    r.id AS id_region,
+    SUM(a_cd.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_district a_cd
+JOIN districts d
+    ON a_cd.id_district = d.id
+JOIN regions r
+    ON d.id_region = r.id
+GROUP BY
+    a_cd.id_election,
+    r.id
+;
 
 -- Presidential election only
 CREATE OR REPLACE VIEW resultats_par_province AS
@@ -646,6 +734,21 @@ FROM provinces p
 JOIN resultat_statistique_par_province rsp
     ON p.id = rsp.id_province
 ;
+CREATE OR REPLACE VIEW alertes_stat_par_province AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY p.id) AS id,
+    a_cd.id_election,
+    p.id AS id_province,
+    SUM(a_cd.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_region a_cd
+JOIN regions r
+    ON a_cd.id_region = r.id
+JOIN provinces p
+    ON r.id_province = p.id
+GROUP BY
+    a_cd.id_election,
+    p.id
+;
 
 
 -- Presidential election only
@@ -703,4 +806,14 @@ SELECT
 FROM dual d
 JOIN resultat_statistique_election rsg
     ON rsg.id_pays = '0'
+;
+CREATE OR REPLACE VIEW alertes_stat_par_election AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY a_cd.id_election) AS id,
+    a_cd.id_election,
+    '0' AS id_pays,
+    SUM(a_cd.nombre_alertes) AS nombre_alertes
+FROM alertes_stat_par_province a_cd
+GROUP BY
+    a_cd.id_election
 ;

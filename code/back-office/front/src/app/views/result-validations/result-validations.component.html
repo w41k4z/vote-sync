@@ -23,6 +23,7 @@
                             <span>{{ pendingElectoralResult.election }}</span>
                         </span>
                         <span class="list-column">
+                            <i class="me-2 bi bi-geo-alt"></i>
                             <span><b>{{ pendingElectoralResult.pollingStation | formatName }}</b></span>
                         </span>
                         <span class="in-progress" *ngIf="pendingElectoralResult.status == 0">
