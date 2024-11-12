@@ -92,6 +92,20 @@ class _ResultPageState extends State<ResultPage> {
     });
   }
 
+  int _checkRegisteredVotersCount() {
+    int result = 0;
+    if (registered == 0) {
+      result = -1;
+      GlobalErrorHandler.warningDialog(
+        context: context,
+        message:
+            "Impossible de continuer. Aucun électeur n'est enregistré pour cette station de vote.",
+        onDismiss: () {},
+      );
+    }
+    return result;
+  }
+
   int _checkResult() {
     int result = 0;
     int totalVotes = 0;
@@ -150,6 +164,15 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Future<void> _uploadResults() async {
+    if (registered == 0) {
+      GlobalErrorHandler.warningDialog(
+        context: context,
+        message:
+            "Impossible de continuer. Aucun électeur n'est enregistré pour cette station de vote.",
+        onDismiss: () {},
+      );
+      return;
+    }
     if (images.isEmpty) {
       GlobalErrorHandler.warningDialog(
         context: context,

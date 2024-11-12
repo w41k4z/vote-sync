@@ -69,7 +69,6 @@ class NoLocationLogInPageContentWidget extends StatelessWidget {
             onSubmit: handleFormSubmit,
           ),
         ),
-        const Copyright()
       ],
     );
   }
