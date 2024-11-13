@@ -3,7 +3,6 @@ import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/screens/log-in/widgets/no_location/form/no_location_log_in_page_form.dart';
 import 'package:vote_sync/screens/log-in/widgets/with_location/log_in_page.dart';
-import 'package:vote_sync/widgets/copyright.dart';
 
 class NoLocationLogInPageContentWidget extends StatelessWidget {
   final List<ElectionDTO> electionDTOs;

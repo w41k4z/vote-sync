@@ -75,12 +75,13 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found. Id: " + updateRequest.getId()));
         Role role = new Role();
         role.setId(updateRequest.getRoleId());
+        AbstractPasswordHashing passwordHashing = this.passwordHashingService.selectPasswordHashingStrategy(role);
         existingUser.setIdentifier(updateRequest.getIdentifier());
         existingUser.setRole(role);
         existingUser.setName(updateRequest.getName());
         existingUser.setFirstName(updateRequest.getFirstName());
         existingUser.setContact(updateRequest.getContact());
-        existingUser.setPassword(updateRequest.getPassword());
+        existingUser.setPassword(passwordHashing.hash(updateRequest.getPassword()));
         return this.repository.save(existingUser);
     }
 

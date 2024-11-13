@@ -20,6 +20,23 @@ class PollingStationService extends ApiCallService {
   final String pollingStationEndpoint = Endpoints.POLLING_STATIONS;
   final String resultEndpoint = Endpoints.ELECTORAL_RESULTS;
 
+  Future<PollingStationDTO> getPollingStationByCode(
+      String code, int electionId, String accessToken) async {
+    final response = await getCall('$pollingStationEndpoint/by-code/$code',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+          },
+        ));
+    final payload = response.data["payload"];
+    return PollingStationDTO(
+      payload["pollingStation"]["id"],
+      payload["pollingStation"]["code"],
+      payload["pollingStation"]["voteCenterId"],
+      payload["pollingStation"]["name"],
+    );
+  }
+
   Future<List<dynamic>> getNearestPollingStationAndCurrentElections() async {
     LocationService locationService = GetIt.I.get<LocationService>();
     Position currentPosition = await locationService.getCurrentLocation();

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/services/api/auth_service.dart';
+import 'package:vote_sync/services/api/election_service.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
@@ -44,6 +45,9 @@ class SetUp {
     GetIt.I.registerLazySingleton<AuthService>(() => AuthService());
     GetIt.I.registerLazySingleton<PollingStationService>(
       () => PollingStationService(),
+    );
+    GetIt.I.registerLazySingleton<ElectionService>(
+      () => ElectionService(),
     );
   }
 

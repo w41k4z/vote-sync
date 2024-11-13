@@ -32,7 +32,7 @@ public class PendingElectoralResultService {
 
     public void validateElectoralResult(ValidateElectoralResultRequest request) {
         this.electoralResultUploadService.checkResultValidity(request);
-        this.electoralResultUploadService.updateResult(request.getResultId(), request.getBlankVotes(),
+        this.electoralResultUploadService.validateElectoralResult(request.getResultId(), request.getBlankVotes(),
                 request.getNullVotes(), request.getRegisteredVoters(), request.getResultDetails());
     }
 }

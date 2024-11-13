@@ -52,10 +52,11 @@ END;
 
 CREATE OR REPLACE PROCEDURE import_electoral_result_details AS
 BEGIN
-    INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix) (
+    MERGE INTO details_resultats dr
+    USING (
         SELECT 
-            rs.id,
-            ec.id,
+            rs.id AS id_resultat,
+            ec.id AS id_enregistrement_candidat,
             drsi.voix
         FROM details_resultats_importes drsi
         JOIN resultats rs
@@ -63,8 +64,13 @@ BEGIN
         JOIN enregistrement_candidats ec
             ON ec.id_election = rs.id_election
             AND ec.id_candidat = drsi.id_candidat
-    );
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE details_resultats_importes';
+    ) source
+    ON (dr.id_resultat = source.id_resultat AND dr.id_enregistrement_candidat = source.id_enregistrement_candidat)
+    WHEN MATCHED THEN
+        UPDATE SET dr.voix = source.voix
+    WHEN NOT MATCHED THEN
+        INSERT (id_resultat, id_enregistrement_candidat, voix)
+        VALUES (source.id_resultat, source.id_enregistrement_candidat, source.voix);
 END;
 /
 

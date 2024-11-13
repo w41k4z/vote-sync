@@ -55,7 +55,7 @@ public class WebSecurity {
                 return authorize
                                 // public endpoints
                                 .requestMatchers("/error/**", "/public/**",
-                                                "/test/**", "/auth/**", "/api/polling-stations/nearest")
+                                                "/test/**", "/auth/**", "/api/polling-stations/nearest", "/api/elections/current")
                                 .permitAll()
                                 // PollingStation Manager endpoints
                                 .requestMatchers("/api/polling-stations/data/**", "/api/elections/results/upload")

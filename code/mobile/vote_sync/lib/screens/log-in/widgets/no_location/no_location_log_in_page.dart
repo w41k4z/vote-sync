@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:vote_sync/dto/election_dto.dart';
+import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
 import 'package:vote_sync/screens/log-in/widgets/no_location/no_location_log_in_page_content.dart';
 import 'package:vote_sync/services/api/auth_service.dart';
+import 'package:vote_sync/services/api/election_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
 import 'package:vote_sync/widgets/error/global_error_handler.dart';
@@ -37,14 +39,14 @@ class _NoLocationLogInPageState extends State<NoLocationLogInPage> {
   @override
   void initState() {
     super.initState();
-    _getNearestPollingStationAndCurrentElections();
+    _getCurrentElections();
   }
 
   @override
   Widget build(BuildContext context) {
     return NoLocationLogInPageContentWidget(
       electionDTOs: elections,
-      onRefresh: _getNearestPollingStationAndCurrentElections,
+      onRefresh: _getCurrentElections,
       handlePollingStationSelect: _handlePollingStationSelect,
       handleElectionSelect: _handleElectionSelect,
       handlePasswordInputChange: _handlePasswordInputChange,
@@ -74,15 +76,14 @@ class _NoLocationLogInPageState extends State<NoLocationLogInPage> {
     await _submitForm();
   }
 
-  Future<void> _getNearestPollingStationAndCurrentElections() async {
+  Future<void> _getCurrentElections() async {
     context.loaderOverlay.show();
-    PollingStationService pollingStationService =
-        GetIt.I.get<PollingStationService>();
+    ElectionService electionService = GetIt.I.get<ElectionService>();
     try {
-      List<dynamic> payload = await pollingStationService
-          .getNearestPollingStationAndCurrentElections();
+      List<ElectionDTO> currentElections =
+          await electionService.getCurrentElections();
       setState(() {
-        elections = payload[1];
+        elections = currentElections;
         context.loaderOverlay.hide();
       });
     } on DioException catch (e) {
@@ -93,7 +94,7 @@ class _NoLocationLogInPageState extends State<NoLocationLogInPage> {
       if (e.type == DioExceptionType.connectionError) {
         GlobalErrorHandler.internetAccessErrorDialog(
           context: context,
-          onRetry: _getNearestPollingStationAndCurrentElections,
+          onRetry: _getCurrentElections,
         );
       } else {
         SnackBarError.show(context: context, message: e.toString());
@@ -126,20 +127,32 @@ class _NoLocationLogInPageState extends State<NoLocationLogInPage> {
       String accessToken = await authService.authenticateUser(
           selectedPollingStationCode, password);
       ElectionDTO electionDTO = selectedElectionDTO;
+      PollingStationDTO pollingStationDTO =
+          await GetIt.I.get<PollingStationService>().getPollingStationByCode(
+                selectedPollingStationCode,
+                electionDTO.id,
+                accessToken,
+              );
 
       // Granting access by setting the access token and polling station id
       // to the app instance
-      await appInstance.grantAccess(accessToken, '-1', selectedElectionId);
+      await appInstance.grantAccess(
+        accessToken,
+        pollingStationDTO.id.toString(),
+        selectedElectionId,
+      );
 
       DatabaseManager databaseManager = GetIt.I.get<DatabaseManager>();
       bool isDatabasePopulated = await databaseManager.isDatabasePopulated(
-          '-1', electionDTO.id.toString());
+          pollingStationDTO.id.toString(), electionDTO.id.toString());
       if (!isDatabasePopulated) {
         // Fetching the polling station data
         PollingStationService pollingStationService =
             GetIt.I.get<PollingStationService>();
         final data = await pollingStationService.getPollingStationData(
-            int.parse('-1'), int.parse(electionDTO.id.toString()));
+          pollingStationDTO.id,
+          electionDTO.id,
+        );
         // Populating the app database
         await databaseManager.populateDatabase(data["pollingStation"],
             data["election"], data["voters"], data["candidates"]);

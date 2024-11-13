@@ -20,7 +20,7 @@ public class PasswordHashingService {
     }
 
     public AbstractPasswordHashing selectPasswordHashingStrategy(Role role) {
-        if (role.getName().equals(Authority.ADMIN.toString())) {
+        if (role.getId().equals(Authority.ADMIN_ID)) {
             return this.adminPasswordHashing;
         } else {
             return this.userPasswordHashing;

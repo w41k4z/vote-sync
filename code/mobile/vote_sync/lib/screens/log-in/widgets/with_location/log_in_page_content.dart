@@ -4,7 +4,6 @@ import 'package:vote_sync/dto/election_dto.dart';
 import 'package:vote_sync/dto/polling_station_dto.dart';
 import 'package:vote_sync/screens/log-in/widgets/no_location/no_location_log_in_page.dart';
 import 'package:vote_sync/screens/log-in/widgets/with_location/form/log_in_page_form.dart';
-import 'package:vote_sync/widgets/copyright.dart';
 
 class LogInPageContentWidget extends StatelessWidget {
   final List<PollingStationDTO> pollingStationDTOs;

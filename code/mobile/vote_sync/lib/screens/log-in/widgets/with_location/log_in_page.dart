@@ -141,7 +141,10 @@ class _LogInPageState extends State<LogInPage> {
       // Granting access by setting the access token and polling station id
       // to the app instance
       await appInstance.grantAccess(
-          accessToken, pollingStationDTO.id.toString(), selectedElectionId);
+        accessToken,
+        pollingStationDTO.id.toString(),
+        selectedElectionId,
+      );
 
       DatabaseManager databaseManager = GetIt.I.get<DatabaseManager>();
       bool isDatabasePopulated = await databaseManager.isDatabasePopulated(
@@ -151,7 +154,9 @@ class _LogInPageState extends State<LogInPage> {
         PollingStationService pollingStationService =
             GetIt.I.get<PollingStationService>();
         final data = await pollingStationService.getPollingStationData(
-            pollingStationDTO.id, int.parse(electionDTO.id.toString()));
+          pollingStationDTO.id,
+          electionDTO.id,
+        );
         // Populating the app database
         await databaseManager.populateDatabase(data["pollingStation"],
             data["election"], data["voters"], data["candidates"]);

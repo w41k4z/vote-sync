@@ -64,10 +64,17 @@ public class PollingStationController {
     }
 
     @PostMapping("/nearest")
-    public ResponseEntity<ApiResponse> getNearestPollingStations(@RequestBody NearestPollingStationRequest request) {
+    public ResponseEntity<ApiResponse> getNearestPollingStationsAndCurrentElections(@RequestBody NearestPollingStationRequest request) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("pollingStations", this.service.getNearestPollingStations(request));
         data.put("elections", this.electionService.getCurrentElections());
+        return ResponseEntity.ok(new ApiResponse(data, null));
+    }
+
+    @GetMapping("/by-code/{code}")
+    public ResponseEntity<ApiResponse> getPollingStationByCode(@PathVariable String code) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("pollingStation", this.service.getPollingStationByCode(code));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 

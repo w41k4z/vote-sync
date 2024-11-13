@@ -10,8 +10,8 @@ class ApiCallService {
     _dio.interceptors.add(AuthInterceptor());
   }
 
-  Future<Response> getCall(String path) async {
-    return await _dio.get(path);
+  Future<Response> getCall(String path, {Options? options}) async {
+    return await _dio.get(path, options: options);
   }
 
   Future<Response> postCall(
