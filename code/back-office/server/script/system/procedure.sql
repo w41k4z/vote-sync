@@ -29,28 +29,61 @@ CREATE OR REPLACE PROCEDURE import_electoral_results (
     election_id NUMBER
 ) AS
 BEGIN
-    INSERT INTO resultats(id_election, id_bv, inscrits, blancs, nuls, etat)
+    INSERT INTO resultats(id_election, id_bv, inscrits, homme_moins_36, femme_moins_36, homme_36_plus, femme_36_plus, handicape, malvoyant, blancs, nuls, etat, importe)
     (
         SELECT
             election_id,
             bv.id,
             rsi.inscrits,
+            rsi.homme_moins_36,
+            rsi.femme_moins_36,
+            rsi.homme_36_plus,
+            rsi.femme_36_plus,
+            rsi.handicape,
+            rsi.malvoyant,
             rsi.blancs,
             rsi.nuls,
-            0
+            0,
+            1
         FROM resultats_importes rsi
         JOIN bv
             ON rsi.code_bv = bv.code
         WHERE rsi.id_election = election_id
     );
 
-    import_electoral_result_details();
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE resultats_importes';
-    COMMIT;
+    import_electoral_result_details(election_id);
+    import_electoral_result_images;
+    
+    DELETE FROM resultats_importes WHERE id_election = election_id;
+    DELETE FROM resultat_images_importes WHERE id_election = election_id;
 END;
 /
 
-CREATE OR REPLACE PROCEDURE import_electoral_result_details AS
+CREATE OR REPLACE PROCEDURE import_electoral_result_details (
+    election_id NUMBER
+) AS
+    type_election VARCHAR2(50);
+BEGIN
+    SELECT te.nom
+    INTO type_election
+    FROM elections e
+    JOIN type_elections te
+        ON e.id_type_election = te.id
+    WHERE e.id = election_id
+    ;
+
+    IF type_election = 'Presidentielle' THEN
+        import_presidential_result_details();
+    ELSIF type_election = 'Legislative' THEN
+        import_legislative_result_details();
+    ELSIF type_election = 'Locale' THEN
+        import_local_result_details();
+    END IF;
+
+    DELETE FROM details_resultats_importes WHERE id_election = election_id;
+END;
+/
+CREATE OR REPLACE PROCEDURE import_presidential_result_details AS
 BEGIN
     MERGE INTO details_resultats dr
     USING (
@@ -59,11 +92,14 @@ BEGIN
             ec.id AS id_enregistrement_candidat,
             drsi.voix
         FROM details_resultats_importes drsi
+        JOIN bv
+            ON drsi.code_bv = bv.code
         JOIN resultats rs
-            ON drsi.id_resultat = rs.id
+            ON drsi.id_election = rs.id_election
+            AND bv.id = rs.id_bv
         JOIN enregistrement_candidats ec
             ON ec.id_election = rs.id_election
-            AND ec.id_candidat = drsi.id_candidat
+            AND ec.numero_candidat = drsi.numero_candidat
     ) source
     ON (dr.id_resultat = source.id_resultat AND dr.id_enregistrement_candidat = source.id_enregistrement_candidat)
     WHEN MATCHED THEN
@@ -71,6 +107,95 @@ BEGIN
     WHEN NOT MATCHED THEN
         INSERT (id_resultat, id_enregistrement_candidat, voix)
         VALUES (source.id_resultat, source.id_enregistrement_candidat, source.voix);
+END;
+/
+CREATE OR REPLACE PROCEDURE import_legislative_result_details AS
+BEGIN
+    MERGE INTO details_resultats dr
+    USING (
+        SELECT 
+            rs.id AS id_resultat,
+            ec.id AS id_enregistrement_candidat,
+            drsi.voix
+        FROM details_resultats_importes drsi
+        JOIN bv
+            ON drsi.code_bv = bv.code
+        JOIN resultats rs
+            ON drsi.id_election = rs.id_election
+            AND bv.id = rs.id_bv
+        JOIN cv
+            ON bv.id_cv = cv.id
+        JOIN fokontany fk
+            ON cv.id_fokontany = fk.id
+        JOIN communes cm
+            ON fk.id_commune = cm.id
+        JOIN districts ds
+            ON cm.id_district = ds.id
+        JOIN enregistrement_candidats ec
+            ON ec.id_election = rs.id_election
+            AND ec.id_district = ds.id
+            AND ec.numero_candidat = drsi.numero_candidat
+    ) source
+    ON (dr.id_resultat = source.id_resultat AND dr.id_enregistrement_candidat = source.id_enregistrement_candidat)
+    WHEN MATCHED THEN
+        UPDATE SET dr.voix = source.voix
+    WHEN NOT MATCHED THEN
+        INSERT (id_resultat, id_enregistrement_candidat, voix)
+        VALUES (source.id_resultat, source.id_enregistrement_candidat, source.voix);
+END;
+/
+CREATE OR REPLACE PROCEDURE import_local_result_details AS
+BEGIN
+    MERGE INTO details_resultats dr
+    USING (
+        SELECT 
+            rs.id AS id_resultat,
+            ec.id AS id_enregistrement_candidat,
+            drsi.voix
+        FROM details_resultats_importes drsi
+        JOIN bv
+            ON drsi.code_bv = bv.code
+        JOIN resultats rs
+            ON drsi.id_election = rs.id_election
+            AND bv.id = rs.id_bv
+        JOIN cv
+            ON bv.id_cv = cv.id
+        JOIN fokontany fk
+            ON cv.id_fokontany = fk.id
+        JOIN communes cm
+            ON fk.id_commune = cm.id
+        JOIN municipalites mc
+            ON cm.id_municipalite = mc.id
+        JOIN enregistrement_candidats ec
+            ON ec.id_election = rs.id_election
+            AND ec.id_municipalite = mc.id
+            AND ec.numero_candidat = drsi.numero_candidat
+    ) source
+    ON (dr.id_resultat = source.id_resultat AND dr.id_enregistrement_candidat = source.id_enregistrement_candidat)
+    WHEN MATCHED THEN
+        UPDATE SET dr.voix = source.voix
+    WHEN NOT MATCHED THEN
+        INSERT (id_resultat, id_enregistrement_candidat, voix)
+        VALUES (source.id_resultat, source.id_enregistrement_candidat, source.voix);
+END;
+/
+
+CREATE OR REPLACE PROCEDURE import_electoral_result_images AS
+BEGIN
+    INSERT INTO resultat_images (
+        id_resultat,
+        chemin_image
+    ) (
+        SELECT
+            rs.id,
+            rii.chemin_image
+        FROM resultat_images_importes rii
+        JOIN bv
+            ON rii.code_bv = bv.code
+        JOIN resultats rs
+            ON rs.id_election = rii.id_election
+            AND bv.id = rs.id_bv
+    );
 END;
 /
 
@@ -89,12 +214,11 @@ BEGIN
     WHERE e.id = election_id
     ;
 
+    -- all administrative division results are needed for statistic purpose
     migrate_polling_station_results(election_id);
     migrate_fokontany_results(election_id);
     migrate_communal_results(election_id);
-    IF type_election = 'Locale' THEN
-        migrate_municipal_results(election_id);
-    END IF;
+    migrate_municipal_results(election_id);
     migrate_district_results(election_id);
     migrate_regional_results(election_id);
     migrate_provincial_results(election_id);

@@ -13,6 +13,7 @@ public class UploadElectoralResultRequest implements ElectoralResultRequest {
 
     private Integer electionId;
     private Integer pollingStationId;
+    private String pollingStationCode;
     private Integer nulls;
     private Integer blanks;
     private Integer registered;

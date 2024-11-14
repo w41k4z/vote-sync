@@ -67,7 +67,7 @@ public class ElectoralResultController {
 
     @PostMapping("/validate")
     public ResponseEntity<ApiResponse> validateResult(@RequestBody ValidateElectoralResultRequest request) {
-        this.pendingElectoralResultService.validateElectoralResult(request);
+        this.electoralResultUploadService.validateElectoralResult(request);
         return ResponseEntity.ok(new ApiResponse(null, "Result validated successfully"));
     }
 

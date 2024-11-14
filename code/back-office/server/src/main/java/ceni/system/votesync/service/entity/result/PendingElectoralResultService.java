@@ -6,7 +6,6 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
 import ceni.system.votesync.model.view.election.result.PendingElectoralResult;
 import ceni.system.votesync.repository.view.election.result.PendingElectoralResultRepository;
 import ceni.system.votesync.service.spec.auth.AuthService;
@@ -15,12 +14,9 @@ import ceni.system.votesync.service.spec.auth.AuthService;
 public class PendingElectoralResultService {
 
     private PendingElectoralResultRepository pendingElectoralResultRepository;
-    private ElectoralResultUploadService electoralResultUploadService;
 
-    public PendingElectoralResultService(PendingElectoralResultRepository pendingElectoralResultRepository,
-            ElectoralResultUploadService electoralResultUploadService) {
+    public PendingElectoralResultService(PendingElectoralResultRepository pendingElectoralResultRepository) {
         this.pendingElectoralResultRepository = pendingElectoralResultRepository;
-        this.electoralResultUploadService = electoralResultUploadService;
     }
 
     public PagedModel<PendingElectoralResult> getPendingElectoralResults(Pageable page) {
@@ -28,11 +24,5 @@ public class PendingElectoralResultService {
         Specification<PendingElectoralResult> spec = PendingElectoralResultSpecification
                 .withUserIdentifier(activeUser.getUsername());
         return new PagedModel<>(this.pendingElectoralResultRepository.findAll(spec, page));
-    }
-
-    public void validateElectoralResult(ValidateElectoralResultRequest request) {
-        this.electoralResultUploadService.checkResultValidity(request);
-        this.electoralResultUploadService.validateElectoralResult(request.getResultId(), request.getBlankVotes(),
-                request.getNullVotes(), request.getRegisteredVoters(), request.getResultDetails());
     }
 }

@@ -54,7 +54,7 @@ CREATE TABLE enregistrement_electeurs (
     id_bv NUMBER NOT NULL,
     id_electeur NUMBER NOT NULL,
     date_enregistrement DATE,
-    vote NUMBER NOT NULL, -- 0: a pas voté, 10: a voté
+    vote NUMBER NOT NULL, -- 0: a pas voté, 20: a voté
     PRIMARY KEY(id),
     FOREIGN KEY(id_election) REFERENCES elections(id),
     FOREIGN KEY(id_electeur) REFERENCES electeurs(id),

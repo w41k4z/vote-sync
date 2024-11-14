@@ -73,7 +73,7 @@ GROUP BY
     ec.date_enregistrement
 ;
 
-CREATE OR REPLACE VIEW electeurs_enregistres AS
+CREATE OR REPLACE VIEW electeurs_inscrits AS
 SELECT
     e.*,
     ee.id_election,
@@ -106,24 +106,6 @@ SELECT
     CASE
         WHEN genre = 1 AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM date_naissance) >= 36 THEN 1
         ELSE 0
-    END AS femme_36_plus,
-    -- Colonnes pour les hommes et les femmes avec handicap
-    CASE
-        WHEN genre = 0 AND handicape = 1 THEN 1
-        ELSE 0
-    END AS homme_handicape,
-    CASE
-        WHEN genre = 1 AND handicape = 1 THEN 1
-        ELSE 0
-    END AS femme_handicape,
-    -- Colonnes pour les hommes et les femmes malvoyants
-    CASE
-        WHEN genre = 0 AND malvoyant = 1 THEN 1
-        ELSE 0
-    END AS homme_malvoyant,
-    CASE
-        WHEN genre = 1 AND malvoyant = 1 THEN 1
-        ELSE 0
-    END AS femme_malvoyant
-FROM
-    electeurs;
+    END AS femme_36_plus
+FROM electeurs
+;

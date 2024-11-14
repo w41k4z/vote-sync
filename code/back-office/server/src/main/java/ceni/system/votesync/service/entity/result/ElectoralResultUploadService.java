@@ -1,7 +1,6 @@
 package ceni.system.votesync.service.entity.result;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ceni.system.votesync.config.Status;
 import ceni.system.votesync.dto.request.result.ElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
+import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
 import ceni.system.votesync.exception.ElectoralResultNotFoundException;
 import ceni.system.votesync.exception.InvalidElectoralResultException;
 import ceni.system.votesync.model.entity.election.result.Result;
@@ -61,17 +61,14 @@ public class ElectoralResultUploadService {
         Result result = Result.fromUploadElectoralResultRequest(request);
         this.electoralResultUploadRepository.save(result);
         List<ImportedResultDetails> details = ImportedResultDetails.fromUploadElectoralResultRequestAndResultId(
-                request,
-                result.getId());
+                request);
         // saving details in details_resultats_importes table
         this.electoralResultDetailsUploadRepository.saveAll(details);
         /*
          * importing result changes details from details_resultats_importes to
          * details_resultats
          */
-        this.electoralResultDetailsUploadRepository.importElectoralResultDetails();
-        // deleting imported details after table migration
-        this.electoralResultDetailsUploadRepository.deleteAll(details);
+        this.electoralResultDetailsUploadRepository.importElectoralResultDetails(request.getElectionId());
         for (MultipartFile image : images) {
             ResultImage resultImage = new ResultImage();
             resultImage.setResultId(result.getId());
@@ -100,18 +97,15 @@ public class ElectoralResultUploadService {
         result.setNullVotes(request.getNulls());
         result.setRegisteredVoters(request.getRegistered());
         this.electoralResultUploadRepository.save(result);
-        List<ImportedResultDetails> details = ImportedResultDetails.fromUploadElectoralResultRequestAndResultId(
-                request,
-                result.getId());
+        List<ImportedResultDetails> details = ImportedResultDetails
+                .fromUploadElectoralResultRequestAndResultId(request);
         // saving details in details_resultats_importes table
         this.electoralResultDetailsUploadRepository.saveAll(details);
         /*
          * importing result changes details from details_resultats_importes to
          * details_resultats
          */
-        this.electoralResultDetailsUploadRepository.importElectoralResultDetails();
-        // deleting imported details after table migration
-        this.electoralResultDetailsUploadRepository.deleteAll(details);
+        this.electoralResultDetailsUploadRepository.importElectoralResultDetails(request.getElectionId());
         // deleting previous images
         this.electoralResultImageUploadRepository
                 .delete(ElectoralResultSpecification.imagesWithResultId(result.getId()));
@@ -128,26 +122,25 @@ public class ElectoralResultUploadService {
     }
 
     @Transactional
-    public void validateElectoralResult(Integer resultId, Integer blankVotes, Integer nullVotes,
-            Integer registeredVoters,
-            Map<Integer, Integer> resultDetails) {
-        Result result = this.getResultById(resultId)
+    public void validateElectoralResult(ValidateElectoralResultRequest request) {
+        this.checkResultValidity(request);
+        Result result = this.getResultById(request.getResultId())
                 .orElseThrow(
-                        () -> new ElectoralResultNotFoundException("Result not found. Id: " + resultId));
+                        () -> new ElectoralResultNotFoundException("Result not found. Id: " + request.getResultId()));
         if (result.getStatus() == Status.CLOSED) {
             throw new InvalidElectoralResultException("Result already validated. Cannot update anymore");
         }
-        result.setBlankVotes(blankVotes);
-        result.setNullVotes(nullVotes);
-        result.setRegisteredVoters(registeredVoters);
+        result.setBlankVotes(request.getBlanks());
+        result.setNullVotes(request.getNulls());
+        result.setRegisteredVoters(request.getRegistered());
         result.setStatus(Status.CLOSED);
         this.electoralResultUploadRepository.save(result);
-        resultDetails.forEach((resultDetailId, votes) -> {
+        request.getCandidates().forEach((resultDetailId, votes) -> {
             this.electoralResultDetailsUploadRepository.updateById(resultDetailId, votes);
         });
     }
 
-    public void checkResultValidity(ElectoralResultRequest request) {
+    private void checkResultValidity(ElectoralResultRequest request) {
         boolean isValid = request.isValid();
         if (!isValid) {
             throw new InvalidElectoralResultException("Invalid result. Total votes do not match registered voters");

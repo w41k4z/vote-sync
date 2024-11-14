@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "electeurs_enregistres")
+@Table(name = "electeurs_inscrits")
 @Immutable
 public class VRegisteredVoter {
 

@@ -10,6 +10,9 @@ import lombok.Data;
 public class ElectoralResult {
 
     @Id
+    @Column(name = "num_ligne")
+    private Integer rowNumber;
+
     private Integer id;
 
     @Column(name = "id_election")

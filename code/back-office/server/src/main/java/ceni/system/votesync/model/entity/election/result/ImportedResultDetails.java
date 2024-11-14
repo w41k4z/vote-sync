@@ -20,22 +20,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "details_resultats_importes")
 public class ImportedResultDetails extends AbstractEntity<Integer> {
 
-    @Column(name = "id_resultat")
-    private Integer resultId;
+    @Column(name = "id_election")
+    private Integer electionId;
 
-    @Column(name = "id_candidat")
-    private Integer candidateId;
+    @Column(name = "code_bv")
+    private String pollingStationCode;
+
+    @Column(name = "numero_candidat")
+    private Integer candidateNumber;
 
     @Column(name = "voix")
     private Integer votes;
 
     public static List<ImportedResultDetails> fromUploadElectoralResultRequestAndResultId(
-            UploadElectoralResultRequest request,
-            int resultId) {
+            UploadElectoralResultRequest request) {
         return request.getCandidates().entrySet().stream().map(entry -> {
             ImportedResultDetails details = new ImportedResultDetails();
-            details.setResultId(resultId);
-            details.setCandidateId(entry.getKey());
+            details.setElectionId(request.getElectionId());
+            details.setPollingStationCode(request.getPollingStationCode());
+            details.setCandidateNumber(entry.getKey());
             details.setVotes(entry.getValue());
             return details;
         }).toList();

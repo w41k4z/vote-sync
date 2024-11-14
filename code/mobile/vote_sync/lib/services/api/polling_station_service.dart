@@ -113,7 +113,7 @@ class PollingStationService extends ApiCallService {
   ) async {
     Map<String, String> candidatesJson = {};
     for (Candidate candidate in candidates) {
-      candidatesJson[candidate.id.toString()] = candidate.votes.toString();
+      candidatesJson[candidate.candidateNumber.toString()] = candidate.votes.toString();
     }
     FormData formData = FormData.fromMap({
       'result': jsonEncode({

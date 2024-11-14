@@ -11,7 +11,7 @@ import ceni.system.votesync.repository.base.EntityRepository;
 public interface ElectoralResultDetailsUploadRepository extends EntityRepository<ImportedResultDetails, Integer> {
 
     @Procedure(procedureName = "import_electoral_result_details")
-    void importElectoralResultDetails();
+    void importElectoralResultDetails(Integer electionId);
 
     @Modifying
     @Query(value = "UPDATE details_resultats SET voix = :votes WHERE id = :resultDetailId", nativeQuery = true)
