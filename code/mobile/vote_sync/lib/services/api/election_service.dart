@@ -4,6 +4,7 @@ import 'package:vote_sync/services/api/api_call_service.dart';
 
 class ElectionService extends ApiCallService {
   final String electionEndpoint = Endpoints.ELECTIONS;
+  final String electoralResultEndpoint = Endpoints.ELECTORAL_RESULTS;
 
   Future<List<ElectionDTO>> getCurrentElections() async {
     final response = await getCall('$electionEndpoint/current');
@@ -19,5 +20,10 @@ class ElectionService extends ApiCallService {
       elections.add(election);
     });
     return elections;
+  }
+
+  Future<void> validateQrCode(String qrCode) async {
+    await postCall(
+        '$electoralResultEndpoint/validate-qr-code', {"qrCode": qrCode});
   }
 }

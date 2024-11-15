@@ -17,6 +17,7 @@ import 'package:vote_sync/screens/result/widgets/result_bottom_navigation_bar.da
 import 'package:vote_sync/screens/result/widgets/result_edit_modal.dart';
 import 'package:vote_sync/screens/result/widgets/result_image_scanner.dart';
 import 'package:vote_sync/screens/result/widgets/result_images.dart';
+import 'package:vote_sync/services/api/election_service.dart';
 import 'package:vote_sync/services/api/polling_station_service.dart';
 import 'package:vote_sync/services/app_instance.dart';
 import 'package:vote_sync/services/database_manager.dart';
@@ -319,7 +320,28 @@ class _ResultPageState extends State<ResultPage> {
     );
     print(barcode);
     if (barcode != null) {
-      _scanImages();
+      try {
+        await GetIt.I.get<ElectionService>().validateQrCode(barcode);
+        _scanImages();
+      } on DioException catch (e) {
+        log(e.toString());
+        if (!mounted) return;
+        if (e.type == DioExceptionType.connectionError) {
+          GlobalErrorHandler.internetAccessErrorDialog(
+            context: context,
+            onRetry: _scanQrCode,
+          );
+        } else {
+          SnackBarError.show(
+            context: context,
+            message: e.response?.data["message"],
+          );
+        }
+      } catch (e) {
+        log(e.toString());
+        if (mounted)
+          SnackBarError.show(context: context, message: e.toString());
+      }
     }
   }
 

@@ -151,7 +151,7 @@ CREATE TABLE details_resultats_importes (
    numero_candidat NUMBER NOT NULL,
    voix NUMBER NOT NULL,
    FOREIGN KEY(id_election) REFERENCES elections(id),
-   CONSTRAINT uq_detail_resultat_importe UNIQUE(code_bv, id_election),
+   CONSTRAINT uq_detail_resultat_importe UNIQUE(code_bv, id_election, numero_candidat),
    CHECK (voix >= 0)
 );
 

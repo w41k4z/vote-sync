@@ -295,54 +295,12 @@ INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enre
 VALUES (1, 28, 40, SYSDATE, 0);
 
 
--- Résultats bureau de vote EPP Anosipatrana Salle 2
-INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
-VALUES (1, 1, 2, 10, 1, 2, 10);
-
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (1, 1, 2);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (1, 2, 1);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (1, 3, 1);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (1, 4, 3);
-
--- Résultats bureau de vote EPP Ilanivato Salle 1
-INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
-VALUES (2, 1, 6, 10, 0, 0, 10);
-
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (2, 1, 2);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (2, 2, 3);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (2, 3, 3);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (2, 4, 2);
-
--- Résultats bureau de vote EPP Ivandry S1
-INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
-VALUES (3, 1, 13, 10, 1, 0, 10);
-
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (3, 1, 0);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (3, 2, 1);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (3, 3, 4);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (3, 4, 3);
-
--- Résultats bureau de vote LTP S1
-INSERT INTO resultats(id, id_election, id_bv, inscrits, blancs, nuls, etat)
-VALUES (4, 1, 19, 10, 0, 2, 10);
-
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (4, 1, 1);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (4, 2, 0);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (4, 3, 3);
-INSERT INTO details_resultats(id_resultat, id_enregistrement_candidat, voix)
-VALUES (4, 4, 4);
+-- Code qr
+INSERT INTO code_qr(contenu, date_creation, date_expiration) 
+VALUES('ELECT-1-111001030102', TO_DATE('2024-11-15', 'YYYY-MM-DD'), TO_DATE('2024-11-16', 'YYYY-MM-DD'));
+INSERT INTO code_qr(contenu, date_creation, date_expiration) 
+VALUES('ELECT-1-111001040101', TO_DATE('2024-11-15', 'YYYY-MM-DD'), TO_DATE('2024-11-16', 'YYYY-MM-DD'));
+INSERT INTO code_qr(contenu, date_creation, date_expiration) 
+VALUES('ELECT-1-111101060103', TO_DATE('2024-11-15', 'YYYY-MM-DD'), TO_DATE('2024-11-16', 'YYYY-MM-DD'));
+INSERT INTO code_qr(contenu, date_creation, date_expiration) 
+VALUES('ELECT-1-111101200110', TO_DATE('2024-11-15', 'YYYY-MM-DD'), TO_DATE('2024-11-16', 'YYYY-MM-DD'));
