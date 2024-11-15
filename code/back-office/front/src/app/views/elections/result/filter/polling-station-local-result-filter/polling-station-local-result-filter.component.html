@@ -45,7 +45,8 @@
                     </td>
                     <td class="px-1">
                         <button class="btn btn-outline-primary d-flex gap-2 align-items-center">
-                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf" style="font-size: medium;"></i></button>
+                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf"
+                                style="font-size: medium;"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -63,42 +64,21 @@
                     {{ electoralResult.district | formatName }}
                 </span>
             </h5>
-            @if (currentResult == 0) {
-                <h5>Commune: 
-                    <span class="text-black">
-                        {{ electoralResult.municipality | formatName }}
-                    </span>
-                </h5>
-                <h5>Fokontany: 
-                    <span class="text-black">
-                        {{ electoralResult.fokontany | formatName }}
-                    </span>
-                </h5>
-                <h5 class="mt-4">Bureau de vote: 
-                    <b class="text-black">
-                        {{ electoralResult.name | formatName }}
-                    </b>
-                </h5>
-            }
-            @else if (currentResult == 1) {
-                <h5>Commune:
-                    <span class="text-black">
-                        {{ electoralResult.municipality | formatName }}
-                    </span>
-                </h5>
-                <h5 class="mt-4">Fokontany:
-                    <b class="text-black">
-                        {{ electoralResult.name | formatName }}
-                    </b>
-                </h5>
-            }
-            @else if (currentResult == 2) {
-                <h5 class="mt-4">Commune: 
-                    <b class="text-black">
-                        {{ electoralResult.name | formatName }}
-                    </b>
-                </h5>
-            }
+            <h5>Commune:
+                <span class="text-black">
+                    {{ electoralResult.municipality | formatName }}
+                </span>
+            </h5>
+            <h5>Fokontany:
+                <span class="text-black">
+                    {{ electoralResult.fokontany | formatName }}
+                </span>
+            </h5>
+            <h5 class="mt-4">Bureau de vote:
+                <b class="text-black">
+                    {{ electoralResult.name | formatName }}
+                </b>
+            </h5>
             <h5 class="text-danger mt-4">Taux de participation:
                 <b class="text-black text-end">
                     {{ (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) * 100 /
@@ -133,7 +113,8 @@
                         </td>
                         <td class="text-end">
                             <b class="text-black">
-                                {{ (electoralResult.blankVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                                {{ (electoralResult.blankVotes * 100) / (electoralResult.validVotes +
+                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
                             </b>
                         </td>
                     </tr>
@@ -151,7 +132,8 @@
                         </td>
                         <td class="text-end">
                             <b class="text-black">
-                                {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                                {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes +
+                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
                             </b>
                         </td>
                     </tr>
@@ -169,7 +151,8 @@
                         </td>
                         <td class="text-end">
                             <b class="text-black">
-                                {{ (electoralResult.validVotes * 100) / (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                                {{ (electoralResult.validVotes * 100) / (electoralResult.validVotes +
+                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
                             </b>
                         </td>
                     </tr>
@@ -179,7 +162,8 @@
                         </td>
                         <td class="text-end">
                             <b class="text-black">
-                                {{(electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber}}
+                                {{(electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes)
+                                | formatNumber}}
                             </b>
                         </td>
                     </tr>

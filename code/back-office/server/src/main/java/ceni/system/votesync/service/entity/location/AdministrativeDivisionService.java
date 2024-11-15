@@ -9,11 +9,13 @@ import ceni.system.votesync.model.entity.location.District;
 import ceni.system.votesync.model.entity.location.Fokontany;
 import ceni.system.votesync.model.entity.location.Municipality;
 import ceni.system.votesync.model.entity.location.MunicipalityDistrict;
+import ceni.system.votesync.model.entity.location.MunicipalityFokontany;
 import ceni.system.votesync.model.entity.location.Region;
 import ceni.system.votesync.repository.entity.location.CommuneRepository;
 import ceni.system.votesync.repository.entity.location.DistrictRepository;
 import ceni.system.votesync.repository.entity.location.FokontanyRepository;
 import ceni.system.votesync.repository.entity.location.MunicipalityDistrictRepository;
+import ceni.system.votesync.repository.entity.location.MunicipalityFokontanyRepository;
 import ceni.system.votesync.repository.entity.location.MunicipalityRepository;
 import ceni.system.votesync.repository.entity.location.RegionRepository;
 
@@ -26,24 +28,27 @@ public class AdministrativeDivisionService {
     private MunicipalityRepository municipalityRepository;
     private CommuneRepository communeRepository;
     private FokontanyRepository fokontanyRepository;
+    private MunicipalityFokontanyRepository municipalityFokontanyRepository;
 
     public AdministrativeDivisionService(RegionRepository regionRepository,
             DistrictRepository districtRepository,
             MunicipalityDistrictRepository municipalityDistrictRepository,
             MunicipalityRepository municipalityRepository,
             CommuneRepository communeRepository,
-            FokontanyRepository fokontanyRepository) {
+            FokontanyRepository fokontanyRepository,
+            MunicipalityFokontanyRepository municipalityFokontanyRepository) {
         this.regionRepository = regionRepository;
         this.districtRepository = districtRepository;
         this.municipalityDistrictRepository = municipalityDistrictRepository;
         this.municipalityRepository = municipalityRepository;
         this.communeRepository = communeRepository;
         this.fokontanyRepository = fokontanyRepository;
+        this.municipalityFokontanyRepository = municipalityFokontanyRepository;
     }
 
     public List<Region> getRegions() {
         return this.regionRepository.findAll();
-    }	
+    }
 
     public List<Region> getRegionsWithoutGeoJson() {
         return this.regionRepository.findAllWithoutGeoJson();
@@ -87,5 +92,13 @@ public class AdministrativeDivisionService {
 
     public List<Fokontany> getFokontanyByCommuneIdWithoutGeoJson(Integer communeId) {
         return this.fokontanyRepository.findByUpperDivisionIdWithoutGeoJson(communeId);
+    }
+
+    public List<MunicipalityFokontany> getMunicipalityFokontanyByMunicipalityIdWithoutGeoJson(Integer municipalityId) {
+        return this.municipalityFokontanyRepository.findByUpperDivisionIdWithoutGeoJson(municipalityId);
+    }
+
+    public List<MunicipalityFokontany> getMunicipalityFokontanyWithoutGeoJson() {
+        return this.municipalityFokontanyRepository.findAllWithoutGeoJson();
     }
 }

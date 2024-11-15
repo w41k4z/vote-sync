@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MunicipalResultService } from './municipal-result.service';
+import { LocalElectionResultService } from './local-election-result.service';
 
 describe('MunicipalResultService', () => {
-  let service: MunicipalResultService;
+  let service: LocalElectionResultService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MunicipalResultService);
+    service = TestBed.inject(LocalElectionResultService);
   });
 
   it('should be created', () => {

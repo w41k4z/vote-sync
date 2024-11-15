@@ -37,7 +37,7 @@ export class ElectionsComponent {
       case 'Legislative':
         return `${this.electionPath}/result/legislative`;
       case 'Locale':
-        return `${this.electionPath}/result/municipal`;
+        return `${this.electionPath}/result/local`;
       default:
         throw new Error('Unknown election type');
     }

@@ -10,13 +10,26 @@ CREATE OR REPLACE VIEW v_district_municipalites AS
 SELECT
     d.id,
     d.code,
-    d.id_region,
     mc.nom_district AS nom,
+    d.id_region,
     d.geojson,
     d.etat
 FROM municipalites mc
 JOIN districts d
     ON mc.id_district = d.id
+;
+
+CREATE OR REPLACE VIEW v_fokontany_municipalites AS
+SELECT
+    fk.id,
+    fk.code,
+    fk.nom,
+    cm.id_municipalite,
+    fk.geojson,
+    fk.etat
+FROM fokontany fk
+JOIN communes cm
+    ON cm.id = fk.id_commune
 ;
 
 CREATE OR REPLACE VIEW stat_utilisateur AS

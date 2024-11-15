@@ -1,14 +1,5 @@
 @import "../../../../../theme.scss";
 
-section {
-    border-radius: 20px;
-    background-color: $content-background;
-}
-
-h5 {
-    margin: 0;
-}
-
 .type {
     padding: 2px 15px;
     background-color: transparent;
@@ -36,10 +27,9 @@ h5 {
     font-weight: normal;
 }
 
-header {
-    table {
-        width: fit-content;
-    }
+section {
+    border-radius: 20px;
+    background-color: $content-background;
 }
 
 .container-fluid {

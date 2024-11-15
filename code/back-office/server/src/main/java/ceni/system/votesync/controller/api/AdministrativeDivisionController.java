@@ -109,4 +109,19 @@ public class AdministrativeDivisionController {
                 this.service.getFokontanyByCommuneIdWithoutGeoJson(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
+
+    @GetMapping("/municipality-fokontany")
+    public ResponseEntity<ApiResponse> getMunicipalityFokontany() {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions", this.service.getMunicipalityFokontanyWithoutGeoJson());
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
+
+    @GetMapping("/municipality-fokontany/by-municipality")
+    public ResponseEntity<ApiResponse> getMunicipalityFokontanyByMunicipalityId(@RequestParam Integer upperDivisionId) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("administrativeDivisions",
+                this.service.getMunicipalityFokontanyByMunicipalityIdWithoutGeoJson(upperDivisionId));
+        return ResponseEntity.ok(new ApiResponse(payload, null));
+    }
 }

@@ -36,8 +36,7 @@ import { FormatNamePipe } from './pipes/format-name/format-name.pipe';
 import { UserImportDialogComponent } from './views/users/user-list/user-form-dialog/user-import-dialog/user-import-dialog.component';
 import { ElectionDialogComponent } from './views/elections/election-dialog/election-dialog.component';
 import { FormatPublicUrlPipe } from './pipes/format-public-url/format-public-url.pipe';
-import { MunicipalResultComponent } from './views/elections/result/municipal-result/municipal-result.component';
-import { MunicipalResultFilterComponent } from './views/elections/result/municipal-result/municipal-result-filter/municipal-result-filter.component';
+import { LocalElectionResultComponent } from './views/elections/result/local-election-result/local-election-result.component';
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
 import { CurrentElectionListComponent } from './views/elections/list/current-election-list/current-election-list.component';
@@ -49,6 +48,16 @@ import {
   provideCharts,
   withDefaultRegisterables,
 } from 'ng2-charts';
+import { PollingStationResultFilterComponent } from './views/elections/result/filter/polling-station-result-filter/polling-station-result-filter.component';
+import { PollingStationLocalResultFilterComponent } from './views/elections/result/filter/polling-station-local-result-filter/polling-station-local-result-filter.component';
+import { FokontanyResultFilterComponent } from './views/elections/result/filter/fokontany-result-filter/fokontany-result-filter.component';
+import { FokontanyLocalResultFilterComponent } from './views/elections/result/filter/fokontany-local-result-filter/fokontany-local-result-filter.component';
+import { CommunalResultFilterComponent } from './views/elections/result/filter/communal-result-filter/communal-result-filter.component';
+import { MunicipalResultFilterComponent } from './views/elections/result/filter/municipal-result-filter/municipal-result-filter.component';
+import { DistrictResultFilterComponent } from './views/elections/result/filter/district-result-filter/district-result-filter.component';
+import { RegionalResultFilterComponent } from './views/elections/result/filter/regional-result-filter/regional-result-filter.component';
+import { ProvincialResultFilterComponent } from './views/elections/result/filter/provincial-result-filter/provincial-result-filter.component';
+import { GlobalResultFilterComponent } from './views/elections/result/filter/global-result-filter/global-result-filter.component';
 
 @NgModule({
   declarations: [
@@ -76,14 +85,23 @@ import {
     UserImportDialogComponent,
     ElectionDialogComponent,
     FormatPublicUrlPipe,
-    MunicipalResultComponent,
-    MunicipalResultFilterComponent,
+    LocalElectionResultComponent,
     ResultValidationsComponent,
     ResultValidationFormComponent,
     CurrentElectionListComponent,
     ArchiveElectionListComponent,
     ElectionImportDialogComponent,
     AlertComponent,
+    PollingStationResultFilterComponent,
+    PollingStationLocalResultFilterComponent,
+    FokontanyResultFilterComponent,
+    FokontanyLocalResultFilterComponent,
+    CommunalResultFilterComponent,
+    MunicipalResultFilterComponent,
+    DistrictResultFilterComponent,
+    RegionalResultFilterComponent,
+    ProvincialResultFilterComponent,
+    GlobalResultFilterComponent,
   ],
   imports: [
     BrowserModule,

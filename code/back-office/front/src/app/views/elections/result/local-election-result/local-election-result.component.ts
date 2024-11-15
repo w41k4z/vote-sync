@@ -2,17 +2,17 @@ import { Component } from '@angular/core';
 import { Election } from '../../../../dto/election';
 import { ElectoralResult } from '../../../../dto/electoral-result';
 import { ActivatedRoute } from '@angular/router';
-import { MunicipalResultService } from '../../../../services/api/election/election-result/municipal-result.service';
+import { LocalElectionResultService } from '../../../../services/api/election/election-result/local-election-result.service';
 import { ElectionService } from '../../../../services/api/election/election.service';
 import { Page } from '../../../../dto/response/page';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-municipal-result',
-  templateUrl: './municipal-result.component.html',
-  styleUrl: './municipal-result.component.scss',
+  selector: 'app-local-election-result',
+  templateUrl: './local-election-result.component.html',
+  styleUrl: './local-election-result.component.scss',
 })
-export class MunicipalResultComponent {
+export class LocalElectionResultComponent {
   loading$: Observable<Boolean>;
   error$: Observable<string | null>;
   message$: Observable<string | null>;
@@ -25,7 +25,7 @@ export class MunicipalResultComponent {
   constructor(
     private route: ActivatedRoute,
     private electionService: ElectionService,
-    private electionResultService: MunicipalResultService
+    private electionResultService: LocalElectionResultService
   ) {
     this.loading$ = electionResultService.loading$;
     this.error$ = electionResultService.error$;

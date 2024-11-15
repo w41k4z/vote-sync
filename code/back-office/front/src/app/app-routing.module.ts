@@ -15,7 +15,7 @@ import { AppLayoutComponent } from './components/layouts/app-layout/app-layout.c
 import { UsersComponent } from './views/users/users.component';
 import { ElectionsComponent } from './views/elections/elections.component';
 import { PollingStationComponent } from './views/polling-station/polling-station.component';
-import { MunicipalResultComponent } from './views/elections/result/municipal-result/municipal-result.component';
+import { LocalElectionResultComponent } from './views/elections/result/local-election-result/local-election-result.component';
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
 import { AlertComponent } from './views/alert/alert.component';
@@ -93,8 +93,8 @@ const routes: Routes = [
         },
       },
       {
-        path: 'elections/result/municipal/:electionId',
-        component: MunicipalResultComponent,
+        path: 'elections/result/local/:electionId',
+        component: LocalElectionResultComponent,
         data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
       },
       {

@@ -7,6 +7,5 @@ import { ElectoralResult } from '../../../../../dto/electoral-result';
   styleUrl: './municipal-result-filter.component.scss',
 })
 export class MunicipalResultFilterComponent {
-  @Input() currentResult!: number;
   @Input() electoralResult!: ElectoralResult;
 }

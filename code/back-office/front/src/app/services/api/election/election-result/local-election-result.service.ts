@@ -7,7 +7,7 @@ import { Endpoints } from '../../../../endpoints';
 @Injectable({
   providedIn: 'root',
 })
-export class MunicipalResultService extends ApiCallService {
+export class LocalElectionResultService extends ApiCallService {
   constructor(http: HttpClient) {
     super(http);
   }

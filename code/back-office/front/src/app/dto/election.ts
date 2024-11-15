@@ -8,6 +8,7 @@ export class Election {
   endDate: string;
   pollingStationCount: number;
   totalPollingStationCount: number;
+  status: number;
 
   constructor(
     id: number,
@@ -16,7 +17,8 @@ export class Election {
     startDate: string,
     endDate: string,
     pollingStationCount: number,
-    totalPollingStationCount: number
+    totalPollingStationCount: number,
+    status: number
   ) {
     this.id = id;
     this.type = type;
@@ -25,5 +27,6 @@ export class Election {
     this.endDate = endDate;
     this.pollingStationCount = pollingStationCount;
     this.totalPollingStationCount = totalPollingStationCount;
+    this.status = status;
   }
 }
