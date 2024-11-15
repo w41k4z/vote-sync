@@ -7,8 +7,8 @@ SELECT
     SUM(femme_moins_36) AS femme_moins_36,
     SUM(homme_36_plus) AS homme_36_plus,
     SUM(homme_36_plus) AS femme_36_plus,
-    SUM(handicape) AS handicape,
-    SUM(malvoyant) AS malvoyant
+    SUM(handicape) AS handicapes,
+    SUM(malvoyant) AS malvoyants
 FROM enregistrement_electeurs ee
 JOIN elections e
     ON ee.id_election = e.id

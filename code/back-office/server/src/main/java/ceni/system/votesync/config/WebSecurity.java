@@ -55,10 +55,12 @@ public class WebSecurity {
                 return authorize
                                 // public endpoints
                                 .requestMatchers("/error/**", "/public/**",
-                                                "/test/**", "/auth/**", "/api/polling-stations/nearest", "/api/elections/current")
+                                                "/test/**", "/auth/**", "/api/polling-stations/nearest",
+                                                "/api/elections/current")
                                 .permitAll()
                                 // PollingStation Manager endpoints
-                                .requestMatchers("/api/polling-stations/data/**", "/api/elections/results/upload")
+                                .requestMatchers("/api/polling-stations/data/**", "/api/elections/results/upload",
+                                                "/api/elections/results/validate-qr-code")
                                 .hasAnyAuthority(Authority.MANAGER, Authority.ADMIN)
                                 // Operator endpoints
                                 .requestMatchers("/api/elections/results/pending", "/api/elections/results/validate")

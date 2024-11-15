@@ -20,6 +20,8 @@ import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
+import ceni.system.votesync.dto.request.result.ValidateQrCodeRequest;
+import ceni.system.votesync.service.entity.election.QrCodeService;
 import ceni.system.votesync.service.entity.result.ElectoralResultUploadService;
 import ceni.system.votesync.service.entity.result.LegislativeResultService;
 import ceni.system.votesync.service.entity.result.LocalResultService;
@@ -35,16 +37,30 @@ public class ElectoralResultController {
     private LocalResultService localResultService;
     private ElectoralResultUploadService electoralResultUploadService;
     private PendingElectoralResultService pendingElectoralResultService;
+    private QrCodeService qrCodeService;
 
     public ElectoralResultController(PresidentialResultService presidentialResultService,
             LegislativeResultService legislativeResultService, LocalResultService localResultService,
             ElectoralResultUploadService electoralResultUploadService,
-            PendingElectoralResultService pendingElectoralResultService) {
+            PendingElectoralResultService pendingElectoralResultService,
+            QrCodeService qrCodeService) {
         this.presidentialResultService = presidentialResultService;
         this.legislativeResultService = legislativeResultService;
         this.localResultService = localResultService;
         this.electoralResultUploadService = electoralResultUploadService;
         this.pendingElectoralResultService = pendingElectoralResultService;
+        this.qrCodeService = qrCodeService;
+    }
+
+    @PostMapping("/validate-qr-code")
+    public ResponseEntity<ApiResponse> validateQrCode(@RequestBody ValidateQrCodeRequest request) {
+        try {
+            this.qrCodeService.validateQrCode(request.getQrCode());
+            this.qrCodeService.invalidateQrCode(request.getQrCode());
+            return ResponseEntity.ok(new ApiResponse(null, null));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ApiResponse(null, e.getMessage()));
+        }
     }
 
     @PostMapping("/upload")
