@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/config/pages.dart';
 import 'package:vote_sync/screens/home/home_page.dart';
-import 'package:vote_sync/screens/log-in/widgets/with_location/log_in_page.dart';
+import 'package:vote_sync/screens/log-in/widgets/no_location/no_location_log_in_page.dart';
 import 'package:vote_sync/screens/result/result_page.dart';
 import 'package:vote_sync/screens/voters/recorded_voters_page.dart';
 import 'package:vote_sync/screens/voters/registered/registered_voters_page.dart';
@@ -19,7 +19,7 @@ class AppDrawer extends StatelessWidget {
     if (!context.mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => const LogInPage(),
+        builder: (context) => const NoLocationLogInPage(),
       ),
       (Route<dynamic> route) => false,
     );
