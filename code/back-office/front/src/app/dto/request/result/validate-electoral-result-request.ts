@@ -2,7 +2,7 @@ export class ValidateElectoralResultRequest {
   resultId: number;
   blanks: number;
   nulls: number;
-  registeredVoters: number;
+  registered: number;
   candidates: { [key: string]: string };
 
   constructor(
@@ -15,7 +15,7 @@ export class ValidateElectoralResultRequest {
     this.resultId = resultId;
     this.blanks = blankVotes;
     this.nulls = nullVotes;
-    this.registeredVoters = registeredVoters;
+    this.registered = registeredVoters;
     this.candidates = candidates;
   }
 }
