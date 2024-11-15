@@ -12,8 +12,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "resultats_election")
 @AttributeOverrides({
-        @AttributeOverride(name = "locationId", column = @Column(name = "id_pays")),
-        @AttributeOverride(name = "localtion", column = @Column(name = "pays"))
+                @AttributeOverride(name = "code", column = @Column(name = "code_pays")),
+                @AttributeOverride(name = "locationId", column = @Column(name = "id_pays")),
+                @AttributeOverride(name = "localtion", column = @Column(name = "nom_pays"))
 })
 @Immutable
 public class GlobalResultDetails extends ElectoralResultDetails {

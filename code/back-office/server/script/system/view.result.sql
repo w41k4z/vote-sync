@@ -1,5 +1,6 @@
 CREATE OR REPLACE VIEW stat_electeur_par_bv AS
 SELECT
+    ROW_NUMBER() OVER(ORDER BY ee.id_election) AS num_ligne,
     ee.id_election,
     ee.id_bv,
     SUM(homme_moins_36) AS homme_moins_36,
@@ -9,6 +10,9 @@ SELECT
     SUM(handicape) AS handicape,
     SUM(malvoyant) AS malvoyant
 FROM enregistrement_electeurs ee
+JOIN elections e
+    ON ee.id_election = e.id
+    AND e.etat < 20
 JOIN v_electeurs_details ved
     ON ved.id = ee.id_electeur
 WHERE ee.vote >= 20
@@ -17,9 +21,23 @@ GROUP BY
     ee.id_bv
 ;
 
+CREATE OR REPLACE VIEW alertes_stat_par_bv AS
+SELECT
+    a.id_election,
+    a.id_bv,
+    COUNT(a.titre) AS nombre_alertes
+FROM alertes a
+JOIN elections e
+    ON a.id_election = e.id
+    AND e.etat < 20
+GROUP BY
+    a.id_election,
+    a.id_bv
+;
+
 CREATE OR REPLACE VIEW resultats_par_bv AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY r.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY r.id_election) AS num_ligne,
     r.id_election,
     r.id_bv,
     bv.code AS code_bv,
@@ -35,6 +53,9 @@ SELECT
 FROM details_resultats dr
 JOIN resultats r
     ON dr.id_resultat = r.id
+JOIN elections e
+    ON r.id_election = e.id
+    AND e.etat < 20
 JOIN bv
     ON r.id_bv = bv.id
 JOIN enregistrement_candidats ec
@@ -48,15 +69,14 @@ ORDER BY
     r.id_election,
     ec.numero_candidat
 ;
-CREATE OR REPLACE VIEW resultat_statistique_par_bv AS
+CREATE OR REPLACE VIEW resultat_statistique_brute_par_bv AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY r.id_election) AS num_ligne,
     r.id_election,
     r.id_bv AS id,
-    bv.code AS code_bv,
-    bv.nom AS nom_bv,
-    lbv.id_fokontany, -- id for filter
-    lbv.nom_fokontany, -- name for display
+    bv.code,
+    bv.nom,
+    lbv.id_fokontany,
+    lbv.nom_fokontany,
     lbv.id_commune,
     lbv.nom_commune,
     lbv.id_district,
@@ -68,8 +88,8 @@ SELECT
     r.femme_moins_36,
     r.homme_36_plus,
     r.femme_36_plus,
-    r.handicape,
-    r.malvoyant,
+    r.handicapes,
+    r.malvoyants,
     r.blancs,
     r.nuls,
     (
@@ -78,24 +98,76 @@ SELECT
         r.homme_36_plus +
         r.femme_36_plus
     ) - (r.blancs + r.nuls) AS exprimes,
-    r.importe
+    r.importe,
+    0 AS nombre_alertes
 FROM resultats r
+JOIN elections e
+    ON r.id_election = e.id
+    AND e.etat < 20
 JOIN bv
     ON r.id_bv = bv.id
 JOIN liste_bv lbv
     ON lbv.id = bv.id
 WHERE r.etat >= 20
-;
-CREATE OR REPLACE VIEW bv_resultats AS
+UNION ALL
 SELECT
-    rsbv.id_election,
-    bv.id,
+    r.id_election,
+    r.id_bv AS id,
     bv.code,
     bv.nom,
+    lbv.id_fokontany,
+    lbv.nom_fokontany,
+    lbv.id_commune,
+    lbv.nom_commune,
+    lbv.id_district,
+    lbv.nom_district,
+    lbv.id_region,
+    lbv.nom_region,
+    r.inscrits,
+    r.homme_moins_36,
+    r.femme_moins_36,
+    r.homme_36_plus,
+    r.femme_36_plus,
+    r.handicapes,
+    r.malvoyants,
+    r.blancs,
+    r.nuls,
+    (
+        r.homme_moins_36 +
+        r.femme_moins_36 +
+        r.homme_36_plus +
+        r.femme_36_plus
+    ) - (r.blancs + r.nuls) AS exprimes,
+    r.importe,
+    astbv.nombre_alertes
+FROM resultats r
+JOIN elections e
+    ON r.id_election = e.id
+    AND e.etat < 20
+JOIN bv
+    ON r.id_bv = bv.id
+JOIN liste_bv lbv
+    ON lbv.id = bv.id
+JOIN alertes_stat_par_bv astbv
+    ON astbv.id_election = r.id_election
+    AND astbv.id_bv = r.id_bv
+WHERE r.etat >= 20
+;
+CREATE OR REPLACE VIEW resultat_statistique_par_bv AS
+SELECT
+    ROW_NUMBER() OVER(ORDER BY rsbv.id_election) AS num_ligne,
+    rsbv.id_election,
+    rsbv.id,
+    rsbv.code,
+    rsbv.nom,
     rsbv.id_fokontany,
     rsbv.nom_fokontany,
     rsbv.id_commune,
     rsbv.nom_commune,
+    mc.id AS id_municipalite, -- for local election
+    mc.nom AS nom_municipalite, -- for local election
+    mc.id_district AS id_district_municipal, -- for local election
+    mc.nom_district AS nom_district_municipal, -- for local election
     rsbv.id_district,
     rsbv.nom_district,
     rsbv.id_region,
@@ -105,63 +177,52 @@ SELECT
     rsbv.femme_moins_36,
     rsbv.homme_36_plus,
     rsbv.femme_36_plus,
-    rsbv.handicape,
-    rsbv.malvoyant,
+    rsbv.handicapes,
+    rsbv.malvoyants,
+    rsbv.blancs,
+    rsbv.nuls,
+    rsbv.exprimes,
+    rsbv.importe,
+    SUM(rsbv.nombre_alertes) AS nombre_alertes
+FROM resultat_statistique_brute_par_bv rsbv
+JOIN communes cm
+    ON rsbv.id_commune = cm.id
+JOIN municipalites mc
+    ON cm.id_municipalite = mc.id
+GROUP BY
+    rsbv.id_election,
+    rsbv.id,
+    rsbv.code,
+    rsbv.nom,
+    rsbv.id_fokontany,
+    rsbv.nom_fokontany,
+    rsbv.id_commune,
+    rsbv.nom_commune,
+    mc.id,
+    mc.nom,
+    mc.id_district,
+    mc.nom_district,
+    rsbv.id_district,
+    rsbv.nom_district,
+    rsbv.id_region,
+    rsbv.nom_region,
+    rsbv.inscrits,
+    rsbv.homme_moins_36,
+    rsbv.femme_moins_36,
+    rsbv.homme_36_plus,
+    rsbv.femme_36_plus,
+    rsbv.handicapes,
+    rsbv.malvoyants,
     rsbv.blancs,
     rsbv.nuls,
     rsbv.exprimes,
     rsbv.importe
-FROM bv
-JOIN resultat_statistique_par_bv rsbv
-    ON bv.id = rsbv.id_bv
-;
-CREATE OR REPLACE VIEW bv_resultats_election_locale AS
-SELECT
-    bvr.id_election,
-    bvr.id,
-    bvr.code,
-    bvr.nom,
-    bvr.id_fokontany,
-    bvr.nom_fokontany,
-    mc.id AS id_municipalite,
-    mc.nom AS nom_municipalite,
-    bvr.id_district,
-    mc.nom_district,
-    bvr.id_region,
-    bvr.nom_region,
-    bvr.inscrits,
-    bvr.homme_moins_36,
-    bvr.femme_moins_36,
-    bvr.homme_36_plus,
-    bvr.femme_36_plus,
-    bvr.handicape,
-    bvr.malvoyant,
-    bvr.blancs,
-    bvr.nuls,
-    bvr.exprimes,
-    bvr.importe
-FROM bv_resultats bvr
-JOIN communes cm
-    ON bvr.id_commune = cm.id
-JOIN municipalites mc
-    ON cm.id_municipalite = mc.id
-;
-CREATE OR REPLACE VIEW alertes_stat_par_bv AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY a.id_bv) AS id,
-    a.id_election,
-    a.id_bv,
-    COUNT(a.titre) AS nombre_alertes
-FROM alertes a
-GROUP BY
-    a.id_election,
-    a.id_bv
 ;
 
 
 CREATE OR REPLACE VIEW resultats_par_fokontany AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rbv.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rbv.id_election) AS num_ligne,
     rbv.id_election,
     fk.id AS id_fokontany,
     fk.code AS code_fokontany,
@@ -196,13 +257,17 @@ GROUP BY
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_fokontany AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rsbv.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rsbv.id_election) AS num_ligne,
     rsbv.id_election,
-    fk.id AS id_fokontany,
-    fk.code AS code_fokontany,
-    fk.nom AS nom_fokontany,
+    fk.id,
+    fk.code,
+    fk.nom,
     fk.id_commune,
     rsbv.nom_commune,
+    rsbv.id_municipalite,
+    rsbv.nom_municipalite,
+    rsbv.id_district_municipal,
+    rsbv.nom_district_municipal,
     rsbv.id_district,
     rsbv.nom_district,
     rsbv.id_region,
@@ -212,17 +277,18 @@ SELECT
     SUM(rsbv.femme_moins_36) AS femme_moins_36,
     SUM(rsbv.homme_36_plus) AS homme_36_plus,
     SUM(rsbv.femme_36_plus) AS femme_36_plus,
-    SUM(rsbv.handicape) AS handicape,
-    SUM(rsbv.malvoyant) AS malvoyant,
+    SUM(rsbv.handicapes) AS handicapes,
+    SUM(rsbv.malvoyants) AS malvoyants,
     SUM(rsbv.blancs) AS blancs,
     SUM(rsbv.nuls) AS nuls,
     SUM(rsbv.exprimes) AS exprimes,
     SUM(rsbv.importe) AS importes,
     COUNT(fk.id) AS nombre_bv,
-    fktbvi.nombre_total_bv
+    fktbvi.nombre_total_bv,
+    SUM(rsbv.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_bv rsbv
 JOIN bv
-    ON rsbv.id_bv = bv.id
+    ON rsbv.id = bv.id
 JOIN cv
     ON bv.id_cv = cv.id
 JOIN fokontany fk
@@ -236,112 +302,22 @@ GROUP BY
     fk.nom,
     fk.id_commune,
     rsbv.nom_commune,
+    rsbv.id_municipalite,
+    rsbv.nom_municipalite,
+    rsbv.id_district_municipal,
+    rsbv.nom_district_municipal,
     rsbv.id_district,
     rsbv.nom_district,
     rsbv.id_region,
     rsbv.nom_region,
     fktbvi.nombre_total_bv
 ;
-CREATE OR REPLACE VIEW fokontany_resultats AS
-SELECT
-    rsfk.id_election,
-    fk.id,
-    fk.code,
-    fk.nom,
-    fk.id_commune,
-    rsfk.nom_commune,
-    rsfk.id_district,
-    rsfk.nom_district,
-    rsfk.id_region,
-    rsfk.nom_region,
-    rsfk.inscrits,
-    rsfk.homme_moins_36,
-    rsfk.femme_moins_36,
-    rsfk.homme_36_plus,
-    rsfk.femme_36_plus,
-    rsfk.handicape,
-    rsfk.malvoyant,
-    rsfk.blancs,
-    rsfk.nuls,
-    rsfk.exprimes,
-    rsfk.importes,
-    rsfk.nombre_bv,
-    rsfk.nombre_total_bv
-FROM resultat_statistique_par_fokontany rsfk
-JOIN fokontany fk
-    ON fk.id = rsfk.id_fokontany
-;
-CREATE OR REPLACE VIEW fokontany_resultats_election_locale AS
-SELECT
-    fkr.id_election,
-    fkr.id,
-    fkr.code,
-    fkr.nom,
-    mc.id AS id_municipalite,
-    mc.nom AS nom_municipalite,
-    fkr.id_district,
-    mc.nom_district,
-    fkr.id_region,
-    fkr.nom_region,
-    fkr.inscrits,
-    fkr.homme_moins_36,
-    fkr.femme_moins_36,
-    fkr.homme_36_plus,
-    fkr.femme_36_plus,
-    fkr.handicape,
-    fkr.malvoyant,
-    fkr.blancs,
-    fkr.nuls,
-    fkr.exprimes
-FROM fokontany_resultats fkr
-JOIN communes cm
-    ON fkr.id_commune = cm.id
-JOIN municipalites mc
-    ON cm.id_municipalite = mc.id
-GROUP BY
-    fkr.id_election,
-    fkr.id,
-    fkr.code,
-    fkr.nom,
-    mc.id,
-    mc.nom,
-    fkr.id_district,
-    mc.nom_district,
-    fkr.id_region,
-    fkr.nom_region,
-    fkr.inscrits,
-    fkr.homme_moins_36,
-    fkr.femme_moins_36,
-    fkr.homme_36_plus,
-    fkr.femme_36_plus,
-    fkr.handicape,
-    fkr.malvoyant,
-    fkr.blancs,
-    fkr.nuls,
-    fkr.exprimes
-;
-CREATE OR REPLACE VIEW alertes_stat_par_fokontany AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY fk.id) AS id,
-    a_bv.id_election,
-    fk.id AS id_fokontany,
-    SUM(a_bv.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_bv a_bv
-JOIN cv
-    ON a_bv.id_bv = cv.id
-JOIN fokontany fk
-    ON cv.id_fokontany = fk.id
-GROUP BY
-    a_bv.id_election,
-    fk.id
-;
-
 
 
 -- Presidential election and legislative election only
 CREATE OR REPLACE VIEW resultats_par_commune AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rfk.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rfk.id_election) AS num_ligne,
     rfk.id_election,
     cm.id AS id_commune,
     cm.code AS code_commune,
@@ -374,11 +350,11 @@ GROUP BY
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_commune AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rsf.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rsf.id_election) AS num_ligne,
     rsf.id_election,
-    cm.id AS id_commune,
-    cm.code AS code_commune,
-    cm.nom AS nom_commune,
+    cm.id,
+    cm.code,
+    cm.nom,
     cm.id_district,
     rsf.nom_district,
     rsf.id_region,
@@ -388,14 +364,18 @@ SELECT
     SUM(rsf.femme_moins_36) AS femme_moins_36,
     SUM(rsf.homme_36_plus) AS homme_36_plus,
     SUM(rsf.femme_36_plus) AS femme_36_plus,
-    SUM(rsf.handicape) AS handicape,
-    SUM(rsf.malvoyant) AS malvoyant,
+    SUM(rsf.handicapes) AS handicapes,
+    SUM(rsf.malvoyants) AS malvoyants,
     SUM(rsf.blancs) AS blancs,
     SUM(rsf.nuls) AS nuls,
-    SUM(rsf.exprimes) AS exprimes
+    SUM(rsf.exprimes) AS exprimes,
+    SUM(rsf.importes) AS importes,
+    SUM(rsf.nombre_bv) AS nombre_bv,
+    SUM(rsf.nombre_total_bv) AS nombre_total_bv,
+    SUM(rsf.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_fokontany rsf
 JOIN fokontany fk
-    ON fk.id = rsf.id_fokontany
+    ON fk.id = rsf.id
 JOIN communes cm
     ON cm.id = fk.id_commune
 GROUP BY
@@ -408,168 +388,88 @@ GROUP BY
     rsf.id_region,
     rsf.nom_region
 ;
-CREATE OR REPLACE VIEW communes_resultats AS
-SELECT
-    rscm.id_election,
-    cm.id,
-    cm.code,
-    cm.nom,
-    cm.id_district,
-    rscm.nom_district,
-    rscm.id_region,
-    rscm.nom_region,
-    rscm.inscrits,
-    rscm.homme_moins_36,
-    rscm.femme_moins_36,
-    rscm.homme_36_plus,
-    rscm.femme_36_plus,
-    rscm.handicape,
-    rscm.malvoyant,
-    rscm.blancs,
-    rscm.nuls,
-    rscm.exprimes
-FROM communes cm
-JOIN resultat_statistique_par_commune rscm
-    ON cm.id = rscm.id_commune
-;
-CREATE OR REPLACE VIEW alertes_stat_par_commune AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY cm.id) AS id,
-    a_fk.id_election,
-    cm.id AS id_commune,
-    SUM(a_fk.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_fokontany a_fk
-JOIN fokontany fk
-    ON a_fk.id_fokontany = fk.id
-JOIN communes cm
-    ON fk.id_commune = cm.id
-GROUP BY
-    a_fk.id_election,
-    cm.id
-;
 
 
--- Presidential election and local election only
+-- Local election only
 CREATE OR REPLACE VIEW resultats_par_municipalite AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rfk.id_election) AS id,
-    rfk.id_election,
+    ROW_NUMBER() OVER(ORDER BY rcm.id_election) AS num_ligne,
+    rcm.id_election,
     mc.id AS id_municipalite,
     mc.code AS code_municipalite,
     mc.nom AS nom_municipalite,
-    rfk.id_candidat,
-    rfk.numero_candidat,
-    rfk.information_candidat,
-    rfk.id_entite_politique,
-    rfk.nom_entite_politique,
-    rfk.description_entite_politique,
-    SUM(rfk.voix_candidat) AS voix_candidat,
-    rfk.chemin_photo_candidat
-FROM resultats_par_fokontany rfk
-JOIN fokontany fk
-    ON rfk.id_fokontany = fk.id
+    rcm.id_candidat,
+    rcm.numero_candidat,
+    rcm.information_candidat,
+    rcm.id_entite_politique,
+    rcm.nom_entite_politique,
+    rcm.description_entite_politique,
+    SUM(rcm.voix_candidat) AS voix_candidat,
+    rcm.chemin_photo_candidat
+FROM resultats_par_commune rcm
 JOIN communes cm
-    ON fk.id_commune = cm.id
+    ON rcm.id_commune = cm.id
 JOIN municipalites mc
     ON cm.id_municipalite = mc.id
 GROUP BY
-    rfk.id_election,
+    rcm.id_election,
     mc.id,
     mc.code,
     mc.nom,
-    rfk.numero_candidat,
-    rfk.id_candidat,
-    rfk.information_candidat,
-    rfk.id_entite_politique,
-    rfk.nom_entite_politique,
-    rfk.description_entite_politique,
-    rfk.chemin_photo_candidat
+    rcm.numero_candidat,
+    rcm.id_candidat,
+    rcm.information_candidat,
+    rcm.id_entite_politique,
+    rcm.nom_entite_politique,
+    rcm.description_entite_politique,
+    rcm.chemin_photo_candidat
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_municipalite AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rsf.id_election) AS id,
-    rsf.id_election,
-    mc.id AS id_municipalite,
-    mc.code AS code_municipalite,
-    mc.nom AS nom_municipalite,
+    ROW_NUMBER() OVER(ORDER BY rstcm.id_election) AS num_ligne,
+    rstcm.id_election,
+    mc.id,
+    mc.code,
+    mc.nom,
     mc.id_district,
     mc.nom_district,
-    rsf.id_region,
-    rsf.nom_region,
-    SUM(rsf.inscrits) AS inscrits,
-    SUM(rsf.homme_moins_36) AS homme_moins_36,
-    SUM(rsf.femme_moins_36) AS femme_moins_36,
-    SUM(rsf.homme_36_plus) AS homme_36_plus,
-    SUM(rsf.femme_36_plus) AS femme_36_plus,
-    SUM(rsf.handicape) AS handicape,
-    SUM(rsf.malvoyant) AS malvoyant,
-    SUM(rsf.blancs) AS blancs,
-    SUM(rsf.nuls) AS nuls,
-    SUM(rsf.exprimes) AS exprimes
-FROM resultat_statistique_par_fokontany rsf
-JOIN fokontany fk
-    ON fk.id = rsf.id_fokontany
+    rstcm.id_region,
+    rstcm.nom_region,
+    SUM(rstcm.inscrits) AS inscrits,
+    SUM(rstcm.homme_moins_36) AS homme_moins_36,
+    SUM(rstcm.femme_moins_36) AS femme_moins_36,
+    SUM(rstcm.homme_36_plus) AS homme_36_plus,
+    SUM(rstcm.femme_36_plus) AS femme_36_plus,
+    SUM(rstcm.handicapes) AS handicapes,
+    SUM(rstcm.malvoyants) AS malvoyants,
+    SUM(rstcm.blancs) AS blancs,
+    SUM(rstcm.nuls) AS nuls,
+    SUM(rstcm.exprimes) AS exprimes,
+    SUM(rstcm.importes) AS importes,
+    SUM(rstcm.nombre_bv) AS nombre_bv,
+    SUM(rstcm.nombre_total_bv) AS nombre_total_bv,
+    SUM(rstcm.nombre_alertes) AS nombre_alertes
+FROM resultat_statistique_par_commune rstcm
 JOIN communes cm
-    ON cm.id = fk.id_commune
+    ON cm.id = rstcm.id
 JOIN municipalites mc
     ON mc.id = cm.id_municipalite
 GROUP BY
-    rsf.id_election,
+    rstcm.id_election,
     mc.id,
     mc.code,
     mc.nom,
     mc.id_district,
     mc.nom_district,
-    rsf.id_region,
-    rsf.nom_region
-;
-CREATE OR REPLACE VIEW municipalites_resultats AS
-SELECT
-    rsmc.id_election,
-    mc.id,
-    mc.code,
-    mc.nom,
-    mc.id_district,
-    mc.nom_district,
-    rsmc.id_region,
-    rsmc.nom_region,
-    rsmc.inscrits,
-    rsmc.homme_moins_36,
-    rsmc.femme_moins_36,
-    rsmc.homme_36_plus,
-    rsmc.femme_36_plus,
-    rsmc.handicape,
-    rsmc.malvoyant,
-    rsmc.blancs,
-    rsmc.nuls,
-    rsmc.exprimes
-FROM municipalites mc
-JOIN resultat_statistique_par_municipalite rsmc
-    ON mc.id = rsmc.id_municipalite
-;
-CREATE OR REPLACE VIEW alertes_stat_par_municipalite AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY mc.id) AS id,
-    a_fk.id_election,
-    mc.id AS id_municipalite,
-    SUM(a_fk.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_fokontany a_fk
-JOIN fokontany fk
-    ON a_fk.id_fokontany = fk.id
-JOIN communes cm
-    ON fk.id_commune = cm.id
-JOIN municipalites mc
-    ON cm.id_municipalite = mc.id
-GROUP BY
-    a_fk.id_election,
-    mc.id
+    rstcm.id_region,
+    rstcm.nom_region
 ;
 
 
 -- Presidential election and legislative election only
 CREATE OR REPLACE VIEW resultats_par_district AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rcm.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rcm.id_election) AS num_ligne,
     rcm.id_election,
     d.id AS id_district,
     d.code AS code_district,
@@ -602,11 +502,11 @@ GROUP BY
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_district AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rsc.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rsc.id_election) AS num_ligne,
     rsc.id_election,
-    d.id AS id_district,
-    d.code AS code_district,
-    d.nom AS nom_district,
+    d.id,
+    d.code,
+    d.nom,
     d.id_region,
     rsc.nom_region,
     SUM(rsc.inscrits) AS inscrits,
@@ -614,14 +514,18 @@ SELECT
     SUM(rsc.femme_moins_36) AS femme_moins_36,
     SUM(rsc.homme_36_plus) AS homme_36_plus,
     SUM(rsc.femme_36_plus) AS femme_36_plus,
-    SUM(rsc.handicape) AS handicape,
-    SUM(rsc.malvoyant) AS malvoyant,
+    SUM(rsc.handicapes) AS handicapes,
+    SUM(rsc.malvoyants) AS malvoyants,
     SUM(rsc.blancs) AS blancs,
     SUM(rsc.nuls) AS nuls,
-    SUM(rsc.exprimes) AS exprimes
+    SUM(rsc.exprimes) AS exprimes,
+    SUM(rsc.importes) AS importes,
+    SUM(rsc.nombre_bv) AS nombre_bv,
+    SUM(rsc.nombre_total_bv) AS nombre_total_bv,
+    SUM(rsc.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_commune rsc
 JOIN communes cm
-    ON cm.id = rsc.id_commune
+    ON cm.id = rsc.id
 JOIN districts d
     ON d.id = cm.id_district
 GROUP BY
@@ -632,49 +536,12 @@ GROUP BY
     d.id_region,
     rsc.nom_region
 ;
-CREATE OR REPLACE VIEW districts_resultats AS
-SELECT
-    rsd.id_election,
-    d.id,
-    d.code,
-    d.nom,
-    d.id_region,
-    rsd.nom_region,
-    rsd.inscrits,
-    rsd.homme_moins_36,
-    rsd.femme_moins_36,
-    rsd.homme_36_plus,
-    rsd.femme_36_plus,
-    rsd.handicape,
-    rsd.malvoyant,
-    rsd.blancs,
-    rsd.nuls,
-    rsd.exprimes
-FROM districts d
-JOIN resultat_statistique_par_district rsd
-    ON d.id = rsd.id_district
-;
-CREATE OR REPLACE VIEW alertes_stat_par_district AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY d.id) AS id,
-    a_cm.id_election,
-    d.id AS id_district,
-    SUM(a_cm.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_commune a_cm
-JOIN communes cm
-    ON a_cm.id_commune = cm.id
-JOIN districts d
-    ON cm.id_district = d.id
-GROUP BY
-    a_cm.id_election,
-    d.id
-;
 
 
 -- Presidential election only
 CREATE OR REPLACE VIEW resultats_par_region AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rds.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rds.id_election) AS num_ligne,
     rds.id_election,
     r.id AS id_region,
     r.code AS code_region,
@@ -707,24 +574,28 @@ GROUP BY
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_region AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rsd.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rsd.id_election) AS num_ligne,
     rsd.id_election,
-    r.id AS id_region,
-    r.code AS code_region,
-    r.nom AS nom_region,
+    r.id,
+    r.code,
+    r.nom,
     SUM(rsd.inscrits) AS inscrits,
     SUM(rsd.homme_moins_36) AS homme_moins_36,
     SUM(rsd.femme_moins_36) AS femme_moins_36,
     SUM(rsd.homme_36_plus) AS homme_36_plus,
     SUM(rsd.femme_36_plus) AS femme_36_plus,
-    SUM(rsd.handicape) AS handicape,
-    SUM(rsd.malvoyant) AS malvoyant,
+    SUM(rsd.handicapes) AS handicapes,
+    SUM(rsd.malvoyants) AS malvoyants,
     SUM(rsd.blancs) AS blancs,
     SUM(rsd.nuls) AS nuls,
-    SUM(rsd.exprimes) AS exprimes
+    SUM(rsd.exprimes) AS exprimes,
+    SUM(rsd.importes) AS importes,
+    SUM(rsd.nombre_bv) AS nombre_bv,
+    SUM(rsd.nombre_total_bv) AS nombre_total_bv,
+    SUM(rsd.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_district rsd
 JOIN districts d
-    ON d.id = rsd.id_district
+    ON d.id = rsd.id
 JOIN regions r
     ON r.id = d.id_region
 GROUP BY
@@ -733,46 +604,12 @@ GROUP BY
     r.code,
     r.nom
 ;
-CREATE OR REPLACE VIEW regions_resultats AS
-SELECT
-    rsr.id_election,
-    r.id,
-    r.code,
-    r.nom,
-    rsr.inscrits,
-    rsr.homme_moins_36,
-    rsr.femme_moins_36,
-    rsr.homme_36_plus,
-    rsr.femme_36_plus,
-    rsr.handicape,
-    rsr.malvoyant,
-    rsr.blancs,
-    rsr.nuls,
-    rsr.exprimes
-FROM regions r
-JOIN resultat_statistique_par_region rsr
-    ON r.id = rsr.id_region
-;
-CREATE OR REPLACE VIEW alertes_stat_par_region AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY r.id) AS id,
-    a_cd.id_election,
-    r.id AS id_region,
-    SUM(a_cd.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_district a_cd
-JOIN districts d
-    ON a_cd.id_district = d.id
-JOIN regions r
-    ON d.id_region = r.id
-GROUP BY
-    a_cd.id_election,
-    r.id
-;
+
 
 -- Presidential election only
 CREATE OR REPLACE VIEW resultats_par_province AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rrg.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rrg.id_election) AS num_ligne,
     rrg.id_election,
     p.id AS id_province,
     TO_CHAR(p.id) AS code_province,
@@ -804,24 +641,28 @@ GROUP BY
 ;
 CREATE OR REPLACE VIEW resultat_statistique_par_province AS
 SELECT
-    ROW_NUMBER() OVER(ORDER BY rsr.id_election) AS id,
+    ROW_NUMBER() OVER(ORDER BY rsr.id_election) AS num_ligne,
     rsr.id_election,
-    p.id AS id_province,
-    TO_CHAR(p.id) AS code_province,
-    p.nom AS nom_province,
+    p.id,
+    TO_CHAR(p.id) AS code,
+    p.nom,
     SUM(rsr.inscrits) AS inscrits,
     SUM(rsr.homme_moins_36) AS homme_moins_36,
     SUM(rsr.femme_moins_36) AS femme_moins_36,
     SUM(rsr.homme_36_plus) AS homme_36_plus,
     SUM(rsr.femme_36_plus) AS femme_36_plus,
-    SUM(rsr.handicape) AS handicape,
-    SUM(rsr.malvoyant) AS malvoyant,
+    SUM(rsr.handicapes) AS handicapes,
+    SUM(rsr.malvoyants) AS malvoyants,
     SUM(rsr.blancs) AS blancs,
     SUM(rsr.nuls) AS nuls,
-    SUM(rsr.exprimes) AS exprimes
+    SUM(rsr.exprimes) AS exprimes,
+    SUM(rsr.importes) AS importes,
+    SUM(rsr.nombre_bv) AS nombre_bv,
+    SUM(rsr.nombre_total_bv) AS nombre_total_bv,
+    SUM(rsr.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_region rsr
 JOIN regions r
-    ON r.id = rsr.id_region
+    ON r.id = rsr.id
 JOIN provinces p
     ON p.id = r.id_province
 GROUP BY
@@ -829,51 +670,16 @@ GROUP BY
     p.id,
     p.nom
 ;
-CREATE OR REPLACE VIEW provinces_resultats AS
-SELECT
-    rsp.id_election,
-    p.id,
-    TO_CHAR(p.id) AS code,
-    p.nom,
-    rsp.inscrits,
-    rsp.homme_moins_36,
-    rsp.femme_moins_36,
-    rsp.homme_36_plus,
-    rsp.femme_36_plus,
-    rsp.handicape,
-    rsp.malvoyant,
-    rsp.blancs,
-    rsp.nuls,
-    rsp.exprimes
-FROM provinces p
-JOIN resultat_statistique_par_province rsp
-    ON p.id = rsp.id_province
-;
-CREATE OR REPLACE VIEW alertes_stat_par_province AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY p.id) AS id,
-    a_cd.id_election,
-    p.id AS id_province,
-    SUM(a_cd.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_region a_cd
-JOIN regions r
-    ON a_cd.id_region = r.id
-JOIN provinces p
-    ON r.id_province = p.id
-GROUP BY
-    a_cd.id_election,
-    p.id
-;
 
 
 -- Presidential election only
 CREATE OR REPLACE VIEW resultats_election AS
 SELECT
-    rpp.id_election AS id,
+    ROW_NUMBER() OVER(ORDER BY rpp.id_election) AS num_ligne,
     rpp.id_election,
     '0' AS id_pays,
-    'Madagascar' AS pays,
-    '0' AS code,
+    '0' AS code_pays,
+    'Madagascar' AS nom_pays,
     rpp.id_candidat,
     rpp.numero_candidat,
     rpp.information_candidat,
@@ -895,65 +701,26 @@ GROUP BY
 ;
 CREATE OR REPLACE VIEW resultat_statistique_election AS
 SELECT
-    rsp.id_election AS id,
+    ROW_NUMBER() OVER(ORDER BY rsp.id_election) AS num_ligne,
     rsp.id_election,
-    '0' AS id_pays,
-    'Madagascar' AS pays,
+    '0' AS id,
     '0' AS code,
+    'Madagascar' AS nom,
     SUM(rsp.inscrits) AS inscrits,
     SUM(rsp.homme_moins_36) AS homme_moins_36,
     SUM(rsp.femme_moins_36) AS femme_moins_36,
     SUM(rsp.homme_36_plus) AS homme_36_plus,
     SUM(rsp.femme_36_plus) AS femme_36_plus,
-    SUM(rsp.handicape) AS handicape,
-    SUM(rsp.malvoyant) AS malvoyant,
+    SUM(rsp.handicapes) AS handicapes,
+    SUM(rsp.malvoyants) AS malvoyants,
     SUM(rsp.blancs) AS blancs,
     SUM(rsp.nuls) AS nuls,
-    SUM(rsp.exprimes) AS exprimes
+    SUM(rsp.exprimes) AS exprimes,
+    SUM(rsp.importes) AS importes,
+    SUM(rsp.nombre_bv) AS nombre_bv,
+    SUM(rsp.nombre_total_bv) AS nombre_total_bv,
+    SUM(rsp.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_province rsp
 GROUP BY
     rsp.id_election
-;
-CREATE OR REPLACE VIEW global_resultats AS
-SELECT
-    rsg.id_election,
-    '0' AS id,
-    '0' AS code,
-    'Madagascar' AS nom,
-    rsg.inscrits,
-    rsg.homme_moins_36,
-    rsg.femme_moins_36,
-    rsg.homme_36_plus,
-    rsg.femme_36_plus,
-    rsg.handicape,
-    rsg.malvoyant,
-    rsg.blancs,
-    rsg.nuls,
-    rsg.exprimes
-FROM dual d
-JOIN resultat_statistique_election rsg
-    ON rsg.id_pays = '0'
-;
-CREATE OR REPLACE VIEW alertes_stat_par_election AS
-SELECT
-    ROW_NUMBER() OVER(ORDER BY a_cd.id_election) AS id,
-    a_cd.id_election,
-    '0' AS id_pays,
-    SUM(a_cd.nombre_alertes) AS nombre_alertes
-FROM alertes_stat_par_province a_cd
-GROUP BY
-    a_cd.id_election
-;
--- for current elections
-CREATE OR REPLACE VIEW elections_resultats_bv_info AS
-SELECT
-    e.id,
-    COALESCE(COUNT(rs.id_bv), 0) AS nombre_bv,
-    (SELECT COUNT(id) FROM bv) AS nombre_total_bv
-FROM elections e
-LEFT JOIN resultats rs
-    ON e.id = rs.id_election
-    AND rs.etat >= 20
-WHERE e.etat < 20
-GROUP BY e.id
 ;

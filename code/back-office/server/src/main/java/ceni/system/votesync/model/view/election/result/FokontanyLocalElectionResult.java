@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "fokontany_resultats_election_locale")
+@Table(name = "resultat_statistique_par_fokontany")
 @Immutable
 public class FokontanyLocalElectionResult extends ElectoralResult {
 
@@ -29,10 +29,10 @@ public class FokontanyLocalElectionResult extends ElectoralResult {
     @Column(name = "nom_municipalite")
     private String municipality;
 
-    @Column(name = "id_district")
+    @Column(name = "id_district_municipal")
     private Integer districtId;
 
-    @Column(name = "nom_district")
+    @Column(name = "nom_district_municipal")
     private String district;
 
     @Column(name = "id_region")
@@ -40,6 +40,15 @@ public class FokontanyLocalElectionResult extends ElectoralResult {
 
     @Column(name = "nom_region")
     private String region;
+
+    @Column(name = "importes")
+    private Integer importedResults;
+
+    @Column(name = "nombre_bv")
+    private Integer collectedResults;
+
+    @Column(name = "nombre_total_bv")
+    private Integer totalPollingStationCount;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumns({

@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "bv_resultats")
+@Table(name = "resultat_statistique_par_bv")
 @Immutable
 public class PollingStationResult extends ElectoralResult {
 

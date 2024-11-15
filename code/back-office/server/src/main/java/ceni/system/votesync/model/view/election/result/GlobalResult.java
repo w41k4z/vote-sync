@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Immutable;
 
 import ceni.system.votesync.model.base.view.result.ElectoralResult;
 import ceni.system.votesync.model.view.election.result.details.GlobalResultDetails;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -18,9 +19,18 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "global_resultats")
+@Table(name = "resultat_statistique_election")
 @Immutable
 public class GlobalResult extends ElectoralResult {
+
+    @Column(name = "importes")
+    private Integer importedResults;
+
+    @Column(name = "nombre_bv")
+    private Integer collectedResults;
+
+    @Column(name = "nombre_total_bv")
+    private Integer totalPollingStationCount;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumns({

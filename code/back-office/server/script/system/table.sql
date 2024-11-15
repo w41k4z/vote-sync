@@ -55,8 +55,8 @@ CREATE TABLE resultats (
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   handicape NUMBER NOT NULL,
-   malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
    blancs NUMBER NOT NULL,
    nuls NUMBER NOT NULL,
    etat NUMBER NOT NULL, -- 0: en attente, 20: cloturé
@@ -70,17 +70,18 @@ CREATE TABLE resultats (
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      handicape >= 0 AND
-      malvoyant >= 0 AND
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
       blancs >= 0 AND
-      nuls >= 0
+      nuls >= 0 AND
+      importe BETWEEN 0 AND 1
    ),
    CHECK (
       homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
    ),
    CHECK (
-      handicape BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
-      malvoyant BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
    ),
    CHECK (
       blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
@@ -114,8 +115,8 @@ CREATE TABLE resultats_importes (
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   handicape NUMBER NOT NULL,
-   malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
    blancs NUMBER NOT NULL,
    nuls NUMBER NOT NULL,
    PRIMARY KEY(id),
@@ -126,8 +127,8 @@ CREATE TABLE resultats_importes (
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      handicape >= 0 AND
-      malvoyant >= 0 AND
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
       blancs >= 0 AND
       nuls >= 0
    ),
@@ -135,8 +136,8 @@ CREATE TABLE resultats_importes (
       homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
    ),
    CHECK (
-      handicape BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
-      malvoyant BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
    ),
    CHECK (
       blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus

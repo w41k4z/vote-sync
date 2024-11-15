@@ -29,7 +29,7 @@ CREATE OR REPLACE PROCEDURE import_electoral_results (
     election_id NUMBER
 ) AS
 BEGIN
-    INSERT INTO resultats(id_election, id_bv, inscrits, homme_moins_36, femme_moins_36, homme_36_plus, femme_36_plus, handicape, malvoyant, blancs, nuls, etat, importe)
+    INSERT INTO resultats(id_election, id_bv, inscrits, homme_moins_36, femme_moins_36, homme_36_plus, femme_36_plus, handicapes, malvoyants, blancs, nuls, etat, importe)
     (
         SELECT
             election_id,
@@ -39,8 +39,8 @@ BEGIN
             rsi.femme_moins_36,
             rsi.homme_36_plus,
             rsi.femme_36_plus,
-            rsi.handicape,
-            rsi.malvoyant,
+            rsi.handicapes,
+            rsi.malvoyants,
             rsi.blancs,
             rsi.nuls,
             0,
@@ -246,11 +246,22 @@ BEGIN
         nom_bv,
         nom_fokontany,
         nom_commune,
+        nom_municipalite,
+        nom_district_municipal,
         nom_district,
         nom_region,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
         nuls,
+        exprimes,
+        importe,
+        nombre_alertes,
         nom_operateur,
         prenom_operateur,
         contact_operateur,
@@ -265,18 +276,29 @@ BEGIN
             bvrs.nom,
             bvrs.nom_fokontany,
             bvrs.nom_commune,
+            bvrs.nom_municipalite,
+            bvrs.nom_district_municipal,
             bvrs.nom_district,
             bvrs.nom_region,
             bvrs.inscrits,
+            bvrs.homme_moins_36,
+            bvrs.femme_moins_36,
+            bvrs.homme_36_plus,
+            bvrs.femme_36_plus,
+            bvrs.handicapes,
+            bvrs.malvoyants,
             bvrs.blancs,
             bvrs.nuls,
+            bvrs.exprimes,
+            bvrs.importe,
+            bvrs.nombre_alertes,
             u.nom AS nom_operateur,
             u.prenom AS prenom_operateur,
             u.contact AS contact_operateur,
             u2.nom AS nom_membre_bv,
             u2.prenom AS prenom_membre_bv,
             u2.contact AS contact_membre_bv
-        FROM bv_resultats bvrs
+        FROM resultat_statistique_par_bv bvrs
         JOIN bv
             ON bvrs.id = bv.id
         LEFT JOIN utilisateurs u
@@ -321,11 +343,24 @@ BEGIN
         code_fokontany,
         nom_fokontany,
         nom_commune,
+        nom_municipalite,
+        nom_district_municipal,
         nom_district,
         nom_region,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             frs.id_election,
@@ -333,12 +368,25 @@ BEGIN
             frs.code,
             frs.nom,
             frs.nom_commune,
+            frs.nom_municipalite,
+            frs.nom_district_municipal,
             frs.nom_district,
             frs.nom_region,
             frs.inscrits,
+            frs.homme_moins_36,
+            frs.femme_moins_36,
+            frs.homme_36_plus,
+            frs.femme_36_plus,
+            frs.handicapes,
+            frs.malvoyants,
             frs.blancs,
-            frs.nuls
-        FROM fokontany_resultats frs
+            frs.nuls,
+            frs.exprimes,
+            frs.importes,
+            frs.nombre_bv,
+            frs.nombre_total_bv,
+            frs.nombre_alertes
+        FROM resultat_statistique_par_fokontany frs
         WHERE id_election = election_id
     );
 
@@ -380,8 +428,19 @@ BEGIN
         nom_district,
         nom_region,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             crs.id_election,
@@ -391,9 +450,20 @@ BEGIN
             crs.nom_district,
             crs.nom_region,
             crs.inscrits,
+            crs.homme_moins_36,
+            crs.femme_moins_36,
+            crs.homme_36_plus,
+            crs.femme_36_plus,
+            crs.handicapes,
+            crs.malvoyants,
             crs.blancs,
-            crs.nuls
-        FROM communes_resultats crs
+            crs.nuls,
+            crs.exprimes,
+            crs.importes,
+            crs.nombre_bv,
+            crs.nombre_total_bv,
+            crs.nombre_alertes
+        FROM resultat_statistique_par_commune crs
         WHERE id_election = election_id
     );
 
@@ -435,8 +505,19 @@ BEGIN
         nom_district,
         nom_region,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             mrs.id_election,
@@ -446,9 +527,20 @@ BEGIN
             mrs.nom_district,
             mrs.nom_region,
             mrs.inscrits,
+            mrs.homme_moins_36,
+            mrs.femme_moins_36,
+            mrs.homme_36_plus,
+            mrs.femme_36_plus,
+            mrs.handicapes,
+            mrs.malvoyants,
             mrs.blancs,
-            mrs.nuls
-        FROM municipalites_resultats mrs
+            mrs.nuls,
+            mrs.exprimes,
+            mrs.importes,
+            mrs.nombre_bv,
+            mrs.nombre_total_bv,
+            mrs.nombre_alertes
+        FROM resultat_statistique_par_municipalite mrs
         WHERE id_election = election_id
     );
 
@@ -489,8 +581,19 @@ BEGIN
         nom_district,
         nom_region,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             drs.id_election,
@@ -499,9 +602,20 @@ BEGIN
             drs.nom,
             drs.nom_region,
             drs.inscrits,
+            drs.homme_moins_36,
+            drs.femme_moins_36,
+            drs.homme_36_plus,
+            drs.femme_36_plus,
+            drs.handicapes,
+            drs.malvoyants,
             drs.blancs,
-            drs.nuls
-        FROM districts_resultats drs
+            drs.nuls,
+            drs.exprimes,
+            drs.importes,
+            drs.nombre_bv,
+            drs.nombre_total_bv,
+            drs.nombre_alertes
+        FROM resultat_statistique_par_district drs
         WHERE id_election = election_id
     );
 
@@ -541,8 +655,19 @@ BEGIN
         code_region,
         nom_region,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             rrs.id_election,
@@ -550,9 +675,20 @@ BEGIN
             rrs.code,
             rrs.nom,
             rrs.inscrits,
+            rrs.homme_moins_36,
+            rrs.femme_moins_36,
+            rrs.homme_36_plus,
+            rrs.femme_36_plus,
+            rrs.handicapes,
+            rrs.malvoyants,
             rrs.blancs,
-            rrs.nuls
-        FROM regions_resultats rrs
+            rrs.nuls,
+            rrs.exprimes,
+            rrs.importes,
+            rrs.nombre_bv,
+            rrs.nombre_total_bv,
+            rrs.nombre_alertes
+        FROM resultat_statistique_par_region rrs
         WHERE id_election = election_id
     );
 
@@ -591,17 +727,39 @@ BEGIN
         id_province,
         nom_province,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             prs.id_election,
             prs.id,
             prs.nom,
             prs.inscrits,
+            prs.homme_moins_36,
+            prs.femme_moins_36,
+            prs.homme_36_plus,
+            prs.femme_36_plus,
+            prs.handicapes,
+            prs.malvoyants,
             prs.blancs,
-            prs.nuls
-        FROM provinces_resultats prs
+            prs.nuls,
+            prs.exprimes,
+            prs.importes,
+            prs.nombre_bv,
+            prs.nombre_total_bv,
+            prs.nombre_alertes
+        FROM resultat_statistique_par_province prs
         WHERE id_election = election_id
     );
 
@@ -638,15 +796,37 @@ BEGIN
     INSERT INTO resultats_provisoires(
         id_election,
         inscrits,
+        homme_moins_36,
+        femme_moins_36,
+        homme_36_plus,
+        femme_36_plus,
+        handicapes,
+        malvoyants,
         blancs,
-        nuls
+        nuls,
+        exprimes,
+        importes,
+        nombre_bv,
+        nombre_total_bv,
+        nombre_alertes
     ) (
         SELECT
             grs.id_election,
             grs.inscrits,
+            grs.homme_moins_36,
+            grs.femme_moins_36,
+            grs.homme_36_plus,
+            grs.femme_36_plus,
+            grs.handicapes,
+            grs.malvoyants,
             grs.blancs,
-            grs.nuls
-        FROM global_resultats grs
+            grs.nuls,
+            grs.exprimes,
+            grs.importes,
+            grs.nombre_bv,
+            grs.nombre_total_bv,
+            grs.nombre_alertes
+        FROM resultat_statistique_election grs
         WHERE id_election = election_id
     );
 

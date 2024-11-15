@@ -6,6 +6,8 @@ CREATE TABLE bv_resultats_provisoires (
    nom_bv VARCHAR2(50) NOT NULL,
    nom_fokontany VARCHAR2(50) NOT NULL,
    nom_commune VARCHAR2(50) NOT NULL,
+   nom_municipalite VARCHAR2(50) NOT NULL,
+   nom_district_municipal VARCHAR2(50) NOT NULL,
    nom_district VARCHAR2(50) NOT NULL,
    nom_region VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
@@ -13,10 +15,13 @@ CREATE TABLE bv_resultats_provisoires (
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   handicape NUMBER NOT NULL,
-   malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
    blancs NUMBER NOT NULL,
    nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importe NUMBER NOT NULL, -- 0: via app, 1: importé
+   nombre_alertes NUMBER NOT NULL,
    nom_operateur VARCHAR2(50),
    prenom_operateur VARCHAR2(50),
    contact_operateur CHAR(10),
@@ -32,20 +37,26 @@ CREATE TABLE bv_resultats_provisoires (
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      handicape >= 0 AND
-      malvoyant >= 0 AND
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
       blancs >= 0 AND
-      nuls >= 0
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importe BETWEEN 0 AND 1 AND
+      nombre_alertes >= 0
    ),
    CHECK (
       homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
    ),
    CHECK (
-      handicape BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
-      malvoyant BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
    ),
    CHECK (
       blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE bv_details_resultats_provisoires (
@@ -70,35 +81,55 @@ CREATE TABLE fokontany_resultats_provisoires (
    code_fokontany CHAR(8) NOT NULL,
    nom_fokontany VARCHAR2(50) NOT NULL,
    nom_commune VARCHAR2(50) NOT NULL,
+   nom_municipalite VARCHAR2(50) NOT NULL,
+   nom_district_municipal VARCHAR2(50) NOT NULL,
    nom_district VARCHAR2(50) NOT NULL,
    nom_region VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_fokontany) REFERENCES fokontany(id),
    CONSTRAINT unique_fokontany_resultat_provisoire UNIQUE(id_election, id_fokontany),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE fokontany_details_resultats_provisoires (
@@ -125,32 +156,50 @@ CREATE TABLE communes_resultats_provisoires (
    nom_district VARCHAR2(50) NOT NULL,
    nom_region VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_commune) REFERENCES communes(id),
    CONSTRAINT unique_commune_resultat_provisoire UNIQUE(id_election, id_commune),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE communes_details_resultats_provisoires (
@@ -178,32 +227,50 @@ CREATE TABLE municipalites_resultats_provisoires (
    nom_district VARCHAR2(50) NOT NULL,
    nom_region VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_municipalite) REFERENCES municipalites(id),
    CONSTRAINT unique_municipalite_resultat_provisoire UNIQUE(id_election, id_municipalite),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE municipalites_details_resultats_provisoires (
@@ -230,32 +297,50 @@ CREATE TABLE districts_resultats_provisoires (
    nom_district VARCHAR2(50) NOT NULL,
    nom_region VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_district) REFERENCES districts(id),
    CONSTRAINT unique_district_resultat_provisoire UNIQUE(id_election, id_district),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE districts_details_resultats_provisoires (
@@ -281,32 +366,50 @@ CREATE TABLE regions_resultats_provisoires (
    code_region CHAR(2) NOT NULL,
    nom_region VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_region) REFERENCES regions(id),
    CONSTRAINT unique_region_resultat_provisoire UNIQUE(id_election, id_region),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE regions_details_resultats_provisoires (
@@ -331,32 +434,50 @@ CREATE TABLE provinces_resultats_provisoires (
    id_province CHAR(1) NULL,
    nom_province VARCHAR2(50) NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    FOREIGN KEY(id_province) REFERENCES provinces(id),
    CONSTRAINT unique_province_resultat_provisoire UNIQUE(id_election, id_province),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE provinces_details_resultats_provisoires (
@@ -379,31 +500,49 @@ CREATE TABLE resultats_provisoires (
    id NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY,
    id_election NUMBER NOT NULL,
    inscrits NUMBER NOT NULL,
-   blancs NUMBER NOT NULL,
-   nuls NUMBER NOT NULL,
    homme_moins_36 NUMBER NOT NULL,
    femme_moins_36 NUMBER NOT NULL,
    homme_36_plus NUMBER NOT NULL,
    femme_36_plus NUMBER NOT NULL,
-   homme_handicape NUMBER NOT NULL,
-   femme_handicape NUMBER NOT NULL,
-   homme_malvoyant NUMBER NOT NULL,
-   femme_malvoyant NUMBER NOT NULL,
+   handicapes NUMBER NOT NULL,
+   malvoyants NUMBER NOT NULL,
+   blancs NUMBER NOT NULL,
+   nuls NUMBER NOT NULL,
+   exprimes NUMBER NOT NULL,
+   importes NUMBER NOT NULL,
+   nombre_bv NUMBER NOT NULL,
+   nombre_total_bv NUMBER NOT NULL,
+   nombre_alertes NUMBER NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
    CONSTRAINT unique_resultat_provisoire UNIQUE(id_election),
    CHECK (
-      inscrits >= 0 AND 
-      blancs >= 0 AND 
-      nuls >= 0 AND 
       homme_moins_36 >= 0 AND
       femme_moins_36 >= 0 AND
       homme_36_plus >= 0 AND
       femme_36_plus >= 0 AND
-      homme_handicape >= 0 AND
-      femme_handicape >= 0 AND
-      homme_malvoyant >= 0 AND
-      femme_malvoyant >= 0
+      handicapes >= 0 AND
+      malvoyants >= 0 AND
+      blancs >= 0 AND
+      nuls >= 0 AND
+      exprimes >= 0 AND
+      importes >= 0 AND
+      nombre_bv >= 0 AND
+      nombre_total_bv >= 0 AND
+      nombre_alertes >= 0
+   ),
+   CHECK (
+      homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus <= inscrits
+   ),
+   CHECK (
+      handicapes BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus AND
+      malvoyants BETWEEN 0 AND homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      blancs + nuls <= homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus
+   ),
+   CHECK (
+      exprimes = homme_moins_36 + femme_moins_36 + homme_36_plus + femme_36_plus - blancs - nuls
    )
 );
 CREATE TABLE details_resultats_provisoires (
