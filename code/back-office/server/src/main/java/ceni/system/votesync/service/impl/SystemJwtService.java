@@ -38,9 +38,12 @@ public class SystemJwtService extends AbstractJwtService<User> {
         Role userRole = new Role();
         String userIdentifier = claims.getSubject();
         String userAuthority = (String) claims.get("authority");
+        String[] userInformations = ((String) claims.get("userInformation")).split(" ");
         user.setIdentifier(userIdentifier);
         userRole.setName(userAuthority);
         user.setRole(userRole);
+        user.setName(userInformations[0]);
+        user.setFirstName(userInformations[1]);
         return user;
     }
 }

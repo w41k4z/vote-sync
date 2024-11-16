@@ -114,4 +114,12 @@ export class ElectionsComponent {
     election.endDate = new Date().toISOString().split('T')[0];
     this.electionHistory.unshift(election);
   };
+
+  importResults = async (importResultRequest: {
+    electionId: number;
+    file: File;
+    password: string;
+  }) => {
+    this.electionService.importElectoralResults(importResultRequest);
+  };
 }

@@ -1,5 +1,6 @@
 package ceni.system.votesync.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -15,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Storage;
 import ceni.system.votesync.exception.StorageException;
+import ceni.system.votesync.service.impl.auth.util.MultipartFileService;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.util.FileUtils;
 
 @Service
 public class FileStorageService {
@@ -64,6 +68,19 @@ public class FileStorageService {
             }
         } catch (MalformedURLException e) {
             throw new StorageException("Could not read file: " + filename, e);
+        }
+    }
+
+    public File unzipAndStore(String destinationFolderName, MultipartFile file, String password) throws IOException {
+        ZipFile zipFile = new ZipFile(MultipartFileService.convertToFile(file), password.toCharArray());
+        Path destinationFile = this.rootLocation.resolve(Paths.get(destinationFolderName)).normalize().toAbsolutePath();
+        try {
+            zipFile.extractAll(destinationFile.toString());
+            zipFile.close();
+            return new File(destinationFile.toString());
+        } catch (Exception e) {
+
+            throw e;
         }
     }
 }

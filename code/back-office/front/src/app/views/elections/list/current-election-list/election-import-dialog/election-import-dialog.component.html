@@ -1,11 +1,21 @@
 <form [formGroup]="componentForm" class="election-result-import-dialog-content">
     <h3 mat-dialog-title class="text-primary mb-3">{{ data.election.name }}</h3>
     <div class="card card-body">
-        <input class="form-control my-2" type="file" id="file" formControlName="file"
-            [ngClass]="{ 'is-invalid': submitted && f['file'].errors }" accept=".xlsx, .xls, .csv"
-            (change)="setImportedFile($event)" />
-        <div *ngIf="submitted && f['file'].errors" class="invalid-feedback">
-            <p *ngIf="f['file'].errors['required']" class="m-0">Le fichier est requis</p>
+        <div class="form-group">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input class="form-control my-2" type="password" id="password" formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                <p *ngIf="f['password'].errors['required']" class="m-0">Le mot de passe est requis.</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control my-2" type="file" id="file" formControlName="file"
+                [ngClass]="{ 'is-invalid': submitted && f['file'].errors }" accept=".zip"
+                (change)="setImportedFile($event)" />
+            <div *ngIf="submitted && f['file'].errors" class="invalid-feedback">
+                <p *ngIf="f['file'].errors['required']" class="m-0">Le fichier est requis.</p>
+            </div>
         </div>
     </div>
     <mat-dialog-actions class="d-flex gap-2 justify-content-end">

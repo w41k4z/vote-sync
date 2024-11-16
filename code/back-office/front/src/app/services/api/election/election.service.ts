@@ -25,6 +25,23 @@ export class ElectionService extends ApiCallService {
     ).payload;
   }
 
+  async importElectoralResults(importElectoralResultsRequest: {
+    electionId: number;
+    file: File;
+    password: string;
+  }) {
+    const formData = new FormData();
+    formData.append(
+      'electionId',
+      importElectoralResultsRequest.electionId.toString()
+    );
+    formData.append('file', importElectoralResultsRequest.file);
+    formData.append('password', importElectoralResultsRequest.password);
+    return (
+      await this.postCall(`${Endpoints.ELECTION_RESULTS}/import`, formData)
+    ).payload;
+  }
+
   async updateElection(updateElectionRequest: UpdateElectionRequest) {
     return (
       await this.putCall<SaveElectionPayload>(

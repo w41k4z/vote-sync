@@ -9,13 +9,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.gson.Gson;
 
+import ceni.system.votesync.config.SystemUserDetails;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.model.entity.User;
 import ceni.system.votesync.service.impl.SystemJwtService;
@@ -50,10 +50,10 @@ public class JwtFilter extends OncePerRequestFilter {
         response.getWriter().write(new Gson().toJson(content));
     }
 
-    private UserDetails getUserDetailsFromUser(User user) {
+    private SystemUserDetails getUserDetailsFromUser(User user) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
-        return new org.springframework.security.core.userdetails.User(user.getIdentifier(), "",
+        return new SystemUserDetails(user.getName(), user.getFirstName(), user.getIdentifier(), "",
                 grantedAuthorities);
     }
 
@@ -82,7 +82,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         User user = jwtService.extractUserFromToken(token);
-        UserDetails userDetails = this.getUserDetailsFromUser(user);
+        SystemUserDetails userDetails = this.getUserDetailsFromUser(user);
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails,

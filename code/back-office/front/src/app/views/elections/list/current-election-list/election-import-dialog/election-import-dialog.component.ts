@@ -21,6 +21,7 @@ export class ElectionImportDialogComponent extends FormContainerComponent {
   ) {
     const uploadForm = new FormGroup({
       file: new FormControl(null, [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     });
     super(uploadForm);
   }
@@ -31,6 +32,10 @@ export class ElectionImportDialogComponent extends FormContainerComponent {
   }
 
   override onConfirm(): void {
-    this.dialogRef.close(this.importedFile);
+    this.dialogRef.close({
+      electionId: this.data.election.id,
+      file: this.importedFile,
+      password: this.componentForm.value.password,
+    });
   }
 }

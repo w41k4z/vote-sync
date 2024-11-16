@@ -2,7 +2,8 @@ package ceni.system.votesync.service.spec.auth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import ceni.system.votesync.config.SystemUserDetails;
 
 public interface AuthService<RESP> {
 
@@ -10,8 +11,8 @@ public interface AuthService<RESP> {
 
     public void logOut(String token);
 
-    public static UserDetails getActiveUser() {
+    public static SystemUserDetails getActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetails) authentication.getPrincipal();
+        return (SystemUserDetails) authentication.getPrincipal();
     }
 }

@@ -15,6 +15,11 @@ export class CurrentElectionListComponent {
   @Input() openEditDialog!: (election: Election) => void;
   @Input() openDeleteDialog!: (election: Election) => void;
   @Input() onClotureElection!: (election: Election) => Promise<void>;
+  @Input() onImportResults!: (importResultsRequest: {
+    electionId: number;
+    file: File;
+    password: string;
+  }) => Promise<void>;
   @Input() routePathByElectionType!: (type: ElectionType) => string;
   isCloturing = false;
 
@@ -33,10 +38,18 @@ export class CurrentElectionListComponent {
       data: { election: election },
     });
 
-    dialogRef.afterClosed().subscribe((importedResultFile) => {
-      if (importedResultFile) {
-        console.log(importedResultFile);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .subscribe(
+        (importResultsRequest: {
+          electionId: number;
+          file: File;
+          password: string;
+        }) => {
+          if (importResultsRequest) {
+            this.onImportResults(importResultsRequest);
+          }
+        }
+      );
   }
 }

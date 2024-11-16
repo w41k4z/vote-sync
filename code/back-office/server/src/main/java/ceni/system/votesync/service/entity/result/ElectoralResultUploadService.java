@@ -1,5 +1,9 @@
 package ceni.system.votesync.service.entity.result;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Status;
+import ceni.system.votesync.config.SystemUserDetails;
 import ceni.system.votesync.dto.request.result.ElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
@@ -24,11 +29,13 @@ import ceni.system.votesync.repository.entity.election.result.ElectoralResultIma
 import ceni.system.votesync.repository.entity.election.result.ElectoralResultUploadRepository;
 import ceni.system.votesync.service.FileStorageService;
 import ceni.system.votesync.service.entity.election.PollingStationVotersStatService;
+import ceni.system.votesync.service.spec.auth.AuthService;
 
 @Service
 public class ElectoralResultUploadService {
 
     private static final String RESULT_FOLDER = "rs";
+    private static final String IMPORT_FOLDER = "imp";
 
     private ElectoralResultUploadRepository electoralResultUploadRepository;
     private ElectoralResultDetailsUploadRepository electoralResultDetailsUploadRepository;
@@ -50,6 +57,18 @@ public class ElectoralResultUploadService {
 
     public Optional<Result> getResultById(Integer resultId) {
         return this.electoralResultUploadRepository.findById(resultId);
+    }
+
+    public void importResults(Integer electionId, MultipartFile zipFile, String password) throws IOException {
+        SystemUserDetails currentUser = AuthService.getActiveUser();
+        String destinationFolder = electionId + "/" + IMPORT_FOLDER + "/"
+                + Timestamp.valueOf(LocalDateTime.now()).toString().replace(":", "-") + "_" + currentUser.getName()
+                + "_"
+                + currentUser.getFirstName();
+        File extractedDirectory = this.fileStorageService.unzipAndStore(destinationFolder, zipFile, password);
+        for (File f : extractedDirectory.listFiles()) {
+            System.out.println(f.getName());
+        }
     }
 
     public void uploadResult(UploadElectoralResultRequest request, MultipartFile[] images) {

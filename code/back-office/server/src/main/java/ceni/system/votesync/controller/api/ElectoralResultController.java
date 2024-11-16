@@ -1,5 +1,6 @@
 package ceni.system.votesync.controller.api;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.springframework.data.domain.Pageable;
@@ -69,6 +70,14 @@ public class ElectoralResultController {
         Gson gson = new Gson();
         UploadElectoralResultRequest resultObject = gson.fromJson(result, UploadElectoralResultRequest.class);
         this.electoralResultUploadService.uploadResult(resultObject, images);
+        return ResponseEntity.ok(new ApiResponse(null, "Result uploaded successfully"));
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<ApiResponse> importResults(
+            @RequestParam(required = true) Integer electionId, @RequestParam(required = true) MultipartFile file,
+            @RequestParam(required = true) String password) throws IOException {
+        this.electoralResultUploadService.importResults(electionId, file, password);
         return ResponseEntity.ok(new ApiResponse(null, "Result uploaded successfully"));
     }
 
