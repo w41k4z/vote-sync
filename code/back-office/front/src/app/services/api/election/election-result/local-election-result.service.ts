@@ -45,18 +45,38 @@ export class LocalElectionResultService extends ApiCallService {
   async getPollingStationResults(
     page: number,
     size: number,
-    electionId: string
+    electionId: string,
+    regionId: string,
+    districtId: string,
+    municipalityId: string,
+    fokontanyId: string
   ) {
-    let param = `?electionId=${electionId}`;
-    if (page) {
-      param += `&page=${page}`;
+    let params: string[] = [];
+    params.push(`page=${page}`);
+    params.push(`size=${size}`);
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
     }
-    if (size) {
-      param += `&size=${size}`;
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    if (municipalityId && municipalityId !== '*') {
+      params.push(`municipalityId=${municipalityId}`);
+    }
+    if (fokontanyId && fokontanyId !== '*') {
+      params.push(`fokontanyId=${fokontanyId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
     }
     return (
       await this.getCall<ElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/local/polling-station${param}`
+        `${Endpoints.ELECTION_RESULTS}/local/polling-station${strParam}`
       )
     ).payload;
   }

@@ -58,10 +58,7 @@ public class ElectionService {
         if (existingElection.getStatus() == Status.CLOSED) {
             throw new ImpossibleOperationException("Election is already closed and can not be updated");
         }
-        ElectionType type = new ElectionType();
-        type.setId(request.getElectionTypeId());
         existingElection.setName(request.getName());
-        existingElection.setType(type);
         existingElection.setStartDate(Date.valueOf(request.getStartDate()));
         return this.repository.save(existingElection);
     }

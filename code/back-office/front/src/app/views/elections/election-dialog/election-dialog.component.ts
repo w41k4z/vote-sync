@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfigureElectionRequest } from '../../../dto/request/configure-election-request';
 import { ElectionType } from '../../../dto/election-type';
 import { FormContainerComponent } from '../../../components/form-container/form-container.component';
@@ -16,13 +16,28 @@ export class ElectionDialogComponent extends FormContainerComponent {
 
   constructor(
     private electionTypeService: ElectionTypeService,
-    public dialogRef: MatDialogRef<ElectionDialogComponent>
+    public dialogRef: MatDialogRef<ElectionDialogComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      electionName: string;
+      electionTypeId: string;
+      electionDate: Date;
+    }
   ) {
     const electionForm = new FormGroup({
-      electionTypeId: new FormControl('', [Validators.required]),
-      name: new FormControl('', [Validators.required]),
-      electionDate: new FormControl('', [Validators.required]),
+      electionTypeId: new FormControl(data ? data.electionTypeId : '', [
+        Validators.required,
+      ]),
+      name: new FormControl(data ? data.electionName : '', [
+        Validators.required,
+      ]),
+      electionDate: new FormControl(data ? data.electionDate : '', [
+        Validators.required,
+      ]),
     });
+    if (data) {
+      electionForm.get('electionTypeId')?.disable();
+    }
     super(electionForm);
     this.electionTypeService.getElectionTypes().then((payload) => {
       if (payload) {

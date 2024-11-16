@@ -12,6 +12,7 @@ export const electionData: Election[] = [
       id: -1,
       type: 'Legislative',
     },
+    status: 20,
   },
   {
     id: 51,
@@ -24,5 +25,6 @@ export const electionData: Election[] = [
       id: -1,
       type: 'Presidentielle',
     },
+    status: 20,
   },
 ];

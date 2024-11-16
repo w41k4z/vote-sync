@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ElectionDialogComponent } from './election-dialog/election-dialog.component';
 import { ConfigureElectionRequest } from '../../dto/request/configure-election-request';
 import { electionData } from './static-data';
+import { UpdateElectionRequest } from '../../dto/request/update-election-request';
+import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-elections',
@@ -51,7 +53,7 @@ export class ElectionsComponent {
     });
   }
 
-  openAddDialog = () => {
+  openElectionConfigurationDialog = () => {
     const dialogRef = this.dialog.open(ElectionDialogComponent);
     dialogRef
       .afterClosed()
@@ -60,6 +62,49 @@ export class ElectionsComponent {
           this.configureElection(confifureElectionRequest);
         }
       });
+  };
+
+  openElectionConfigurationEditDialog = (election: Election) => {
+    const dialogRef = this.dialog.open(ElectionDialogComponent, {
+      data: {
+        electionName: election.name,
+        electionTypeId: election.type.id,
+        electionDate: election.startDate,
+      },
+    });
+    dialogRef
+      .afterClosed()
+      .subscribe((configureElectionRequest: ConfigureElectionRequest) => {
+        if (configureElectionRequest) {
+          const updateElectionRequest = new UpdateElectionRequest();
+          updateElectionRequest.id = election.id;
+          updateElectionRequest.name = configureElectionRequest.name;
+          updateElectionRequest.startDate = configureElectionRequest.startDate;
+          this.electionService
+            .updateElection(updateElectionRequest)
+            .then(() => {
+              election.name = updateElectionRequest.name;
+              election.startDate = updateElectionRequest.startDate;
+            });
+        }
+      });
+  };
+
+  openDeleteDialog = (election: Election) => {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {
+        id: election.id,
+      },
+    });
+    dialogRef.afterClosed().subscribe((data: { id: number }) => {
+      if (data) {
+        this.electionService.deleteElection(data.id).then(() => {
+          this.currentElections = this.currentElections.filter(
+            (each) => each.id != data.id
+          );
+        });
+      }
+    });
   };
 
   clotureElection = async (election: Election) => {

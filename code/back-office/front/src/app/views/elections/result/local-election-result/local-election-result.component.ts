@@ -6,6 +6,9 @@ import { LocalElectionResultService } from '../../../../services/api/election/el
 import { ElectionService } from '../../../../services/api/election/election.service';
 import { Page } from '../../../../dto/response/page';
 import { Observable } from 'rxjs';
+import { AdministrativeDivision } from '../../../../dto/administrative-division';
+import { PollingStation } from '../../../../dto/polling-station';
+import { AdministrativeDivisionService } from '../../../../services/api/administrative-division/administrative-division.service';
 
 @Component({
   selector: 'app-local-election-result',
@@ -22,10 +25,22 @@ export class LocalElectionResultComponent {
   electoralResults: ElectoralResult[] = [];
   page: Page | null = null;
 
+  pollingStations: PollingStation[] = [];
+  regions: AdministrativeDivision[] = [];
+  districts: AdministrativeDivision[] = [];
+  municipalities: AdministrativeDivision[] = [];
+  fokontany: AdministrativeDivision[] = [];
+
+  regionId: string = '*';
+  districtId: string = '*';
+  municipalityId: string = '*';
+  fokontanyId: string = '*';
+
   constructor(
     private route: ActivatedRoute,
     private electionService: ElectionService,
-    private electionResultService: LocalElectionResultService
+    private electionResultService: LocalElectionResultService,
+    private administrativeDivisionService: AdministrativeDivisionService
   ) {
     this.loading$ = electionResultService.loading$;
     this.error$ = electionResultService.error$;
@@ -35,7 +50,18 @@ export class LocalElectionResultComponent {
       this.electionService.getElection(electionId).then((payload) => {
         if (payload) {
           this.election = payload.election;
-          this.filter();
+          this.filter(
+            0,
+            this.regionId,
+            this.districtId,
+            this.municipalityId,
+            this.fokontanyId
+          );
+        }
+      });
+      this.administrativeDivisionService.getRegions().then((payload) => {
+        if (payload) {
+          this.regions = payload.administrativeDivisions;
         }
       });
     }
@@ -43,12 +69,32 @@ export class LocalElectionResultComponent {
 
   handleResultChange(index: number) {
     this.current = index;
-    this.filter();
+    this.regionId = '*';
+    this.districtId = '*';
+    this.municipalityId = '*';
+    this.fokontanyId = '*';
+    this.filter(
+      0,
+      this.regionId,
+      this.districtId,
+      this.municipalityId,
+      this.fokontanyId
+    );
   }
 
-  filter(page: number = 0) {
+  filter = (
+    page: number = 0,
+    regionId: string,
+    districtId: string,
+    municipalityId: string,
+    fokontanyId: string
+  ) => {
+    this.regionId = regionId;
+    this.districtId = districtId;
+    this.municipalityId = municipalityId;
+    this.fokontanyId = fokontanyId;
     this.getElectoralResults(page);
-  }
+  };
 
   getElectoralResults(page: number) {
     const electionId = this.route.snapshot.paramMap.get('electionId');
@@ -56,7 +102,15 @@ export class LocalElectionResultComponent {
       switch (this.current) {
         case 0:
           this.electionResultService
-            .getPollingStationResults(page, 1, electionId)
+            .getPollingStationResults(
+              page,
+              1,
+              electionId,
+              this.regionId,
+              this.districtId,
+              this.municipalityId,
+              this.fokontanyId
+            )
             .then((payload) => {
               if (payload) {
                 this.electoralResults = payload.electoralResults.content;
@@ -93,7 +147,13 @@ export class LocalElectionResultComponent {
   nextPage = () => {
     if (this.page) {
       if (this.page.number + 1 < this.page.totalPages) {
-        this.filter(this.page.number + 1);
+        this.filter(
+          this.page.number + 1,
+          this.regionId,
+          this.districtId,
+          this.municipalityId,
+          this.fokontanyId
+        );
       }
     }
   };
@@ -101,8 +161,57 @@ export class LocalElectionResultComponent {
   previousPage = () => {
     if (this.page) {
       if (this.page.number - 1 >= 0) {
-        this.filter(this.page.number - 1);
+        this.filter(
+          this.page.number - 1,
+          this.regionId,
+          this.districtId,
+          this.municipalityId,
+          this.fokontanyId
+        );
       }
     }
+  };
+
+  filterByRegion = (regionId: string) => {
+    if (!regionId || regionId === '*') {
+      this.districts = [];
+      this.municipalities = [];
+      this.fokontany = [];
+      return;
+    }
+    this.administrativeDivisionService
+      .getMunicipalityDistrictsByRegionId(parseInt(regionId))
+      .then((payload) => {
+        if (payload) {
+          this.districts = payload.administrativeDivisions;
+        }
+      });
+  };
+  filterByDistrict = (districtId: string) => {
+    if (!districtId || districtId === '*') {
+      this.municipalities = [];
+      this.fokontany = [];
+      return;
+    }
+    this.administrativeDivisionService
+      .getMunicipalitiesByDistrictId(parseInt(districtId))
+      .then((payload) => {
+        if (payload) {
+          this.municipalities = payload.administrativeDivisions;
+        }
+      });
+  };
+  filterByMunicipality = (municipalityId: string) => {
+    if (!municipalityId || municipalityId === '*') {
+      this.fokontany = [];
+      return;
+    }
+    this.administrativeDivisionService
+      .getFokontanyByMunicipalityId(parseInt(municipalityId))
+      .then((payload) => {
+        if (payload) {
+          this.fokontany = payload.administrativeDivisions;
+        }
+      });
   };
 }

@@ -6,19 +6,19 @@
     <div class="d-flex flex-column gap-2">
       <div class="form-group">
         <label for="electionType">Election</label>
-        <select
-          class="form-select"
-          id="electionType"
-          formControlName="electionTypeId"
-          [ngClass]="{ 'is-invalid': submitted && f['electionTypeId'].errors }"
-        >
-          <option
-            *ngFor="let electionType of electionTypes"
-            value="{{ electionType.id }}"
+          <select
+            class="form-select"
+            id="electionType"
+            formControlName="electionTypeId"
+            [ngClass]="{ 'is-invalid': submitted && f['electionTypeId'].errors }"
           >
-            {{ electionType.type }}
-          </option>
-        </select>
+            <option
+              *ngFor="let electionType of electionTypes"
+              value="{{ electionType.id }}"
+            >
+              {{ electionType.type }}
+            </option>
+          </select>
         <div
           *ngIf="submitted && f['electionTypeId'].errors"
           class="invalid-feedback"

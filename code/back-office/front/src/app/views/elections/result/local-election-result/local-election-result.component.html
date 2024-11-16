@@ -15,6 +15,19 @@
                 @if (current == 0) {
                     <app-polling-station-local-result-filter 
                         [electoralResult]="electoralResult"
+                        [regions]="regions"
+                        [regionId]="regionId"
+                        [districts]="districts"
+                        [districtId]="districtId"
+                        [municipalities]="municipalities"
+                        [municipalityId]="municipalityId"
+                        [fokontany]="fokontany"
+                        [fokontanyId]="fokontanyId"
+                        [onFilter]="filter"
+                        [onRegionFilterChange]="filterByRegion"
+                        [onDistrictFilterChange]="filterByDistrict"
+                        [onMunicipalityFilterChange]="filterByMunicipality"
+                        [showExportButton]="election?.status == 20"
                     >
                     </app-polling-station-local-result-filter>
                 }

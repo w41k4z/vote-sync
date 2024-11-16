@@ -12,6 +12,8 @@ import { ElectionImportDialogComponent } from './election-import-dialog/election
 export class CurrentElectionListComponent {
   @Input() currentElections!: Election[];
   @Input() openAddDialog!: () => void;
+  @Input() openEditDialog!: (election: Election) => void;
+  @Input() openDeleteDialog!: (election: Election) => void;
   @Input() onClotureElection!: (election: Election) => Promise<void>;
   @Input() routePathByElectionType!: (type: ElectionType) => string;
   isCloturing = false;

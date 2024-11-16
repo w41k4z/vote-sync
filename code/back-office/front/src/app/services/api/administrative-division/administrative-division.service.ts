@@ -13,6 +13,14 @@ export class AdministrativeDivisionService extends ApiCallService {
     super(http);
   }
 
+  async getRegions() {
+    return (
+      await this.getCall<AdministrativeDivisionsPayload>(
+        `${Endpoints.ADMINISTRATIVE_DIVISION}/regions`
+      )
+    ).payload;
+  }
+
   async getRegionsStat() {
     return (
       await this.getCall<AdministrativeDivisionStatsPayload>(
@@ -30,6 +38,15 @@ export class AdministrativeDivisionService extends ApiCallService {
     ).payload;
   }
 
+  async getMunicipalityDistrictsByRegionId(regionId: number) {
+    const param = `upperDivisionId=${regionId}`;
+    return (
+      await this.getCall<AdministrativeDivisionsPayload>(
+        `${Endpoints.ADMINISTRATIVE_DIVISION}/municipality-districts/by-region?${param}`
+      )
+    ).payload;
+  }
+
   async getCommunesByDistrictId(districtId: number) {
     const param = `upperDivisionId=${districtId}`;
     return (
@@ -39,11 +56,29 @@ export class AdministrativeDivisionService extends ApiCallService {
     ).payload;
   }
 
+  async getMunicipalitiesByDistrictId(districtId: number) {
+    const param = `upperDivisionId=${districtId}`;
+    return (
+      await this.getCall<AdministrativeDivisionsPayload>(
+        `${Endpoints.ADMINISTRATIVE_DIVISION}/municipalities/by-district?${param}`
+      )
+    ).payload;
+  }
+
   async getFokontanyByCommuneId(communeId: number) {
     const param = `upperDivisionId=${communeId}`;
     return (
       await this.getCall<AdministrativeDivisionsPayload>(
         `${Endpoints.ADMINISTRATIVE_DIVISION}/fokontany/by-commune?${param}`
+      )
+    ).payload;
+  }
+
+  async getFokontanyByMunicipalityId(municipalityId: number) {
+    const param = `upperDivisionId=${municipalityId}`;
+    return (
+      await this.getCall<AdministrativeDivisionsPayload>(
+        `${Endpoints.ADMINISTRATIVE_DIVISION}/municipality-fokontany/by-municipality?${param}`
       )
     ).payload;
   }

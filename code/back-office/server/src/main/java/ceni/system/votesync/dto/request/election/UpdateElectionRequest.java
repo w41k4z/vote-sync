@@ -12,9 +12,6 @@ public class UpdateElectionRequest {
     @NotNull(message = "Id is required")
     private Integer id;
 
-    @NotNull(message = "Election type id is required")
-    private Integer electionTypeId;
-
     @NotBlank(message = "Name is required")
     private String name;
 

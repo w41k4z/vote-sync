@@ -41,8 +41,12 @@ public class LocalResultService {
     }
 
     public PagedModel<PollingStationLocalElectionResult> getPollingStationLocalElectionResults(Integer electionId,
+            Integer regionId, Integer districtId, Integer municipalityId,
+            Integer fokontanyId,
             Pageable page) {
         Specification<PollingStationLocalElectionResult> spec = ElectoralResultSpecification.withElectionId(electionId);
+        spec = spec.and(ElectoralResultSpecification.filterPollingStationLocalResult(regionId, districtId,
+                municipalityId, fokontanyId));
         return new PagedModel<>(this.pollingStationLocalElectionResultRepository.findAll(spec, page));
     }
 

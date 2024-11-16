@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,7 +50,7 @@ public class ElectionController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse> deleteElection(Integer electionId) {
+    public ResponseEntity<ApiResponse> deleteElection(@RequestParam(required = true) Integer electionId) {
         this.service.deleteElection(electionId);
         return ResponseEntity.ok(new ApiResponse(null, "Election deleted successfully"));
     }

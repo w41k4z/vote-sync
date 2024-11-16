@@ -6,6 +6,7 @@ import { Endpoints } from '../../../endpoints';
 import { Election } from '../../../dto/election';
 import { ConfigureElectionRequest } from '../../../dto/request/configure-election-request';
 import { SaveElectionPayload } from '../../../dto/response/election/save-election-payload.response';
+import { UpdateElectionRequest } from '../../../dto/request/update-election-request';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,23 @@ export class ElectionService extends ApiCallService {
       await this.postCall<SaveElectionPayload>(
         Endpoints.ELECTIONS,
         configureElectionRequest
+      )
+    ).payload;
+  }
+
+  async updateElection(updateElectionRequest: UpdateElectionRequest) {
+    return (
+      await this.putCall<SaveElectionPayload>(
+        Endpoints.ELECTIONS,
+        updateElectionRequest
+      )
+    ).payload;
+  }
+
+  async deleteElection(electionId: number) {
+    return (
+      await this.deleteCall<SaveElectionPayload>(
+        `${Endpoints.ELECTIONS}?electionId=${electionId}`
       )
     ).payload;
   }

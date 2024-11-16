@@ -105,10 +105,15 @@ public class ElectoralResultController {
 
     @GetMapping("/local/polling-station")
     public ResponseEntity<ApiResponse> pollingStationLocalElectionResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
+            @RequestParam(required = false) Integer municipalityId,
+            @RequestParam(required = false) Integer fokontanyId,
             @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("electoralResults",
-                this.localResultService.getPollingStationLocalElectionResults(electionId, pageable));
+                this.localResultService.getPollingStationLocalElectionResults(electionId, regionId, districtId,
+                        municipalityId, fokontanyId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
