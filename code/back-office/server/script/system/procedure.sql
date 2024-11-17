@@ -230,7 +230,26 @@ BEGIN
     migrate_provincial_results(election_id);
     migrate_national_results(election_id);
 
-    UPDATE elections SET etat = 20 WHERE id = election_id;
+    UPDATE elections SET etat = 20, date_fin = SYSDATE WHERE id = election_id;
+    
+    DELETE FROM resultat_images rsi
+    WHERE EXISTS (
+        SELECT 1
+        FROM resultats r
+        WHERE r.id = rsi.id_resultat
+        AND r.id_election = election_id
+    );
+
+    DELETE FROM details_resultats dr
+    WHERE EXISTS (
+        SELECT 1
+        FROM resultats r
+        WHERE r.id = dr.id_resultat
+        AND r.id_election = election_id
+    );
+    
+    DELETE FROM resultats WHERE id_election = election_id;
+    
     COMMIT;
 EXCEPTION
     WHEN OTHERS THEN
@@ -250,11 +269,17 @@ BEGIN
         id_bv,
         code_bv,
         nom_bv,
+        id_fokontany,
         nom_fokontany,
+        id_commune,
         nom_commune,
+        id_municipalite,
         nom_municipalite,
+        id_district_municipal,
         nom_district_municipal,
+        id_district,
         nom_district,
+        id_region,
         nom_region,
         inscrits,
         homme_moins_36,
@@ -280,11 +305,17 @@ BEGIN
             bvrs.id,
             bvrs.code,
             bvrs.nom,
+            bvrs.id_fokontany,
             bvrs.nom_fokontany,
+            bvrs.id_commune,
             bvrs.nom_commune,
+            bvrs.id_municipalite,
             bvrs.nom_municipalite,
+            bvrs.id_district_municipal,
             bvrs.nom_district_municipal,
+            bvrs.id_district,
             bvrs.nom_district,
+            bvrs.id_region,
             bvrs.nom_region,
             bvrs.inscrits,
             bvrs.homme_moins_36,
@@ -348,10 +379,15 @@ BEGIN
         id_fokontany,
         code_fokontany,
         nom_fokontany,
+        id_commune,
         nom_commune,
+        id_municipalite,
         nom_municipalite,
+        id_district_municipal,
         nom_district_municipal,
+        id_district,
         nom_district,
+        id_region,
         nom_region,
         inscrits,
         homme_moins_36,
@@ -373,10 +409,15 @@ BEGIN
             frs.id,
             frs.code,
             frs.nom,
+            frs.id_commune,
             frs.nom_commune,
+            frs.id_municipalite,
             frs.nom_municipalite,
+            frs.id_district_municipal,
             frs.nom_district_municipal,
+            frs.id_district,
             frs.nom_district,
+            frs.id_region,
             frs.nom_region,
             frs.inscrits,
             frs.homme_moins_36,
@@ -431,7 +472,9 @@ BEGIN
         id_commune,
         code_commune,
         nom_commune,
+        id_district,
         nom_district,
+        id_region,
         nom_region,
         inscrits,
         homme_moins_36,
@@ -453,7 +496,9 @@ BEGIN
             crs.id,
             crs.code,
             crs.nom,
+            crs.id_district,
             crs.nom_district,
+            crs.id_region,
             crs.nom_region,
             crs.inscrits,
             crs.homme_moins_36,
@@ -508,7 +553,9 @@ BEGIN
         id_municipalite,
         code_municipalite,
         nom_municipalite,
+        id_district,
         nom_district,
+        id_region,
         nom_region,
         inscrits,
         homme_moins_36,
@@ -530,7 +577,9 @@ BEGIN
             mrs.id,
             mrs.code,
             mrs.nom,
+            mrs.id_district,
             mrs.nom_district,
+            mrs.id_region,
             mrs.nom_region,
             mrs.inscrits,
             mrs.homme_moins_36,
@@ -585,6 +634,7 @@ BEGIN
         id_district,
         code_district,
         nom_district,
+        id_region,
         nom_region,
         inscrits,
         homme_moins_36,
@@ -606,6 +656,7 @@ BEGIN
             drs.id,
             drs.code,
             drs.nom,
+            drs.id_region,
             drs.nom_region,
             drs.inscrits,
             drs.homme_moins_36,

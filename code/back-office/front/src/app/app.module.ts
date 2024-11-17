@@ -60,6 +60,7 @@ import { RegionalResultFilterComponent } from './views/elections/result/filter/r
 import { ProvincialResultFilterComponent } from './views/elections/result/filter/provincial-result-filter/provincial-result-filter.component';
 import { GlobalResultFilterComponent } from './views/elections/result/filter/global-result-filter/global-result-filter.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
+import { CloseElectionDialogComponent } from './views/elections/close-election-dialog/close-election-dialog.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
     ProvincialResultFilterComponent,
     GlobalResultFilterComponent,
     ProgressSpinnerComponent,
+    CloseElectionDialogComponent,
   ],
   imports: [
     BrowserModule,

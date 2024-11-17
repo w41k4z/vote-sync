@@ -43,13 +43,9 @@
                     [routerLink]="[routePathByElectionType(election.type), election.id]">
                     Résultat
                 </button>
-                <button
-                    class="btn btn-outline-primary d-flex gap-2 align-items-center"
+                <button class="btn btn-outline-primary" 
                     (click)="clotureElection(election)">
                     <p class="m-0">Cloturer</p>
-                    <span *ngIf="isCloturing;"
-                        class="spinner-border spinner-border-sm text-dark"
-                        role="status"></span>
                 </button>
             </div>
             <div class="action item-action">

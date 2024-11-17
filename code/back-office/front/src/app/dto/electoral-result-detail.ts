@@ -9,6 +9,7 @@ export class ElectoralResultDetail {
   candidateInformation: string;
   politicalEntityId: number;
   politicalEntity: string;
+  politicalEntityDescription: string;
   candidateVotes: number;
   imagePath: string;
 
@@ -23,6 +24,7 @@ export class ElectoralResultDetail {
     candidateInformation: string,
     politicalEntityId: number,
     politicalEntity: string,
+    politicalEntityDescription: string,
     candidateVotes: number,
     imagePath: string
   ) {
@@ -36,6 +38,7 @@ export class ElectoralResultDetail {
     this.candidateInformation = candidateInformation;
     this.politicalEntityId = politicalEntityId;
     this.politicalEntity = politicalEntity;
+    this.politicalEntityDescription = politicalEntityDescription;
     this.candidateVotes = candidateVotes;
     this.imagePath = imagePath;
   }

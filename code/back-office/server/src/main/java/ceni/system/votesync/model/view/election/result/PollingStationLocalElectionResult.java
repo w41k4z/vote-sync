@@ -39,7 +39,7 @@ public class PollingStationLocalElectionResult extends ElectoralResult {
     private Integer districtId;
 
     @Column(name = "nom_district_municipal")
-    private String district;
+    private String municipalityDistrict;
 
     @Column(name = "id_region")
     private Integer regionId;

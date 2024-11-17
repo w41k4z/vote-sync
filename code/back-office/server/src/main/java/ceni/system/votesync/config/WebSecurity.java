@@ -69,7 +69,6 @@ public class WebSecurity {
                                 .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**",
                                                 "/api/election-types/**")
                                 .hasAuthority(Authority.ADMIN)
-                                // User endpoints
                                 .anyRequest()
                                 .authenticated();
         }

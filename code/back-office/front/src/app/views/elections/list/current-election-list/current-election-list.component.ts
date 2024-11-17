@@ -24,16 +24,10 @@ export class CurrentElectionListComponent {
   @Input() errorMessage: string | null = null;
   @Input() message: string | null = null;
 
-  isCloturing = false;
-
   constructor(private dialog: MatDialog) {}
 
   clotureElection = async (election: Election) => {
-    this.isCloturing = true;
-    setTimeout(() => {
-      this.onClotureElection(election);
-      this.isCloturing = false;
-    }, 2000);
+    this.onClotureElection(election);
   };
 
   openImportDialog(election: Election) {

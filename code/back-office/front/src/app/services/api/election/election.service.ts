@@ -17,4 +17,9 @@ export class ElectionService extends ApiCallService {
       await this.getCall<{ election: Election }>(`${Endpoints.ELECTIONS}/${id}`)
     ).payload;
   }
+
+  async closeElection(electionId: number) {
+    return (await this.postCall(`${Endpoints.ELECTIONS}/close`, electionId))
+      .payload;
+  }
 }

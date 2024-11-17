@@ -1,4 +1,4 @@
-package ceni.system.votesync.model.base.view.result;
+package ceni.system.votesync.model.base.entity.election.result.provisional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -7,21 +7,18 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public class ElectoralResult {
+public class ProvisionalElectoralResult {
 
     @Id
-    @Column(name = "num_ligne")
-    private Integer rowNumber;
+    private Integer id;
 
     @Column(name = "id_election")
     private Integer electionId;
 
-    @Column(name = "id")
     private Integer divisionId;
 
     private String code;
 
-    @Column(name = "nom")
     private String name;
 
     @Column(name = "inscrits")

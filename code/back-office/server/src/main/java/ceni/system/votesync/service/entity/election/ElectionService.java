@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,10 @@ public class ElectionService {
         this.repository.deleteById(electionId);
     }
 
+    public void closeElection(Integer electionId) {
+        this.repository.closeElectionById(electionId);
+    }
+
     public Optional<Election> getElection(Integer electionId) {
         return this.repository.findById(electionId);
     }
@@ -82,6 +88,8 @@ public class ElectionService {
     }
 
     public PagedModel<Election> getElectionsHistory(Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "endDate"));
         Specification<Election> spec = ElectionSpecification.closedElections();
         return new PagedModel<>(this.repository.findAll(spec, pageable));
     }

@@ -55,6 +55,12 @@ public class ElectionController {
         return ResponseEntity.ok(new ApiResponse(null, "Election deleted successfully"));
     }
 
+    @PostMapping("/close")
+    public ResponseEntity<ApiResponse> closeElection(@RequestBody Integer electionId) {
+        this.service.closeElection(electionId);
+        return ResponseEntity.ok(new ApiResponse(null, "Election closed successfully."));
+    }
+
     @GetMapping("/{electionId}")
     public ResponseEntity<ApiResponse> getElection(@PathVariable Integer electionId) {
         HashMap<String, Object> data = new HashMap<>();

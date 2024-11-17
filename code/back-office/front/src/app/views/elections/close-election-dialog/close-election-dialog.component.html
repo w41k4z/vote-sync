@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-center">
+        <i class="bi bi-exclamation-octagon warning-icon"></i>
+    </div>
+    <div class="card-body px-5">
+        <h2 mat-dialog-title class="my-3 text-center">Êtes-vous sûr ?</h2>
+        <p class="text-center">Voulez-vous vraiment effectuer cette opération? Ce processus ne peut pas être annulé.
+        </p>
+    </div>
+    <div class="card-footer d-flex py-3 gap-2">
+        <button class="btn btn-danger w-50" (click)="confirm()">Oui, je confirme!</button>
+        <button class="btn btn-secondary w-50" cdkFocusInitial (click)="close()">Non, annuler l'opération</button>
+    </div>
+</div>

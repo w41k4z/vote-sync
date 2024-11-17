@@ -11,6 +11,8 @@ import { ActiveElectionService } from '../../services/api/election/active-electi
 import { ElectionArchiveService } from '../../services/api/election/election-archive.service';
 import { Page } from '../../dto/response/page';
 import { Observable } from 'rxjs';
+import { ElectionService } from '../../services/api/election/election.service';
+import { CloseElectionDialogComponent } from './close-election-dialog/close-election-dialog.component';
 
 @Component({
   selector: 'app-elections',
@@ -29,9 +31,10 @@ export class ElectionsComponent {
   electionHistory: Election[] = [];
   electionHistoryPage: Page | null = null;
 
-  displayImportProgressSpinner = false;
+  displayProgressSpinner = false;
 
   constructor(
+    private electionService: ElectionService,
     private activeElectionService: ActiveElectionService,
     private electionArchiveService: ElectionArchiveService,
     public dialog: MatDialog
@@ -130,11 +133,28 @@ export class ElectionsComponent {
   };
 
   clotureElection = async (election: Election) => {
-    this.currentElections = this.currentElections.filter(
-      (currentElection) => currentElection.id !== election.id
-    );
-    election.endDate = new Date().toISOString().split('T')[0];
-    this.electionHistory.unshift(election);
+    const dialogRef = this.dialog.open(CloseElectionDialogComponent, {
+      data: {
+        id: election.id,
+      },
+    });
+    dialogRef.afterClosed().subscribe(async (data: { id: number }) => {
+      if (data) {
+        this.displayProgressSpinner = true;
+        try {
+          await this.electionService.closeElection(election.id);
+          this.currentElections = this.currentElections.filter(
+            (currentElection) => currentElection.id !== election.id
+          );
+          election.endDate = new Date().toISOString().split('T')[0];
+          this.electionHistory.unshift(election);
+        } catch (error) {
+          throw error;
+        } finally {
+          this.displayProgressSpinner = false;
+        }
+      }
+    });
   };
 
   importResults = async (importResultRequest: {
@@ -142,7 +162,7 @@ export class ElectionsComponent {
     file: File;
     password: string;
   }) => {
-    this.displayImportProgressSpinner = true;
+    this.displayProgressSpinner = true;
     try {
       await this.activeElectionService.importElectoralResults(
         importResultRequest
@@ -150,7 +170,7 @@ export class ElectionsComponent {
     } catch (error) {
       throw error;
     } finally {
-      this.displayImportProgressSpinner = false;
+      this.displayProgressSpinner = false;
     }
   };
 }
