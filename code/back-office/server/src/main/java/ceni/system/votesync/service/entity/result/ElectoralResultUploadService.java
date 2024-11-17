@@ -78,18 +78,25 @@ public class ElectoralResultUploadService {
                 + "_"
                 + currentUser.getFirstName();
         File extractedDirectory = this.fileStorageService.unzipAndStore(destinationFolder, zipFile, password);
-        HashMap<String, Exception> exceptions = new HashMap<>();
-        for (File f : extractedDirectory.listFiles()) {
-            try {
-                this.importResultFromDirectory(electionId, f);
-            } catch (Exception e) {
-                exceptions.put(f.getName(), e);
-                e.printStackTrace();
+        try {
+            HashMap<String, Exception> exceptions = new HashMap<>();
+            for (File f : extractedDirectory.listFiles()) {
+                try {
+                    this.importResultFromDirectory(electionId, f);
+                } catch (Exception e) {
+                    exceptions.put(f.getName(), e);
+                    e.printStackTrace();
+                }
             }
+            // migrating imported results to the main results table
+            this.importedResultRepository.importElectoralResults(electionId);
+            return exceptions;
+        } catch (Exception err) {
+            throw err;
+        } finally {
+            // deleting imported results whatever the result
+            this.importedResultRepository.clearImportedElectoralResults(electionId);
         }
-        // migrating imported results to the main results table
-        this.importedResultRepository.importElectoralResults(electionId);
-        return exceptions;
     }
 
     private void importResultFromDirectory(int electionId, File resultDirectory)

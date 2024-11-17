@@ -29,6 +29,8 @@ export class ElectionsComponent {
   electionHistory: Election[] = [];
   electionHistoryPage: Page | null = null;
 
+  displayImportProgressSpinner = false;
+
   constructor(
     private activeElectionService: ActiveElectionService,
     private electionArchiveService: ElectionArchiveService,
@@ -140,6 +142,15 @@ export class ElectionsComponent {
     file: File;
     password: string;
   }) => {
-    this.activeElectionService.importElectoralResults(importResultRequest);
+    this.displayImportProgressSpinner = true;
+    try {
+      await this.activeElectionService.importElectoralResults(
+        importResultRequest
+      );
+    } catch (error) {
+      throw error;
+    } finally {
+      this.displayImportProgressSpinner = false;
+    }
   };
 }

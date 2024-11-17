@@ -11,4 +11,8 @@ public interface ImportedResultRepository extends EntityRepository<ImportedResul
     @Transactional
     @Procedure(procedureName = "import_electoral_results")
     void importElectoralResults(Integer electionId);
+
+    @Transactional
+    @Procedure(procedureName = "clear_result_imporatation_table")
+    void clearImportedElectoralResults(Integer electionId);
 }

@@ -1,3 +1,5 @@
+<app-progress-spinner
+    [isLoading]="displayImportProgressSpinner"></app-progress-spinner>
 <app-current-election-list
     [currentElections]="currentElections"
     [openAddDialog]="openElectionConfigurationDialog"
@@ -7,13 +9,11 @@
     [onImportResults]="importResults"
     [routePathByElectionType]="routePathByElectionType"
     [errorMessage]="currentElectionError$ | async"
-    [message]="currentElectionMessage$ | async"
->
+    [message]="currentElectionMessage$ | async">
 </app-current-election-list>
 
 <app-archive-election-list
     [electionHistory]="electionHistory"
     [isLoading]="electionHistoryLoading$ | async"
-    [routePathByElectionType]="routePathByElectionType"
->    
+    [routePathByElectionType]="routePathByElectionType">
 </app-archive-election-list>

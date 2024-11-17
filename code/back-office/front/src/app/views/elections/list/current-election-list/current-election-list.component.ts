@@ -26,8 +26,6 @@ export class CurrentElectionListComponent {
 
   isCloturing = false;
 
-  displayImportProgressSpinner = false;
-
   constructor(private dialog: MatDialog) {}
 
   clotureElection = async (election: Election) => {
@@ -46,15 +44,13 @@ export class CurrentElectionListComponent {
     dialogRef
       .afterClosed()
       .subscribe(
-        async (importResultsRequest: {
+        (importResultsRequest: {
           electionId: number;
           file: File;
           password: string;
         }) => {
           if (importResultsRequest) {
-            this.displayImportProgressSpinner = true;
-            await this.onImportResults(importResultsRequest);
-            this.displayImportProgressSpinner = false;
+            this.onImportResults(importResultsRequest);
           }
         }
       );
