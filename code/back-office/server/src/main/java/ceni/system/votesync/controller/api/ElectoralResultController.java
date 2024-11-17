@@ -77,8 +77,9 @@ public class ElectoralResultController {
     public ResponseEntity<ApiResponse> importResults(
             @RequestParam(required = true) Integer electionId, @RequestParam(required = true) MultipartFile file,
             @RequestParam(required = true) String password) throws IOException {
-        this.electoralResultUploadService.importResults(electionId, file, password);
-        return ResponseEntity.ok(new ApiResponse(null, "Result uploaded successfully"));
+        return ResponseEntity
+                .ok(new ApiResponse(this.electoralResultUploadService.importResults(electionId, file, password),
+                        "Result uploaded successfully"));
     }
 
     @GetMapping("/pending")

@@ -162,7 +162,7 @@ CREATE TABLE resultat_images_importes (
    chemin_image VARCHAR2(150) NOT NULL,
    PRIMARY KEY(id),
    FOREIGN KEY(id_election) REFERENCES elections(id),
-   CONSTRAINT uq_resultat_image_importe UNIQUE(code_bv, id_election)
+   CONSTRAINT uq_resultat_image_importe UNIQUE(code_bv, id_election, chemin_image)
 );
 
 CREATE TABLE type_alertes (

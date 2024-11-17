@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { ElectionService } from '../../services/api/election/election.service';
 import { Election } from '../../dto/election';
 import { Paths } from '../../paths';
 import { ElectionType } from '../../dto/election-type';
 import { MatDialog } from '@angular/material/dialog';
 import { ElectionDialogComponent } from './election-dialog/election-dialog.component';
 import { ConfigureElectionRequest } from '../../dto/request/configure-election-request';
-import { electionData } from './static-data';
 import { UpdateElectionRequest } from '../../dto/request/update-election-request';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
+import { ActiveElectionService } from '../../services/api/election/active-election.service';
+import { ElectionArchiveService } from '../../services/api/election/election-archive.service';
+import { Page } from '../../dto/response/page';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-elections',
@@ -18,16 +20,32 @@ import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dia
 export class ElectionsComponent {
   isCloturing = false;
   electionPath = Paths.ELECTIONS;
+
   currentElections: Election[] = [];
-  electionHistory: Election[] = electionData;
+  currentElectionError$: Observable<string | null>;
+  currentElectionMessage$: Observable<string | null>;
+
+  electionHistoryLoading$: Observable<Boolean>;
+  electionHistory: Election[] = [];
+  electionHistoryPage: Page | null = null;
 
   constructor(
-    private electionService: ElectionService,
+    private activeElectionService: ActiveElectionService,
+    private electionArchiveService: ElectionArchiveService,
     public dialog: MatDialog
   ) {
-    this.electionService.getCurrentElections().then((payload) => {
+    this.currentElectionError$ = activeElectionService.error$;
+    this.currentElectionMessage$ = activeElectionService.message$;
+    this.activeElectionService.getCurrentElections().then((payload) => {
       if (payload) {
         this.currentElections = payload.elections;
+      }
+    });
+    this.electionHistoryLoading$ = this.electionArchiveService.loading$;
+    this.electionArchiveService.getElectionArchive().then((payload) => {
+      if (payload) {
+        this.electionHistory = payload.elections.content;
+        this.electionHistoryPage = payload.elections.page;
       }
     });
   }
@@ -46,11 +64,13 @@ export class ElectionsComponent {
   };
 
   private async configureElection(request: ConfigureElectionRequest) {
-    return this.electionService.configureElection(request).then((payload) => {
-      if (payload) {
-        this.currentElections.push(payload.election);
-      }
-    });
+    return this.activeElectionService
+      .configureElection(request)
+      .then((payload) => {
+        if (payload) {
+          this.currentElections.push(payload.election);
+        }
+      });
   }
 
   openElectionConfigurationDialog = () => {
@@ -80,7 +100,7 @@ export class ElectionsComponent {
           updateElectionRequest.id = election.id;
           updateElectionRequest.name = configureElectionRequest.name;
           updateElectionRequest.startDate = configureElectionRequest.startDate;
-          this.electionService
+          this.activeElectionService
             .updateElection(updateElectionRequest)
             .then(() => {
               election.name = updateElectionRequest.name;
@@ -98,7 +118,7 @@ export class ElectionsComponent {
     });
     dialogRef.afterClosed().subscribe((data: { id: number }) => {
       if (data) {
-        this.electionService.deleteElection(data.id).then(() => {
+        this.activeElectionService.deleteElection(data.id).then(() => {
           this.currentElections = this.currentElections.filter(
             (each) => each.id != data.id
           );
@@ -120,6 +140,6 @@ export class ElectionsComponent {
     file: File;
     password: string;
   }) => {
-    this.electionService.importElectoralResults(importResultRequest);
+    this.activeElectionService.importElectoralResults(importResultRequest);
   };
 }

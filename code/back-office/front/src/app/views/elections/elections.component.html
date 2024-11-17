@@ -6,11 +6,14 @@
     [onClotureElection]="clotureElection"
     [onImportResults]="importResults"
     [routePathByElectionType]="routePathByElectionType"
+    [errorMessage]="currentElectionError$ | async"
+    [message]="currentElectionMessage$ | async"
 >
 </app-current-election-list>
 
 <app-archive-election-list
     [electionHistory]="electionHistory"
+    [isLoading]="electionHistoryLoading$ | async"
     [routePathByElectionType]="routePathByElectionType"
 >    
 </app-archive-election-list>

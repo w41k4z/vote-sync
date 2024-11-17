@@ -21,7 +21,12 @@ export class CurrentElectionListComponent {
     password: string;
   }) => Promise<void>;
   @Input() routePathByElectionType!: (type: ElectionType) => string;
+  @Input() errorMessage: string | null = null;
+  @Input() message: string | null = null;
+
   isCloturing = false;
+
+  displayImportProgressSpinner = false;
 
   constructor(private dialog: MatDialog) {}
 
@@ -41,13 +46,15 @@ export class CurrentElectionListComponent {
     dialogRef
       .afterClosed()
       .subscribe(
-        (importResultsRequest: {
+        async (importResultsRequest: {
           electionId: number;
           file: File;
           password: string;
         }) => {
           if (importResultsRequest) {
-            this.onImportResults(importResultsRequest);
+            this.displayImportProgressSpinner = true;
+            await this.onImportResults(importResultsRequest);
+            this.displayImportProgressSpinner = false;
           }
         }
       );

@@ -54,7 +54,15 @@ BEGIN
     import_electoral_result_details(election_id);
     import_electoral_result_images;
     
+END;
+/
+
+CREATE OR REPLACE PROCEDURE clear_result_imporatation_table (
+    election_id NUMBER
+) AS
+BEGIN
     DELETE FROM resultats_importes WHERE id_election = election_id;
+    DELETE FROM details_resultats_importes WHERE id_election = election_id;
     DELETE FROM resultat_images_importes WHERE id_election = election_id;
 END;
 /
@@ -79,8 +87,6 @@ BEGIN
     ELSIF type_election = 'Locale' THEN
         import_local_result_details();
     END IF;
-
-    DELETE FROM details_resultats_importes WHERE id_election = election_id;
 END;
 /
 CREATE OR REPLACE PROCEDURE import_presidential_result_details AS

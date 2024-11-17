@@ -8,6 +8,7 @@ import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { CarouselModule } from 'primeng/carousel';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { LogInComponent } from './views/log-in/log-in.component';
@@ -58,6 +59,7 @@ import { DistrictResultFilterComponent } from './views/elections/result/filter/d
 import { RegionalResultFilterComponent } from './views/elections/result/filter/regional-result-filter/regional-result-filter.component';
 import { ProvincialResultFilterComponent } from './views/elections/result/filter/provincial-result-filter/provincial-result-filter.component';
 import { GlobalResultFilterComponent } from './views/elections/result/filter/global-result-filter/global-result-filter.component';
+import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import { GlobalResultFilterComponent } from './views/elections/result/filter/glo
     RegionalResultFilterComponent,
     ProvincialResultFilterComponent,
     GlobalResultFilterComponent,
+    ProgressSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -116,6 +119,7 @@ import { GlobalResultFilterComponent } from './views/elections/result/filter/glo
     DialogModule,
     ButtonModule,
     BaseChartDirective,
+    MatProgressSpinner,
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),

@@ -10,4 +10,5 @@ import { ElectionType } from '../../../../dto/election-type';
 export class ArchiveElectionListComponent {
   @Input() electionHistory!: Election[];
   @Input() routePathByElectionType!: (type: ElectionType) => string;
+  @Input() isLoading!: Boolean | null;
 }

@@ -1,6 +1,6 @@
 import { Election } from '../../election';
 
-export class CurrentElectionsPayload {
+export class ElectionsPayload {
   elections: Election[];
 
   constructor(elections: Election[]) {

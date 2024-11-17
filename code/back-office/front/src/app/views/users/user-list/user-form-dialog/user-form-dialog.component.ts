@@ -19,6 +19,8 @@ import { ImportUsersRequest } from '../../../../dto/request/user/import-users.re
 export class UserFormDialogComponent extends FormContainerComponent {
   newUser: NewUserRequest = new NewUserRequest();
 
+  displayImportProgressSpinner = false;
+
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<UserFormDialogComponent>,
@@ -79,9 +81,11 @@ export class UserFormDialogComponent extends FormContainerComponent {
 
     dialogRef
       .afterClosed()
-      .subscribe((importUsersRequest: ImportUsersRequest) => {
+      .subscribe(async (importUsersRequest: ImportUsersRequest) => {
         if (importUsersRequest) {
-          this.data.onImportUsers(importUsersRequest);
+          this.displayImportProgressSpinner = true;
+          await this.data.onImportUsers(importUsersRequest);
+          this.displayImportProgressSpinner = false;
         }
       });
   }

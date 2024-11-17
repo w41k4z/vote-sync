@@ -1,6 +1,7 @@
 package ceni.system.votesync.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -12,13 +13,13 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Storage;
 import ceni.system.votesync.exception.StorageException;
 import ceni.system.votesync.service.impl.auth.util.MultipartFileService;
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.util.FileUtils;
 
 @Service
 public class FileStorageService {
@@ -44,6 +45,19 @@ public class FileStorageService {
         try {
             Files.createDirectories(destinationFile.getParent());
             try (InputStream inputStream = multipartFile.getInputStream()) {
+                Files.copy(inputStream, destinationFile,
+                        StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            throw new StorageException("Failed to store file.", e);
+        }
+    }
+
+    public void store(File file, String fileName) {
+        Path destinationFile = this.rootLocation.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
+        try {
+            Files.createDirectories(destinationFile.getParent());
+            try (InputStream inputStream = new FileInputStream(file)) {
                 Files.copy(inputStream, destinationFile,
                         StandardCopyOption.REPLACE_EXISTING);
             }
@@ -79,7 +93,7 @@ public class FileStorageService {
             zipFile.close();
             return new File(destinationFile.toString());
         } catch (Exception e) {
-
+            FileSystemUtils.deleteRecursively(destinationFile);
             throw e;
         }
     }

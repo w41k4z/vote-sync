@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.repository.base.EntityRepository;
 
-public interface ElectoralResultDetailsUploadRepository extends EntityRepository<ImportedResultDetails, Integer> {
+public interface ImportedResultDetailsRepository extends EntityRepository<ImportedResultDetails, Integer> {
 
     @Procedure(procedureName = "import_electoral_result_details")
     void importElectoralResultDetails(Integer electionId);

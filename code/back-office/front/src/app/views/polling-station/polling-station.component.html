@@ -73,7 +73,7 @@
                             <td>{{pollingStation.commune | formatName}}</td>
                             <td>{{pollingStation.fokontany | formatName}}</td>
                             <td>{{pollingStation.pollingStation | formatName}}</td>
-                            <td>{{pollingStation.operatorName + ' ' + pollingStation.operatorFirstName}}</td>
+                            <td>{{pollingStation.operatorName && pollingStation.operatorFirstName ? pollingStation.operatorName + ' ' + pollingStation.operatorFirstName : "Pas d'opérateur"}}</td>
                         </tr>
                     </tbody>
                 </table>

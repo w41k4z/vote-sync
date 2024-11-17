@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,8 @@ import ceni.system.votesync.model.entity.election.result.Result;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.model.entity.election.result.ResultImage;
 import ceni.system.votesync.model.view.election.PollingStationVotersStat;
-import ceni.system.votesync.repository.entity.election.result.ElectoralResultDetailsUploadRepository;
+import ceni.system.votesync.repository.entity.election.result.ImportedResultDetailsRepository;
+import ceni.system.votesync.repository.entity.election.result.ImportedResultRepository;
 import ceni.system.votesync.repository.entity.election.result.ElectoralResultImageUploadRepository;
 import ceni.system.votesync.repository.entity.election.result.ElectoralResultUploadRepository;
 import ceni.system.votesync.service.FileStorageService;
@@ -34,22 +38,29 @@ import ceni.system.votesync.service.spec.auth.AuthService;
 @Service
 public class ElectoralResultUploadService {
 
-    private static final String RESULT_FOLDER = "rs";
-    private static final String IMPORT_FOLDER = "imp";
+    public static final String RESULT_FOLDER = "rs";
+    public static final String IMPORT_FOLDER = "imp";
 
+    private ImportedResultRepository importedResultRepository;
+    private ImportedResultDetailsRepository importedResultDetailsRepository;
+    private ResultImportationService resultImportationService;
     private ElectoralResultUploadRepository electoralResultUploadRepository;
-    private ElectoralResultDetailsUploadRepository electoralResultDetailsUploadRepository;
     private ElectoralResultImageUploadRepository electoralResultImageUploadRepository;
     private PollingStationVotersStatService pollingStationVotersStatService;
     private FileStorageService fileStorageService;
 
-    public ElectoralResultUploadService(ElectoralResultUploadRepository electoralResultUploadRepository,
-            ElectoralResultDetailsUploadRepository electoralResultDetailsUploadRepository,
+    public ElectoralResultUploadService(
+            ImportedResultRepository importedResultRepository,
+            ElectoralResultUploadRepository electoralResultUploadRepository,
+            ResultImportationService resultImportationService,
+            ImportedResultDetailsRepository importedResultDetailsRepository,
             ElectoralResultImageUploadRepository electoralResultImageUploadRepository,
             PollingStationVotersStatService pollingStationVotersStatService,
             FileStorageService fileStorageService) {
+        this.importedResultRepository = importedResultRepository;
         this.electoralResultUploadRepository = electoralResultUploadRepository;
-        this.electoralResultDetailsUploadRepository = electoralResultDetailsUploadRepository;
+        this.resultImportationService = resultImportationService;
+        this.importedResultDetailsRepository = importedResultDetailsRepository;
         this.electoralResultImageUploadRepository = electoralResultImageUploadRepository;
         this.pollingStationVotersStatService = pollingStationVotersStatService;
         this.fileStorageService = fileStorageService;
@@ -59,16 +70,31 @@ public class ElectoralResultUploadService {
         return this.electoralResultUploadRepository.findById(resultId);
     }
 
-    public void importResults(Integer electionId, MultipartFile zipFile, String password) throws IOException {
+    public Map<String, Exception> importResults(Integer electionId, MultipartFile zipFile, String password)
+            throws IOException {
         SystemUserDetails currentUser = AuthService.getActiveUser();
         String destinationFolder = electionId + "/" + IMPORT_FOLDER + "/"
                 + Timestamp.valueOf(LocalDateTime.now()).toString().replace(":", "-") + "_" + currentUser.getName()
                 + "_"
                 + currentUser.getFirstName();
         File extractedDirectory = this.fileStorageService.unzipAndStore(destinationFolder, zipFile, password);
+        HashMap<String, Exception> exceptions = new HashMap<>();
         for (File f : extractedDirectory.listFiles()) {
-            System.out.println(f.getName());
+            try {
+                this.importResultFromDirectory(electionId, f);
+            } catch (Exception e) {
+                exceptions.put(f.getName(), e);
+                e.printStackTrace();
+            }
         }
+        // migrating imported results to the main results table
+        this.importedResultRepository.importElectoralResults(electionId);
+        return exceptions;
+    }
+
+    private void importResultFromDirectory(int electionId, File resultDirectory)
+            throws InvalidFormatException, IOException {
+        this.resultImportationService.importResultFromDirectory(electionId, resultDirectory);
     }
 
     public void uploadResult(UploadElectoralResultRequest request, MultipartFile[] images) {
@@ -101,16 +127,18 @@ public class ElectoralResultUploadService {
         List<ImportedResultDetails> details = ImportedResultDetails.fromUploadElectoralResultRequestAndResultId(
                 request);
         // saving details in details_resultats_importes table
-        this.electoralResultDetailsUploadRepository.saveAll(details);
+        this.importedResultDetailsRepository.saveAll(details);
         /*
          * importing result changes details from details_resultats_importes to
          * details_resultats
          */
-        this.electoralResultDetailsUploadRepository.importElectoralResultDetails(request.getElectionId());
+        this.importedResultDetailsRepository.importElectoralResultDetails(request.getElectionId());
+        // deleting imported result details after migration
+        this.importedResultDetailsRepository.deleteAll(details);
         for (MultipartFile image : images) {
             ResultImage resultImage = new ResultImage();
             resultImage.setResultId(result.getId());
-            String imagePath = request.getElectionId() + "/" + RESULT_FOLDER + "/" + request.getPollingStationId()
+            String imagePath = request.getElectionId() + "/" + RESULT_FOLDER + "/" + request.getPollingStationCode()
                     + "/"
                     + image.getOriginalFilename();
             resultImage.setImagePath(imagePath);
@@ -138,12 +166,14 @@ public class ElectoralResultUploadService {
         List<ImportedResultDetails> details = ImportedResultDetails
                 .fromUploadElectoralResultRequestAndResultId(request);
         // saving details in details_resultats_importes table
-        this.electoralResultDetailsUploadRepository.saveAll(details);
+        this.importedResultDetailsRepository.saveAll(details);
         /*
          * importing result changes details from details_resultats_importes to
          * details_resultats
          */
-        this.electoralResultDetailsUploadRepository.importElectoralResultDetails(request.getElectionId());
+        this.importedResultDetailsRepository.importElectoralResultDetails(request.getElectionId());
+        // deleting imported result details after migration
+        this.importedResultDetailsRepository.deleteAll(details);
         // deleting previous images
         this.electoralResultImageUploadRepository
                 .delete(ElectoralResultSpecification.imagesWithResultId(result.getId()));
@@ -174,7 +204,7 @@ public class ElectoralResultUploadService {
         result.setStatus(Status.CLOSED);
         this.electoralResultUploadRepository.save(result);
         request.getCandidates().forEach((resultDetailId, votes) -> {
-            this.electoralResultDetailsUploadRepository.updateById(resultDetailId, votes);
+            this.importedResultDetailsRepository.updateById(resultDetailId, votes);
         });
     }
 
