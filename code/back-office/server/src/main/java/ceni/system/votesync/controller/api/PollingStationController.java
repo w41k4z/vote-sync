@@ -59,12 +59,13 @@ public class PollingStationController {
         HashMap<String, Object> data = new HashMap<>();
         data.put("pollingStations",
                 this.service.getAllPollingStation(regionId, districtId, communeId, fokontanyId, pageable));
-        data.put("regions", this.administrativeDivisionService.getRegionsWithoutGeoJson());
+        data.put("regions", this.administrativeDivisionService.getRegions());
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @PostMapping("/nearest")
-    public ResponseEntity<ApiResponse> getNearestPollingStationsAndCurrentElections(@RequestBody NearestPollingStationRequest request) {
+    public ResponseEntity<ApiResponse> getNearestPollingStationsAndCurrentElections(
+            @RequestBody NearestPollingStationRequest request) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("pollingStations", this.service.getNearestPollingStations(request));
         data.put("elections", this.electionService.getCurrentElections());

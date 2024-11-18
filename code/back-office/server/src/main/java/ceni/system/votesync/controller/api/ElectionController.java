@@ -73,9 +73,8 @@ public class ElectionController {
     public ResponseEntity<ApiResponse> getCurrentElections() {
         HashMap<String, Object> data = new HashMap<>();
         List<VElection> currentElections = this.service.getCurrentElections();
-        String message = currentElections.isEmpty() ? "No current election" : "";
         data.put("elections", currentElections);
-        return ResponseEntity.ok(new ApiResponse(data, message));
+        return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/history")

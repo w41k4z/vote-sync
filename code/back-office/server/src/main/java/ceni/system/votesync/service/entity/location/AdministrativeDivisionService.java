@@ -50,55 +50,51 @@ public class AdministrativeDivisionService {
         return this.regionRepository.findAll();
     }
 
-    public List<Region> getRegionsWithoutGeoJson() {
-        return this.regionRepository.findAllWithoutGeoJson();
+    public List<District> getDistricts() {
+        return this.districtRepository.findAll();
     }
 
-    public List<District> getDistrictsWithoutGeoJson() {
-        return this.districtRepository.findAllWithoutGeoJson();
+    public List<District> getDistrictsByRegionId(Integer regionId) {
+        return this.districtRepository.findByUpperDivisionId(regionId);
     }
 
-    public List<District> getDistrictsByRegionIdWithoutGeoJson(Integer regionId) {
-        return this.districtRepository.findByUpperDivisionIdWithoutGeoJson(regionId);
+    public List<MunicipalityDistrict> getMunicipalityDistricts() {
+        return this.municipalityDistrictRepository.findAll();
     }
 
-    public List<MunicipalityDistrict> getMunicipalityDistrictsWithoutGeoJson() {
-        return this.municipalityDistrictRepository.findAllWithoutGeoJson();
+    public List<MunicipalityDistrict> getMunicipalityDistrictsByRegionId(Integer regionId) {
+        return this.municipalityDistrictRepository.findByUpperDivisionId(regionId);
     }
 
-    public List<MunicipalityDistrict> getMunicipalityDistrictsByRegionIdWithoutGeoJson(Integer regionId) {
-        return this.municipalityDistrictRepository.findByUpperDivisionIdWithoutGeoJson(regionId);
+    public List<Municipality> getMunicipalities() {
+        return this.municipalityRepository.findAll();
     }
 
-    public List<Municipality> getMunicipalitiesWithoutGeoJson() {
-        return this.municipalityRepository.findAllWithoutGeoJson();
+    public List<Municipality> getMunicipalitiesByDistrictId(Integer districtId) {
+        return this.municipalityRepository.findByUpperDivisionId(districtId);
     }
 
-    public List<Municipality> getMunicipalitiesByDistrictIdWithoutGeoJson(Integer districtId) {
-        return this.municipalityRepository.findByUpperDivisionIdWithoutGeoJson(districtId);
+    public List<Commune> getCommunes() {
+        return this.communeRepository.findAll();
     }
 
-    public List<Commune> getCommunesWithoutGeoJson() {
-        return this.communeRepository.findAllWithoutGeoJson();
+    public List<Commune> getCommunesByDistrictId(Integer districtId) {
+        return this.communeRepository.findByUpperDivisionId(districtId);
     }
 
-    public List<Commune> getCommunesByDistrictIdWithoutGeoJson(Integer districtId) {
-        return this.communeRepository.findByUpperDivisionIdWithoutGeoJson(districtId);
+    public List<Fokontany> getFokontany() {
+        return this.fokontanyRepository.findAll();
     }
 
-    public List<Fokontany> getFokontanyWithoutGeoJson() {
-        return this.fokontanyRepository.findAllWithoutGeoJson();
+    public List<Fokontany> getFokontanyByCommuneId(Integer communeId) {
+        return this.fokontanyRepository.findByUpperDivisionId(communeId);
     }
 
-    public List<Fokontany> getFokontanyByCommuneIdWithoutGeoJson(Integer communeId) {
-        return this.fokontanyRepository.findByUpperDivisionIdWithoutGeoJson(communeId);
+    public List<MunicipalityFokontany> getMunicipalityFokontanyByMunicipalityId(Integer municipalityId) {
+        return this.municipalityFokontanyRepository.findByUpperDivisionId(municipalityId);
     }
 
-    public List<MunicipalityFokontany> getMunicipalityFokontanyByMunicipalityIdWithoutGeoJson(Integer municipalityId) {
-        return this.municipalityFokontanyRepository.findByUpperDivisionIdWithoutGeoJson(municipalityId);
-    }
-
-    public List<MunicipalityFokontany> getMunicipalityFokontanyWithoutGeoJson() {
-        return this.municipalityFokontanyRepository.findAllWithoutGeoJson();
+    public List<MunicipalityFokontany> getMunicipalityFokontany() {
+        return this.municipalityFokontanyRepository.findAll();
     }
 }

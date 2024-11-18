@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import {
-  LayerGroup,
-  circle,
-  latLng,
-  polygon,
-  tileLayer,
-  geoJSON,
-} from 'leaflet';
-import { AdministrativeDivisionService } from '../../services/api/administrative-division/administrative-division.service';
-import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
+import { LayerGroup, geoJSON } from 'leaflet';
+import { ElectionStatService } from '../../services/api/election/stat/election-stat.service';
+import { VotersStat } from '../../dto/response/voters-stat';
+import { administrativeDivisions } from './administrativeDivision';
+import { layers, madagascarLatLong } from './mapVariable';
+import { getPopupHtml } from './popupHtml';
+import { AdministrativeDivisionStats } from '../../dto/administrative-division-stats';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -16,115 +15,70 @@ import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 })
 export class DashboardComponent {
   geojsonLayers: LayerGroup[] = [];
+  votersStats: VotersStat[] = [];
+  divisions = administrativeDivisions;
+  currentDivisionId = 0;
+  currentZoom = this.divisions[this.currentDivisionId].value.zoom;
 
-  constructor(private service: AdministrativeDivisionService) {
-    this.service.getRegionsStat().then((payload) => {
-      console.log(payload);
+  mapLayers = layers;
+  options = {
+    layers: this.mapLayers,
+    zoom: this.currentZoom,
+    center: madagascarLatLong,
+  };
+
+  constructor(
+    private dialog: MatDialog,
+    private electionStatService: ElectionStatService
+  ) {
+    this.electionStatService.getVotersStats().then((payload) => {
       if (payload) {
-        for (let region of payload.administrativeDivisions) {
-          const geojson = JSON.parse(region.geojson);
-          this.geojsonLayers.push(
-            geoJSON(geojson, {
-              onEachFeature(feature, layer) {
-                let popupHtml = '<div class="custom-popup">';
-                popupHtml += '<table>';
-                popupHtml += '<thead>';
-                popupHtml += '<tr>';
-                popupHtml += '<th scope="col">' + region.name + '</th>';
-                popupHtml += '<th scope="col"></th>';
-                popupHtml += '</tr>';
-                popupHtml += '</thead>';
-                popupHtml += '<tbody>';
-                popupHtml += '<tr>';
-                popupHtml += '<td>Abstention</td>';
-                popupHtml += '<td class="text-end text-danger">10%</td>';
-                popupHtml += '</tr>';
-                popupHtml += '<tr>';
-                popupHtml += '<td>Couverture</td>';
-                popupHtml += '<td class="text-end">40%</td>';
-                popupHtml += '</tr>';
-                popupHtml += '<tr>';
-                popupHtml += '<td>Alertes</td>';
-                popupHtml += '<td class="text-end">2</td>';
-                popupHtml += '</tr>';
-                popupHtml += '</tbody>';
-                popupHtml += '</table>';
-                popupHtml += '</div>';
-                layer.bindPopup(popupHtml);
-              },
-            })
-          );
-        }
+        this.votersStats = payload.votersStats;
       }
     });
+    this.getAdministrativeDivisionStats();
   }
 
-  options = {
-    layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '...',
-      }),
-    ],
-    zoom: 5,
-    center: latLng(-20.2, 47.5),
-  };
+  getAdministrativeDivisionStats() {
+    this.geojsonLayers = [];
+    this.electionStatService
+      .getAdministrativeDivisionStats(
+        this.divisions[this.currentDivisionId].value.name
+      )
+      .then((payload) => {
+        if (payload) {
+          for (let stat of payload.stats) {
+            const geojson = JSON.parse(stat.geojson);
+            const callBack = () => {
+              this.openDetailsDialog(stat);
+            };
+            this.geojsonLayers.push(
+              geoJSON(geojson, {
+                onEachFeature(feature, layer) {
+                  let popupHtml = getPopupHtml(stat);
+                  layer.bindPopup(popupHtml);
+                  layer.on('popupopen', () => {
+                    const button = document.getElementById('details-button');
+                    if (button) {
+                      button.addEventListener('click', () => {
+                        callBack();
+                      });
+                    }
+                  });
+                },
+              })
+            );
+          }
+        }
+      });
+  }
 
-  layersControl = {
-    baseLayers: {
-      'Open Street Map': tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { maxZoom: 18, attribution: '...' }
-      ),
-      'Open Cycle Map': tileLayer(
-        'https://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-        { maxZoom: 18, attribution: '...' }
-      ),
-    },
-    overlays: {
-      'Big Circle': circle([46.95, -122], { radius: 5000 }),
-      'Big Square': polygon([
-        [46.8, -121.55],
-        [46.9, -121.55],
-        [46.9, -121.7],
-        [46.8, -121.7],
-      ]),
-    },
-  };
-
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['Presidentielle 2023', 'Legisltative 2024', 'Municipale 2024'],
-    datasets: [
-      {
-        data: [35, 20, 40],
-        label: 'Inscrits',
-        fill: true,
-        tension: 0.5,
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,0,0,0.3)',
-      },
-      {
-        data: [30, 19, 32],
-        label: 'Enregistrés',
-        fill: true,
-        tension: 0.5,
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,255,0,0.3)',
-      },
-    ],
-  };
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: true,
-  };
-
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Presidentielle 2023', 'Legisltative 2024', 'Municipale 2024'],
-    datasets: [
-      { data: [20, 10, 25], label: 'Homme' },
-      { data: [10, 9, 15], label: 'Femme' },
-    ],
-  };
-  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
-    responsive: false,
+  openDetailsDialog = (division: AdministrativeDivisionStats) => {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: { id: division.divionId },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   };
 }

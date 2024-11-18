@@ -13,6 +13,7 @@ export class Endpoints {
   public static readonly ELECTIONS = 'api/elections';
   public static readonly ELECTION_TYPES = 'api/election-types';
   public static readonly ELECTION_RESULTS = `${this.ELECTIONS}/results`;
+  public static readonly ELECTION_STATS = `${this.ELECTIONS}/stats`;
 
   public static publicEndpoints = [
     Endpoints.SIGN_IN,

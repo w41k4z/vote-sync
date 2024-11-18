@@ -61,6 +61,8 @@ import { ProvincialResultFilterComponent } from './views/elections/result/filter
 import { GlobalResultFilterComponent } from './views/elections/result/filter/global-result-filter/global-result-filter.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { CloseElectionDialogComponent } from './views/elections/close-election-dialog/close-election-dialog.component';
+import { VotersStatComponent } from './views/dashboard/voters-stat/voters-stat.component';
+import { VotersRepartitionStatComponent } from './views/dashboard/voters-repartition-stat/voters-repartition-stat.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +109,8 @@ import { CloseElectionDialogComponent } from './views/elections/close-election-d
     GlobalResultFilterComponent,
     ProgressSpinnerComponent,
     CloseElectionDialogComponent,
+    VotersStatComponent,
+    VotersRepartitionStatComponent,
   ],
   imports: [
     BrowserModule,

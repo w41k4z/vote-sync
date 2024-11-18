@@ -6,3 +6,17 @@
     padding: 20px 20px 0 20px;
     border-radius: 15px;
 }
+
+select {
+    background-color: $content-background;
+}
+
+h5 {
+    color: $primary;
+}
+
+.map-container {
+    border-radius: 20px;
+    background-color: $content-background;
+    height: fit-content;
+}

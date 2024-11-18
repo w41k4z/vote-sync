@@ -24,13 +24,6 @@ public class AdministrativeDivisionController {
     @GetMapping("/regions")
     public ResponseEntity<ApiResponse> getRegions() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getRegionsWithoutGeoJson());
-        return ResponseEntity.ok(new ApiResponse(payload, null));
-    }
-
-    @GetMapping("/regions/stats")
-    public ResponseEntity<ApiResponse> getRegionsStat() {
-        HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions", this.service.getRegions());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
@@ -38,7 +31,7 @@ public class AdministrativeDivisionController {
     @GetMapping("/districts")
     public ResponseEntity<ApiResponse> getDistricts() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getDistrictsWithoutGeoJson());
+        payload.put("administrativeDivisions", this.service.getDistricts());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -46,14 +39,14 @@ public class AdministrativeDivisionController {
     public ResponseEntity<ApiResponse> getDistrictsByRegionId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
-                this.service.getDistrictsByRegionIdWithoutGeoJson(upperDivisionId));
+                this.service.getDistrictsByRegionId(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
     @GetMapping("/municipality-districts")
     public ResponseEntity<ApiResponse> getMunicipalityDistricts() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getMunicipalityDistrictsWithoutGeoJson());
+        payload.put("administrativeDivisions", this.service.getMunicipalityDistricts());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -61,14 +54,14 @@ public class AdministrativeDivisionController {
     public ResponseEntity<ApiResponse> getMunicipalityDistrictsByRegionId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
-                this.service.getMunicipalityDistrictsByRegionIdWithoutGeoJson(upperDivisionId));
+                this.service.getMunicipalityDistrictsByRegionId(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
     @GetMapping("/communes")
     public ResponseEntity<ApiResponse> getCommunes() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getCommunesWithoutGeoJson());
+        payload.put("administrativeDivisions", this.service.getCommunes());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -76,14 +69,14 @@ public class AdministrativeDivisionController {
     public ResponseEntity<ApiResponse> getCommunesByDistrictId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
-                this.service.getCommunesByDistrictIdWithoutGeoJson(upperDivisionId));
+                this.service.getCommunesByDistrictId(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
     @GetMapping("/municipalities")
     public ResponseEntity<ApiResponse> getMunicipalities() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getMunicipalitiesWithoutGeoJson());
+        payload.put("administrativeDivisions", this.service.getMunicipalities());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -91,14 +84,14 @@ public class AdministrativeDivisionController {
     public ResponseEntity<ApiResponse> getMunicipalitiesByDistrictId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
-                this.service.getMunicipalitiesByDistrictIdWithoutGeoJson(upperDivisionId));
+                this.service.getMunicipalitiesByDistrictId(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
     @GetMapping("/fokontany")
     public ResponseEntity<ApiResponse> getFokontany() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getFokontanyWithoutGeoJson());
+        payload.put("administrativeDivisions", this.service.getFokontany());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -106,14 +99,14 @@ public class AdministrativeDivisionController {
     public ResponseEntity<ApiResponse> getFokontanyByCommuneId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
-                this.service.getFokontanyByCommuneIdWithoutGeoJson(upperDivisionId));
+                this.service.getFokontanyByCommuneId(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
     @GetMapping("/municipality-fokontany")
     public ResponseEntity<ApiResponse> getMunicipalityFokontany() {
         HashMap<String, Object> payload = new HashMap<>();
-        payload.put("administrativeDivisions", this.service.getMunicipalityFokontanyWithoutGeoJson());
+        payload.put("administrativeDivisions", this.service.getMunicipalityFokontany());
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 
@@ -121,7 +114,7 @@ public class AdministrativeDivisionController {
     public ResponseEntity<ApiResponse> getMunicipalityFokontanyByMunicipalityId(@RequestParam Integer upperDivisionId) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("administrativeDivisions",
-                this.service.getMunicipalityFokontanyByMunicipalityIdWithoutGeoJson(upperDivisionId));
+                this.service.getMunicipalityFokontanyByMunicipalityId(upperDivisionId));
         return ResponseEntity.ok(new ApiResponse(payload, null));
     }
 }
