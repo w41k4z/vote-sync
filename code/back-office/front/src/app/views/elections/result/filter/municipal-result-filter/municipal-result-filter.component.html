@@ -12,27 +12,27 @@
             <tbody>
                 <tr>
                     <td>
-                        <select class="form-select" id="region">
+                        <select class="form-select" id="region" [(ngModel)]="regionId" (change)="onRegionFilterChange(regionId)">
                             <option value="*">Toutes les régions</option>
-                            <option>Analamanga</option>
+                            <option *ngFor="let region of regions" value="{{region.id}}">{{ region.name | formatName }}</option>
                         </select>
                     </td>
                     <td>
-                        <select class="form-select" id="district">
+                        <select class="form-select" id="district" [(ngModel)]="districtId">
                             <option value="*">Tous les districts</option>
-                            <option>Antananarivo I</option>
+                            <option *ngFor="let district of districts" value="{{district.id}}">{{ district.name | formatName }}</option>
                         </select>
                     </td>
                     <td class="px-1">
-                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center">
+                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center"
+                            (click)="onFilter(0, regionId, districtId, '*', '*')">
                             <span>Filtrer</span>
                             <i class="bi bi-filter" style="font-size: medium;"></i>
                         </button>
                     </td>
                     <td class="px-1">
-                        <button class="btn btn-outline-primary d-flex gap-2 align-items-center">
-                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf"
-                                style="font-size: medium;"></i></button>
+                        <button class="btn btn-outline-primary d-flex gap-2 align-items-center" *ngIf="showExportButton">
+                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf" style="font-size: medium;"></i></button>
                     </td>
                 </tr>
             </tbody>

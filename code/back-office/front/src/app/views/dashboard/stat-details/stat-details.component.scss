@@ -10,7 +10,8 @@
   .table-header {
     display: flex;
     justify-content: center;
-    background: $content-background;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
     padding: 10px 20px;
 
     h5 {
