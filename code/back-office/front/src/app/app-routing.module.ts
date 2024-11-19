@@ -19,6 +19,8 @@ import { LocalElectionResultComponent } from './views/elections/result/local-ele
 import { ResultValidationsComponent } from './views/result-validations/result-validations.component';
 import { ResultValidationFormComponent } from './views/result-validations/result-validation-form/result-validation-form.component';
 import { AlertComponent } from './views/alert/alert.component';
+import { LegislativeElectionResultComponent } from './views/elections/result/legislative-election-result/legislative-election-result.component';
+import { PresidentialElectionResultComponent } from './views/elections/result/presidential-election-result/presidential-election-result.component';
 
 const routes: Routes = [
   {
@@ -95,6 +97,16 @@ const routes: Routes = [
       {
         path: 'elections/result/local/:electionId',
         component: LocalElectionResultComponent,
+        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
+      },
+      {
+        path: 'elections/result/legislative/:electionId',
+        component: LegislativeElectionResultComponent,
+        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
+      },
+      {
+        path: 'elections/result/presidential/:electionId',
+        component: PresidentialElectionResultComponent,
         data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
       },
       {

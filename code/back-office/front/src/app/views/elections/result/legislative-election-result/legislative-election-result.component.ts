@@ -1,25 +1,30 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Election } from '../../../../dto/election';
 import { ElectoralResult } from '../../../../dto/electoral-result';
-import { ActivatedRoute } from '@angular/router';
-import { LocalElectionResultService } from '../../../../services/api/election/election-result/local-election-result.service';
-import { ElectionService } from '../../../../services/api/election/election.service';
 import { Page } from '../../../../dto/response/page';
-import { Observable } from 'rxjs';
-import { AdministrativeDivision } from '../../../../dto/administrative-division';
 import { PollingStation } from '../../../../dto/polling-station';
+import { AdministrativeDivision } from '../../../../dto/administrative-division';
+import { ActivatedRoute } from '@angular/router';
+import { ElectionService } from '../../../../services/api/election/election.service';
 import { AdministrativeDivisionService } from '../../../../services/api/administrative-division/administrative-division.service';
+import { LegislativeElectionResultService } from '../../../../services/api/election/election-result/legislative-election-result.service';
 
 @Component({
-  selector: 'app-local-election-result',
-  templateUrl: './local-election-result.component.html',
-  styleUrl: './local-election-result.component.scss',
+  selector: 'app-legislative-election-result',
+  templateUrl: './legislative-election-result.component.html',
+  styleUrl: './legislative-election-result.component.scss',
 })
-export class LocalElectionResultComponent {
+export class LegislativeElectionResultComponent {
   loading$: Observable<Boolean>;
   error$: Observable<string | null>;
   message$: Observable<string | null>;
-  results: string[] = ['Par bureau de vote', 'Par fokontany', 'Par commune'];
+  results: string[] = [
+    'Par bureau de vote',
+    'Par fokontany',
+    'Par commune',
+    'Par district',
+  ];
   current = 0;
   election: Election | null = null;
   electoralResults: ElectoralResult[] = [];
@@ -28,18 +33,18 @@ export class LocalElectionResultComponent {
   pollingStations: PollingStation[] = [];
   regions: AdministrativeDivision[] = [];
   districts: AdministrativeDivision[] = [];
-  municipalities: AdministrativeDivision[] = [];
+  communes: AdministrativeDivision[] = [];
   fokontany: AdministrativeDivision[] = [];
 
   regionId: string = '*';
   districtId: string = '*';
-  municipalityId: string = '*';
+  communeId: string = '*';
   fokontanyId: string = '*';
 
   constructor(
     private route: ActivatedRoute,
     private electionService: ElectionService,
-    private electionResultService: LocalElectionResultService,
+    private electionResultService: LegislativeElectionResultService,
     private administrativeDivisionService: AdministrativeDivisionService
   ) {
     this.loading$ = electionResultService.loading$;
@@ -54,7 +59,7 @@ export class LocalElectionResultComponent {
             0,
             this.regionId,
             this.districtId,
-            this.municipalityId,
+            this.communeId,
             this.fokontanyId
           );
         }
@@ -71,13 +76,13 @@ export class LocalElectionResultComponent {
     this.current = index;
     this.regionId = '*';
     this.districtId = '*';
-    this.municipalityId = '*';
+    this.communeId = '*';
     this.fokontanyId = '*';
     this.filter(
       0,
       this.regionId,
       this.districtId,
-      this.municipalityId,
+      this.communeId,
       this.fokontanyId
     );
   }
@@ -86,12 +91,12 @@ export class LocalElectionResultComponent {
     page: number = 0,
     regionId: string,
     districtId: string,
-    municipalityId: string,
+    communeId: string,
     fokontanyId: string
   ) => {
     this.regionId = regionId;
     this.districtId = districtId;
-    this.municipalityId = municipalityId;
+    this.communeId = communeId;
     this.fokontanyId = fokontanyId;
     this.getElectoralResults(page);
   };
@@ -108,7 +113,7 @@ export class LocalElectionResultComponent {
               electionId,
               this.regionId,
               this.districtId,
-              this.municipalityId,
+              this.communeId,
               this.fokontanyId
             )
             .then((payload) => {
@@ -126,7 +131,7 @@ export class LocalElectionResultComponent {
               electionId,
               this.regionId,
               this.districtId,
-              this.municipalityId
+              this.communeId
             )
             .then((payload) => {
               if (payload) {
@@ -137,13 +142,23 @@ export class LocalElectionResultComponent {
           break;
         case 2:
           this.electionResultService
-            .getMunicipalResults(
+            .getCommunalResults(
               page,
               1,
               electionId,
               this.regionId,
               this.districtId
             )
+            .then((payload) => {
+              if (payload) {
+                this.electoralResults = payload.electoralResults.content;
+                this.page = payload.electoralResults.page;
+              }
+            });
+          break;
+        case 3:
+          this.electionResultService
+            .getDistrictResults(page, 1, electionId, this.regionId)
             .then((payload) => {
               if (payload) {
                 this.electoralResults = payload.electoralResults.content;
@@ -164,7 +179,7 @@ export class LocalElectionResultComponent {
           this.page.number + 1,
           this.regionId,
           this.districtId,
-          this.municipalityId,
+          this.communeId,
           this.fokontanyId
         );
       }
@@ -178,7 +193,7 @@ export class LocalElectionResultComponent {
           this.page.number - 1,
           this.regionId,
           this.districtId,
-          this.municipalityId,
+          this.communeId,
           this.fokontanyId
         );
       }
@@ -188,7 +203,7 @@ export class LocalElectionResultComponent {
   filterByRegion = (regionId: string) => {
     if (!regionId || regionId === '*') {
       this.districts = [];
-      this.municipalities = [];
+      this.communes = [];
       this.fokontany = [];
       return;
     }
@@ -202,7 +217,7 @@ export class LocalElectionResultComponent {
   };
   filterByDistrict = (districtId: string) => {
     if (!districtId || districtId === '*') {
-      this.municipalities = [];
+      this.communes = [];
       this.fokontany = [];
       return;
     }
@@ -210,17 +225,17 @@ export class LocalElectionResultComponent {
       .getMunicipalitiesByDistrictId(parseInt(districtId))
       .then((payload) => {
         if (payload) {
-          this.municipalities = payload.administrativeDivisions;
+          this.communes = payload.administrativeDivisions;
         }
       });
   };
-  filterByMunicipality = (municipalityId: string) => {
-    if (!municipalityId || municipalityId === '*') {
+  filterByCommune = (communeId: string) => {
+    if (!communeId || communeId === '*') {
       this.fokontany = [];
       return;
     }
     this.administrativeDivisionService
-      .getFokontanyByMunicipalityId(parseInt(municipalityId))
+      .getFokontanyByCommuneId(parseInt(communeId))
       .then((payload) => {
         if (payload) {
           this.fokontany = payload.administrativeDivisions;

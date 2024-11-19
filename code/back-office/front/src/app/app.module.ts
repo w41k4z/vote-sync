@@ -64,6 +64,8 @@ import { CloseElectionDialogComponent } from './views/elections/close-election-d
 import { VotersStatComponent } from './views/dashboard/voters-stat/voters-stat.component';
 import { VotersRepartitionStatComponent } from './views/dashboard/voters-repartition-stat/voters-repartition-stat.component';
 import { StatDetailsComponent } from './views/dashboard/stat-details/stat-details.component';
+import { PresidentialElectionResultComponent } from './views/elections/result/presidential-election-result/presidential-election-result.component';
+import { LegislativeElectionResultComponent } from './views/elections/result/legislative-election-result/legislative-election-result.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +115,8 @@ import { StatDetailsComponent } from './views/dashboard/stat-details/stat-detail
     VotersStatComponent,
     VotersRepartitionStatComponent,
     StatDetailsComponent,
+    PresidentialElectionResultComponent,
+    LegislativeElectionResultComponent,
   ],
   imports: [
     BrowserModule,

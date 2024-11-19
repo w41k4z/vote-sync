@@ -1,18 +1,45 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiCallService } from '../../api-call';
-import { HttpClient } from '@angular/common/http';
 import { ElectoralResultPayload } from '../../../../dto/response/election/result/electoral-result-payload.response';
 import { Endpoints } from '../../../../endpoints';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LocalElectionResultService extends ApiCallService {
+export class LegislativeElectionResultService extends ApiCallService {
   constructor(http: HttpClient) {
     super(http);
   }
 
-  async getMunicipalResults(
+  async getDistrictResults(
+    page: number,
+    size: number,
+    electionId: string,
+    regionId: string
+  ) {
+    let params: string[] = [];
+    params.push(`page=${page}`);
+    params.push(`size=${size}`);
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    return (
+      await this.getCall<ElectoralResultPayload>(
+        `${Endpoints.ELECTION_RESULTS}/legislative/district${strParam}`
+      )
+    ).payload;
+  }
+
+  async getCommunalResults(
     page: number,
     size: number,
     electionId: string,
@@ -38,7 +65,7 @@ export class LocalElectionResultService extends ApiCallService {
     }
     return (
       await this.getCall<ElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/local/municipal${strParam}`
+        `${Endpoints.ELECTION_RESULTS}/legislative/communal${strParam}`
       )
     ).payload;
   }
@@ -49,7 +76,7 @@ export class LocalElectionResultService extends ApiCallService {
     electionId: string,
     regionId: string,
     districtId: string,
-    municipalityId: string
+    communeId: string
   ) {
     let params: string[] = [];
     params.push(`page=${page}`);
@@ -60,8 +87,8 @@ export class LocalElectionResultService extends ApiCallService {
     if (districtId && districtId !== '*') {
       params.push(`districtId=${districtId}`);
     }
-    if (municipalityId && municipalityId !== '*') {
-      params.push(`municipalityId=${municipalityId}`);
+    if (communeId && communeId !== '*') {
+      params.push(`communeId=${communeId}`);
     }
     let strParam = `?electionId=${electionId}`;
     if (params.length > 0) {
@@ -73,7 +100,7 @@ export class LocalElectionResultService extends ApiCallService {
     }
     return (
       await this.getCall<ElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/local/fokontany${strParam}`
+        `${Endpoints.ELECTION_RESULTS}/fokontany${strParam}`
       )
     ).payload;
   }
@@ -84,7 +111,7 @@ export class LocalElectionResultService extends ApiCallService {
     electionId: string,
     regionId: string,
     districtId: string,
-    municipalityId: string,
+    communeId: string,
     fokontanyId: string
   ) {
     let params: string[] = [];
@@ -96,8 +123,8 @@ export class LocalElectionResultService extends ApiCallService {
     if (districtId && districtId !== '*') {
       params.push(`districtId=${districtId}`);
     }
-    if (municipalityId && municipalityId !== '*') {
-      params.push(`municipalityId=${municipalityId}`);
+    if (communeId && communeId !== '*') {
+      params.push(`communeId=${communeId}`);
     }
     if (fokontanyId && fokontanyId !== '*') {
       params.push(`fokontanyId=${fokontanyId}`);
@@ -112,7 +139,7 @@ export class LocalElectionResultService extends ApiCallService {
     }
     return (
       await this.getCall<ElectoralResultPayload>(
-        `${Endpoints.ELECTION_RESULTS}/local/polling-station${strParam}`
+        `${Endpoints.ELECTION_RESULTS}/polling-station${strParam}`
       )
     ).payload;
   }
