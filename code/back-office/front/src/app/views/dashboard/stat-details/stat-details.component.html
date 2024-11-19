@@ -1,1 +1,46 @@
-<p>stat-details works!</p>
+<div class="table-container">
+    <div class="table-header">
+        <h5 class="fw-bold text-primary">
+            <i class="bi bi-clipboard-data"></i> Détails statistiques : {{ data.divisionName | formatName }}
+        </h5>
+    </div>
+    <div class="table-content">
+        <table class="table table-bordered table-hover table-striped align-middle">
+            <thead class="table-success text-center">
+                <tr>
+                    <th scope="col">Élection</th>
+                    <th scope="col">Électeurs Inscrits</th>
+                    <th scope="col">Électeurs Enregistrés</th>
+                    <th scope="col">Couverture (Bureau de vote)</th>
+                    <th scope="col">Résultats collectés</th>
+                    <th scope="col">Incidences</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of electoralResults; index as i">
+                    <th scope="row" class="text-nowrap fw-bold text-secondary">
+                        <i class="bi bi-award"></i> {{ result.election }}
+                    </th>
+                    <td class="text-end">{{ result.voters | formatNumber }}</td>
+                    <td class="text-end">{{ result.validVotes + result.blankVotes + result.nullVotes | formatNumber }}
+                    </td>
+                    <td class="text-center"><b class="text-success">{{ result.importedResults | formatNumber }}</b>
+                    / {{ result.totalPollingStationCount }}</td>
+                    <td class="text-center">
+                        <b class="text-success">{{ result.collectedResults | formatNumber }}</b>
+                        / {{ result.totalPollingStationCount }}
+                    </td>
+                    <td class="text-center text-danger fw-bold">
+                        {{ result.alerts || 0 }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="mt-2 mb-1 d-flex gap-3 justify-content-center align-items-center">
+        <i class="bi bi-arrow-left-circle" (click)="previousPage()"></i>
+        <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">{{page && page.number + 1}}</span></b> sur
+            {{page && page.totalPages}}</p>
+        <i class="bi bi-arrow-right-circle" (click)="nextPage()"></i>
+    </footer>
+</div>

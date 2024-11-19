@@ -5,11 +5,8 @@
             <option *ngFor="let division of divisions; index as i;" value="{{i}}">{{division.label}}</option>
         </select>
         <h6 class="mb-0 ms-3">Election:</h6>
-        <select class="form-select form-select-sm w-auto">
-            <option value="" >Toutes</option>
-            <option value="" >Présidentielle</option>
-            <option value="" >Législative</option>
-            <option value="" >Locale</option>
+        <select class="form-select form-select-sm w-auto" [(ngModel)]="electionTypeId" (change)="getAdministrativeDivisionStats()">
+            <option *ngFor="let type of electionTypes" value="{{ type.value }}">{{ type.name }}</option>
         </select>
     </header>
     <div

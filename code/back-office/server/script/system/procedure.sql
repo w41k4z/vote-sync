@@ -44,7 +44,7 @@ BEGIN
             rsi.blancs,
             rsi.nuls,
             0,
-            1
+            0
         FROM resultats_importes rsi
         JOIN bv
             ON rsi.code_bv = bv.code

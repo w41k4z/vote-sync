@@ -20,7 +20,25 @@ export class DashboardComponent {
   divisions = administrativeDivisions;
   currentDivisionId = 0;
   currentZoom = this.divisions[this.currentDivisionId].value.zoom;
-  electionTypeId = '*';
+  electionTypes = [
+    {
+      name: 'Toutes',
+      value: -1,
+    },
+    {
+      name: 'Présidentielle',
+      value: 1,
+    },
+    {
+      name: 'Législative',
+      value: 2,
+    },
+    {
+      name: 'Locale',
+      value: 3,
+    },
+  ];
+  electionTypeId = this.electionTypes[0].value;
 
   mapLayers = layers;
   options = {
@@ -45,7 +63,8 @@ export class DashboardComponent {
     this.geojsonLayers = [];
     this.electionStatService
       .getAdministrativeDivisionStats(
-        this.divisions[this.currentDivisionId].value.name
+        this.divisions[this.currentDivisionId].value.name,
+        this.electionTypeId == -1 ? undefined : this.electionTypeId
       )
       .then((payload) => {
         if (payload) {
@@ -77,18 +96,22 @@ export class DashboardComponent {
 
   openDetailsDialog = (division: AdministrativeDivisionStats) => {
     const data =
-      this.electionTypeId == '*'
+      this.electionTypeId == -1
         ? {
             division: this.divisions[this.currentDivisionId].value.name,
             divisionId: division.divisionId,
+            divisionName: division.divisionName,
           }
         : {
             division: this.divisions[this.currentDivisionId].value.name,
             divisionId: division.divisionId,
+            divisionName: division.divisionName,
             electionTypeId: this.electionTypeId,
           };
     this.dialog.open(StatDetailsComponent, {
       data: data,
+      width: 'auto',
+      maxWidth: 'none',
     });
   };
 }

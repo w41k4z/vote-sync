@@ -35,10 +35,12 @@ export class ElectionStatService extends ApiCallService {
   async getAdministrativeDivisionStatDetails(
     administrativeDivision: 'region' | 'district' | 'commune' | 'fokontany',
     divisionId: number,
+    page: number,
     electionTypeId?: number
   ) {
     let param = `?divisionId=${divisionId}`;
     param += electionTypeId ? `&electionTypeId=${electionTypeId}` : '';
+    param += `&page=${page}`;
     return (
       await this.getCall<ElectoralResultPayload>(
         `${Endpoints.ELECTION_STATS}/${administrativeDivision}/details${param}`

@@ -16,6 +16,10 @@ export class ElectoralResult {
   blankVotes: number;
   nullVotes: number;
   validVotes: number;
+  importedResults: number;
+  collectedResults: number;
+  totalPollingStationCount: number;
+  alerts: number;
   details: ElectoralResultDetail[];
 
   constructor(
@@ -34,6 +38,10 @@ export class ElectoralResult {
     blankVotes: number,
     nullVotes: number,
     validVotes: number,
+    importedResults: number,
+    collectedResults: number,
+    totalPollingStationCount: number,
+    alerts: number,
     details: ElectoralResultDetail[]
   ) {
     this.divisionId = divisionId;
@@ -51,6 +59,10 @@ export class ElectoralResult {
     this.blankVotes = blankVotes;
     this.nullVotes = nullVotes;
     this.validVotes = validVotes;
+    this.importedResults = importedResults;
+    this.collectedResults = collectedResults;
+    this.totalPollingStationCount = totalPollingStationCount;
+    this.alerts = alerts;
     this.details = details;
   }
 }

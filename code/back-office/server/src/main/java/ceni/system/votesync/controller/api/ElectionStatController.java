@@ -47,7 +47,7 @@ public class ElectionStatController {
             @RequestParam(required = false) Integer electionTypeId,
             @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("details", this.electionStatService.getFokontanyStatDetails(divisionId, electionTypeId, pageable));
+        data.put("electoralResults", this.electionStatService.getFokontanyStatDetails(divisionId, electionTypeId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
@@ -67,7 +67,7 @@ public class ElectionStatController {
             @RequestParam(required = false) Integer electionTypeId,
             @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("details", this.electionStatService.getCommunalStatDetails(divisionId, electionTypeId, pageable));
+        data.put("electoralResults", this.electionStatService.getCommunalStatDetails(divisionId, electionTypeId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
@@ -87,7 +87,7 @@ public class ElectionStatController {
             @RequestParam(required = false) Integer electionTypeId,
             @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("details", this.electionStatService.getDistrictStatDetails(divisionId, electionTypeId, pageable));
+        data.put("electoralResults", this.electionStatService.getDistrictStatDetails(divisionId, electionTypeId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
@@ -107,7 +107,7 @@ public class ElectionStatController {
             @RequestParam(required = false) Integer electionTypeId,
             @PageableDefault(value = Pagination.DEFAULT_SIZE, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("details", this.electionStatService.getRegionalStatDetails(divisionId, electionTypeId, pageable));
+        data.put("electoralResults", this.electionStatService.getRegionalStatDetails(divisionId, electionTypeId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }
