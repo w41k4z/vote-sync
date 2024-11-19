@@ -16,6 +16,8 @@ public class ElectoralResult {
     @Column(name = "id_election")
     private Integer electionId;
 
+    private String election;
+
     @Column(name = "id")
     private Integer divisionId;
 
@@ -25,7 +27,7 @@ public class ElectoralResult {
     private String name;
 
     @Column(name = "inscrits")
-    private Integer registeredVoters;
+    private Integer voters;
 
     @Column(name = "homme_moins_36")
     private Integer maleUnder36;

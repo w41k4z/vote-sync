@@ -63,6 +63,7 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { CloseElectionDialogComponent } from './views/elections/close-election-dialog/close-election-dialog.component';
 import { VotersStatComponent } from './views/dashboard/voters-stat/voters-stat.component';
 import { VotersRepartitionStatComponent } from './views/dashboard/voters-repartition-stat/voters-repartition-stat.component';
+import { StatDetailsComponent } from './views/dashboard/stat-details/stat-details.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,7 @@ import { VotersRepartitionStatComponent } from './views/dashboard/voters-reparti
     CloseElectionDialogComponent,
     VotersStatComponent,
     VotersRepartitionStatComponent,
+    StatDetailsComponent,
   ],
   imports: [
     BrowserModule,

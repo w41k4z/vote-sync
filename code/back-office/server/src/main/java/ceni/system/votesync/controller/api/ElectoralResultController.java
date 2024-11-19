@@ -2,6 +2,7 @@ package ceni.system.votesync.controller.api;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -77,9 +78,11 @@ public class ElectoralResultController {
     public ResponseEntity<ApiResponse> importResults(
             @RequestParam(required = true) Integer electionId, @RequestParam(required = true) MultipartFile file,
             @RequestParam(required = true) String password) throws IOException {
+        Map<String, Exception> errors = this.electoralResultUploadService.importResults(electionId, file, password);
+        String message = "Result uploaded with " + errors.size() + " error(s).";
         return ResponseEntity
-                .ok(new ApiResponse(this.electoralResultUploadService.importResults(electionId, file, password),
-                        "Result uploaded successfully"));
+                .ok(new ApiResponse(errors,
+                        message));
     }
 
     @GetMapping("/pending")
@@ -129,17 +132,24 @@ public class ElectoralResultController {
 
     @GetMapping("/local/fokontany")
     public ResponseEntity<ApiResponse> fokontanyLocalElectionResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
+            @RequestParam(required = false) Integer municipalityId,
             @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.localResultService.getFokontanyLocalElectionResults(electionId, pageable));
+        data.put("electoralResults", this.localResultService.getFokontanyLocalElectionResults(electionId, regionId,
+                districtId, municipalityId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/local/municipal")
     public ResponseEntity<ApiResponse> localMunicipalResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
             @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.localResultService.getMunicipalResults(electionId, pageable));
+        data.put("electoralResults",
+                this.localResultService.getMunicipalResults(electionId, regionId, districtId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 

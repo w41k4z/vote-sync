@@ -4,6 +4,7 @@ import { ApiCallService } from '../../api-call';
 import { AdministrativeDivisionStatsPayload } from '../../../../dto/response/election/stat/administrative-division-stats-payload.response';
 import { Endpoints } from '../../../../endpoints';
 import { VotersStatPayload } from '../../../../dto/response/election/stat/voters-stat-payload.response';
+import { ElectoralResultPayload } from '../../../../dto/response/election/result/electoral-result-payload.response';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,20 @@ export class ElectionStatService extends ApiCallService {
     return (
       await this.getCall<AdministrativeDivisionStatsPayload>(
         `${Endpoints.ELECTION_STATS}/${administrativeDivision}${param}`
+      )
+    ).payload;
+  }
+
+  async getAdministrativeDivisionStatDetails(
+    administrativeDivision: 'region' | 'district' | 'commune' | 'fokontany',
+    divisionId: number,
+    electionTypeId?: number
+  ) {
+    let param = `?divisionId=${divisionId}`;
+    param += electionTypeId ? `&electionTypeId=${electionTypeId}` : '';
+    return (
+      await this.getCall<ElectoralResultPayload>(
+        `${Endpoints.ELECTION_STATS}/${administrativeDivision}/details${param}`
       )
     ).payload;
   }

@@ -82,7 +82,7 @@
             <h5 class="text-danger mt-4">Taux de participation:
                 <b class="text-black text-end">
                     {{ (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) * 100 /
-                    electoralResult.registeredVoters | formatNumber }}%
+                    electoralResult.voters | formatNumber }}%
                 </b>
             </h5>
         </div>
@@ -95,7 +95,7 @@
                         </td>
                         <td class="text-end">
                             <b class="text-black">
-                                {{electoralResult.registeredVoters | formatNumber}}
+                                {{electoralResult.voters | formatNumber}}
                             </b>
                         </td>
                     </tr>

@@ -1,5 +1,5 @@
 export class AdministrativeDivisionStats {
-  divionId: number;
+  divisionId: number;
   divisionName: string;
   electionTypeId: number;
   electionType: string;
@@ -12,7 +12,7 @@ export class AdministrativeDivisionStats {
   geojson: any;
 
   constructor(
-    divionId: number,
+    divisionId: number,
     divisionName: string,
     electionTypeId: number,
     electionType: string,
@@ -24,7 +24,7 @@ export class AdministrativeDivisionStats {
     alerts: number,
     geojson: any
   ) {
-    this.divionId = divionId;
+    this.divisionId = divisionId;
     this.divisionName = divisionName;
     this.electionTypeId = electionTypeId;
     this.electionType = electionType;

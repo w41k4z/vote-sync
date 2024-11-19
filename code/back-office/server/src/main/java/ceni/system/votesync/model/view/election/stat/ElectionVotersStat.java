@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "stat_electeurs")
 @Immutable
-public class VotersStat {
+public class ElectionVotersStat {
 
     @Id
     @Column(name = "id_election")

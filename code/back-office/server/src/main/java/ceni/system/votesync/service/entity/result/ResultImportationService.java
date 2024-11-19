@@ -115,8 +115,15 @@ public class ResultImportationService {
             detail.setElectionId(electionId);
             detail.setPollingStationCode(pollingStationCode);
             Row candidateVotesRow = rowIterator.next();
-            detail.setCandidateNumber((int) candidateVotesRow.getCell(0).getNumericCellValue());
-            detail.setVotes((int) candidateVotesRow.getCell(1).getNumericCellValue());
+            int candidateNumber = (int) candidateVotesRow.getCell(0).getNumericCellValue();
+            int candidateVotes = (int) candidateVotesRow.getCell(1).getNumericCellValue();
+            if (candidateNumber == 0 && candidateVotes == 0) {
+                // This is a bug from the library, sometimes it still do not throw exception
+                // even if there are no more row
+                break;
+            }
+            detail.setCandidateNumber(candidateNumber);
+            detail.setVotes(candidateVotes);
             details.add(detail);
         }
         workbook.close();

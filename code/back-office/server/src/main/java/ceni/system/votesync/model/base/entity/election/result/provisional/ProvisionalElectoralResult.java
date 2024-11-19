@@ -15,6 +15,8 @@ public class ProvisionalElectoralResult {
     @Column(name = "id_election")
     private Integer electionId;
 
+    private String election;
+
     private Integer divisionId;
 
     private String code;
@@ -22,7 +24,7 @@ public class ProvisionalElectoralResult {
     private String name;
 
     @Column(name = "inscrits")
-    private Integer registeredVoters;
+    private Integer voters;
 
     @Column(name = "homme_moins_36")
     private Integer maleUnder36;

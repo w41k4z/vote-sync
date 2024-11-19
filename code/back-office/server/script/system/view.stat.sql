@@ -18,7 +18,7 @@ SELECT
 FROM resultats_provisoires rsp
 JOIN elections e
     ON e.id = rsp.id_election
-ORDER BY rsp.id_election DESC
+ORDER BY e.date_fin ASC
 FETCH FIRST 3 ROWS ONLY
 ;
 

@@ -4,6 +4,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import ceni.system.votesync.model.base.view.result.ElectoralResult;
 import ceni.system.votesync.model.entity.election.result.ResultImage;
+import ceni.system.votesync.model.view.election.result.FokontanyLocalElectionResult;
+import ceni.system.votesync.model.view.election.result.MunicipalResult;
 import ceni.system.votesync.model.view.election.result.PollingStationLocalElectionResult;
 
 public class ElectoralResultSpecification {
@@ -27,7 +29,8 @@ public class ElectoralResultSpecification {
         }
         if (districtId != null) {
             spec = spec.and(
-                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("districtId"), districtId));
+                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("municipalityDistrictId"),
+                            districtId));
         }
         if (municipalityId != null) {
             spec = spec.and(
@@ -38,6 +41,41 @@ public class ElectoralResultSpecification {
             spec = spec.and(
                     (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("fokontanyId"),
                             fokontanyId));
+        }
+        return spec;
+    }
+
+    public static Specification<FokontanyLocalElectionResult> filterFokontanyLocalResult(
+            Integer regionId, Integer districtId, Integer municipalityId) {
+        Specification<FokontanyLocalElectionResult> spec = Specification.where(null);
+        if (regionId != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("regionId"), regionId));
+        }
+        if (districtId != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("municipalityDistrictId"),
+                            districtId));
+        }
+        if (municipalityId != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("municipalityId"),
+                            municipalityId));
+        }
+        return spec;
+    }
+
+    public static Specification<MunicipalResult> filterMunicipalResult(
+            Integer regionId, Integer districtId) {
+        Specification<MunicipalResult> spec = Specification.where(null);
+        if (regionId != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("regionId"), regionId));
+        }
+        if (districtId != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("districtId"),
+                            districtId));
         }
         return spec;
     }

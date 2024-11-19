@@ -266,6 +266,7 @@ CREATE OR REPLACE PROCEDURE migrate_polling_station_results (
 BEGIN
     INSERT INTO bv_resultats_provisoires(
         id_election,
+        election,
         id_bv,
         code_bv,
         nom_bv,
@@ -302,6 +303,7 @@ BEGIN
     ) (
         SELECT
             bvrs.id_election,
+            bvrs.election,
             bvrs.id,
             bvrs.code,
             bvrs.nom,
@@ -376,6 +378,7 @@ CREATE OR REPLACE PROCEDURE migrate_fokontany_results (
 BEGIN
     INSERT INTO fokontany_resultats_provisoires(
         id_election,
+        election,
         id_fokontany,
         code_fokontany,
         nom_fokontany,
@@ -406,6 +409,7 @@ BEGIN
     ) (
         SELECT
             frs.id_election,
+            frs.election,
             frs.id,
             frs.code,
             frs.nom,
@@ -469,6 +473,7 @@ CREATE OR REPLACE PROCEDURE migrate_communal_results (
 BEGIN
     INSERT INTO communes_resultats_provisoires(
         id_election,
+        election,
         id_commune,
         code_commune,
         nom_commune,
@@ -493,6 +498,7 @@ BEGIN
     ) (
         SELECT
             crs.id_election,
+            crs.election,
             crs.id,
             crs.code,
             crs.nom,
@@ -550,6 +556,7 @@ CREATE OR REPLACE PROCEDURE migrate_municipal_results (
 BEGIN
     INSERT INTO municipalites_resultats_provisoires(
         id_election,
+        election,
         id_municipalite,
         code_municipalite,
         nom_municipalite,
@@ -574,6 +581,7 @@ BEGIN
     ) (
         SELECT
             mrs.id_election,
+            mrs.election,
             mrs.id,
             mrs.code,
             mrs.nom,
@@ -631,6 +639,7 @@ CREATE OR REPLACE PROCEDURE migrate_district_results (
 BEGIN
     INSERT INTO districts_resultats_provisoires(
         id_election,
+        election,
         id_district,
         code_district,
         nom_district,
@@ -653,6 +662,7 @@ BEGIN
     ) (
         SELECT
             drs.id_election,
+            drs.election,
             drs.id,
             drs.code,
             drs.nom,
@@ -708,6 +718,7 @@ CREATE OR REPLACE PROCEDURE migrate_regional_results (
 BEGIN
     INSERT INTO regions_resultats_provisoires(
         id_election,
+        election,
         id_region,
         code_region,
         nom_region,
@@ -728,6 +739,7 @@ BEGIN
     ) (
         SELECT
             rrs.id_election,
+            rrs.election,
             rrs.id,
             rrs.code,
             rrs.nom,
@@ -781,7 +793,9 @@ CREATE OR REPLACE PROCEDURE migrate_provincial_results (
 BEGIN
     INSERT INTO provinces_resultats_provisoires(
         id_election,
+        election,
         id_province,
+        code_province,
         nom_province,
         inscrits,
         homme_moins_36,
@@ -800,7 +814,9 @@ BEGIN
     ) (
         SELECT
             prs.id_election,
+            prs.election,
             prs.id,
+            prs.code,
             prs.nom,
             prs.inscrits,
             prs.homme_moins_36,
@@ -852,6 +868,10 @@ CREATE OR REPLACE PROCEDURE migrate_national_results (
 BEGIN
     INSERT INTO resultats_provisoires(
         id_election,
+        election,
+        id_pays,
+        code_pays,
+        nom_pays,
         inscrits,
         homme_moins_36,
         femme_moins_36,
@@ -869,6 +889,10 @@ BEGIN
     ) (
         SELECT
             grs.id_election,
+            grs.election,
+            grs.id,
+            grs.code,
+            grs.nom,
             grs.inscrits,
             grs.homme_moins_36,
             grs.femme_moins_36,

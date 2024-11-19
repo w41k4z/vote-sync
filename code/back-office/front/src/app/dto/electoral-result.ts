@@ -3,6 +3,7 @@ import { ElectoralResultDetail } from './electoral-result-detail';
 export class ElectoralResult {
   divisionId: number;
   electionId: number;
+  election: string;
   code: string;
   name: string;
   fokontany: string;
@@ -11,7 +12,7 @@ export class ElectoralResult {
   district: string;
   municipalityDistrict: string;
   region: string;
-  registeredVoters: number;
+  voters: number;
   blankVotes: number;
   nullVotes: number;
   validVotes: number;
@@ -20,6 +21,7 @@ export class ElectoralResult {
   constructor(
     divisionId: number,
     electionId: number,
+    election: string,
     code: string,
     name: string,
     fokontany: string,
@@ -28,7 +30,7 @@ export class ElectoralResult {
     district: string,
     municipalityDistrict: string,
     region: string,
-    registeredVoters: number,
+    voters: number,
     blankVotes: number,
     nullVotes: number,
     validVotes: number,
@@ -36,6 +38,7 @@ export class ElectoralResult {
   ) {
     this.divisionId = divisionId;
     this.electionId = electionId;
+    this.election = election;
     this.code = code;
     this.name = name;
     this.fokontany = fokontany;
@@ -44,7 +47,7 @@ export class ElectoralResult {
     this.district = district;
     this.municipalityDistrict = municipalityDistrict;
     this.region = region;
-    this.registeredVoters = registeredVoters;
+    this.voters = voters;
     this.blankVotes = blankVotes;
     this.nullVotes = nullVotes;
     this.validVotes = validVotes;

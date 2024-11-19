@@ -8,6 +8,7 @@ import { getPopupHtml } from './popupHtml';
 import { AdministrativeDivisionStats } from '../../dto/administrative-division-stats';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
+import { StatDetailsComponent } from './stat-details/stat-details.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -19,6 +20,7 @@ export class DashboardComponent {
   divisions = administrativeDivisions;
   currentDivisionId = 0;
   currentZoom = this.divisions[this.currentDivisionId].value.zoom;
+  electionTypeId = '*';
 
   mapLayers = layers;
   options = {
@@ -74,11 +76,19 @@ export class DashboardComponent {
   }
 
   openDetailsDialog = (division: AdministrativeDivisionStats) => {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: { id: division.divionId },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    const data =
+      this.electionTypeId == '*'
+        ? {
+            division: this.divisions[this.currentDivisionId].value.name,
+            divisionId: division.divisionId,
+          }
+        : {
+            division: this.divisions[this.currentDivisionId].value.name,
+            divisionId: division.divisionId,
+            electionTypeId: this.electionTypeId,
+          };
+    this.dialog.open(StatDetailsComponent, {
+      data: data,
     });
   };
 }

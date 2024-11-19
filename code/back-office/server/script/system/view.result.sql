@@ -72,6 +72,7 @@ ORDER BY
 CREATE OR REPLACE VIEW resultat_statistique_brute_par_bv AS
 SELECT
     r.id_election,
+    e.nom AS election,
     r.id_bv AS id,
     bv.code,
     bv.nom,
@@ -112,6 +113,7 @@ WHERE r.etat >= 20
 UNION ALL
 SELECT
     r.id_election,
+    e.nom AS election,
     r.id_bv AS id,
     bv.code,
     bv.nom,
@@ -157,6 +159,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_bv AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsbv.id_election) AS num_ligne,
     rsbv.id_election,
+    rsbv.election,
     rsbv.id,
     rsbv.code,
     rsbv.nom,
@@ -191,6 +194,7 @@ JOIN municipalites mc
     ON cm.id_municipalite = mc.id
 GROUP BY
     rsbv.id_election,
+    rsbv.election,
     rsbv.id,
     rsbv.code,
     rsbv.nom,
@@ -259,6 +263,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_fokontany AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsbv.id_election) AS num_ligne,
     rsbv.id_election,
+    rsbv.election,
     fk.id,
     fk.code,
     fk.nom,
@@ -297,6 +302,7 @@ JOIN fokontany_total_bv_info fktbvi
     ON fktbvi.id_fokontany = fk.id
 GROUP BY
     rsbv.id_election,
+    rsbv.election,
     fk.id,
     fk.code,
     fk.nom,
@@ -352,6 +358,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_commune AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsf.id_election) AS num_ligne,
     rsf.id_election,
+    rsf.election,
     cm.id,
     cm.code,
     cm.nom,
@@ -380,6 +387,7 @@ JOIN communes cm
     ON cm.id = fk.id_commune
 GROUP BY
     rsf.id_election,
+    rsf.election,
     cm.id,
     cm.code,
     cm.nom,
@@ -428,6 +436,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_municipalite AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rstcm.id_election) AS num_ligne,
     rstcm.id_election,
+    rstcm.election,
     mc.id,
     mc.code,
     mc.nom,
@@ -456,6 +465,7 @@ JOIN municipalites mc
     ON mc.id = cm.id_municipalite
 GROUP BY
     rstcm.id_election,
+    rstcm.election,
     mc.id,
     mc.code,
     mc.nom,
@@ -504,6 +514,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_district AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsc.id_election) AS num_ligne,
     rsc.id_election,
+    rsc.election,
     d.id,
     d.code,
     d.nom,
@@ -530,6 +541,7 @@ JOIN districts d
     ON d.id = cm.id_district
 GROUP BY
     rsc.id_election,
+    rsc.election,
     d.id,
     d.code,
     d.nom,
@@ -576,6 +588,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_region AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsd.id_election) AS num_ligne,
     rsd.id_election,
+    rsd.election,
     r.id,
     r.code,
     r.nom,
@@ -600,6 +613,7 @@ JOIN regions r
     ON r.id = d.id_region
 GROUP BY
     rsd.id_election,
+    rsd.election,
     r.id,
     r.code,
     r.nom
@@ -643,6 +657,7 @@ CREATE OR REPLACE VIEW resultat_statistique_par_province AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsr.id_election) AS num_ligne,
     rsr.id_election,
+    rsr.election,
     p.id,
     TO_CHAR(p.id) AS code,
     p.nom,
@@ -667,6 +682,7 @@ JOIN provinces p
     ON p.id = r.id_province
 GROUP BY
     rsr.id_election,
+    rsr.election,
     p.id,
     p.nom
 ;
@@ -703,6 +719,7 @@ CREATE OR REPLACE VIEW resultat_statistique_election AS
 SELECT
     ROW_NUMBER() OVER(ORDER BY rsp.id_election) AS num_ligne,
     rsp.id_election,
+    rsp.election,
     '0' AS id,
     '0' AS code,
     'Madagascar' AS nom,
@@ -722,5 +739,6 @@ SELECT
     SUM(rsp.nombre_alertes) AS nombre_alertes
 FROM resultat_statistique_par_province rsp
 GROUP BY
-    rsp.id_election
+    rsp.id_election,
+    rsp.election
 ;

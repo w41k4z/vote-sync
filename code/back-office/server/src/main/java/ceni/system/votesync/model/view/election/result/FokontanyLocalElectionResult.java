@@ -30,7 +30,7 @@ public class FokontanyLocalElectionResult extends ElectoralResult {
     private String municipality;
 
     @Column(name = "id_district_municipal")
-    private Integer districtId;
+    private Integer municipalityDistrictId;
 
     @Column(name = "nom_district_municipal")
     private String municipalityDistrict;
