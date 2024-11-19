@@ -56,9 +56,6 @@ import { FokontanyLocalResultFilterComponent } from './views/elections/result/fi
 import { CommunalResultFilterComponent } from './views/elections/result/filter/communal-result-filter/communal-result-filter.component';
 import { MunicipalResultFilterComponent } from './views/elections/result/filter/municipal-result-filter/municipal-result-filter.component';
 import { DistrictResultFilterComponent } from './views/elections/result/filter/district-result-filter/district-result-filter.component';
-import { RegionalResultFilterComponent } from './views/elections/result/filter/regional-result-filter/regional-result-filter.component';
-import { ProvincialResultFilterComponent } from './views/elections/result/filter/provincial-result-filter/provincial-result-filter.component';
-import { GlobalResultFilterComponent } from './views/elections/result/filter/global-result-filter/global-result-filter.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { CloseElectionDialogComponent } from './views/elections/close-election-dialog/close-election-dialog.component';
 import { VotersStatComponent } from './views/dashboard/voters-stat/voters-stat.component';
@@ -66,6 +63,7 @@ import { VotersRepartitionStatComponent } from './views/dashboard/voters-reparti
 import { StatDetailsComponent } from './views/dashboard/stat-details/stat-details.component';
 import { PresidentialElectionResultComponent } from './views/elections/result/presidential-election-result/presidential-election-result.component';
 import { LegislativeElectionResultComponent } from './views/elections/result/legislative-election-result/legislative-election-result.component';
+import { ResultWithNoFilterComponent } from './views/elections/result/filter/result-with-no-filter/result-with-no-filter.component';
 
 @NgModule({
   declarations: [
@@ -107,9 +105,6 @@ import { LegislativeElectionResultComponent } from './views/elections/result/leg
     CommunalResultFilterComponent,
     MunicipalResultFilterComponent,
     DistrictResultFilterComponent,
-    RegionalResultFilterComponent,
-    ProvincialResultFilterComponent,
-    GlobalResultFilterComponent,
     ProgressSpinnerComponent,
     CloseElectionDialogComponent,
     VotersStatComponent,
@@ -117,6 +112,7 @@ import { LegislativeElectionResultComponent } from './views/elections/result/leg
     StatDetailsComponent,
     PresidentialElectionResultComponent,
     LegislativeElectionResultComponent,
+    ResultWithNoFilterComponent,
   ],
   imports: [
     BrowserModule,

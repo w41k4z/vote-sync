@@ -1,4 +1,4 @@
-package ceni.system.votesync.service.impl.auth.util;
+package ceni.system.votesync.service;
 
 import java.io.File;
 import java.util.List;

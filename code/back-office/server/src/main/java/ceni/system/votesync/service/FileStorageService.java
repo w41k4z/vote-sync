@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Storage;
 import ceni.system.votesync.exception.StorageException;
-import ceni.system.votesync.service.impl.auth.util.MultipartFileService;
 import net.lingala.zip4j.ZipFile;
 
 @Service
@@ -86,7 +85,8 @@ public class FileStorageService {
     }
 
     public File unzipAndStore(String destinationFolderName, MultipartFile file, String password) throws IOException {
-        ZipFile zipFile = new ZipFile(MultipartFileService.convertToFile(file), password.toCharArray());
+        File importedFile = MultipartFileService.convertToFile(file);
+        ZipFile zipFile = new ZipFile(importedFile, password.toCharArray());
         Path destinationFile = this.rootLocation.resolve(Paths.get(destinationFolderName)).normalize().toAbsolutePath();
         try {
             zipFile.extractAll(destinationFile.toString());
@@ -95,6 +95,8 @@ public class FileStorageService {
         } catch (Exception e) {
             FileSystemUtils.deleteRecursively(destinationFile);
             throw e;
+        } finally {
+            importedFile.delete();
         }
     }
 }

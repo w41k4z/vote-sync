@@ -1,1 +1,170 @@
-<p>fokontany-result-filter works!</p>
+<header class="px-3 py-1">
+    <section class="filter mb-5 d-flex justify-content-center">
+        <table classe="table table-borderless table-responsive">
+            <thead>
+                <tr>
+                    <th class="col">Région</th>
+                    <th class="col">District</th>
+                    <th class="col">Commune</th>
+                    <th class="col"></th>
+                    <th class="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select class="form-select" id="region" [(ngModel)]="regionId"
+                            (change)="onRegionFilterChange(regionId)">
+                            <option value="*">Toutes les régions</option>
+                            <option *ngFor="let region of regions" value="{{region.id}}">{{ region.name | formatName }}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="district" [(ngModel)]="districtId"
+                            (change)="onDistrictFilterChange(districtId)">
+                            <option value="*">Tous les districts</option>
+                            <option *ngFor="let district of districts" value="{{district.id}}">{{ district.name |
+                                formatName }}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" id="commune" [(ngModel)]="communeId">
+                            <option value="*">Toutes les communes</option>
+                            <option *ngFor="let commune of communes" value="{{commune.id}}">{{
+                                commune.name |
+                                formatName }}</option>
+                        </select>
+                    </td>
+                    <td class="px-1">
+                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center"
+                            (click)="onFilter(0, regionId, districtId, communeId, '*')">
+                            <span>Filtrer</span>
+                            <i class="bi bi-filter" style="font-size: medium;"></i>
+                        </button>
+                    </td>
+                    <td class="px-1">
+                        <button class="btn btn-outline-primary d-flex gap-2 align-items-center"
+                            *ngIf="showExportButton">
+                            <span>Exporter</span> <i class="bi bi-file-earmark-pdf"
+                                style="font-size: medium;"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="row">
+        <div class="col-md-7">
+            <h5>Région:
+                <span class="text-black">
+                    {{ electoralResult.region | formatName }}
+                </span>
+            </h5>
+            <h5>District:
+                <span class="text-black">
+                    {{ electoralResult.district | formatName }}
+                </span>
+            </h5>
+            <h5>Commune:
+                <span class="text-black">
+                    {{ electoralResult.commune | formatName }}
+                </span>
+            </h5>
+            <h5 class="mt-4">Fokontany:
+                <b class="text-black">
+                    {{ electoralResult.name | formatName }}
+                </b>
+            </h5>
+            <h5 class="text-danger mt-4">Taux de participation:
+                <b class="text-black text-end">
+                    {{ (electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes) * 100 /
+                    electoralResult.voters | formatNumber }}%
+                </b>
+            </h5>
+        </div>
+        <div class="col-md-5">
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td>
+                            <h5>Inscrits:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.voters | formatNumber}}
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Blancs:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.blankVotes | formatNumber}}
+                            </b>
+                        </td>
+                        <td>
+                            <h5 class="text-danger">Soit</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{ (electoralResult.blankVotes * 100) / (electoralResult.validVotes +
+                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Nuls:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.nullVotes | formatNumber}}
+                            </b>
+                        </td>
+                        <td>
+                            <h5 class="text-danger">Soit</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes +
+                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Exprimés:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{electoralResult.validVotes | formatNumber}}
+                            </b>
+                        </td>
+                        <td>
+                            <h5 class="text-danger">Soit</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{ (electoralResult.validVotes * 100) / (electoralResult.validVotes +
+                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>Total des voix:</h5>
+                        </td>
+                        <td class="text-end">
+                            <b class="text-black">
+                                {{(electoralResult.validVotes + electoralResult.blankVotes + electoralResult.nullVotes)
+                                | formatNumber}}
+                            </b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</header>

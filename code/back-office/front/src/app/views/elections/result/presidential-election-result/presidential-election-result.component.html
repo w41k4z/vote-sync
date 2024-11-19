@@ -1,1 +1,87 @@
-<p>presidential-election-result works!</p>
+<div class="d-flex justify-content-center option">
+    <div class="d-flex justify-content-center option-content align-items-center gap-3">
+        <button class="type" [ngClass]="current == i ? 'active' : ''" *ngFor="let type of results; index as i"
+            (click)="handleResultChange(i)">
+            {{ type }}
+        </button>
+    </div>
+</div>
+<div *ngIf="loading$ | async; else content" class="w-100 my-5 d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status"></div>
+</div>
+<ng-template #content>
+    <div *ngIf="electoralResults.length != 0; else empty">
+        <section class="card card-body mt-4">
+            <div *ngFor="let electoralResult of electoralResults">
+                @if (current == 0) {
+                <app-polling-station-result-filter [electoralResult]="electoralResult" [regions]="regions"
+                    [regionId]="regionId" [districts]="districts" [districtId]="districtId" [communes]="communes"
+                    [communeId]="communeId" [fokontany]="fokontany" [fokontanyId]="fokontanyId" [onFilter]="filter"
+                    [onRegionFilterChange]="filterByRegion" [onDistrictFilterChange]="filterByDistrict"
+                    [onCommuneFilterChange]="filterByCommune" [showExportButton]="election?.status == 20">
+                </app-polling-station-result-filter>
+                }
+                @else if (current == 1) {
+                <app-fokontany-result-filter [electoralResult]="electoralResult" [regions]="regions"
+                    [regionId]="regionId" [districts]="districts" [districtId]="districtId" [communes]="communes"
+                    [communeId]="communeId" [onFilter]="filter" [onRegionFilterChange]="filterByRegion"
+                    [onDistrictFilterChange]="filterByDistrict" [showExportButton]="election?.status == 20">
+                </app-fokontany-result-filter>
+                }
+                @else if (current == 2) {
+                <app-communal-result-filter [electoralResult]="electoralResult" [regions]="regions"
+                    [regionId]="regionId" [districts]="districts" [districtId]="districtId" [onFilter]="filter"
+                    [onRegionFilterChange]="filterByRegion" [showExportButton]="election?.status == 20">
+                </app-communal-result-filter>
+                }
+                @else if (current == 3) {
+                <app-district-result-filter [electoralResult]="electoralResult" [regions]="regions"
+                    [regionId]="regionId" [onFilter]="filter" [showExportButton]="election?.status == 20">
+                </app-district-result-filter>
+                }
+                @else {
+                <app-result-with-no-filter [current]="current" [electoralResult]="electoralResult" [showExportButton]="election?.status == 20">
+                </app-result-with-no-filter>
+                }
+                <main class="container-fluid mt-2">
+                    <div class="row mb-3 table-header">
+                        <div class="col-2 text-center">Numéro</div>
+                        <div class="col-6 text-center">Candidats</div>
+                        <div class="col-2 text-center">Voix</div>
+                        <div class="col-2 text-center">%</div>
+                    </div>
+                    <div class="row mb-1 table-content align-items-center"
+                        *ngFor="let detail of electoralResult.details">
+                        <div class="col-2 text-center fw-bold">{{detail.candidateNumber}}</div>
+                        <div class="col-6">
+                            <img src="{{ detail.imagePath | formatPublicUrl }}" alt=""
+                                style="height: 60px; width: 60px; border-radius: 50%;">
+                            <span class="ms-3 fw-bold">{{detail.candidateInformation + ' (' + detail.politicalEntity +
+                                ')'}}</span>
+                        </div>
+                        <div class="col-2 text-end fw-bold">{{detail.candidateVotes}}</div>
+                        <div class="col-2 text-end fw-bold">{{ (detail.candidateVotes * 100 /
+                            electoralResult.validVotes).toString().slice(0, 5) }} %</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2"></div>
+                        <div class="col-6 text-end fw-bold text-danger" style="font-size: larger;">Total</div>
+                        <div class="col-2 text-end fw-bold" style="font-size: larger;">{{ electoralResult.validVotes }}
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <footer class="mt-5 d-flex gap-3 justify-content-center align-items-center">
+                        <i class="bi bi-arrow-left-circle" (click)="previousPage()"></i>
+                        <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">{{page && page.number +
+                                    1}}</span></b> sur
+                            {{page && page.totalPages}}</p>
+                        <i class="bi bi-arrow-right-circle" (click)="nextPage()"></i>
+                    </footer>
+                </main>
+            </div>
+        </section>
+    </div>
+    <ng-template #empty>
+        <p class="mt-5 text-center text-danger">Pas de résultat</p>
+    </ng-template>
+</ng-template>

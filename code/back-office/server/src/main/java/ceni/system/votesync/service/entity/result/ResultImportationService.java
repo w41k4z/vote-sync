@@ -20,8 +20,8 @@ import ceni.system.votesync.model.entity.election.result.ImportedResultImage;
 import ceni.system.votesync.repository.entity.election.result.ImportedResultDetailsRepository;
 import ceni.system.votesync.repository.entity.election.result.ImportedResultImageRepository;
 import ceni.system.votesync.repository.entity.election.result.ImportedResultRepository;
+import ceni.system.votesync.service.FileService;
 import ceni.system.votesync.service.FileStorageService;
-import ceni.system.votesync.service.impl.auth.util.FileService;
 
 @Service
 public class ResultImportationService {

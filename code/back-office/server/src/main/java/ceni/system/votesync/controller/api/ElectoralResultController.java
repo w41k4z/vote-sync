@@ -102,17 +102,26 @@ public class ElectoralResultController {
 
     @GetMapping("/polling-station")
     public ResponseEntity<ApiResponse> pollingStationResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
+            @RequestParam(required = false) Integer communeId,
+            @RequestParam(required = false) Integer fokontanyId,
             @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.presidentialResultService.getPollingStationResults(electionId, pageable));
+        data.put("electoralResults", this.presidentialResultService.getPollingStationResults(electionId, regionId,
+                districtId, communeId, fokontanyId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/fokontany")
     public ResponseEntity<ApiResponse> fokontanyResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
+            @RequestParam(required = false) Integer communeId,
             @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.presidentialResultService.getFokontanyResults(electionId, pageable));
+        data.put("electoralResults", this.presidentialResultService.getFokontanyResults(electionId, regionId,
+                districtId, communeId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
@@ -154,40 +163,47 @@ public class ElectoralResultController {
     }
 
     @GetMapping("/legislative/communal")
-    public ResponseEntity<ApiResponse> legislativeCommunalResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> legislativeCommunalResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @RequestParam(required = false) Integer districtId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.legislativeResultService.getCommunalResults(electionId));
+        data.put("electoralResults",
+                this.legislativeResultService.getCommunalResults(electionId, regionId, districtId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/legislative/district")
-    public ResponseEntity<ApiResponse> legislativeDistrictResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> legislativeDistrictResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.legislativeResultService.getCommunalResults(electionId));
+        data.put("electoralResults", this.legislativeResultService.getDistrictResults(electionId, regionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
-    @GetMapping("/presidential/communal")
-    public ResponseEntity<ApiResponse> presidentialCommunalResults(@RequestParam Integer electionId) {
-        return this.legislativeCommunalResults(electionId);
-    }
-
-    @GetMapping("/presidential/district")
-    public ResponseEntity<ApiResponse> presidentialDistrictResults(@RequestParam Integer electionId) {
-        return this.legislativeDistrictResults(electionId);
+    @GetMapping("/presidential/regional")
+    public ResponseEntity<ApiResponse> presidentialRegionalResults(@RequestParam Integer electionId,
+            @RequestParam(required = false) Integer regionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("electoralResults", this.presidentialResultService.getRegionalResults(electionId, pageable));
+        return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/presidential/provincial")
-    public ResponseEntity<ApiResponse> presidentialProvincialResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> presidentialProvincialResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.presidentialResultService.getProvincialResults(electionId));
+        data.put("electoralResults", this.presidentialResultService.getProvincialResults(electionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 
     @GetMapping("/presidential/global")
-    public ResponseEntity<ApiResponse> presidentialGlobalResults(@RequestParam Integer electionId) {
+    public ResponseEntity<ApiResponse> presidentialGlobalResults(@RequestParam Integer electionId,
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("electoralResults", this.presidentialResultService.getGlobalResult(electionId));
+        data.put("electoralResults", this.presidentialResultService.getGlobalResult(electionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }

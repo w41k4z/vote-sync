@@ -3,27 +3,11 @@
         <table classe="table table-borderless table-responsive">
             <thead>
                 <tr>
-                    <th class="col">Région</th>
-                    <th class="col"></th>
                     <th class="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>
-                        <select class="form-select" id="region" [(ngModel)]="regionId">
-                            <option value="*">Toutes les régions</option>
-                            <option *ngFor="let region of regions" value="{{region.id}}">{{ region.name | formatName }}
-                            </option>
-                        </select>
-                    </td>
-                    <td class="px-1">
-                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center"
-                            (click)="onFilter(0, regionId, '*', '*', '*')">
-                            <span>Filtrer</span>
-                            <i class="bi bi-filter" style="font-size: medium;"></i>
-                        </button>
-                    </td>
                     <td class="px-1">
                         <button class="btn btn-outline-primary d-flex gap-2 align-items-center"
                             *ngIf="showExportButton">
@@ -36,14 +20,20 @@
     </section>
     <section class="row">
         <div class="col-md-7">
-            <h5>Région:
-                <span class="text-black">
-                    {{ electoralResult.region | formatName }}
-                </span>
-            </h5>
-            <h5 class="mt-4">District:
+            <h5 class="mb-4">{{ divisions[current] }}:
                 <b class="text-black">
                     {{ electoralResult.name | formatName }}
+                </b>
+            </h5>
+            <h5>Inscrits:
+                <b class="text-black">
+                    {{ electoralResult.voters | formatNumber }}
+                </b>
+            </h5>
+            <h5>Total des voix:
+                <b class="text-black">
+                    {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes +
+                    electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
                 </b>
             </h5>
             <h5 class="text-danger mt-4">Taux de participation:
@@ -56,16 +46,6 @@
         <div class="col-md-5">
             <table class="table table-borderless">
                 <tbody>
-                    <tr>
-                        <td>
-                            <h5>Inscrits:</h5>
-                        </td>
-                        <td class="text-end">
-                            <b class="text-black">
-                                {{electoralResult.voters | formatNumber}}
-                            </b>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <h5>Blancs:</h5>
@@ -96,12 +76,6 @@
                         </td>
                         <td>
                             <h5 class="text-danger">Soit</h5>
-                        </td>
-                        <td class="text-end">
-                            <b class="text-black">
-                                {{ (electoralResult.nullVotes * 100) / (electoralResult.validVotes +
-                                electoralResult.blankVotes + electoralResult.nullVotes) | formatNumber }}%
-                            </b>
                         </td>
                     </tr>
                     <tr>

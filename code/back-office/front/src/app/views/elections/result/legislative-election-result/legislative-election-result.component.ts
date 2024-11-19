@@ -208,7 +208,7 @@ export class LegislativeElectionResultComponent {
       return;
     }
     this.administrativeDivisionService
-      .getMunicipalityDistrictsByRegionId(parseInt(regionId))
+      .getDistrictsByRegionId(parseInt(regionId))
       .then((payload) => {
         if (payload) {
           this.districts = payload.administrativeDivisions;
@@ -222,7 +222,7 @@ export class LegislativeElectionResultComponent {
       return;
     }
     this.administrativeDivisionService
-      .getMunicipalitiesByDistrictId(parseInt(districtId))
+      .getCommunesByDistrictId(parseInt(districtId))
       .then((payload) => {
         if (payload) {
           this.communes = payload.administrativeDivisions;
