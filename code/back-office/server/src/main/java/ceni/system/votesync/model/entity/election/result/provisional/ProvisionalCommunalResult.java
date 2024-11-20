@@ -53,4 +53,9 @@ public class ProvisionalCommunalResult extends ProvisionalElectoralResult {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_resultat_provisoire")
     private List<ProvisionalCommunalResultDetails> details;
+
+    @Override
+    public String[] upperDivisions(boolean isLocal) {
+        return new String[] { region, district };
+    }
 }

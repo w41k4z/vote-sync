@@ -185,7 +185,7 @@ public class ElectoralResultController {
     @GetMapping("/presidential/regional")
     public ResponseEntity<ApiResponse> presidentialRegionalResults(@RequestParam Integer electionId,
             @RequestParam(required = false) Integer regionId,
-            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) {
+            @PageableDefault(value = 1, page = Pagination.DEFAULT_PAGE) Pageable pageable) throws IOException {
         HashMap<String, Object> data = new HashMap<>();
         data.put("electoralResults", this.presidentialResultService.getRegionalResults(electionId, pageable));
         return ResponseEntity.ok(new ApiResponse(data, null));

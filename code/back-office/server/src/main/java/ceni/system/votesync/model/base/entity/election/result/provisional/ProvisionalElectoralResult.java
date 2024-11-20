@@ -55,4 +55,9 @@ public class ProvisionalElectoralResult {
 
     @Column(name = "nombre_alertes")
     private Integer alerts;
+
+    // must be implemented by subclasses
+    public String[] upperDivisions(boolean isLocal) {
+        return null;
+    }
 }
