@@ -3,6 +3,7 @@ SELECT
     ROW_NUMBER() OVER(ORDER BY ee.id_election) AS num_ligne,
     ee.id_election,
     ee.id_bv,
+    COUNT(ee.id_electeur) AS inscrits,
     SUM(homme_moins_36) AS homme_moins_36,
     SUM(femme_moins_36) AS femme_moins_36,
     SUM(homme_36_plus) AS homme_36_plus,

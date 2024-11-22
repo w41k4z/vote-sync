@@ -122,6 +122,17 @@ public class ElectoralResultUploadService {
                 .orElseThrow(() -> new ElectoralResultNotFoundException(
                         "Polling station voters stat not found. Election id: " + request.getElectionId()
                                 + ", polling station id: " + request.getPollingStationId()));
+        int registeredVoters = pollingStationVotersStat.getMale36AndOver()
+                + pollingStationVotersStat.getFemale36AndOver()
+                + pollingStationVotersStat.getMaleUnder36() + pollingStationVotersStat.getFemaleUnder36();
+        if (pollingStationVotersStat.getVoters() != request.getVoters()
+                || registeredVoters != request.getTotalVotes()) {
+            throw new InvalidElectoralResultException(
+                    "Invalid result. Synced data does not match with the uploaded result. Synced voters: "
+                            + pollingStationVotersStat.getVoters() + ", uploaded voters: " + request.getVoters()
+                            + ", synced registered voters: " + registeredVoters + ", uploaded registered voters: "
+                            + request.getTotalVotes());
+        }
         result.setImported(0);
         result.setStatus(Status.PENDING);
         result.setMaleUnder36(pollingStationVotersStat.getMaleUnder36());
@@ -154,6 +165,11 @@ public class ElectoralResultUploadService {
         }
     }
 
+    /*
+     * Result reupload must only concerns blank votes, null votes, candidates votes
+     * and images.
+     * THe number of voters can not be changed
+     */
     @Transactional
     public void reuploadAndSaveElectoralResult(UploadElectoralResultRequest request, MultipartFile[] images) {
         Result resultExample = new Result();
@@ -168,7 +184,6 @@ public class ElectoralResultUploadService {
         }
         result.setBlankVotes(request.getBlanks());
         result.setNullVotes(request.getNulls());
-        result.setRegisteredVoters(request.getRegistered());
         this.electoralResultUploadRepository.save(result);
         List<ImportedResultDetails> details = ImportedResultDetails
                 .fromUploadElectoralResultRequestAndResultId(request);
@@ -207,7 +222,13 @@ public class ElectoralResultUploadService {
         }
         result.setBlankVotes(request.getBlanks());
         result.setNullVotes(request.getNulls());
-        result.setRegisteredVoters(request.getRegistered());
+        result.setMale36AndOver(request.getMale36AndOver());
+        result.setFemale36AndOver(request.getFemale36AndOver());
+        result.setMaleUnder36(request.getMaleUnder36());
+        result.setFemaleUnder36(request.getFemaleUnder36());
+        result.setDisabledPeople(request.getDisabledPeople());
+        result.setVisuallyImpairedPeople(request.getVisuallyImpairedPeople());
+        result.setVoters(request.getVoters());
         result.setStatus(Status.CLOSED);
         this.electoralResultUploadRepository.save(result);
         request.getCandidates().forEach((resultDetailId, votes) -> {

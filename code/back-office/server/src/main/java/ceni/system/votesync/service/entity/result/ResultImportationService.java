@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,6 +15,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
+import ceni.system.votesync.exception.InvalidElectoralResultException;
 import ceni.system.votesync.model.entity.election.result.ImportedResult;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.model.entity.election.result.ImportedResultImage;
@@ -69,6 +72,8 @@ public class ResultImportationService {
                 resultFile, electionId, pollingStationCode, result,
                 details);
 
+        this.checkImportedResultValidity(result, details);
+
         this.importedResultRepository.save(result);
         this.importedResultDetailsRepository.saveAll(details);
         this.importedResultImageRepository.saveAll(images);
@@ -85,7 +90,7 @@ public class ResultImportationService {
         rowIterator.next(); // Skip header row
 
         Row votersStatRow = rowIterator.next();
-        result.setRegisteredVoters((int) votersStatRow.getCell(0).getNumericCellValue());
+        result.setVoters((int) votersStatRow.getCell(0).getNumericCellValue());
         rowIterator.next(); // Moving to the next row
 
         Row invalidVotesRow = rowIterator.next();
@@ -127,5 +132,18 @@ public class ResultImportationService {
             details.add(detail);
         }
         workbook.close();
+    }
+
+    private void checkImportedResultValidity(ImportedResult result, List<ImportedResultDetails> details) {
+        UploadElectoralResultRequest request = new UploadElectoralResultRequest();
+        request.setVoters(result.getVoters());
+        request.setNulls(result.getNullVotes());
+        request.setBlanks(result.getBlankVotes());
+        request.setCandidates(details.stream()
+                .collect(Collectors.toMap(ImportedResultDetails::getCandidateNumber, ImportedResultDetails::getVotes)));
+        if (!request.isValid()) {
+            throw new InvalidElectoralResultException("Result for polling station code: "
+                    + result.getPollingStationCode() + " is invalid.");
+        }
     }
 }

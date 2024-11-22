@@ -37,6 +37,9 @@ public class VResultDetails {
     @Column(name = "information_candidat")
     private String candidateInformation;
 
+    @Column(name = "chemin_photo")
+    private String candidateImagePath;
+
     @Column(name = "id_entite_politique")
     private Integer politicalEntityId;
 

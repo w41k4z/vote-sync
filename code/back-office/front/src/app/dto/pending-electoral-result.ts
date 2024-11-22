@@ -4,7 +4,13 @@ export class PendingElectoralResult {
   election: string;
   pollingStationId: number;
   pollingStation: string;
-  registeredVoters: number;
+  voters: number;
+  maleUnder36: number;
+  femaleUnder36: number;
+  male36AndOver: number;
+  female36AndOver: number;
+  disabledPeople: number;
+  visuallyImpairedPeople: number;
   blankVotes: number;
   nullVotes: number;
   details: {
@@ -12,6 +18,7 @@ export class PendingElectoralResult {
     candidateRegistrationId: number;
     candidateId: number;
     candidateInformation: string;
+    candidateImagePath: string;
     politicalEntityId: number;
     politicalEntity: string;
     politicalEntityDescription: string;
@@ -28,7 +35,13 @@ export class PendingElectoralResult {
     election: string,
     pollingStationId: number,
     pollingStation: string,
-    registeredVoters: number,
+    voters: number,
+    maleUnder36: number,
+    femaleUnder36: number,
+    male36AndOver: number,
+    female36AndOver: number,
+    disabledPeople: number,
+    visuallyImpairedPeople: number,
     blankVotes: number,
     nullVotes: number,
     details: {
@@ -36,6 +49,7 @@ export class PendingElectoralResult {
       candidateRegistrationId: number;
       candidateId: number;
       candidateInformation: string;
+      candidateImagePath: string;
       politicalEntityId: number;
       politicalEntity: string;
       politicalEntityDescription: string;
@@ -51,7 +65,13 @@ export class PendingElectoralResult {
     this.election = election;
     this.pollingStationId = pollingStationId;
     this.pollingStation = pollingStation;
-    this.registeredVoters = registeredVoters;
+    this.voters = voters;
+    this.maleUnder36 = maleUnder36;
+    this.femaleUnder36 = femaleUnder36;
+    this.male36AndOver = male36AndOver;
+    this.female36AndOver = female36AndOver;
+    this.disabledPeople = disabledPeople;
+    this.visuallyImpairedPeople = visuallyImpairedPeople;
     this.blankVotes = blankVotes;
     this.nullVotes = nullVotes;
     this.details = details;

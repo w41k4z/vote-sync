@@ -11,13 +11,14 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class Cors implements CorsConfigurationSource {
 
-    public static final List<String> ALLOWED_ORIGINS = List.of("*");
+    public static final List<String> ALLOWED_ORIGINS = List.of("http://localhost:4200");
     public static final List<String> ALLOWED_METHODS = List.of("GET", "POST", "PUT", "DELETE");
     public static final List<String> ALLOWED_HEADERS = List.of("*");
 
     @Override
     public CorsConfiguration getCorsConfiguration(HttpServletRequest arg0) {
         CorsConfiguration config = new CorsConfiguration();
+	config.setAllowCredentials(true);
         config.setAllowedOrigins(ALLOWED_ORIGINS);
         config.setAllowedMethods(ALLOWED_METHODS);
         config.setAllowedHeaders(ALLOWED_HEADERS);

@@ -108,6 +108,12 @@ SELECT
     bv.nom AS nom_bv,
     u.identifiant AS identifiant_operateur_validateur,
     rs.inscrits,
+    rs.homme_moins_36,
+    rs.femme_moins_36,
+    rs.homme_36_plus,
+    rs.femme_36_plus,
+    rs.handicapes,
+    rs.malvoyants,
     rs.blancs,
     rs.nuls,
     rs.etat
@@ -128,7 +134,8 @@ SELECT
     c.information AS information_candidat,
     ep.id AS id_entite_politique,
     ep.nom AS nom_entite_politique,
-    ep.description AS description_entite_politique
+    ep.description AS description_entite_politique,
+    ec.chemin_photo
 FROM details_resultats dr
 JOIN enregistrement_candidats ec
     ON dr.id_enregistrement_candidat = ec.id

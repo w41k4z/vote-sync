@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Paths } from '../../../../paths';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -11,19 +12,29 @@ import { filter, map, mergeMap } from 'rxjs';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  pageTitle = 'Accueil';
+  pageTitle = 'VoteSync';
   userInformation: string | null = null;
   userAuthority: string | null = null;
   alertsPath = Paths.ALERTS;
+  alertsCount = 1;
 
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
   ) {
     this.userInformation = this.authService.getUserInformation();
     this.userAuthority = this.authService.getUserPrivilege();
+    this.notificationService.connect("/notification/alerts");
+    this.notificationService.message$.subscribe((message) => {
+      if(message) {
+	alert('New alert: ' + message.body);
+	const jsonBody = JSON.parse(message.body)
+      	this.alertsCount = jsonBody.alertsCount;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -40,7 +51,7 @@ export class HeaderComponent {
         mergeMap((route) => route.data)
       )
       .subscribe((data) => {
-        this.pageTitle = data['title'] || 'Default Title';
+        this.pageTitle = data['title'] || 'VoteSync';
         this.titleService.setTitle(this.pageTitle); // Set browser tab title
       });
   }

@@ -25,7 +25,7 @@ public class Result extends AbstractEntity<Integer> {
     private Integer pollingStationId;
 
     @Column(name = "inscrits")
-    private Integer registeredVoters;
+    private Integer voters;
 
     @Column(name = "homme_moins_36")
     private Integer maleUnder36;
@@ -61,7 +61,7 @@ public class Result extends AbstractEntity<Integer> {
         Result result = new Result();
         result.setElectionId(request.getElectionId());
         result.setPollingStationId(request.getPollingStationId());
-        result.setRegisteredVoters(request.getRegistered());
+        result.setVoters(request.getVoters());
         result.setBlankVotes(request.getBlanks());
         result.setNullVotes(request.getNulls());
         return result;

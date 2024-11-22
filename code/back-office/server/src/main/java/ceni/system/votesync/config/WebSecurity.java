@@ -54,7 +54,7 @@ public class WebSecurity {
                         AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorize) {
                 return authorize
                                 // public endpoints
-                                .requestMatchers("/error/**", "/public/**",
+                                .requestMatchers("/ws/**", "/error/**", "/public/**",
                                                 "/test/**", "/auth/**", "/api/polling-stations/nearest",
                                                 "/api/elections/current")
                                 .permitAll()

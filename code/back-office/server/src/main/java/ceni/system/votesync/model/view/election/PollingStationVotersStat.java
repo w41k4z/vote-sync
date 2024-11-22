@@ -28,6 +28,9 @@ public class PollingStationVotersStat {
     @Column(name = "id_bv")
     private Integer pollingStationId;
 
+    @Column(name = "inscrits")
+    private Integer voters;
+
     @Column(name = "homme_moins_36")
     private Integer maleUnder36;
 

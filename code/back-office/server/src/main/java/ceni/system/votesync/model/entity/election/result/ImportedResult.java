@@ -24,7 +24,7 @@ public class ImportedResult extends AbstractEntity<Integer> {
     private String pollingStationCode;
 
     @Column(name = "inscrits")
-    private Integer registeredVoters;
+    private Integer voters;
 
     @Column(name = "homme_moins_36")
     private Integer maleUnder36;

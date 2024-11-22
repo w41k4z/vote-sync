@@ -44,8 +44,8 @@ export class ResultValidationFormComponent {
       alert('Veuillez saisir le nombre de votes blancs');
       return -1;
     }
-    if (this.pendingElectoralResult.registeredVoters == null) {
-      alert('Veuillez saisir le nombre de votants enregistrés');
+    if (this.pendingElectoralResult.voters == null) {
+      alert('Veuillez saisir le nombre des inscrits');
       return -1;
     }
     if (this.pendingElectoralResult.nullVotes < 0) {
@@ -56,8 +56,8 @@ export class ResultValidationFormComponent {
       alert('Le nombre de votes blancs doit être positif');
       return -1;
     }
-    if (this.pendingElectoralResult.registeredVoters < 0) {
-      alert('Le nombre de votants enregistrés doit être positif');
+    if (this.pendingElectoralResult.voters < 0) {
+      alert('Le nombre des inscrits doit être positif');
       return -1;
     }
     totalVotes =
@@ -78,9 +78,9 @@ export class ResultValidationFormComponent {
       }
       totalVotes += detail.votes;
     }
-    if (totalVotes != this.pendingElectoralResult.registeredVoters) {
+    if (totalVotes > this.pendingElectoralResult.voters) {
       alert(
-        'Le resultat est incorrecte. Verifier que la somme des voix, des blancs et nuls est égale aux nombre de votants enregistrés'
+        'Le resultat est incorrecte. Verifier que la somme des voix, des blancs et nuls est inferieur ou égale aux nombre des inscrits'
       );
       return -1;
     }
@@ -98,7 +98,13 @@ export class ResultValidationFormComponent {
         this.pendingElectoralResult.id,
         this.pendingElectoralResult.blankVotes,
         this.pendingElectoralResult.nullVotes,
-        this.pendingElectoralResult.registeredVoters,
+        this.pendingElectoralResult.voters,
+        this.pendingElectoralResult.maleUnder36,
+        this.pendingElectoralResult.femaleUnder36,
+        this.pendingElectoralResult.male36AndOver,
+        this.pendingElectoralResult.female36AndOver,
+        this.pendingElectoralResult.disabledPeople,
+        this.pendingElectoralResult.visuallyImpairedPeople,
         resultDetails
       )
     );

@@ -4,11 +4,11 @@ public interface ElectoralResultRequest {
 
     public Integer getInvalidVotes();
 
-    public Integer getRegistered();
+    public Integer getVoters();
 
     public Integer getTotalVotes();
 
     default boolean isValid() {
-        return this.getTotalVotes() == this.getRegistered();
+        return this.getTotalVotes() <= this.getVoters();
     }
 }

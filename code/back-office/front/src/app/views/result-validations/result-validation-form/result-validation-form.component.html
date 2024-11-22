@@ -8,9 +8,33 @@
             </ng-template>
         </p-carousel>
         <div class="verification-form col-md-7">
+            <h5 class="text-center fw-bold">{{ pendingElectoralResult.pollingStation | formatName }}</h5>
             <div class="result-stat card card-body">
-                <h5 class="text-center fw-bold">{{ pendingElectoralResult.pollingStation | formatName }}</h5>
                 <div class="row mt-2">
+                    <div class="mb-3 col-md-6">
+                        <label for="maleUnder36" class="form-label">Homme moins de 36 ans</label>
+                        <input type="number" id="maleUnder36" class="form-control" [(ngModel)]="pendingElectoralResult.maleUnder36" />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="femaleUnder36" class="form-label">Femme moins de 36 ans</label>
+                        <input type="number" id="femaleUnder36" class="form-control" [(ngModel)]="pendingElectoralResult.femaleUnder36" />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="male36AndOver" class="form-label">Homme 36 ans et plus</label>
+                        <input type="number" id="male36AndOver" class="form-control" [(ngModel)]="pendingElectoralResult.male36AndOver" />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="female36AndOver" class="form-label">Femme 36 ans et plus</label>
+                        <input type="number" id="fmale36AndOver" class="form-control" [(ngModel)]="pendingElectoralResult.female36AndOver" />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="disabledPeople" class="form-label">Handicapés</label>
+                        <input type="number" id="disabledPeople" class="form-control" [(ngModel)]="pendingElectoralResult.disabledPeople" />
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="visuallyImpairedPeople" class="form-label">Malvoyants</label>
+                        <input type="number" id="visuallyImpairedPeople" class="form-control" [(ngModel)]="pendingElectoralResult.visuallyImpairedPeople" />
+                    </div>
                     <div class="mb-3 col-md-4">
                         <label for="blank" class="form-label">Blancs</label>
                         <input type="number" id="blank" class="form-control" [(ngModel)]="pendingElectoralResult.blankVotes" />
@@ -20,17 +44,19 @@
                         <input type="number" id="nulls" class="form-control" [(ngModel)]="pendingElectoralResult.nullVotes" />
                     </div>
                     <div class="mb-3 col-md-4">
-                        <label for="registered" class="form-label">Enregistrés</label>
-                        <input type="number" id="registered" class="form-control" [(ngModel)]="pendingElectoralResult.registeredVoters" />
+                        <label for="registered" class="form-label">Inscrits</label>
+                        <input type="number" id="registered" class="form-control" [(ngModel)]="pendingElectoralResult.voters" />
                     </div>
                 </div>
             </div>
             <div class="result-details card card-body mt-2">
-                <h5 class="text-center fw-bold">Candidats</h5>
                 <div class="row mt-2">
-                    <div class="mb-3 col-md-4" *ngFor="let detail of pendingElectoralResult.details">
-                        <label for="votes-{{ detail.id }}" class="form-label">{{ detail.candidateInformation }}</label>
-                        <input type="number" id="votes-{{ detail.id }}" class="form-control" [(ngModel)]="detail.votes" />
+                    <div class="mb-3 col-md-6 d-flex align-items-center gap-2" *ngFor="let detail of pendingElectoralResult.details">
+                        <img width="55" height="55" style="border-radius: 50%;" src="{{detail.candidateImagePath | formatPublicUrl}}" alt="{{ detail.candidateInformation }}">
+                        <div>
+                            <label for="votes-{{ detail.id }}" class="form-label">{{ detail.candidateInformation }}</label>
+                            <input type="number" id="votes-{{ detail.id }}" class="form-control" [(ngModel)]="detail.votes" />
+                        </div>
                     </div>
                 </div>
             </div>

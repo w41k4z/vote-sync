@@ -196,7 +196,6 @@ class _ResultPageState extends State<ResultPage> {
     try {
       await GetIt.I.get<PollingStationService>().sendResults(
             pollingStation!,
-            registered,
             candidates,
             images,
             localStorageService,
