@@ -45,7 +45,6 @@ BEGIN
         INSERT (id_type_alerte, id_election, id_bv, date_alerte, description, etat)
         VALUES (src.id_type_alerte, src.id_election, src.id_bv, src.date_alerte, src.description, src.etat)
     ;
-    DELETE FROM alertes_importees;
 END;
 /
 

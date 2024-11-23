@@ -7,12 +7,14 @@
             <h4 class="m-0 ms-auto text-primary">{{pageTitle}}</h4>
         </div>
         <div class="right-header ms-auto d-flex justify-content-evenly flex-wrap align-items-center gap-sm-2 gap-md-4">
-            <div class="position-relative">
+            <div class="notification position-relative" routerLink="{{alertsPath}}">
                 <i class="bi bi-bell me-2"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" routerLink="{{alertsPath}}">
-                    {{ alertsCount }}
-                    <span class="visually-hidden">alertes</span>
-                </span>
+                @if(alertsCount > 0) {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ alertsCount }}
+                        <span class="visually-hidden">alertes</span>
+                    </span>
+                }
             </div>
             <div class="user-info ms-auto d-flex align-items-center">
                 <i class="bi bi-person-circle me-3"></i>

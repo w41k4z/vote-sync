@@ -16,7 +16,7 @@ export class HeaderComponent {
   userInformation: string | null = null;
   userAuthority: string | null = null;
   alertsPath = Paths.ALERTS;
-  alertsCount = 1;
+  alertsCount = 0;
 
   constructor(
     private authService: AuthService,
@@ -27,12 +27,12 @@ export class HeaderComponent {
   ) {
     this.userInformation = this.authService.getUserInformation();
     this.userAuthority = this.authService.getUserPrivilege();
-    this.notificationService.connect("/notification/alerts");
+    this.notificationService.connect('/notification/alerts');
     this.notificationService.message$.subscribe((message) => {
-      if(message) {
-	alert('New alert: ' + message.body);
-	const jsonBody = JSON.parse(message.body)
-      	this.alertsCount = jsonBody.alertsCount;
+      if (message) {
+        alert('New alert: ' + message.body);
+        const jsonBody = JSON.parse(message.body);
+        this.alertsCount += jsonBody.alertsCount;
       }
     });
   }

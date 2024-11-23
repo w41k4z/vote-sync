@@ -15,6 +15,8 @@ export class Endpoints {
   public static readonly ELECTION_RESULTS = `${this.ELECTIONS}/results`;
   public static readonly ELECTION_STATS = `${this.ELECTIONS}/stats`;
 
+  public static readonly ALERTS = `api/alerts`;
+
   public static publicEndpoints = [
     Endpoints.SIGN_IN,
     Endpoints.SIGN_OUT,

@@ -16,7 +16,11 @@ section {
             }
         }
     
-        .right-header {    
+        .right-header {
+            .notification {
+                cursor: pointer;
+            }
+            
             .log-out-btn {
                 border-radius: 20px;
                 padding: 3px 10px;

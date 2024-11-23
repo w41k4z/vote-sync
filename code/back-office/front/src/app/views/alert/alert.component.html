@@ -16,31 +16,31 @@
             <tbody>
                 <tr>
                     <td>
-                        <select class="form-select" id="region">
-                            <option value="*">Toutes les régions</option>
-                            <option>Analamanga</option>
+                        <select class="form-select" [(ngModel)]="regionId" (change)="filterByRegion()">
+                            <option value="*">Toutes</option>
+                            <option *ngFor="let region of regions" value="{{region.id}}">{{ region.name | formatName }}</option>
                         </select>
                     </td>
                     <td>
-                        <select class="form-select" id="district">
-                            <option value="*">Tous les districts</option>
-                            <option>Antananarivo I</option>
+                        <select class="form-select" [(ngModel)]="districtId" (change)="filterByDistrict()">
+                            <option value="*">Tous</option>
+                            <option *ngFor="let district of districts" value="{{district.id}}">{{ district.name | formatName }}</option>
                         </select>
                     </td>
                     <td>
-                        <select class="form-select" id="commune">
-                            <option value="*">Toutes les communes</option>
-                            <option>Antananarivo Avaradrano</option>
+                        <select class="form-select" [(ngModel)]="communeId" (change)="filterByCommune()">
+                            <option value="*">Toutes</option>
+                            <option *ngFor="let commune of communes" value="{{commune.id}}">{{ commune.name | formatName }}</option>
                         </select>
                     </td>
                     <td>
-                        <select class="form-select" id="fokontany">
-                            <option value="*">Tous les fokontany</option>
-                            <option>Anosipatrana</option>
+                        <select class="form-select" [(ngModel)]="fokontanyId">
+                            <option value="*">Tous</option>
+                            <option *ngFor="let fk of fokontany" value="{{fk.id}}">{{ fk.name | formatName }}</option>
                         </select>
                     </td>
                     <td class="px-1">
-                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center">
+                        <button class="ms-1 btn btn-outline-primary d-flex gap-2 align-items-center" (click)="filter()">
                             <span>Filtrer</span>
                             <i class="bi bi-filter" style="font-size: medium;"></i>
                         </button>
@@ -49,43 +49,64 @@
             </tbody>
         </table>
     </section>
-
-    <!-- Liste des alertes -->
-    <div class="alert-list">
-        <table class="table table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Bureau de vote</th>
-                    <th>Type</th>
-                    <th>Déscription</th>
-                    <th>État</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let alert of alerts">
-                    <td class="align-middle">
-                        <b>{{ alert.pollingStation }}</b>
-                    </td>
-                    <td class="align-middle">
-                        <p class="{{alert.alertType}} m-0 text-center">
-                            {{ alert.type }}
-                        </p>
-                    </td>
-                    <td class="align-middle">{{ alert.description }}</td>
-                    <td class="align-middle">
-                        <select [(ngModel)]="alert.state" class="form-select {{alert.bgState}} text-white">
-                            <option value="en-attente">En Attente</option>
-                            <option value="en-cours">En Cours</option>
-                            <option value="resolue">Résolue</option>
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <footer class="mt-3 mb-2 d-flex gap-3 justify-content-center align-items-center">
-            <i class="bi bi-arrow-left-circle"></i>
-            <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">1</span></b> sur 1</p>
-            <i class="bi bi-arrow-right-circle"></i>
-        </footer>
+    <div class="notification">
+        <div class="error-message" *ngIf="error$ | async as error">
+            <p class="m-0">{{ error }}</p>
+        </div>
+        <div class="info-message" *ngIf="message$ | async as message">
+            <p class="m-0">{{ message }}</p>
+        </div>
     </div>
+    <div *ngIf="loading$ | async; else content" class="w-100 my-5 d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <ng-template #content>
+        <div *ngIf="pollingStations.length != 0; else empty">
+            <div class="alert-list">
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Election</th>
+                            <th>Bureau de vote</th>
+                            <th>Type</th>
+                            <th>Déscription</th>
+                            <th>État</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let alert of alerts">
+                            <td class="align-middle">
+                                <b>{{ alert.election }}</b>
+                            </td>
+                            <td class="align-middle">
+                                <b>{{ alert.pollingStation }}</b>
+                            </td>
+                            <td class="align-middle">
+                                <p class="{{alert.alertType}} m-0 text-center">
+                                    {{ alert.alertType }}
+                                </p>
+                            </td>
+                            <td class="align-middle">{{ alert.description }}</td>
+                            <td class="align-middle">
+                                <select [(ngModel)]="alert.status" class="form-select text-white">
+                                    <option value="0">En Attente</option>
+                                    <option value="10">En Cours</option>
+                                    <option value="20">Résolue</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="mt-3 mb-2 d-flex gap-3 justify-content-center align-items-center">
+                    <i class="bi bi-arrow-left-circle" (click)="previousPage()"></i>
+                    <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">{{page && page.number + 1}}</span></b> sur
+                        {{page && page.totalPages}}</p>
+                    <i class="bi bi-arrow-right-circle" (click)="nextPage()"></i>
+                </footer>
+            </div>
+        </div>
+        <ng-template #empty>
+            <p class="m-0 mb-2 text-center text-danger">Pas de résultat</p>
+        </ng-template>
+    </ng-template>
 </div>
