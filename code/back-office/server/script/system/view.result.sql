@@ -26,7 +26,7 @@ CREATE OR REPLACE VIEW alertes_stat_par_bv AS
 SELECT
     a.id_election,
     a.id_bv,
-    COUNT(a.titre) AS nombre_alertes
+    COUNT(id_election) AS nombre_alertes
 FROM alertes a
 JOIN elections e
     ON a.id_election = e.id
