@@ -227,4 +227,20 @@ export class LocalElectionResultComponent {
         }
       });
   };
+
+  async invalidateElectoralResult(electoralResult: ElectoralResult) {
+    if (this.current == 0) {
+      await this.electionResultService.invalidateElectoralResult(
+        electoralResult.electionId,
+        electoralResult.divisionId
+      );
+      this.filter(
+        this.page?.number,
+        this.regionId,
+        this.districtId,
+        this.municipalityId,
+        this.fokontanyId
+      );
+    }
+  }
 }

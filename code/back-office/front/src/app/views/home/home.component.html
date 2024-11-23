@@ -1,1 +1,16 @@
-<p>home works!</p>
+<div class="home-container">
+    <div class="welcome-banner">
+        <h1>Bienvenue sur VoteSync</h1>
+        <p>Votre plateforme fiable pour gérer et suivre les élections.</p>
+    </div>
+
+    <div class="sections">
+        <div class="section-card" *ngFor="let section of sections" >
+            <i class="{{ section.icon }}"></i>
+            <div class="section-content">
+                <h3>{{ section.title }}</h3>
+                <p>{{ section.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>

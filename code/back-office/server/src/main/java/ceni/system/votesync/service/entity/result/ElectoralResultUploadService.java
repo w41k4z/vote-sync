@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ceni.system.votesync.config.Status;
 import ceni.system.votesync.config.SystemUserDetails;
+import ceni.system.votesync.dto.AlertBody;
 import ceni.system.votesync.dto.request.result.ElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
 import ceni.system.votesync.exception.ElectoralResultNotFoundException;
 import ceni.system.votesync.exception.InvalidElectoralResultException;
 import ceni.system.votesync.model.entity.election.result.Result;
+import ceni.system.votesync.model.entity.alert.Alert;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.model.entity.election.result.ResultImage;
 import ceni.system.votesync.model.view.election.PollingStationVotersStat;
@@ -32,6 +35,8 @@ import ceni.system.votesync.repository.entity.election.result.ImportedResultRepo
 import ceni.system.votesync.repository.entity.election.result.ElectoralResultImageUploadRepository;
 import ceni.system.votesync.repository.entity.election.result.ElectoralResultUploadRepository;
 import ceni.system.votesync.service.FileStorageService;
+import ceni.system.votesync.service.NotificationService;
+import ceni.system.votesync.service.entity.alert.AlertService;
 import ceni.system.votesync.service.entity.election.PollingStationVotersStatService;
 import ceni.system.votesync.service.spec.auth.AuthService;
 
@@ -47,6 +52,8 @@ public class ElectoralResultUploadService {
     private ElectoralResultUploadRepository electoralResultUploadRepository;
     private ElectoralResultImageUploadRepository electoralResultImageUploadRepository;
     private PollingStationVotersStatService pollingStationVotersStatService;
+    private AlertService alertService;
+    private NotificationService notificationService;
     private FileStorageService fileStorageService;
 
     public ElectoralResultUploadService(
@@ -56,6 +63,8 @@ public class ElectoralResultUploadService {
             ImportedResultDetailsRepository importedResultDetailsRepository,
             ElectoralResultImageUploadRepository electoralResultImageUploadRepository,
             PollingStationVotersStatService pollingStationVotersStatService,
+            AlertService alertService,
+            NotificationService notificationService,
             FileStorageService fileStorageService) {
         this.importedResultRepository = importedResultRepository;
         this.electoralResultUploadRepository = electoralResultUploadRepository;
@@ -63,6 +72,8 @@ public class ElectoralResultUploadService {
         this.importedResultDetailsRepository = importedResultDetailsRepository;
         this.electoralResultImageUploadRepository = electoralResultImageUploadRepository;
         this.pollingStationVotersStatService = pollingStationVotersStatService;
+        this.alertService = alertService;
+        this.notificationService = notificationService;
         this.fileStorageService = fileStorageService;
     }
 
@@ -80,9 +91,15 @@ public class ElectoralResultUploadService {
         File extractedDirectory = this.fileStorageService.unzipAndStore(destinationFolder, zipFile, password);
         try {
             HashMap<String, Exception> exceptions = new HashMap<>();
+            List<Alert> alerts = new ArrayList<>();
+            int imported = 0;
             for (File f : extractedDirectory.listFiles()) {
                 try {
+                    String pollingStationCode = f.getName();
                     this.importResultFromDirectory(electionId, f);
+                    alerts.add(this.alertService.createUnsyncedDataAlert(electionId, pollingStationCode,
+                            "Les résultats sont présentes, mais aucun enregistrement d'électeur."));
+                    imported++;
                 } catch (Exception e) {
                     exceptions.put(f.getName(), e);
                     e.printStackTrace();
@@ -90,6 +107,12 @@ public class ElectoralResultUploadService {
             }
             // migrating imported results to the main results table
             this.importedResultRepository.importElectoralResults(electionId);
+            this.alertService.saveAllAlerts(alerts);
+
+            String message = imported > 1 ? imported + " résultats sans enregistrements des électeurs"
+                    : imported + " résultat sans enregistrements des électeurs";
+            AlertBody alertBody = new AlertBody(imported, message);
+            this.notificationService.sendAlert(alertBody);
             return exceptions;
         } catch (Exception err) {
             throw err;
@@ -105,7 +128,18 @@ public class ElectoralResultUploadService {
     }
 
     public void uploadResult(UploadElectoralResultRequest request, MultipartFile[] images) {
-        this.checkResultValidity(request);
+        try {
+            this.checkResultValidity(request);
+        } catch (InvalidElectoralResultException e) {
+            Alert alert = this.alertService.createIncoherentDataAlert(request.getElectionId(),
+                    request.getPollingStationCode(),
+                    "Données de résultat incohérentes pour le bureau de vote ayant le code: "
+                            + request.getPollingStationCode());
+            this.alertService.saveAllAlerts(List.of(alert));
+            this.notificationService
+                    .sendAlert(new AlertBody(1, "Résultat incohérent. Source: " + request.getPollingStationCode()));
+            throw e;
+        }
         try {
             this.saveElectoralResult(request, images);
         } catch (DataIntegrityViolationException e) {
@@ -134,7 +168,7 @@ public class ElectoralResultUploadService {
                             + request.getTotalVotes());
         }
         result.setImported(0);
-        result.setStatus(Status.PENDING);
+        result.setStatus(Status.CLOSED);
         result.setMaleUnder36(pollingStationVotersStat.getMaleUnder36());
         result.setFemaleUnder36(pollingStationVotersStat.getFemaleUnder36());
         result.setMale36AndOver(pollingStationVotersStat.getMale36AndOver());
@@ -209,6 +243,10 @@ public class ElectoralResultUploadService {
             this.fileStorageService.store(image, imagePath);
             this.electoralResultImageUploadRepository.save(resultImage);
         }
+    }
+
+    public void invalidateElectoralResult(Integer electionId, Integer pollingStationId) {
+        this.electoralResultUploadRepository.updateResultState(Status.PENDING, electionId, pollingStationId);
     }
 
     @Transactional

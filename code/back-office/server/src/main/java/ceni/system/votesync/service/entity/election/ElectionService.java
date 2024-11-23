@@ -84,7 +84,7 @@ public class ElectionService {
 
     public List<VElection> getCurrentElections() {
         Specification<VElection> spec = ElectionSpecification.currentElection();
-        return this.vrepository.findAll(spec);
+        return this.vrepository.findAll(spec, Sort.by(Sort.Direction.DESC, "startDate"));
     }
 
     public PagedModel<Election> getElectionsHistory(Pageable pageable) {

@@ -15,8 +15,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ceni.system.votesync.dto.AlertBody;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.exception.InvalidElectoralResultException;
+import ceni.system.votesync.model.entity.alert.Alert;
 import ceni.system.votesync.model.entity.election.result.ImportedResult;
 import ceni.system.votesync.model.entity.election.result.ImportedResultDetails;
 import ceni.system.votesync.model.entity.election.result.ImportedResultImage;
@@ -25,6 +27,8 @@ import ceni.system.votesync.repository.entity.election.result.ImportedResultImag
 import ceni.system.votesync.repository.entity.election.result.ImportedResultRepository;
 import ceni.system.votesync.service.FileService;
 import ceni.system.votesync.service.FileStorageService;
+import ceni.system.votesync.service.NotificationService;
+import ceni.system.votesync.service.entity.alert.AlertService;
 
 @Service
 public class ResultImportationService {
@@ -34,14 +38,21 @@ public class ResultImportationService {
     private ImportedResultDetailsRepository importedResultDetailsRepository;
     private ImportedResultImageRepository importedResultImageRepository;
 
+    private AlertService alertService;
+    private NotificationService notificationService;
+
     public ResultImportationService(FileStorageService fileStorageService,
             ImportedResultRepository importedResultRepository,
             ImportedResultDetailsRepository importedResultDetailsRepository,
-            ImportedResultImageRepository importedResultImageRepository) {
+            ImportedResultImageRepository importedResultImageRepository,
+            AlertService alertService,
+            NotificationService notificationService) {
         this.fileStorageService = fileStorageService;
         this.importedResultRepository = importedResultRepository;
         this.importedResultDetailsRepository = importedResultDetailsRepository;
         this.importedResultImageRepository = importedResultImageRepository;
+        this.alertService = alertService;
+        this.notificationService = notificationService;
     }
 
     @Transactional
@@ -142,6 +153,13 @@ public class ResultImportationService {
         request.setCandidates(details.stream()
                 .collect(Collectors.toMap(ImportedResultDetails::getCandidateNumber, ImportedResultDetails::getVotes)));
         if (!request.isValid()) {
+            Alert alert = this.alertService.createIncoherentDataAlert(result.getElectionId(),
+                    result.getPollingStationCode(),
+                    "Données de résultat incohérentes pour le bureau de vote ayant le code: "
+                            + result.getPollingStationCode());
+            this.alertService.saveAllAlerts(List.of(alert));
+            this.notificationService
+                    .sendAlert(new AlertBody(1, "Résultat incohérent. Source: " + result.getPollingStationCode()));
             throw new InvalidElectoralResultException("Result for polling station code: "
                     + result.getPollingStationCode() + " is invalid.");
         }

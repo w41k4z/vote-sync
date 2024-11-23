@@ -120,6 +120,7 @@ SELECT
 FROM resultats rs
 JOIN elections e
     ON rs.id_election = e.id
+    AND rs.etat < 20
 JOIN bv
     ON rs.id_bv = bv.id
 JOIN utilisateurs u
@@ -186,4 +187,45 @@ SELECT
         WHERE cv.id_fokontany = fk.id
     ) AS nombre_total_bv
 FROM fokontany fk
+;
+
+CREATE OR REPLACE VIEW v_alertes AS
+SELECT
+    a.id,
+    a.id_type_alerte,
+    ta.nom AS nom_type_alerte,
+    ta.niveau AS niveau_type_alerte,
+    a.id_election,
+    e.nom AS nom_election,
+    bv.id AS id_bv,
+    bv.nom AS nom_bv,
+    fk.id AS id_fokontany,
+    fk.nom AS nom_fokontany,
+    cm.id AS id_commune,
+    cm.nom AS nom_commune,
+    d.id AS id_district,
+    d.nom AS nom_district,
+    r.id AS id_region,
+    r.nom AS nom_region,
+    a.date_alerte,
+    a.description,
+    a.etat
+FROM alertes a
+JOIN type_alertes ta
+    ON a.id_type_alerte = ta.id
+JOIN elections e
+    ON a.id_election = e.id
+    AND e.etat < 20
+JOIN bv
+    ON a.id_bv = bv.id
+JOIN cv
+    ON bv.id_cv = cv.id
+JOIN fokontany fk
+    ON cv.id_fokontany = fk.id
+JOIN communes cm
+    ON fk.id_commune = cm.id
+JOIN districts d
+    ON cm.id_district = d.id
+JOIN regions r
+    ON d.id_region = r.id
 ;

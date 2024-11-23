@@ -25,6 +25,31 @@ END;
 /
 
 
+CREATE OR REPLACE PROCEDURE import_alerts AS
+BEGIN
+    MERGE INTO alertes a 
+    USING (
+        SELECT
+            ai.id_type_alerte,
+            ai.id_election,
+            bv.id AS id_bv,
+            ai.date_alerte,
+            ai.description,
+            ai.etat
+        FROM alertes_importees ai
+        JOIN bv
+            ON ai.code_bv = bv.code
+    ) src
+    ON (a.id_election = src.id_election AND a.id_bv = src.id_bv AND a.id_type_alerte = src.id_type_alerte)
+    WHEN NOT MATCHED THEN
+        INSERT (id_type_alerte, id_election, id_bv, date_alerte, description, etat)
+        VALUES (src.id_type_alerte, src.id_election, src.id_bv, src.date_alerte, src.description, src.etat)
+    ;
+    DELETE FROM alertes_importees;
+END;
+/
+
+
 CREATE OR REPLACE PROCEDURE import_electoral_results (
     election_id NUMBER
 ) AS

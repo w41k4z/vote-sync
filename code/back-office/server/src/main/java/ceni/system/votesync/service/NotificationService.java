@@ -1,9 +1,9 @@
 package ceni.system.votesync.service;
 
-import java.util.Map;
-
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
+import ceni.system.votesync.dto.AlertBody;
 
 @Service
 public class NotificationService {
@@ -14,7 +14,7 @@ public class NotificationService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void sendAlert(Map<String, Object> alertBody) {
+    public void sendAlert(AlertBody alertBody) {
         messagingTemplate.convertAndSend("/notification/alerts", alertBody);
     }
 }

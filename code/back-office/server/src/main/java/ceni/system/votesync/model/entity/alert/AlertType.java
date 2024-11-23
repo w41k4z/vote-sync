@@ -13,6 +13,10 @@ import lombok.EqualsAndHashCode;
 @Table(name = "type_alertes")
 public class AlertType extends AbstractEntity<Integer> {
 
+    public final static Integer SUSPECT_REGISTRATION = 1;
+    public final static Integer UNSYNCED_DATA = 2;
+    public final static Integer INCOHERENT_DATA = 3;
+
     @Column(name = "nom")
     private String name;
 

@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import ceni.system.votesync.config.Pagination;
 import ceni.system.votesync.dto.ApiResponse;
 import ceni.system.votesync.dto.request.result.UploadElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.ValidateElectoralResultRequest;
+import ceni.system.votesync.dto.request.result.InvalidateElectoralResultRequest;
 import ceni.system.votesync.dto.request.result.ValidateQrCodeRequest;
 import ceni.system.votesync.service.entity.election.QrCodeService;
 import ceni.system.votesync.service.entity.result.ElectoralResultUploadService;
@@ -98,6 +100,13 @@ public class ElectoralResultController {
     public ResponseEntity<ApiResponse> validateResult(@RequestBody ValidateElectoralResultRequest request) {
         this.electoralResultUploadService.validateElectoralResult(request);
         return ResponseEntity.ok(new ApiResponse(null, "Result validated successfully"));
+    }
+
+    @PutMapping("/invalidate")
+    public ResponseEntity<ApiResponse> invalidateResult(@RequestBody InvalidateElectoralResultRequest request) {
+        this.electoralResultUploadService.invalidateElectoralResult(request.getElectionId(),
+                request.getPollingStationId());
+        return ResponseEntity.ok(new ApiResponse(null, "Result invalidated successfully"));
     }
 
     @GetMapping("/polling-station")

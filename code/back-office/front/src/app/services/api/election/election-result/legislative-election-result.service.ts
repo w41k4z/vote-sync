@@ -143,4 +143,14 @@ export class LegislativeElectionResultService extends ApiCallService {
       )
     ).payload;
   }
+
+  async invalidateElectoralResult(
+    electionId: number,
+    pollingStationId: number
+  ) {
+    await this.putCall(`${Endpoints.ELECTION_RESULTS}/invalidate`, {
+      electionId: electionId,
+      pollingStationId: pollingStationId,
+    });
+  }
 }

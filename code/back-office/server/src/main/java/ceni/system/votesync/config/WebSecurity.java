@@ -67,7 +67,7 @@ public class WebSecurity {
                                 .hasAnyAuthority(Authority.OPERATOR, Authority.ADMIN)
                                 // Admin endpoints
                                 .requestMatchers("/api/users/**", "/api/roles/**", "/api/stats/**", "/api/elections/**",
-                                                "/api/election-types/**")
+                                                "/api/election-types/**", "/api/alerts/update-status")
                                 .hasAuthority(Authority.ADMIN)
                                 .anyRequest()
                                 .authenticated();
