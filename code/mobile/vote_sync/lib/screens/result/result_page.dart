@@ -93,20 +93,6 @@ class _ResultPageState extends State<ResultPage> {
     });
   }
 
-  int _checkRegisteredVotersCount() {
-    int result = 0;
-    if (registered == 0) {
-      result = -1;
-      GlobalErrorHandler.warningDialog(
-        context: context,
-        message:
-            "Impossible de continuer. Aucun électeur n'est enregistré pour cette station de vote.",
-        onDismiss: () {},
-      );
-    }
-    return result;
-  }
-
   int _checkResult() {
     int result = 0;
     int totalVotes = 0;
@@ -195,6 +181,7 @@ class _ResultPageState extends State<ResultPage> {
     );
     try {
       await GetIt.I.get<PollingStationService>().sendResults(
+            registered,
             pollingStation!,
             candidates,
             images,
@@ -317,7 +304,6 @@ class _ResultPageState extends State<ResultPage> {
         builder: (context) => const QrCodeScannerPage(),
       ),
     );
-    print(barcode);
     if (barcode != null) {
       try {
         await GetIt.I.get<ElectionService>().validateQrCode(barcode);
@@ -338,8 +324,9 @@ class _ResultPageState extends State<ResultPage> {
         }
       } catch (e) {
         log(e.toString());
-        if (mounted)
+        if (mounted) {
           SnackBarError.show(context: context, message: e.toString());
+        }
       }
     }
   }

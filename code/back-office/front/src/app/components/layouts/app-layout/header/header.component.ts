@@ -44,15 +44,6 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    setInterval(() => {
-      this.alertService.getAlertsCount().then((payload) => {
-        if (payload) {
-          if (this.authService.isAuthenticated()) {
-            this.alertsCount = payload.alertsCount;
-          }
-        }
-      });
-    }, 60000);
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

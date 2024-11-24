@@ -5,6 +5,9 @@ import java.util.Map;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/* 
+* This request is for correction, not incoherent result, so the number of registered voters is the same as the total votes 
+*/
 @Data
 public class ValidateElectoralResultRequest implements ElectoralResultRequest {
 
@@ -49,6 +52,11 @@ public class ValidateElectoralResultRequest implements ElectoralResultRequest {
     @Override
     public Integer getTotalVotes() {
         return this.candidates.values().stream().mapToInt(Integer::intValue).sum() + this.getInvalidVotes();
+    }
+
+    @Override
+    public Integer getRegisteredVoters() {
+        return this.getTotalVotes();
     }
 
     @Override

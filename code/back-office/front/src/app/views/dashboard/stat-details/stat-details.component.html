@@ -24,7 +24,7 @@
                     <td class="text-end">{{ result.voters | formatNumber }}</td>
                     <td class="text-end">{{ result.validVotes + result.blankVotes + result.nullVotes | formatNumber }}
                     </td>
-                    <td class="text-center"><b class="text-success">{{ result.importedResults | formatNumber }}</b>
+                    <td class="text-center"><b class="text-success">{{ result.collectedResults - result.importedResults | formatNumber }}</b>
                     / {{ result.totalPollingStationCount }}</td>
                     <td class="text-center">
                         <b class="text-success">{{ result.collectedResults | formatNumber }}</b>

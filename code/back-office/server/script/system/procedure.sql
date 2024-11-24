@@ -53,11 +53,12 @@ CREATE OR REPLACE PROCEDURE import_electoral_results (
     election_id NUMBER
 ) AS
 BEGIN
-    INSERT INTO resultats(id_election, id_bv, inscrits, homme_moins_36, femme_moins_36, homme_36_plus, femme_36_plus, handicapes, malvoyants, blancs, nuls, etat, importe)
+    MERGE INTO resultats rs
+    USING
     (
         SELECT
-            election_id,
-            bv.id,
+            election_id AS id_election,
+            bv.id AS id_bv,
             rsi.inscrits,
             rsi.homme_moins_36,
             rsi.femme_moins_36,
@@ -67,14 +68,35 @@ BEGIN
             rsi.malvoyants,
             rsi.blancs,
             rsi.nuls,
-            20,
-            0
+            20 AS etat,
+            1 AS importe
         FROM resultats_importes rsi
         JOIN bv
             ON rsi.code_bv = bv.code
         WHERE rsi.id_election = election_id
-    );
-
+    ) src
+    ON (rs.id_election = src.id_election AND rs.id_bv = src.id_bv AND rs.etat < 20)
+    WHEN MATCHED THEN
+        UPDATE SET
+            rs.inscrits = src.inscrits,
+            rs.homme_moins_36 = src.homme_moins_36,
+            rs.femme_moins_36 = src.femme_moins_36,
+            rs.homme_36_plus = src.homme_36_plus,
+            rs.femme_36_plus = src.femme_36_plus,
+            rs.handicapes = src.handicapes,
+            rs.malvoyants = src.malvoyants,
+            rs.blancs = src.blancs,
+            rs.nuls = src.nuls,
+            rs.importe = src.importe
+    WHEN NOT MATCHED THEN
+        INSERT (id_election, id_bv, inscrits, homme_moins_36, femme_moins_36, homme_36_plus, femme_36_plus, handicapes, malvoyants, blancs, nuls, etat, importe)
+        VALUES (src.id_election, src.id_bv, src.inscrits, src.homme_moins_36, src.femme_moins_36, src.homme_36_plus, src.femme_36_plus, src.handicapes, src.malvoyants, src.blancs, src.nuls, src.etat, src.importe)
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM resultats rs2
+            WHERE rs2.id_election = src.id_election AND rs2.id_bv = src.id_bv
+        )
+    ;
     import_electoral_result_details(election_id);
     import_electoral_result_images;
     
@@ -212,10 +234,8 @@ END;
 
 CREATE OR REPLACE PROCEDURE import_electoral_result_images AS
 BEGIN
-    INSERT INTO resultat_images (
-        id_resultat,
-        chemin_image
-    ) (
+    MERGE INTO resultat_images ri
+    USING (
         SELECT
             rs.id,
             rii.chemin_image
@@ -225,7 +245,12 @@ BEGIN
         JOIN resultats rs
             ON rs.id_election = rii.id_election
             AND bv.id = rs.id_bv
-    );
+    ) src
+    ON (ri.id_resultat = src.id AND ri.chemin_image = src.chemin_image)
+    WHEN NOT MATCHED THEN
+        INSERT (id_resultat, chemin_image)
+        VALUES (src.id, src.chemin_image)
+    ;
 END;
 /
 
@@ -249,10 +274,10 @@ BEGIN
     migrate_fokontany_results(election_id);
     migrate_communal_results(election_id);
     migrate_municipal_results(election_id);
-    migrate_district_results(election_id);
-    migrate_regional_results(election_id);
-    migrate_provincial_results(election_id);
-    migrate_national_results(election_id);
+    migrate_district_results(election_id, type_election);
+    migrate_regional_results(election_id, type_election);
+    migrate_provincial_results(election_id, type_election);
+    migrate_national_results(election_id, type_election);
 
     UPDATE elections SET etat = 20, date_fin = SYSDATE WHERE id = election_id;
     
@@ -658,7 +683,8 @@ END;
 
 -- presidential and legislative election only
 CREATE OR REPLACE PROCEDURE migrate_district_results (
-    election_id NUMBER
+    election_id NUMBER,
+    type_election VARCHAR2
 ) AS
 BEGIN
     INSERT INTO districts_resultats_provisoires(
@@ -710,34 +736,37 @@ BEGIN
         WHERE id_election = election_id
     );
 
-    INSERT INTO districts_details_resultats_provisoires(
-        id_resultat_provisoire,
-        numero_candidat,
-        information_candidat,
-        nom_entite_politique,
-        description_entite_politique,
-        voix_candidat,
-        chemin_photo_candidat
-    ) (
-        SELECT
-            drsp.id,
-            rsd.numero_candidat,
-            rsd.information_candidat,
-            rsd.nom_entite_politique,
-            rsd.description_entite_politique,
-            rsd.voix_candidat,
-            rsd.chemin_photo_candidat
-        FROM resultats_par_district rsd
-        JOIN districts_resultats_provisoires drsp
-            ON rsd.id_district = drsp.id_district
-            AND rsd.id_election = drsp.id_election
-    );
+    IF type_election != 'Locale' THEN
+        INSERT INTO districts_details_resultats_provisoires(
+            id_resultat_provisoire,
+            numero_candidat,
+            information_candidat,
+            nom_entite_politique,
+            description_entite_politique,
+            voix_candidat,
+            chemin_photo_candidat
+        ) (
+            SELECT
+                drsp.id,
+                rsd.numero_candidat,
+                rsd.information_candidat,
+                rsd.nom_entite_politique,
+                rsd.description_entite_politique,
+                rsd.voix_candidat,
+                rsd.chemin_photo_candidat
+            FROM resultats_par_district rsd
+            JOIN districts_resultats_provisoires drsp
+                ON rsd.id_district = drsp.id_district
+                AND rsd.id_election = drsp.id_election
+        );
+    END IF;
 END;
 /
 
 -- presidential election only
 CREATE OR REPLACE PROCEDURE migrate_regional_results (
-    election_id NUMBER
+    election_id NUMBER,
+    type_election VARCHAR2
 ) AS
 BEGIN
     INSERT INTO regions_resultats_provisoires(
@@ -785,34 +814,37 @@ BEGIN
         WHERE id_election = election_id
     );
 
-    INSERT INTO regions_details_resultats_provisoires(
-        id_resultat_provisoire,
-        numero_candidat,
-        information_candidat,
-        nom_entite_politique,
-        description_entite_politique,
-        voix_candidat,
-        chemin_photo_candidat
-    ) (
-        SELECT
-            rrsp.id,
-            rsr.numero_candidat,
-            rsr.information_candidat,
-            rsr.nom_entite_politique,
-            rsr.description_entite_politique,
-            rsr.voix_candidat,
-            rsr.chemin_photo_candidat
-        FROM resultats_par_region rsr
-        JOIN regions_resultats_provisoires rrsp
-            ON rsr.id_region = rrsp.id_region
-            AND rsr.id_election = rrsp.id_election
-    );
+    IF type_election = 'Presidentielle' THEN
+        INSERT INTO regions_details_resultats_provisoires(
+            id_resultat_provisoire,
+            numero_candidat,
+            information_candidat,
+            nom_entite_politique,
+            description_entite_politique,
+            voix_candidat,
+            chemin_photo_candidat
+        ) (
+            SELECT
+                rrsp.id,
+                rsr.numero_candidat,
+                rsr.information_candidat,
+                rsr.nom_entite_politique,
+                rsr.description_entite_politique,
+                rsr.voix_candidat,
+                rsr.chemin_photo_candidat
+            FROM resultats_par_region rsr
+            JOIN regions_resultats_provisoires rrsp
+                ON rsr.id_region = rrsp.id_region
+                AND rsr.id_election = rrsp.id_election
+        );
+    END IF;
 END;
 /
 
 -- presindential election only
 CREATE OR REPLACE PROCEDURE migrate_provincial_results (
-    election_id NUMBER
+    election_id NUMBER,
+    type_election VARCHAR2
 ) AS
 BEGIN
     INSERT INTO provinces_resultats_provisoires(
@@ -860,34 +892,37 @@ BEGIN
         WHERE id_election = election_id
     );
 
-    INSERT INTO provinces_details_resultats_provisoires(
-        id_resultat_provisoire,
-        numero_candidat,
-        information_candidat,
-        nom_entite_politique,
-        description_entite_politique,
-        voix_candidat,
-        chemin_photo_candidat
-    ) (
-        SELECT
-            prsp.id,
-            rsp.numero_candidat,
-            rsp.information_candidat,
-            rsp.nom_entite_politique,
-            rsp.description_entite_politique,
-            rsp.voix_candidat,
-            rsp.chemin_photo_candidat
-        FROM resultats_par_province rsp
-        JOIN provinces_resultats_provisoires prsp
-            ON rsp.id_province = prsp.id_province
-            AND rsp.id_election = prsp.id_election
-    );
+    IF type_election = 'Presidentielle' THEN
+        INSERT INTO provinces_details_resultats_provisoires(
+            id_resultat_provisoire,
+            numero_candidat,
+            information_candidat,
+            nom_entite_politique,
+            description_entite_politique,
+            voix_candidat,
+            chemin_photo_candidat
+        ) (
+            SELECT
+                prsp.id,
+                rsp.numero_candidat,
+                rsp.information_candidat,
+                rsp.nom_entite_politique,
+                rsp.description_entite_politique,
+                rsp.voix_candidat,
+                rsp.chemin_photo_candidat
+            FROM resultats_par_province rsp
+            JOIN provinces_resultats_provisoires prsp
+                ON rsp.id_province = prsp.id_province
+                AND rsp.id_election = prsp.id_election
+        );
+    END IF;
 END;
 /
 
 -- presindential election only
 CREATE OR REPLACE PROCEDURE migrate_national_results (
-    election_id NUMBER
+    election_id NUMBER,
+    type_election VARCHAR2
 ) AS
 BEGIN
     INSERT INTO resultats_provisoires(
@@ -935,26 +970,28 @@ BEGIN
         WHERE id_election = election_id
     );
 
-    INSERT INTO details_resultats_provisoires(
-        id_resultat_provisoire,
-        numero_candidat,
-        information_candidat,
-        nom_entite_politique,
-        description_entite_politique,
-        voix_candidat,
-        chemin_photo_candidat
-    ) (
-        SELECT
-            rsp.id,
-            rse.numero_candidat,
-            rse.information_candidat,
-            rse.nom_entite_politique,
-            rse.description_entite_politique,
-            rse.voix_candidat,
-            rse.chemin_photo_candidat
-        FROM resultats_election rse
-        JOIN resultats_provisoires rsp
-            ON rse.id_election = rsp.id_election
-    );
+    IF type_election = 'Presidentielle' THEN
+        INSERT INTO details_resultats_provisoires(
+            id_resultat_provisoire,
+            numero_candidat,
+            information_candidat,
+            nom_entite_politique,
+            description_entite_politique,
+            voix_candidat,
+            chemin_photo_candidat
+        ) (
+            SELECT
+                rsp.id,
+                rse.numero_candidat,
+                rse.information_candidat,
+                rse.nom_entite_politique,
+                rse.description_entite_politique,
+                rse.voix_candidat,
+                rse.chemin_photo_candidat
+            FROM resultats_election rse
+            JOIN resultats_provisoires rsp
+                ON rse.id_election = rsp.id_election
+        );
+    END IF;
 END;
 /

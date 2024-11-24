@@ -6,9 +6,12 @@ public interface ElectoralResultRequest {
 
     public Integer getVoters();
 
+    public Integer getRegisteredVoters();
+
     public Integer getTotalVotes();
 
     default boolean isValid() {
-        return this.getTotalVotes() <= this.getVoters();
+        int totalVotes = this.getTotalVotes();
+        return totalVotes == this.getRegisteredVoters() && totalVotes <= this.getVoters();
     }
 }

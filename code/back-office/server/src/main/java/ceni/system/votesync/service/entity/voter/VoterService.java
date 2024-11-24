@@ -22,6 +22,7 @@ import ceni.system.votesync.service.entity.alert.AlertService;
 @Service
 public class VoterService {
 
+    public final static Time START_REGISTRATION = Time.valueOf("08:00:00");
     public final static Time LIMIT_REGISTRATION = Time.valueOf("17:00:00");
 
     private VRegisteredVoterRepository registeredVoterRepository;
@@ -47,7 +48,7 @@ public class VoterService {
             String registrationTimeString = request.getRegistrationDate().getHour() + ":"
                     + request.getRegistrationDate().getMinute() + ":" + request.getRegistrationDate().getSecond();
             Time registrationTime = Time.valueOf(registrationTimeString);
-            if (registrationTime.after(LIMIT_REGISTRATION)) {
+            if (registrationTime.after(LIMIT_REGISTRATION) || registrationTime.before(START_REGISTRATION)) {
                 suspectRegistration++;
             }
             VoterRegistration voter = this.voterRegistrationRepository

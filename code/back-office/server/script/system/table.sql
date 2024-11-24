@@ -103,7 +103,8 @@ CREATE TABLE resultat_images (
    id_resultat NUMBER NOT NULL,
    chemin_image VARCHAR2(150) NOT NULL,
    PRIMARY KEY(id),
-   FOREIGN KEY(id_resultat) REFERENCES resultats(id)
+   FOREIGN KEY(id_resultat) REFERENCES resultats(id),
+   CONSTRAINT uq_resultat_image UNIQUE(id_resultat, chemin_image)
 );
 
 CREATE TABLE resultats_importes (

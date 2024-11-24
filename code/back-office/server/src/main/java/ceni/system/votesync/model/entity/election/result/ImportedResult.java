@@ -4,6 +4,7 @@ import ceni.system.votesync.model.base.entity.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +26,9 @@ public class ImportedResult extends AbstractEntity<Integer> {
 
     @Column(name = "inscrits")
     private Integer voters;
+
+    @Transient
+    private Integer registeredVoters;
 
     @Column(name = "homme_moins_36")
     private Integer maleUnder36;

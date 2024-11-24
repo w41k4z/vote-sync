@@ -64,6 +64,7 @@ import { StatDetailsComponent } from './views/dashboard/stat-details/stat-detail
 import { PresidentialElectionResultComponent } from './views/elections/result/presidential-election-result/presidential-election-result.component';
 import { LegislativeElectionResultComponent } from './views/elections/result/legislative-election-result/legislative-election-result.component';
 import { ResultWithNoFilterComponent } from './views/elections/result/filter/result-with-no-filter/result-with-no-filter.component';
+import { ImportErrorDialogComponent } from './views/elections/list/current-election-list/import-error-dialog/import-error-dialog.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { ResultWithNoFilterComponent } from './views/elections/result/filter/res
     PresidentialElectionResultComponent,
     LegislativeElectionResultComponent,
     ResultWithNoFilterComponent,
+    ImportErrorDialogComponent,
   ],
   imports: [
     BrowserModule,

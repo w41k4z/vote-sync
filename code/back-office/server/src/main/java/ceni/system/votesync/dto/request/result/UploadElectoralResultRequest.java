@@ -31,6 +31,9 @@ public class UploadElectoralResultRequest implements ElectoralResultRequest {
     @NotNull(message = "The number of voters is required")
     private Integer voters;
 
+    @NotNull(message = "The number of registered voters is required")
+    private Integer registeredVoters;
+
     private Map<Integer, Integer> candidates;
 
     @Override

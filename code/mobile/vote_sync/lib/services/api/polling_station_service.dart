@@ -105,6 +105,7 @@ class PollingStationService extends ApiCallService {
   }
 
   Future<void> sendResults(
+    int registeredVoters,
     PollingStation pollingStation,
     List<Candidate> candidates,
     List<PollingStationResultImage> pollingStationResultImages,
@@ -122,6 +123,7 @@ class PollingStationService extends ApiCallService {
         'pollingStationCode': pollingStation.code.toString(),
         'nulls': pollingStation.nulls.toString(),
         'blanks': pollingStation.blanks.toString(),
+        'registeredVoters': registeredVoters.toString(),
         'voters': pollingStation.registeredVoters.toString(),
         'candidates': candidatesJson,
       }),

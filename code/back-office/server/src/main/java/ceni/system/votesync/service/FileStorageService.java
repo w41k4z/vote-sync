@@ -36,6 +36,10 @@ public class FileStorageService {
         }
     }
 
+    public Path getRootLocation() {
+        return rootLocation;
+    }
+
     public void store(MultipartFile multipartFile, String fileName) {
         if (multipartFile.isEmpty()) {
             throw new StorageException("Failed to store empty file. Source: " + multipartFile.getOriginalFilename());

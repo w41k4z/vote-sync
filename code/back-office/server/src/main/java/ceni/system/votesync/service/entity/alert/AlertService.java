@@ -15,17 +15,22 @@ import ceni.system.votesync.dto.request.alert.UpdateAlertStatusRequest;
 import ceni.system.votesync.exception.ImpossibleOperationException;
 import ceni.system.votesync.model.entity.alert.Alert;
 import ceni.system.votesync.model.entity.alert.AlertType;
+import ceni.system.votesync.model.entity.alert.BaseAlert;
 import ceni.system.votesync.model.view.VAlert;
 import ceni.system.votesync.repository.entity.AlertRepository;
+import ceni.system.votesync.repository.entity.BaseAlertRepository;
 import ceni.system.votesync.repository.view.VAlertRepository;
 
 @Service
 public class AlertService {
 
+    private BaseAlertRepository baseAlertRepository;
     private AlertRepository alertRepository;
     private VAlertRepository vAlertRepository;
 
-    public AlertService(AlertRepository alertRepository, VAlertRepository vAlertRepository) {
+    public AlertService(BaseAlertRepository baseAlertRepository, AlertRepository alertRepository,
+            VAlertRepository vAlertRepository) {
+        this.baseAlertRepository = baseAlertRepository;
         this.alertRepository = alertRepository;
         this.vAlertRepository = vAlertRepository;
     }
@@ -47,7 +52,14 @@ public class AlertService {
 
     public void saveAlert(Integer alertTypeId, Integer electionId, Integer pollingStationId, Date alertDate,
             String description, Integer status) {
-        this.alertRepository.createAlert(alertTypeId, electionId, pollingStationId, alertDate, description, status);
+        BaseAlert alert = new BaseAlert();
+        alert.setAlertTypeId(alertTypeId);
+        alert.setElectionId(electionId);
+        alert.setPollingStationId(pollingStationId);
+        alert.setAlertDate(alertDate);
+        alert.setDescription(description);
+        alert.setStatus(status);
+        this.baseAlertRepository.save(alert);
     }
 
     public Alert createSuspectRegistrationAlert(Integer electionId, String pollingStationCode, String description) {

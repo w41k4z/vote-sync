@@ -13,6 +13,7 @@ import { Page } from '../../dto/response/page';
 import { Observable } from 'rxjs';
 import { ElectionService } from '../../services/api/election/election.service';
 import { CloseElectionDialogComponent } from './close-election-dialog/close-election-dialog.component';
+import { ImportErrorDialogComponent } from './list/current-election-list/import-error-dialog/import-error-dialog.component';
 
 @Component({
   selector: 'app-elections',
@@ -164,9 +165,16 @@ export class ElectionsComponent {
   }) => {
     this.displayProgressSpinner = true;
     try {
-      await this.activeElectionService.importElectoralResults(
+      const payload = await this.activeElectionService.importElectoralResults(
         importResultRequest
       );
+      if (Object.keys(payload).length !== 0) {
+        this.dialog.open(ImportErrorDialogComponent, {
+          data: {
+            payload: payload,
+          },
+        });
+      }
     } catch (error) {
       throw error;
     } finally {

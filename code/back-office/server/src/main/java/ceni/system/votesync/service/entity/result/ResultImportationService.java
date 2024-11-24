@@ -102,6 +102,7 @@ public class ResultImportationService {
 
         Row votersStatRow = rowIterator.next();
         result.setVoters((int) votersStatRow.getCell(0).getNumericCellValue());
+        result.setRegisteredVoters((int) votersStatRow.getCell(1).getNumericCellValue());
         rowIterator.next(); // Moving to the next row
 
         Row invalidVotesRow = rowIterator.next();
@@ -148,6 +149,7 @@ public class ResultImportationService {
     private void checkImportedResultValidity(ImportedResult result, List<ImportedResultDetails> details) {
         UploadElectoralResultRequest request = new UploadElectoralResultRequest();
         request.setVoters(result.getVoters());
+        request.setRegisteredVoters(result.getRegisteredVoters());
         request.setNulls(result.getNullVotes());
         request.setBlanks(result.getBlankVotes());
         request.setCandidates(details.stream()

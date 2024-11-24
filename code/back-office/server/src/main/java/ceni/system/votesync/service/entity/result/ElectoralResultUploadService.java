@@ -236,7 +236,7 @@ public class ElectoralResultUploadService {
         for (MultipartFile image : images) {
             ResultImage resultImage = new ResultImage();
             resultImage.setResultId(result.getId());
-            String imagePath = result.getElectionId() + "/" + RESULT_FOLDER + "/" + result.getPollingStationId()
+            String imagePath = request.getElectionId() + "/" + RESULT_FOLDER + "/" + request.getPollingStationCode()
                     + "/"
                     + image.getOriginalFilename();
             resultImage.setImagePath(imagePath);

@@ -37,7 +37,7 @@ export class ActiveElectionService extends ApiCallService {
     formData.append('file', importElectoralResultsRequest.file);
     formData.append('password', importElectoralResultsRequest.password);
     return (
-      await this.postCall(`${Endpoints.ELECTION_RESULTS}/import`, formData)
+      await this.postCall<any>(`${Endpoints.ELECTION_RESULTS}/import`, formData)
     ).payload;
   }
 
