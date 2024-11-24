@@ -41,7 +41,7 @@ export let getPopupHtml = (divisionStats: AdministrativeDivisionStats) => {
   )}</b>/${NumberFormat.format(divisionStats.totalPollingStationCount)}</td>`;
   popupHtml += '</tr>';
   popupHtml += '<tr>';
-  popupHtml += '<td>Alertes</td>';
+  popupHtml += '<td>Incidences</td>';
   popupHtml += `<td class="text-end ${alertsColor}">${NumberFormat.format(
     divisionStats.alerts
   )}</td>`;

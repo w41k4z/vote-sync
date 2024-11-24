@@ -31,7 +31,7 @@ public class AlertService {
     }
 
     public long countCurrentAlerts() {
-        return this.alertRepository.count();
+        return this.vAlertRepository.count(AlertSpecification.nonResolvedAlert());
     }
 
     public PagedModel<VAlert> getCurrentAlerts(Integer electionId, Integer regionId, Integer districtId,

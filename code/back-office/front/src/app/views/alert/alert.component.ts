@@ -46,6 +46,10 @@ export class AlertComponent {
     });
   }
 
+  updateAlert(alert: Alert) {
+    this.alertService.updateAlertState(alert.id, alert.status);
+  }
+
   filter(page: number = 0) {
     this.alertService
       .getCurrentAlerts(

@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         HashMap<String, String> errors = new HashMap<>();
         errors.put("source", ex.getMessage());
         response.setErrors(errors);
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

@@ -228,4 +228,7 @@ JOIN districts d
     ON cm.id_district = d.id
 JOIN regions r
     ON d.id_region = r.id
+ORDER BY
+    a.etat ASC,
+    ta.niveau DESC
 ;

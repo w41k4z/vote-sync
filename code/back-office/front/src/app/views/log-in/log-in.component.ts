@@ -31,19 +31,15 @@ export class LogInComponent extends FormContainerComponent {
     this.passwordIsShown = !this.passwordIsShown;
   }
 
-  async submit() {
-    this.submitting();
-    if (this.componentForm.invalid) {
-      return;
-    }
+  override onConfirm() {
     const identifier = this.componentForm.value.identifier
       ? this.componentForm.value.identifier
       : '';
     const password = this.componentForm.value.password
       ? this.componentForm.value.password
       : '';
-    await this.authService.authenticate(identifier, password);
-    this.router.navigate([Paths.HOME]);
-    this.reset();
+    this.authService.authenticate(identifier, password).then(() => {
+      this.router.navigate([Paths.HOME]);
+    });
   }
 }

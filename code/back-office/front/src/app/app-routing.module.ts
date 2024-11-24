@@ -69,7 +69,7 @@ const routes: Routes = [
         path: 'alerts',
         component: AlertComponent,
         data: {
-          requiredPrivileges: Privileges.ALL,
+          requiredPrivileges: [Privileges.ADMIN],
           title: 'Alertes',
         },
       },
@@ -97,17 +97,26 @@ const routes: Routes = [
       {
         path: 'elections/result/local/:electionId',
         component: LocalElectionResultComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
+        data: {
+          requiredPrivileges: [Privileges.ADMIN, Privileges.CCID],
+          title: 'Résultats',
+        },
       },
       {
         path: 'elections/result/legislative/:electionId',
         component: LegislativeElectionResultComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
+        data: {
+          requiredPrivileges: [Privileges.ADMIN, Privileges.CCID],
+          title: 'Résultats',
+        },
       },
       {
         path: 'elections/result/presidential/:electionId',
         component: PresidentialElectionResultComponent,
-        data: { requiredPrivileges: [Privileges.ADMIN], title: 'Résultats' },
+        data: {
+          requiredPrivileges: [Privileges.ADMIN, Privileges.CCID],
+          title: 'Résultats',
+        },
       },
       {
         path: 'result-validations',

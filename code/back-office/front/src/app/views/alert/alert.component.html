@@ -61,34 +61,37 @@
         <div class="spinner-border text-primary" role="status"></div>
     </div>
     <ng-template #content>
-        <div *ngIf="pollingStations.length != 0; else empty">
+        <div *ngIf="alerts.length != 0; else empty">
             <div class="alert-list">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
                             <th>Election</th>
                             <th>Bureau de vote</th>
-                            <th>Type</th>
+                            <th class="text-center">Type</th>
                             <th>Déscription</th>
                             <th>État</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let alert of alerts">
-                            <td class="align-middle">
-                                <b>{{ alert.election }}</b>
+                            <td class="align-middle text-primary">
+                                <span class="d-flex align-items-center">
+                                    <i class="me-2 bi bi-envelope"></i>
+                                    <span><b>{{ alert.election }}</b></span>
+                                </span>
                             </td>
                             <td class="align-middle">
-                                <b>{{ alert.pollingStation }}</b>
+                                <b>{{ alert.pollingStation | formatName }}</b>
                             </td>
                             <td class="align-middle">
-                                <p class="{{alert.alertType}} m-0 text-center">
+                                <p class="alert-{{alert.alertTypeId}} m-0 text-center">
                                     {{ alert.alertType }}
                                 </p>
                             </td>
                             <td class="align-middle">{{ alert.description }}</td>
                             <td class="align-middle">
-                                <select [(ngModel)]="alert.status" class="form-select text-white">
+                                <select [(ngModel)]="alert.status" class="form-select form-select-sm text-white bg-{{alert.status}}" (change)="updateAlert(alert)">
                                     <option value="0">En Attente</option>
                                     <option value="10">En Cours</option>
                                     <option value="20">Résolue</option>

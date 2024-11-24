@@ -122,7 +122,7 @@ class PollingStationService extends ApiCallService {
         'pollingStationCode': pollingStation.code.toString(),
         'nulls': pollingStation.nulls.toString(),
         'blanks': pollingStation.blanks.toString(),
-	'voters': pollingStation.registeredVoters.toString(),
+        'voters': pollingStation.registeredVoters.toString(),
         'candidates': candidatesJson,
       }),
       'images': [

@@ -50,7 +50,7 @@ public class AlertController {
     @GetMapping("/count")
     public ResponseEntity<ApiResponse> countAlerts() {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("alertCounts", this.alertService.countCurrentAlerts());
+        data.put("alertsCount", this.alertService.countCurrentAlerts());
         return ResponseEntity.ok(new ApiResponse(data, null));
     }
 }

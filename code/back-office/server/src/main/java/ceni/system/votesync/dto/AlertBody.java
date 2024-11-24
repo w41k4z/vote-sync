@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class AlertBody {
 
-    private Integer alertCounts;
+    private Integer alertsCount;
     private String message;
 }

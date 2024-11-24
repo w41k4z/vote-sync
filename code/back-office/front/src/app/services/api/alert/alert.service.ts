@@ -12,6 +12,21 @@ export class AlertService extends ApiCallService {
     super(http);
   }
 
+  async getAlertsCount() {
+    return (
+      await this.getCall<{ alertsCount: number }>(`${Endpoints.ALERTS}/count`)
+    ).payload;
+  }
+
+  async updateAlertState(alertId: number, status: number) {
+    return (
+      await this.putCall(`${Endpoints.ALERTS}/update-status`, {
+        alertId: alertId,
+        status: status,
+      })
+    ).payload;
+  }
+
   async getCurrentAlerts(
     page: number,
     size: number,

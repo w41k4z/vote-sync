@@ -6,6 +6,10 @@
     border-radius: 15px;
 }
 
+.alert-list {
+    overflow-x: auto;
+}
+
 .suspect {
     padding: 5px 10px;
     border-radius: 5px;
@@ -13,9 +17,25 @@
     color: white;
 }
 
-.information {
+.alert-2 {
     padding: 5px 10px;
     border-radius: 5px;
     background-color: #5bc0de;
     color: white;
+}
+
+.bg-0 {
+    background-color: #ffc107;
+}
+
+.bg-10 {
+    background-color: #0dcaf0;
+}
+
+.bg-20 {
+    background-color: $primary;
+}
+
+tbody {
+    font-size: 15px;
 }

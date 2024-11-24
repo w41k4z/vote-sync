@@ -1,44 +1,75 @@
--- Election locale 05 Novembre 2024
-insert into elections (id, id_type_election, nom, date_debut, etat)
-values (1, 3, 'Election municipale 2024', TO_DATE('2024-11-05', 'YYYY-MM-DD'), 0);
-
--- Election législative 29 Mai 2024
-insert into elections (id, id_type_election, nom, date_debut, date_fin, etat)
-values (2, 2, 'Election legislative 2024', TO_DATE('2024-05-29', 'YYYY-MM-DD'), TO_DATE('2024-06-12', 'YYYY-MM-DD'), 20);
-
--- Election présidentielle 29 Mai 2024
-insert into elections (id, id_type_election, nom, date_debut, date_fin, etat)
-values (3, 1, 'Election presidentielle 2023', TO_DATE('2023-11-16', 'YYYY-MM-DD'), TO_DATE('2023-12-15', 'YYYY-MM-DD'), 20);
-
 -- Entité politique
-INSERT INTO entites_politiques (nom, description)
-VALUES ('TNF', 'Tiako Ny Fireneko');
-INSERT INTO entites_politiques (nom, description)
-VALUES ('MM', 'Miara Mandroso');
-INSERT INTO entites_politiques (nom, description)
-VALUES ('IRMM', 'Isika Rehetra Miara Mandroso');
-INSERT INTO entites_politiques (nom, description)
-VALUES ('AM', 'Alefa Madagasikara');
+INSERT INTO entites_politiques (id, nom, description)
+VALUES (1, 'TNF', 'Tiako Ny Fireneko');
+INSERT INTO entites_politiques (id, nom, description)
+VALUES (2, 'MM', 'Miara Mandroso');
+INSERT INTO entites_politiques (id, nom, description)
+VALUES (3, 'IRMM', 'Isika Rehetra Miara Mandroso');
+INSERT INTO entites_politiques (id, nom, description)
+VALUES (4, 'AM', 'Alefa Madagasikara');
 
 -- Candidats
-INSERT INTO candidats (id_entite_politique, information)
-VALUES (1, 'Rasoa Mamy');
-INSERT INTO candidats (id_entite_politique, information)
-VALUES (2, 'Rakoto Andry');
-INSERT INTO candidats (id_entite_politique, information)
-VALUES (3, 'Rasoanirina Hasina');
-INSERT INTO candidats (id_entite_politique, information)
-VALUES (4, 'Randriamiharisoa Lova');
+INSERT INTO candidats (id, id_entite_politique, information)
+VALUES (1, 1, 'Rasoa Mamy');
+INSERT INTO candidats (id, id_entite_politique, information)
+VALUES (2, 2, 'Rakoto Andry');
+INSERT INTO candidats (id, id_entite_politique, information)
+VALUES (3, 3, 'Rasoanirina Hasina');
+INSERT INTO candidats (id, id_entite_politique, information)
+VALUES (4, 4, 'Randriamiharisoa Lova');
+INSERT INTO candidats (id, id_entite_politique, information)
+VALUES (5, 1, 'Fitahiana Razanandrasoa');
+INSERT INTO candidats (id, id_entite_politique, information)
+VALUES (6, 3, 'Nirina Tsimisaraka');
 
--- Enregistrement candidats maire Antananarivo Renivohitra
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 1, 1, 1, 'No image.jpg', SYSDATE);
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 2, 1, 2, 'No image.jpg', SYSDATE);
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 3, 1, 3, 'No image.jpg', SYSDATE);
-INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
-VALUES (1, 4, 1, 4, 'No image.jpg', SYSDATE);
+CREATE OR REPLACE PROCEDURE data_simulation (
+    election_id NUMBER
+) AS
+BEGIN
+    -- Enregistrement candidats maire Antananarivo Renivohitra
+    INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+    VALUES (election_id, 1, 41, 1, 'ep/TNF.png', SYSDATE);
+    INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+    VALUES (election_id, 2, 41, 2, 'ep/MM.png', SYSDATE);
+    INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+    VALUES (election_id, 3, 41, 3, 'ep/IRMM.png', SYSDATE);
+    INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+    VALUES (election_id, 4, 41, 4, 'ep/AM.png', SYSDATE);
+
+    -- Enregistrement candidats maire Antananarivo Atsimondrano
+    INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+    VALUES (election_id, 5, 1, 1, 'ep/TNF.png', SYSDATE);
+    INSERT INTO enregistrement_candidats (id_election, id_candidat, id_municipalite, numero_candidat, chemin_photo, date_enregistrement)
+    VALUES (election_id, 6, 1, 2, 'ep/IRMM.png', SYSDATE);
+
+    -- Enregistrement electeurs Atsimondrano EPP Volotara Salle 1
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 1, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 2, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 3, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 4, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 5, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 6, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 7, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 8, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 9, SYSDATE, 0);
+    INSERT INTO enregistrement_electeurs (id_election, id_bv, id_electeur, date_enregistrement, vote)
+    VALUES (election_id, 41, 10, SYSDATE, 0);
+ 
+    -- QR Code
+    INSERT INTO code_qr(contenu, date_creation, date_expiration)
+    VALUES('110511060101', TO_DATE('2024-11-28', 'YYYY-MM-DD'), TO_DATE('2024-11-30', 'YYYY-MM-DD'));
+END;
+/
+
 
 -- Chef CID 4e Arrondissement et V
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
@@ -48,65 +79,71 @@ values(DEFAULT, 4, 'Harifanja', 'Tombovelo', '0349857376', '5e Arrondissement', 
 
 -- Responsable de bureau de vote
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rasoa', 'Manitra', '0349101010', '111001030101', '{noop}password1');
+values(DEFAULT, 2, 'Rasoa', 'Manitra', '0349101010', '111001030101', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rakoto', 'Feno', '0349202020', '111001030102', '{noop}password2');
+values(DEFAULT, 2, 'Rakoto', 'Feno', '0349202020', '111001030102', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rasoanaivo', 'Lova', '0349303030', '111001030103', '{noop}password3');
+values(DEFAULT, 2, 'Rasoanaivo', 'Lova', '0349303030', '111001030103', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Randriamalala', 'Tiana', '0349404040', '111001030104', '{noop}password4');
+values(DEFAULT, 2, 'Randriamalala', 'Tiana', '0349404040', '111001030104', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rabetokotany', 'Voahangy', '0349505050', '111001030105', '{noop}password5');
+values(DEFAULT, 2, 'Rabetokotany', 'Voahangy', '0349505050', '111001030105', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rasoarimalala', 'Ando', '0349606060', '111001040101', '{noop}password6');
+values(DEFAULT, 2, 'Rasoarimalala', 'Ando', '0349606060', '111001040101', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Ramaroson', 'Dina', '0349707070', '111001040102', '{noop}password7');
+values(DEFAULT, 2, 'Ramaroson', 'Dina', '0349707070', '111001040102', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Randrianarisoa', 'Zara', '0349808080', '111001040103', '{noop}password8');
+values(DEFAULT, 2, 'Randrianarisoa', 'Zara', '0349808080', '111001040103', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Ravelo', 'Aina', '0349909090', '111001040104', '{noop}password9');
+values(DEFAULT, 2, 'Ravelo', 'Aina', '0349909090', '111001040104', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andriamanjato', 'Faly', '0349111011', '111001040105', '{noop}password10');
+values(DEFAULT, 2, 'Andriamanjato', 'Faly', '0349111011', '111001040105', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Razafimahaleo', 'Sarobidy', '0349222022', '111001040106', '{noop}password11');
+values(DEFAULT, 2, 'Razafimahaleo', 'Sarobidy', '0349222022', '111001040106', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Ralaivao', 'Herizo', '0349333033', '111001040107', '{noop}password12');
+values(DEFAULT, 2, 'Ralaivao', 'Herizo', '0349333033', '111001040107', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andrianarisoa', 'Tovo', '0349444044', '111101060101', '{noop}password13');
+values(DEFAULT, 2, 'Andrianarisoa', 'Tovo', '0349444044', '111101060101', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rafidison', 'Malala', '0349555055', '111101060102', '{noop}password14');
+values(DEFAULT, 2, 'Rafidison', 'Malala', '0349555055', '111101060102', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rakotomavo', 'Njara', '0349666066', '111101060103', '{noop}password15');
+values(DEFAULT, 2, 'Rakotomavo', 'Njara', '0349666066', '111101060103', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andriamalala', 'Miora', '0349777077', '111101060104', '{noop}password16');
+values(DEFAULT, 2, 'Andriamalala', 'Miora', '0349777077', '111101060104', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rajaonarivelo', 'Tahina', '0349888088', '111101060105', '{noop}password17');
+values(DEFAULT, 2, 'Rajaonarivelo', 'Tahina', '0349888088', '111101060105', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andriamanampy', 'Rado', '0349999099', '111101060106', '{noop}password18');
+values(DEFAULT, 2, 'Andriamanampy', 'Rado', '0349999099', '111101060106', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Razakanirina', 'Tsanta', '0349111122', '111101200101', '{noop}password19');
+values(DEFAULT, 2, 'Razakanirina', 'Tsanta', '0349111122', '111101200101', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Randrianarivelo', 'Hery', '0349222233', '111101200102', '{noop}password20');
+values(DEFAULT, 2, 'Randrianarivelo', 'Hery', '0349222233', '111101200102', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rakotondramanana', 'Lova', '0349333344', '111101200103', '{noop}password21');
+values(DEFAULT, 2, 'Rakotondramanana', 'Lova', '0349333344', '111101200103', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rasoanarivo', 'Zina', '0349444455', '111101200104', '{noop}password22');
+values(DEFAULT, 2, 'Rasoanarivo', 'Zina', '0349444455', '111101200104', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rabarison', 'Solohery', '0349555566', '111101200105', '{noop}password23');
+values(DEFAULT, 2, 'Rabarison', 'Solohery', '0349555566', '111101200105', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andrianjafy', 'Faniry', '0349666677', '111101200106', '{noop}password24');
+values(DEFAULT, 2, 'Andrianjafy', 'Faniry', '0349666677', '111101200106', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Raveloson', 'Zo', '0349777788', '111101200107', '{noop}password25');
+values(DEFAULT, 2, 'Raveloson', 'Zo', '0349777788', '111101200107', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Raharimalala', 'Fetra', '0349888899', '111101200108', '{noop}password26');
+values(DEFAULT, 2, 'Raharimalala', 'Fetra', '0349888899', '111101200108', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andrianantenaina', 'Tantely', '0349999900', '111101200109', '{noop}password27');
+values(DEFAULT, 2, 'Andrianantenaina', 'Tantely', '0349999900', '111101200109', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Randrianasolo', 'Kanto', '0349111133', '111101200110', '{noop}password28');
+values(DEFAULT, 2, 'Randrianasolo', 'Kanto', '0349111133', '111101200110', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Rafeno', 'Santatra', '0349222244', '111101200111', '{noop}password29');
+values(DEFAULT, 2, 'Rafeno', 'Santatra', '0349222244', '111101200111', '{noop}bv');
 insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
-values(DEFAULT, 2, 'Andrianirina', 'Lanja', '0349333355', '111101200112', '{noop}password30');
+values(DEFAULT, 2, 'Andrianirina', 'Lanja', '0349333355', '111101200112', '{noop}bv');
+insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
+values(DEFAULT, 2, 'Randriamanana', 'Flerys', '0349555555', '110511060101', '{noop}bv');
+insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
+values(DEFAULT, 2, 'Rabesalama', 'Flavis', '0349666666', '110511060102', '{noop}bv');
+insert into utilisateurs(id, id_role, nom, prenom, contact, identifiant, mot_de_passe)
+values(DEFAULT, 2, 'Harimeva', 'Judette', '0349777777', '110511060103', '{noop}bv');
 
 -- electeurs
 INSERT INTO electeurs (cin, nom, prenom, genre)

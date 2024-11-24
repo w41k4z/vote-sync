@@ -5,6 +5,7 @@ import { Paths } from '../../../../paths';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { AlertService } from '../../../../services/api/alert/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,7 @@ export class HeaderComponent {
   alertsCount = 0;
 
   constructor(
+    private alertService: AlertService,
     private authService: AuthService,
     private notificationService: NotificationService,
     private router: Router,
@@ -27,10 +29,14 @@ export class HeaderComponent {
   ) {
     this.userInformation = this.authService.getUserInformation();
     this.userAuthority = this.authService.getUserPrivilege();
+    this.alertService.getAlertsCount().then((payload) => {
+      if (payload) {
+        this.alertsCount = payload.alertsCount;
+      }
+    });
     this.notificationService.connect('/notification/alerts');
     this.notificationService.message$.subscribe((message) => {
       if (message) {
-        alert('New alert: ' + message.body);
         const jsonBody = JSON.parse(message.body);
         this.alertsCount += jsonBody.alertsCount;
       }
@@ -38,6 +44,15 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
+    setInterval(() => {
+      this.alertService.getAlertsCount().then((payload) => {
+        if (payload) {
+          if (this.authService.isAuthenticated()) {
+            this.alertsCount = payload.alertsCount;
+          }
+        }
+      });
+    }, 60000);
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

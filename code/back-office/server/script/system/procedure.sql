@@ -67,7 +67,7 @@ BEGIN
             rsi.malvoyants,
             rsi.blancs,
             rsi.nuls,
-            0,
+            20,
             0
         FROM resultats_importes rsi
         JOIN bv
