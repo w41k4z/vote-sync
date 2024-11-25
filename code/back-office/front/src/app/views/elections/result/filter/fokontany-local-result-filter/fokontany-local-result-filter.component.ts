@@ -20,6 +20,14 @@ export class FokontanyLocalResultFilterComponent {
     municipalityId: string,
     fokontanyId: string
   ) => void;
+
+  @Input() onExport!: (
+    regionId: string,
+    districtId: string,
+    municipalityId: string,
+    fokontanyId: string
+  ) => void;
+
   @Input() page!: number;
 
   @Input() onRegionFilterChange!: (regionId: string) => void;

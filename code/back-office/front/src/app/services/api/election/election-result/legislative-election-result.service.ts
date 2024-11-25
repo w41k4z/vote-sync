@@ -39,6 +39,25 @@ export class LegislativeElectionResultService extends ApiCallService {
     ).payload;
   }
 
+  async getDistrictResultsPdf(electionId: string, regionId: string) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/legislative/district${strParam}`,
+      'Resultats.pdf'
+    );
+  }
+
   async getCommunalResults(
     page: number,
     size: number,
@@ -68,6 +87,32 @@ export class LegislativeElectionResultService extends ApiCallService {
         `${Endpoints.ELECTION_RESULTS}/legislative/communal${strParam}`
       )
     ).payload;
+  }
+
+  async getCommunalResultsPdf(
+    electionId: string,
+    regionId: string,
+    districtId: string
+  ) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/legislative/communal${strParam}`,
+      'Resultats.pdf'
+    );
   }
 
   async getFokontanyResults(
@@ -103,6 +148,36 @@ export class LegislativeElectionResultService extends ApiCallService {
         `${Endpoints.ELECTION_RESULTS}/fokontany${strParam}`
       )
     ).payload;
+  }
+
+  async getFokontanyResultsPdf(
+    electionId: string,
+    regionId: string,
+    districtId: string,
+    communeId: string
+  ) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    if (communeId && communeId !== '*') {
+      params.push(`communeId=${communeId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/fokontany${strParam}`,
+      'Resultats.pdf'
+    );
   }
 
   async getPollingStationResults(
@@ -142,6 +217,40 @@ export class LegislativeElectionResultService extends ApiCallService {
         `${Endpoints.ELECTION_RESULTS}/polling-station${strParam}`
       )
     ).payload;
+  }
+
+  async getPollingStationResultsPdf(
+    electionId: string,
+    regionId: string,
+    districtId: string,
+    communeId: string,
+    fokontanyId: string
+  ) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    if (communeId && communeId !== '*') {
+      params.push(`communeId=${communeId}`);
+    }
+    if (fokontanyId && fokontanyId !== '*') {
+      params.push(`fokontanyId=${fokontanyId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/polling-station${strParam}`,
+      'Resultats.pdf'
+    );
   }
 
   async invalidateElectoralResult(

@@ -10,7 +10,7 @@
                 <tr>
                     <td class="px-1">
                         <button class="btn btn-outline-primary d-flex gap-2 align-items-center"
-                            *ngIf="showExportButton">
+                            *ngIf="showExportButton" (click)="onExport('*', '*', '*', '*')">
                             <span>Exporter</span> <i class="bi bi-file-earmark-pdf"
                                 style="font-size: medium;"></i></button>
                     </td>

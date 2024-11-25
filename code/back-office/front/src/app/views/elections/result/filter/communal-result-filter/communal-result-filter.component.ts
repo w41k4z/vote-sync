@@ -19,6 +19,14 @@ export class CommunalResultFilterComponent {
     communeId: string,
     fokontanyId: string
   ) => void;
+
+  @Input() onExport!: (
+    regionId: string,
+    districtId: string,
+    communeId: string,
+    fokontanyId: string
+  ) => void;
+
   @Input() page!: number;
 
   @Input() onRegionFilterChange!: (regionId: string) => void;

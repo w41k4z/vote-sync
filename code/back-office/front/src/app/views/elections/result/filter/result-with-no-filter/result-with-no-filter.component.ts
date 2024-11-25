@@ -7,6 +7,13 @@ import { ElectoralResult } from '../../../../../dto/electoral-result';
   styleUrl: './result-with-no-filter.component.scss',
 })
 export class ResultWithNoFilterComponent {
+  @Input() onExport!: (
+    regionId: string,
+    districtId: string,
+    communeId: string,
+    fokontanyId: string
+  ) => void;
+
   @Input() current!: number;
 
   @Input() electoralResult!: ElectoralResult;

@@ -16,7 +16,7 @@
                 @if (current == 0) {
                 <app-polling-station-result-filter [electoralResult]="electoralResult" [regions]="regions"
                     [regionId]="regionId" [districts]="districts" [districtId]="districtId" [communes]="communes"
-                    [communeId]="communeId" [fokontany]="fokontany" [fokontanyId]="fokontanyId" [onFilter]="filter"
+                    [communeId]="communeId" [fokontany]="fokontany" [fokontanyId]="fokontanyId" [onFilter]="filter" [onExport]="export"
                     [onRegionFilterChange]="filterByRegion" [onDistrictFilterChange]="filterByDistrict"
                     [onCommuneFilterChange]="filterByCommune" [showExportButton]="election?.status == 20">
                 </app-polling-station-result-filter>
@@ -24,23 +24,23 @@
                 @else if (current == 1) {
                 <app-fokontany-result-filter [electoralResult]="electoralResult" [regions]="regions"
                     [regionId]="regionId" [districts]="districts" [districtId]="districtId" [communes]="communes"
-                    [communeId]="communeId" [onFilter]="filter" [onRegionFilterChange]="filterByRegion"
+                    [communeId]="communeId" [onFilter]="filter" [onExport]="export" [onRegionFilterChange]="filterByRegion"
                     [onDistrictFilterChange]="filterByDistrict" [showExportButton]="election?.status == 20">
                 </app-fokontany-result-filter>
                 }
                 @else if (current == 2) {
                 <app-communal-result-filter [electoralResult]="electoralResult" [regions]="regions"
-                    [regionId]="regionId" [districts]="districts" [districtId]="districtId" [onFilter]="filter"
+                    [regionId]="regionId" [districts]="districts" [districtId]="districtId" [onFilter]="filter" [onExport]="export"
                     [onRegionFilterChange]="filterByRegion" [showExportButton]="election?.status == 20">
                 </app-communal-result-filter>
                 }
                 @else if (current == 3) {
                 <app-district-result-filter [electoralResult]="electoralResult" [regions]="regions"
-                    [regionId]="regionId" [onFilter]="filter" [showExportButton]="election?.status == 20">
+                    [regionId]="regionId" [onFilter]="filter" [onExport]="export" [showExportButton]="election?.status == 20">
                 </app-district-result-filter>
                 }
                 @else {
-                <app-result-with-no-filter [current]="current" [electoralResult]="electoralResult" [showExportButton]="election?.status == 20">
+                <app-result-with-no-filter [current]="current" [onExport]="export" [electoralResult]="electoralResult" [showExportButton]="election?.status == 20">
                 </app-result-with-no-filter>
                 }
                 <main class="container-fluid mt-2">

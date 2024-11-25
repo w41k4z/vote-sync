@@ -43,6 +43,32 @@ export class LocalElectionResultService extends ApiCallService {
     ).payload;
   }
 
+  async getMunicipalResultsPdf(
+    electionId: string,
+    regionId: string,
+    districtId: string
+  ) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/local/municipal${strParam}`,
+      'Resultats.pdf'
+    );
+  }
+
   async getFokontanyResults(
     page: number,
     size: number,
@@ -76,6 +102,36 @@ export class LocalElectionResultService extends ApiCallService {
         `${Endpoints.ELECTION_RESULTS}/local/fokontany${strParam}`
       )
     ).payload;
+  }
+
+  async getFokontanyResultsPdf(
+    electionId: string,
+    regionId: string,
+    districtId: string,
+    municipalityId: string
+  ) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    if (municipalityId && municipalityId !== '*') {
+      params.push(`municipalityId=${municipalityId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/local/fokontany${strParam}`,
+      'Resultats.pdf'
+    );
   }
 
   async getPollingStationResults(
@@ -115,6 +171,40 @@ export class LocalElectionResultService extends ApiCallService {
         `${Endpoints.ELECTION_RESULTS}/local/polling-station${strParam}`
       )
     ).payload;
+  }
+
+  async getPollingStationResultsPdf(
+    electionId: string,
+    regionId: string,
+    districtId: string,
+    municipalityId: string,
+    fokontanyId: string
+  ) {
+    let params: string[] = [];
+    if (regionId && regionId !== '*') {
+      params.push(`regionId=${regionId}`);
+    }
+    if (districtId && districtId !== '*') {
+      params.push(`districtId=${districtId}`);
+    }
+    if (municipalityId && municipalityId !== '*') {
+      params.push(`municipalityId=${municipalityId}`);
+    }
+    if (fokontanyId && fokontanyId !== '*') {
+      params.push(`fokontanyId=${fokontanyId}`);
+    }
+    let strParam = `?electionId=${electionId}`;
+    if (params.length > 0) {
+      strParam += '&';
+      for (let each of params) {
+        strParam += each + '&';
+      }
+      strParam = strParam.slice(0, strParam.length - 1);
+    }
+    this.downloadCall(
+      `${Endpoints.ELECTION_RESULTS}/exportation/local/polling-station${strParam}`,
+      'Resultats.pdf'
+    );
   }
 
   async invalidateElectoralResult(

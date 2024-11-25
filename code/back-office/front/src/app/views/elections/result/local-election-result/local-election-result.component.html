@@ -24,6 +24,7 @@
                         [fokontany]="fokontany"
                         [fokontanyId]="fokontanyId"
                         [onFilter]="filter"
+                        [onExport]="export"
                         [onRegionFilterChange]="filterByRegion"
                         [onDistrictFilterChange]="filterByDistrict"
                         [onMunicipalityFilterChange]="filterByMunicipality"
@@ -41,6 +42,7 @@
                         [municipalities]="municipalities"
                         [municipalityId]="municipalityId"
                         [onFilter]="filter"
+                        [onExport]="export"
                         [onRegionFilterChange]="filterByRegion"
                         [onDistrictFilterChange]="filterByDistrict"
                         [showExportButton]="election?.status == 20"
@@ -55,6 +57,7 @@
                         [districts]="districts"
                         [districtId]="districtId"
                         [onFilter]="filter"
+                        [onExport]="export"
                         [onRegionFilterChange]="filterByRegion"
                         [showExportButton]="election?.status == 20"
                     >

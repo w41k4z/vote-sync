@@ -25,6 +25,34 @@ export class ApiCallService {
     this.httpClient = httpClient;
   }
 
+  protected async downloadCall(url: string, fileName: string) {
+    this.loadingSubject.next(true);
+    const res = this.httpClient
+      .get(`${this.baseUrl}/${url}`, { responseType: 'blob' })
+      .pipe(
+        tap((blob) => {
+          this.loadingSubject.next(false);
+          const url = window.URL.createObjectURL(blob);
+          let a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          setTimeout(() => {
+            this.messageSubject.next(null);
+          }, 5000);
+        }),
+        catchError((error) => {
+          this.loadingSubject.next(false);
+          this.errorSubject.next(error.error.message);
+          setTimeout(() => {
+            this.errorSubject.next(null);
+          }, 5000);
+          return throwError(() => error);
+        })
+      );
+    return await firstValueFrom(res);
+  }
+
   protected async getCall<T>(url: string): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
     const res = this.httpClient.get(`${this.baseUrl}/${url}`).pipe(

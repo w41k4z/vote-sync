@@ -96,6 +96,19 @@ export class LocalElectionResultComponent {
     this.getElectoralResults(page);
   };
 
+  export = (
+    regionId: string,
+    districtId: string,
+    municipalityId: string,
+    fokontanyId: string
+  ) => {
+    this.regionId = regionId;
+    this.districtId = districtId;
+    this.municipalityId = municipalityId;
+    this.fokontanyId = fokontanyId;
+    this.exportElectoralResults();
+  };
+
   getElectoralResults(page: number) {
     const electionId = this.route.snapshot.paramMap.get('electionId');
     if (electionId) {
@@ -150,6 +163,40 @@ export class LocalElectionResultComponent {
                 this.page = payload.electoralResults.page;
               }
             });
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  exportElectoralResults() {
+    const electionId = this.route.snapshot.paramMap.get('electionId');
+    if (electionId) {
+      switch (this.current) {
+        case 0:
+          this.electionResultService.getPollingStationResultsPdf(
+            electionId,
+            this.regionId,
+            this.districtId,
+            this.municipalityId,
+            this.fokontanyId
+          );
+          break;
+        case 1:
+          this.electionResultService.getFokontanyResultsPdf(
+            electionId,
+            this.regionId,
+            this.districtId,
+            this.municipalityId
+          );
+          break;
+        case 2:
+          this.electionResultService.getMunicipalResultsPdf(
+            electionId,
+            this.regionId,
+            this.districtId
+          );
           break;
         default:
           break;
