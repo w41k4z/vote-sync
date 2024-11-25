@@ -1,5 +1,6 @@
 package ceni.system.votesync.service.entity.result;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
@@ -76,6 +77,16 @@ public class LocalResultService {
         }
     }
 
+    public List<ProvisionalPollingStationResult> getPollingStationLocalElectionResults(Integer electionId,
+            Integer regionId, Integer districtId, Integer municipalityId,
+            Integer fokontanyId) {
+        Specification<ProvisionalPollingStationResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalPollingStationLocalResult(regionId, districtId, municipalityId, fokontanyId));
+        return this.provisionalPollingStationResultRepository.findAll(provisionalSpec);
+    }
+
     public Object getFokontanyLocalElectionResults(Integer electionId, Integer regionId, Integer districtId,
             Integer municipalityId,
             Pageable page) {
@@ -91,6 +102,16 @@ public class LocalResultService {
         } else {
             return new PagedModel<>(this.fokontanyLocalElectionResultRepository.findAll(spec, page));
         }
+    }
+
+    public List<ProvisionalFokontanyResult> getFokontanyLocalElectionResults(Integer electionId, Integer regionId,
+            Integer districtId,
+            Integer municipalityId) {
+        Specification<ProvisionalFokontanyResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalFokontanyLocalResult(regionId, districtId, municipalityId));
+        return this.provisionalFokontanyResultRepository.findAll(provisionalSpec);
     }
 
     public Object getMunicipalResults(Integer electionId, Integer regionId, Integer districtId, Pageable page) {
@@ -109,5 +130,14 @@ public class LocalResultService {
         } else {
             return new PagedModel<>(this.municipalResultRepository.findAll(spec, page));
         }
+    }
+
+    public List<ProvisionalMunicipalResult> getMunicipalResults(Integer electionId, Integer regionId,
+            Integer districtId) {
+        Specification<ProvisionalMunicipalResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalMunicipalResult(regionId, districtId));
+        return this.provisionalMunicipalResultRepository.findAll(provisionalSpec);
     }
 }

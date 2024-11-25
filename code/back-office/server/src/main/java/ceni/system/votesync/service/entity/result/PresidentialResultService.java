@@ -1,5 +1,6 @@
 package ceni.system.votesync.service.entity.result;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
@@ -85,6 +86,12 @@ public class PresidentialResultService extends LegislativeResultService {
         }
     }
 
+    public List<ProvisionalGlobalResult> getGlobalResult(Integer electionId) {
+        Specification<ProvisionalGlobalResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        return this.provisionalGlobalResultRepository.findAll(provisionalSpec);
+    }
+
     public Object getProvincialResults(Integer electionId, Pageable page) {
         Optional<Election> election = this.electionService.getElection(electionId);
         if (!election.isEmpty() && !election.get().getType().isPresidential()) {
@@ -100,6 +107,12 @@ public class PresidentialResultService extends LegislativeResultService {
         }
     }
 
+    public List<ProvisionalProvincialResult> getProvincialResults(Integer electionId) {
+        Specification<ProvisionalProvincialResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        return this.provisionalProvincialResultRepository.findAll(provisionalSpec);
+    }
+
     public Object getRegionalResults(Integer electionId, Pageable page) {
         Optional<Election> election = this.electionService.getElection(electionId);
         if (!election.isEmpty() && !election.get().getType().isPresidential()) {
@@ -113,5 +126,11 @@ public class PresidentialResultService extends LegislativeResultService {
         } else {
             return new PagedModel<>(this.regionalResultRepository.findAll(spec, page));
         }
+    }
+
+    public List<ProvisionalRegionalResult> getRegionalResults(Integer electionId) {
+        Specification<ProvisionalRegionalResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        return this.provisionalRegionalResultRepository.findAll(provisionalSpec);
     }
 }

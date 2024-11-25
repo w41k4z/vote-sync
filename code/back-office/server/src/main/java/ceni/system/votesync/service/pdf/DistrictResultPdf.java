@@ -16,28 +16,27 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.awt.Color;
 import org.springframework.stereotype.Service;
 
-import ceni.system.votesync.model.entity.election.result.provisional.ProvisionalPollingStationResult;
-import ceni.system.votesync.model.entity.election.result.provisional.details.ProvisionalPollingStationResultDetails;
+import ceni.system.votesync.model.entity.election.result.provisional.ProvisionalDistrictResult;
+import ceni.system.votesync.model.entity.election.result.provisional.details.ProvisionalDistrictResultDetails;
 import ceni.system.votesync.service.FileStorageService;
 import ceni.system.votesync.service.NumberStringFormatter;
 
 @Service
-public class PollingStationResultPdf extends ResultPdf {
+public class DistrictResultPdf extends ResultPdf {
 
         private FileStorageService fileStorageService;
 
-        public PollingStationResultPdf(FileStorageService fileStorageService) {
+        public DistrictResultPdf(FileStorageService fileStorageService) {
                 this.fileStorageService = fileStorageService;
         }
 
-        public ByteArrayOutputStream generate(List<ProvisionalPollingStationResult> pollingStationResults)
-                        throws IOException {
+        public ByteArrayOutputStream generate(List<ProvisionalDistrictResult> results) throws IOException {
                 try (PDDocument document = new PDDocument(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-                        for (ProvisionalPollingStationResult pollingStationResult : pollingStationResults) {
+                        for (ProvisionalDistrictResult result : results) {
                                 // Create an A4 page
                                 String documentTitle = "VOKATRA VONJIMAIKA AMIN'NY FIFIDIANANA: "
-                                                + pollingStationResult.getElection();
+                                                + result.getElection();
                                 PDPage page = new PDPage(PDRectangle.A4);
                                 document.addPage(page);
                                 try (PDPageContentStream contentStream = new PDPageContentStream(document, page,
@@ -45,10 +44,9 @@ public class PollingStationResultPdf extends ResultPdf {
                                                 true)) {
                                         this.addHeaderLogo(contentStream, document, page);
                                         this.addTitle(documentTitle, contentStream, page);
-                                        this.addResultDetailsSection(contentStream, page, pollingStationResult);
+                                        this.addResultDetailsSection(contentStream, page, result);
                                         float tableStartY = page.getMediaBox().getHeight() - 280;
-                                        this.addTableDetails(document, page, contentStream, tableStartY,
-                                                        pollingStationResult);
+                                        this.addTableDetails(document, page, contentStream, tableStartY, result);
                                 }
                         }
 
@@ -58,12 +56,11 @@ public class PollingStationResultPdf extends ResultPdf {
         }
 
         private void addResultDetailsSection(PDPageContentStream contentStream, PDPage page,
-                        ProvisionalPollingStationResult pollingStationResult) throws IOException {
+                        ProvisionalDistrictResult result) throws IOException {
                 float fontSize = 9;
 
-                Integer registeredVoters = pollingStationResult.getMaleUnder36()
-                                + pollingStationResult.getFemaleUnder36()
-                                + pollingStationResult.getMale36AndOver() + pollingStationResult.getFemale36AndOver();
+                Integer registeredVoters = result.getMaleUnder36() + result.getFemaleUnder36()
+                                + result.getMale36AndOver() + result.getFemale36AndOver();
 
                 float columnStartY = page.getMediaBox().getHeight() - 175;
                 float leftColumnX = 50;
@@ -75,7 +72,7 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.setFont(PDType1Font.HELVETICA, fontSize);
                 contentStream.setNonStrokingColor(Color.BLACK);
                 contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Faritra: " + pollingStationResult.getRegion());
+                contentStream.showText("Faritra: " + result.getRegion());
                 contentStream.endText();
                 //
                 contentStream.beginText();
@@ -87,48 +84,42 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
                 contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY);
                 contentStream.showText(NumberStringFormatter.formatNumberWithSpaces(
-                                pollingStationResult.getVoters()));
+                                result.getVoters()));
                 contentStream.endText();
 
-                columnStartY -= 15;
+                columnStartY -= 20;
                 // Second line
                 contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA, fontSize);
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
                 contentStream.setNonStrokingColor(Color.BLACK);
                 contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Distrika: " + pollingStationResult.getDistrict());
+                contentStream.showText("Distrika: " + result.getName());
                 contentStream.endText();
                 //
                 contentStream.beginText();
-                contentStream.newLineAtOffset(rightColumnX, columnStartY);
+                contentStream.setFont(PDType1Font.HELVETICA, fontSize);
+                contentStream.newLineAtOffset(rightColumnX, columnStartY + 5);
                 contentStream.showText("Vato maty:");
                 contentStream.endText();
                 //
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
-                contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY);
+                contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY + 5);
                 contentStream.showText(NumberStringFormatter.formatNumberWithSpaces(
-                                pollingStationResult.getNullVotes()));
+                                result.getNullVotes()));
                 contentStream.endText();
                 //
-                Double nullVotesPercentage = (pollingStationResult.getNullVotes().doubleValue() / registeredVoters)
-                                * 100;
+                Double nullVotesPercentage = (result.getNullVotes().doubleValue() / registeredVoters) * 100;
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
-                contentStream.newLineAtOffset(rightColumnX + subColumnXOffset + 50, columnStartY);
+                contentStream.newLineAtOffset(rightColumnX + subColumnXOffset + 50, columnStartY + 5);
                 contentStream.showText("Soit: " + String.format("%.2f", nullVotesPercentage) + "%");
                 contentStream.endText();
 
-                columnStartY -= 15;
-                // Third line
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA, fontSize);
-                contentStream.setNonStrokingColor(Color.BLACK);
-                contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Kaominina: " + pollingStationResult.getCommune());
-                contentStream.endText();
+                columnStartY -= 10;
                 //
                 contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, fontSize);
                 contentStream.newLineAtOffset(rightColumnX, columnStartY);
                 contentStream.showText("Vato fotsy:");
                 contentStream.endText();
@@ -136,12 +127,10 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
                 contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY);
-                contentStream.showText(
-                                NumberStringFormatter.formatNumberWithSpaces(pollingStationResult.getBlankVotes()));
+                contentStream.showText(NumberStringFormatter.formatNumberWithSpaces(result.getBlankVotes()));
                 contentStream.endText();
                 //
-                Double blankVotesPercentage = (pollingStationResult.getBlankVotes().doubleValue() / registeredVoters)
-                                * 100;
+                Double blankVotesPercentage = (result.getBlankVotes().doubleValue() / registeredVoters) * 100;
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
                 contentStream.newLineAtOffset(rightColumnX + subColumnXOffset + 50, columnStartY);
@@ -149,21 +138,14 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.endText();
 
                 columnStartY -= 15;
-                // Fourth line
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA, fontSize);
-                contentStream.setNonStrokingColor(Color.BLACK);
-                contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Fokontany: " + pollingStationResult.getFokontany());
-                contentStream.endText();
-                //
-                contentStream.beginText();
                 contentStream.newLineAtOffset(rightColumnX, columnStartY);
                 contentStream.showText("Vato manan-kery:");
                 contentStream.endText();
                 //
-                Integer validVotes = registeredVoters - pollingStationResult.getNullVotes()
-                                - pollingStationResult.getBlankVotes();
+                Integer validVotes = registeredVoters - result.getNullVotes()
+                                - result.getBlankVotes();
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
                 contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY);
@@ -177,30 +159,22 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.showText("Soit: " + String.format("%.2f", validVotesPercentage) + "%");
                 contentStream.endText();
 
-                columnStartY -= 20;
-                // Fifth line
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
-                contentStream.setNonStrokingColor(Color.BLACK);
-                contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Bureau de vote: " + pollingStationResult.getName());
-                contentStream.endText();
-                //
+                columnStartY -= 15;
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA, fontSize);
-                contentStream.newLineAtOffset(rightColumnX, columnStartY + 5);
+                contentStream.newLineAtOffset(rightColumnX, columnStartY);
                 contentStream.showText("Tonga nifidy:");
                 contentStream.endText();
                 //
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize);
-                contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY + 5);
+                contentStream.newLineAtOffset(rightColumnX + subColumnXOffset, columnStartY);
                 contentStream.showText(NumberStringFormatter.formatNumberWithSpaces(registeredVoters));
                 contentStream.endText();
 
                 columnStartY -= 25;
                 // Participation Rate
-                Double participationRate = (registeredVoters.doubleValue() / pollingStationResult.getVoters()) * 100;
+                Double participationRate = (registeredVoters.doubleValue() / result.getVoters()) * 100;
                 contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, fontSize + 1);
                 contentStream.setNonStrokingColor(Color.BLACK);
@@ -210,7 +184,7 @@ public class PollingStationResultPdf extends ResultPdf {
         }
 
         private void addTableDetails(PDDocument document, PDPage page, PDPageContentStream contentStream,
-                        float startY, ProvisionalPollingStationResult pollingStationResult) throws IOException {
+                        float startY, ProvisionalDistrictResult result) throws IOException {
                 // A4 page dimensions and margins
                 float pageWidth = page.getMediaBox().getWidth();
                 float margin = 50; // Left and right margin
@@ -260,14 +234,14 @@ public class PollingStationResultPdf extends ResultPdf {
                 startX = margin;
                 cursorY = nextY;
 
-                Integer registeredVoters = pollingStationResult.getMaleUnder36()
-                                + pollingStationResult.getFemaleUnder36()
-                                + pollingStationResult.getMale36AndOver() + pollingStationResult.getFemale36AndOver();
-                Integer validVotes = registeredVoters - pollingStationResult.getBlankVotes()
-                                - pollingStationResult.getNullVotes();
-                for (int row = 0; row < pollingStationResult.getDetails().size(); row++) {
+                Integer registeredVoters = result.getMaleUnder36()
+                                + result.getFemaleUnder36()
+                                + result.getMale36AndOver() + result.getFemale36AndOver();
+                Integer validVotes = registeredVoters - result.getBlankVotes()
+                                - result.getNullVotes();
+                for (int row = 0; row < result.getDetails().size(); row++) {
                         nextY = cursorY - cellHeight;
-                        ProvisionalPollingStationResultDetails details = pollingStationResult.getDetails().get(row);
+                        ProvisionalDistrictResultDetails details = result.getDetails().get(row);
 
                         // Column 1: Numéro (centered)
                         drawCenteredText(contentStream, startX, nextY, columnWidths[0], cellHeight,

@@ -89,4 +89,34 @@ public class ResultPdf {
 
         return lines;
     }
+
+    protected void drawCenteredText(PDPageContentStream contentStream, float x, float y,
+            float width, float height, String text,
+            PDFont font, Color color, float fontSize) throws IOException {
+        float textWidth = font.getStringWidth(text) / 1000 * fontSize;
+        float textHeight = font.getFontDescriptor().getCapHeight() / 1000 * fontSize;
+        float textX = x + (width - textWidth) / 2;
+        float textY = y + (height - textHeight) / 2;
+        contentStream.beginText();
+        contentStream.setFont(font, fontSize);
+        contentStream.setNonStrokingColor(color);
+        contentStream.newLineAtOffset(textX, textY);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
+
+    // Helper to draw right-aligned text
+    protected void drawRightAlignedText(PDPageContentStream contentStream, float x, float y,
+            float width, float height, String text,
+            PDFont font, Color color, float fontSize) throws IOException {
+        float textWidth = font.getStringWidth(text) / 1000 * fontSize;
+        float textX = x + width - textWidth - 5; // 5 is padding from the right
+        float textY = y + (height / 2) - (fontSize / 2);
+        contentStream.beginText();
+        contentStream.setFont(font, fontSize);
+        contentStream.setNonStrokingColor(color);
+        contentStream.newLineAtOffset(textX, textY);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
 }

@@ -1,5 +1,6 @@
 package ceni.system.votesync.service.entity.result;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
@@ -80,6 +81,15 @@ public class LegislativeResultService {
         }
     }
 
+    public List<ProvisionalPollingStationResult> getPollingStationResults(Integer electionId, Integer regionId,
+            Integer districtId, Integer communeId, Integer fokontanyId) {
+        Specification<ProvisionalPollingStationResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalPollingStationResult(regionId, districtId, communeId, fokontanyId));
+        return this.provisionalPollingStationResultRepository.findAll(provisionalSpec);
+    }
+
     public Object getFokontanyResults(Integer electionId, Integer regionId,
             Integer districtId, Integer communeId, Pageable page) {
         Optional<Election> election = this.electionService.getElection(electionId);
@@ -94,6 +104,16 @@ public class LegislativeResultService {
         } else {
             return new PagedModel<>(this.fokontanyResultRepository.findAll(spec, page));
         }
+    }
+
+    public List<ProvisionalFokontanyResult> getFokontanyResults(Integer electionId, Integer regionId,
+            Integer districtId, Integer communeId) {
+
+        Specification<ProvisionalFokontanyResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalFokontanyResult(regionId, districtId, communeId));
+        return this.provisionalFokontanyResultRepository.findAll(provisionalSpec);
     }
 
     public Object getCommunalResults(Integer electionId, Integer regionId, Integer districtId, Pageable page) {
@@ -115,6 +135,15 @@ public class LegislativeResultService {
         }
     }
 
+    public List<ProvisionalCommunalResult> getCommunalResults(Integer electionId, Integer regionId,
+            Integer districtId) {
+        Specification<ProvisionalCommunalResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalCommunalResult(regionId, districtId));
+        return this.provisionalCommunalResultRepository.findAll(provisionalSpec);
+    }
+
     public Object getDistrictResults(Integer electionId, Integer regionId, Pageable page) {
         Optional<Election> election = this.electionService.getElection(electionId);
         if (!election.isEmpty()
@@ -132,5 +161,13 @@ public class LegislativeResultService {
         } else {
             return new PagedModel<>(this.districtResultRepository.findAll(spec, page));
         }
+    }
+
+    public List<ProvisionalDistrictResult> getDistrictResults(Integer electionId, Integer regionId) {
+        Specification<ProvisionalDistrictResult> provisionalSpec = ProvisionalElectoralResultSpecification
+                .withElectionId(electionId);
+        provisionalSpec = provisionalSpec.and(ProvisionalElectoralResultSpecification
+                .filterProvisionalDistrictResult(regionId));
+        return this.provisionalDistrictResultRepository.findAll(provisionalSpec);
     }
 }

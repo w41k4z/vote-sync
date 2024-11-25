@@ -22,11 +22,10 @@ import ceni.system.votesync.service.FileStorageService;
 import ceni.system.votesync.service.NumberStringFormatter;
 
 @Service
-public class PollingStationResultPdf extends ResultPdf {
-
+public class PollingStationLocalElectionResultPdf extends ResultPdf {
         private FileStorageService fileStorageService;
 
-        public PollingStationResultPdf(FileStorageService fileStorageService) {
+        public PollingStationLocalElectionResultPdf(FileStorageService fileStorageService) {
                 this.fileStorageService = fileStorageService;
         }
 
@@ -96,7 +95,7 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.setFont(PDType1Font.HELVETICA, fontSize);
                 contentStream.setNonStrokingColor(Color.BLACK);
                 contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Distrika: " + pollingStationResult.getDistrict());
+                contentStream.showText("Distrika: " + pollingStationResult.getMunicipalityDistrict());
                 contentStream.endText();
                 //
                 contentStream.beginText();
@@ -125,7 +124,7 @@ public class PollingStationResultPdf extends ResultPdf {
                 contentStream.setFont(PDType1Font.HELVETICA, fontSize);
                 contentStream.setNonStrokingColor(Color.BLACK);
                 contentStream.newLineAtOffset(leftColumnX, columnStartY);
-                contentStream.showText("Kaominina: " + pollingStationResult.getCommune());
+                contentStream.showText("Kaominina: " + pollingStationResult.getMunicipality());
                 contentStream.endText();
                 //
                 contentStream.beginText();
