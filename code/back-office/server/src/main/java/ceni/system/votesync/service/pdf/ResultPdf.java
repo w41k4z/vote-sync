@@ -1,10 +1,13 @@
 package ceni.system.votesync.service.pdf;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.awt.Color;
@@ -28,13 +31,62 @@ public class ResultPdf {
     }
 
     protected void addTitle(String title, PDPageContentStream contentStream, PDPage page) throws IOException {
-        contentStream.beginText();
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
-        contentStream.setNonStrokingColor(Color.BLUE);
-        float titleWidth = PDType1Font.HELVETICA_BOLD.getStringWidth(title) / 1000 * 20;
-        contentStream.newLineAtOffset((page.getMediaBox().getWidth() - titleWidth) / 2,
-                page.getMediaBox().getHeight() - 170);
-        contentStream.showText(title);
-        contentStream.endText();
+        float pageWidth = page.getMediaBox().getWidth();
+        float pageHeight = page.getMediaBox().getHeight() - 45;
+        float leftMargin = 50;
+        float rightMargin = 50;
+        float maxWidth = pageWidth - leftMargin - rightMargin;
+
+        // Font settings
+        PDType1Font font = PDType1Font.HELVETICA_BOLD;
+        int fontSize = 12;
+
+        List<String> wrappedLines = wrapText(title, font, fontSize, maxWidth);
+
+        // Calculate starting Y position for centering the title vertically
+        float startY = pageHeight - 100; // Adjust Y position as needed
+        float leading = 1.5f * fontSize; // Line spacing
+
+        for (String line : wrappedLines) {
+            // Calculate text width and X position for centering
+            float textWidth = font.getStringWidth(line) / 1000 * fontSize;
+            float startX = (pageWidth - textWidth) / 2;
+
+            contentStream.beginText();
+            contentStream.setFont(font, fontSize);
+            contentStream.setNonStrokingColor(Color.BLUE);
+            contentStream.newLineAtOffset(startX, startY);
+            contentStream.showText(line);
+            contentStream.endText();
+
+            // Move to the next line
+            startY -= leading;
+        }
+    }
+
+    private List<String> wrapText(String text, PDFont font, int fontSize, float maxWidth) throws IOException {
+        List<String> lines = new ArrayList<>();
+        String[] words = text.split(" ");
+        StringBuilder currentLine = new StringBuilder();
+
+        for (String word : words) {
+            String testLine = currentLine.length() == 0 ? word : currentLine + " " + word;
+            float textWidth = font.getStringWidth(testLine) / 1000 * fontSize;
+
+            if (textWidth > maxWidth) {
+                // Current line exceeds maximum width, add it to lines
+                lines.add(currentLine.toString());
+                currentLine = new StringBuilder(word); // Start a new line
+            } else {
+                currentLine.append(currentLine.length() == 0 ? word : " " + word);
+            }
+        }
+
+        // Add the last line if any
+        if (currentLine.length() > 0) {
+            lines.add(currentLine.toString());
+        }
+
+        return lines;
     }
 }
