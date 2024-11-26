@@ -25,6 +25,8 @@ export class UsersComponent {
   filter: string | null = null;
   userTypeFilter: string = '*';
 
+  displayProgressSpinner = false;
+
   constructor(public userService: UserService) {
     this.loading$ = userService.loading$;
     this.error$ = userService.error$;
@@ -110,7 +112,14 @@ export class UsersComponent {
   };
 
   importUsers = (request: ImportUsersRequest) => {
-    return this.userService.importUsers(request);
+    this.displayProgressSpinner = true;
+    try {
+      return this.userService.importUsers(request);
+    } catch (error) {
+      throw error;
+    } finally {
+      this.displayProgressSpinner = false;
+    }
   };
 
   private updateUserListAndStats(newUser: User) {

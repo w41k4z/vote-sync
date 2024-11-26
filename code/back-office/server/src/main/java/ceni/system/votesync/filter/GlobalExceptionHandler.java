@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
                     String errorMessage = error.getDefaultMessage();
                     errors.put(fieldName, errorMessage);
                 });
-        response.setMessage("Request payload is not valid.");
+        response.setMessage("La validation de la requête a échoué");
         response.setErrors(errors);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse> handleBadCredentialsException(
             BadCredentialsException ex) {
-        ApiResponse response = new ApiResponse(null, "Authentication failed");
+        ApiResponse response = new ApiResponse(null, "Authentification échouée");
         HashMap<String, String> errors = new HashMap<>();
         errors.put("source", ex.getMessage());
         response.setErrors(errors);
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleGenericException(Exception ex) {
-        ApiResponse response = new ApiResponse(null, "An error occurred while processing the request");
+        ApiResponse response = new ApiResponse(null, "Une erreur s'est produite lors du traitement de la requête");
         HashMap<String, String> errors = new HashMap<>();
         errors.put("source", ex.getMessage());
         response.setErrors(errors);

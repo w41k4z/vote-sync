@@ -39,26 +39,26 @@ public class ElectionController {
     public ResponseEntity<ApiResponse> configureElection(@RequestBody ConfigureElectionRequest request) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("election", this.service.configureElection(request));
-        return ResponseEntity.ok(new ApiResponse(data, "Election configured successfully"));
+        return ResponseEntity.ok(new ApiResponse(data, "Election configurée avec succès"));
     }
 
     @PutMapping
     public ResponseEntity<ApiResponse> updateElection(@RequestBody UpdateElectionRequest request) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("election", this.service.updateElection(request));
-        return ResponseEntity.ok(new ApiResponse(data, "Election updated successfully"));
+        return ResponseEntity.ok(new ApiResponse(data, "Election mise à jour avec succès"));
     }
 
     @DeleteMapping
     public ResponseEntity<ApiResponse> deleteElection(@RequestParam(required = true) Integer electionId) {
         this.service.deleteElection(electionId);
-        return ResponseEntity.ok(new ApiResponse(null, "Election deleted successfully"));
+        return ResponseEntity.ok(new ApiResponse(null, "Election supprimée avec succès"));
     }
 
     @PostMapping("/close")
     public ResponseEntity<ApiResponse> closeElection(@RequestBody Integer electionId) {
         this.service.closeElection(electionId);
-        return ResponseEntity.ok(new ApiResponse(null, "Election closed successfully."));
+        return ResponseEntity.ok(new ApiResponse(null, "Election clôturée avec succès"));
     }
 
     @GetMapping("/{electionId}")

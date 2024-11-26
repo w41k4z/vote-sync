@@ -18,6 +18,7 @@ public class UserFactory {
 
     public UserFactory(RoleService roleService, PasswordHashingService passwordHashingService) {
         this.roleService = roleService;
+        this.passwordHashingService = passwordHashingService;
     }
 
     public User createUser(NewUserRequest newUserRequest) {

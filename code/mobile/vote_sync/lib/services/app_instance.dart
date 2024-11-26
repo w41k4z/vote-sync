@@ -114,13 +114,6 @@ class AppInstance {
             electionId: _electionId!,
             pollingStationId: _pollingStationId!,
           );
-      await GetIt.I
-          .get<PollingStationResultImageRepositoryService>()
-          .deleteImages(
-            transaction: tsx,
-            electionId: _electionId!,
-            pollingStationId: _pollingStationId!,
-          );
     });
   }
 }

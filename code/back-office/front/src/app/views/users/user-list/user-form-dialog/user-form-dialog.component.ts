@@ -19,8 +19,6 @@ import { ImportUsersRequest } from '../../../../dto/request/user/import-users.re
 export class UserFormDialogComponent extends FormContainerComponent {
   newUser: NewUserRequest = new NewUserRequest();
 
-  displayImportProgressSpinner = false;
-
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<UserFormDialogComponent>,
@@ -75,17 +73,16 @@ export class UserFormDialogComponent extends FormContainerComponent {
   }
 
   openImportDialog() {
-    const dialogRef = this.dialog.open(UserImportDialogComponent, {
+    const importDialogRef = this.dialog.open(UserImportDialogComponent, {
       data: { roles: this.data.roles },
     });
 
-    dialogRef
+    importDialogRef
       .afterClosed()
       .subscribe(async (importUsersRequest: ImportUsersRequest) => {
         if (importUsersRequest) {
-          this.displayImportProgressSpinner = true;
-          await this.data.onImportUsers(importUsersRequest);
-          this.displayImportProgressSpinner = false;
+          this.data.onImportUsers(importUsersRequest);
+          this.dialogRef.close();
         }
       });
   }

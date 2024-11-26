@@ -73,7 +73,7 @@ public class ElectoralResultController {
         Gson gson = new Gson();
         UploadElectoralResultRequest resultObject = gson.fromJson(result, UploadElectoralResultRequest.class);
         this.electoralResultUploadService.uploadResult(resultObject, images);
-        return ResponseEntity.ok(new ApiResponse(null, "Result uploaded successfully"));
+        return ResponseEntity.ok(new ApiResponse(null, "Resultat enregistré avec succès"));
     }
 
     @PostMapping("/import")
@@ -81,7 +81,7 @@ public class ElectoralResultController {
             @RequestParam(required = true) Integer electionId, @RequestParam(required = true) MultipartFile file,
             @RequestParam(required = true) String password) throws IOException {
         Map<String, Exception> errors = this.electoralResultUploadService.importResults(electionId, file, password);
-        String message = "Result uploaded with " + errors.size() + " error(s).";
+        String message = "Resultats importés avec " + errors.size() + " erreur(s).";
         return ResponseEntity
                 .ok(new ApiResponse(errors,
                         message));
@@ -99,14 +99,14 @@ public class ElectoralResultController {
     @PostMapping("/validate")
     public ResponseEntity<ApiResponse> validateResult(@RequestBody ValidateElectoralResultRequest request) {
         this.electoralResultUploadService.validateElectoralResult(request);
-        return ResponseEntity.ok(new ApiResponse(null, "Result validated successfully"));
+        return ResponseEntity.ok(new ApiResponse(null, "Result validé"));
     }
 
     @PutMapping("/invalidate")
     public ResponseEntity<ApiResponse> invalidateResult(@RequestBody InvalidateElectoralResultRequest request) {
         this.electoralResultUploadService.invalidateElectoralResult(request.getElectionId(),
                 request.getPollingStationId());
-        return ResponseEntity.ok(new ApiResponse(null, "Result invalidated successfully"));
+        return ResponseEntity.ok(new ApiResponse(null, "Le résultat a été invalidé"));
     }
 
     @GetMapping("/polling-station")

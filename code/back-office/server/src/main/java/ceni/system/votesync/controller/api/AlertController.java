@@ -44,7 +44,7 @@ public class AlertController {
     @PutMapping("/update-status")
     public ResponseEntity<ApiResponse> updateAlertStatus(@RequestBody UpdateAlertStatusRequest request) {
         this.alertService.updateAlertStatus(request);
-        return ResponseEntity.ok(new ApiResponse(null, "Alert status updated successfully"));
+        return ResponseEntity.ok(new ApiResponse(null, "Status d'alerte modifié avec succès"));
     }
 
     @GetMapping("/count")

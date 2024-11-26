@@ -85,11 +85,11 @@ public class PollingStationController {
         HashMap<String, Object> data = new HashMap<>();
         Election election = this.electionService.getElection(electionId).get();
         if (election == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, "Election not found"));
+            return ResponseEntity.badRequest().body(new ApiResponse(null, "Election non trouvée"));
         }
         VPollingStation pollingStation = this.service.getPollingStationById(pollingStationId).get();
         if (pollingStation == null) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, "Polling station not found"));
+            return ResponseEntity.badRequest().body(new ApiResponse(null, "Burau de vote non trouvé"));
         }
         List<VRegisteredVoter> voters = this.voterService.getRecordedVoters(electionId, pollingStationId);
         List<RegisteredCandidate> candidates = this.candidateService.getRegisteredCandidates(electionId,

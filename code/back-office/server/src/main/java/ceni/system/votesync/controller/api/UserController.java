@@ -59,20 +59,20 @@ public class UserController {
     public ResponseEntity<ApiResponse> createNewUser(@Valid @RequestBody NewUserRequest request) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("user", this.userService.registerNewUser(request));
-        return new ResponseEntity<>(new ApiResponse(payload, "User created"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse(payload, "Utilisateur crée"), HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<ApiResponse> updateUser(@Valid @RequestBody UpdateUserRequest request) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("user", this.userService.updateUser(request));
-        return ResponseEntity.ok(new ApiResponse(payload, "User updated"));
+        return ResponseEntity.ok(new ApiResponse(payload, "Utilisateur mis à jour"));
     }
 
     @DeleteMapping
     public ResponseEntity<ApiResponse> deleteUser(@RequestParam(required = true) Integer userId) {
         this.userService.deleteUser(userId);
-        return ResponseEntity.ok(new ApiResponse(null, "User deleted"));
+        return ResponseEntity.ok(new ApiResponse(null, "Utilisateur supprimé"));
     }
 
     @PostMapping("/import")
@@ -80,12 +80,12 @@ public class UserController {
             @RequestParam(required = true) Integer roleId) {
         this.userService.importUsers(file, roleId);
 
-        return ResponseEntity.ok(new ApiResponse(null, "Users imported"));
+        return ResponseEntity.ok(new ApiResponse(null, "Utilisateurs importés"));
     }
 
     @GetMapping("/assign-operators")
     public ResponseEntity<ApiResponse> assignOperators() {
         this.userService.assignOperators();
-        return ResponseEntity.ok(new ApiResponse(null, "Operators assigned"));
+        return ResponseEntity.ok(new ApiResponse(null, "Operateurs assignés"));
     }
 }

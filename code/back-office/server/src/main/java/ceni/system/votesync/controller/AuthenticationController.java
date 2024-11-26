@@ -32,7 +32,7 @@ public class AuthenticationController {
     public ResponseEntity<ApiResponse> signIn(@Valid @RequestBody AuthenticationRequest authRequest) {
         ApiResponse response = new ApiResponse(
                 this.authService.logIn(authRequest.getIdentifier(), authRequest.getPassword()),
-                "User logged in successfully");
+                "Utilisateur connecté");
         return ResponseEntity.ok(response);
     }
 
@@ -40,7 +40,7 @@ public class AuthenticationController {
     @PostMapping("/sign-out")
     public ResponseEntity<ApiResponse> signOut(@RequestBody LogOutRequest request) {
         this.authService.logOut(request.getRefreshToken());
-        return ResponseEntity.ok(new ApiResponse(null, "User logged out successfully"));
+        return ResponseEntity.ok(new ApiResponse(null, "Utilisateur déconnecté"));
     }
 
     @PostMapping("/refresh-token")
@@ -49,9 +49,9 @@ public class AuthenticationController {
         try {
             String newAccessToken = this.refreshTokenService.refreshedAccessToken(request.getRefreshToken());
             response.put("newAccessToken", newAccessToken);
-            return ResponseEntity.ok(new ApiResponse(response, "Access token refreshed successfully"));
+            return ResponseEntity.ok(new ApiResponse(response, "Token d'accès renouvelé"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, "Invalid refresh token"));
+            return ResponseEntity.badRequest().body(new ApiResponse(null, "Token de rafraîchissement invalide"));
         }
     }
 
