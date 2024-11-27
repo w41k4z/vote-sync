@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   BehaviorSubject,
   catchError,
@@ -53,9 +53,20 @@ export class ApiCallService {
     return await firstValueFrom(res);
   }
 
-  protected async getCall<T>(url: string): Promise<ApiResponse<T>> {
+  protected async getCall<T>(
+    url: string,
+    params?:
+      | HttpParams
+      | {
+          [param: string]:
+            | string
+            | number
+            | boolean
+            | ReadonlyArray<string | number | boolean>;
+        }
+  ): Promise<ApiResponse<T>> {
     this.loadingSubject.next(true);
-    const res = this.httpClient.get(`${this.baseUrl}/${url}`).pipe(
+    const res = this.httpClient.get(`${this.baseUrl}/${url}`, { params }).pipe(
       tap((response: ApiResponse<T>) => {
         this.loadingSubject.next(false);
         this.messageSubject.next(response.message || null);

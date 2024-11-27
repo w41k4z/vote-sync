@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiCallService } from '../api-call';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserListPayload } from '../../../dto/response/user/user-list-payload.response';
 import { Endpoints } from '../../../endpoints';
 import { UsersAndStatsPayload } from '../../../dto/response/user/users-and-stats-payload.response';
@@ -23,26 +23,22 @@ export class UserService extends ApiCallService {
     page: number,
     size: number
   ) {
-    let params: string[] = [];
-    params.push(`page=${page}`);
-    params.push(`size=${size}`);
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    // Ajoute le filtre si présent
     if (filter) {
-      params.push(`filter=${filter}`);
+      params = params.set('filter', filter);
     }
-    if (userTypeFilter != '*') {
-      params.push(`userTypeFilter=${userTypeFilter}`);
+
+    // Ajoute le type d'utilisateur si ce n'est pas le caractère générique '*'
+    if (userTypeFilter !== '*') {
+      params = params.set('userTypeFilter', userTypeFilter);
     }
-    let strParam = '';
-    if (params.length > 0) {
-      strParam = '?';
-      for (let each of params) {
-        strParam += each + '&';
-      }
-      strParam = strParam.slice(0, strParam.length - 1);
-    }
-    return (
-      await this.getCall<UserListPayload>(`${Endpoints.USERS}${strParam}`)
-    ).payload;
+    console.log(params);
+    return (await this.getCall<UserListPayload>(Endpoints.USERS, params))
+      .payload;
   }
 
   async getUsersAndStats(filter: string | null, userTypeFilter: string) {
