@@ -27,6 +27,7 @@ with open('../liste-bv.csv', 'r') as bvfile:
                 "nom": bv
             })
     cursor.execute("commit")
+    cursor.execute("CALL import_data()")
     print('All ok')
     cursor.close()
     connection.close()

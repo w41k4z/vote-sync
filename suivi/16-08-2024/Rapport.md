@@ -1,4 +1,0 @@
-- Analyse sur la sécurité du systeme et du reseau
-  - how HTTP works
-  - how HTTPS works
-  - how MITM attack works

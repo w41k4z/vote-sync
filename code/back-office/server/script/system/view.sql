@@ -53,6 +53,7 @@ FROM (
     FROM roles r2
 )
 GROUP BY id_role, nom_role
+;
 
 CREATE OR REPLACE VIEW liste_bv AS
 SELECT

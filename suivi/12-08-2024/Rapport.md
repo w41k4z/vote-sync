@@ -1,2 +1,0 @@
-- Architecture
-- Conception MCD (election -> resultat)

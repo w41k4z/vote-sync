@@ -1,22 +1,3 @@
-CREATE OR REPLACE PROCEDURE import_data AS
-BEGIN
-    import_regions;
-    import_districts;
-    import_communes;
-    import_fokontany;
-    import_cv;
-    import_bv;
-
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_regions';
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_districts';
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_communes';
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_fokontany';
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_cv';
-    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_bv';
-END;
-/
-
-
 CREATE OR REPLACE PROCEDURE import_regions AS
 BEGIN
     INSERT INTO regions(code, id_province, nom, geojson, etat) (
@@ -90,5 +71,23 @@ BEGIN
             ON cv.code = SUBSTR(im_bv.code, 1, LENGTH(im_bv.code) - 2)
     );
     COMMIT;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE import_data AS
+BEGIN
+    import_regions;
+    import_districts;
+    import_communes;
+    import_fokontany;
+    import_cv;
+    import_bv;
+
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_regions';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_districts';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_communes';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_fokontany';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_cv';
+    EXECUTE IMMEDIATE 'TRUNCATE TABLE imported_bv';
 END;
 /

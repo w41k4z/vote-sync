@@ -2,7 +2,7 @@ import oracledb
 import json
 import geojson
 
-tana_district_id = 26 # By default, should be 1. Change according to your database
+tana_district_id = 1 # By default, should be 1. Change according to your database
 
 connection = oracledb.connect(
     user="election",
@@ -20,7 +20,7 @@ with open('District.geojson', 'r') as f:
             code = 110701
             str_geojson = json.dumps(each["geometry"])
             
-            script = "INSERT INTO municipalites(code, nom, id_district, nom_district, geojson) values(:code, :nom, :id_district, :nom_district, :geojson)"
+            script = "INSERT INTO municipalites(code, nom, id_district, nom_district, geojson, etat) values(:code, :nom, :id_district, :nom_district, :geojson, 0)"
             # script = "UPDATE municipalites SET geojson = :geojson WHERE code = :code"
             cursor.execute(script, {
                 "code": code,
