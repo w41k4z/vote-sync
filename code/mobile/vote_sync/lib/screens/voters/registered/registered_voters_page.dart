@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sn_progress_dialog/options/completed.dart';
-import 'package:sn_progress_dialog/progress_dialog.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vote_sync/config/app_colors.dart';
 import 'package:vote_sync/models/voter.dart';
