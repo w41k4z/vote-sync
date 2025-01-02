@@ -58,9 +58,9 @@ export class ElectionsComponent {
 
   routePathByElectionType = (type: ElectionType) => {
     switch (type.type) {
-      case 'Presidentielle':
+      case 'Présidentielle':
         return `${this.electionPath}/result/presidential`;
-      case 'Legislative':
+      case 'Législative':
         return `${this.electionPath}/result/legislative`;
       case 'Locale':
         return `${this.electionPath}/result/local`;
@@ -179,6 +179,39 @@ export class ElectionsComponent {
       throw error;
     } finally {
       this.displayProgressSpinner = false;
+    }
+  };
+
+  onArchiveNextPage = async () => {
+    if (this.electionHistoryPage) {
+      if (
+        this.electionHistoryPage.number + 1 <
+        this.electionHistoryPage.totalPages
+      ) {
+        this.electionArchiveService
+          .getElectionArchive(this.electionHistoryPage.number + 1)
+          .then((payload) => {
+            if (payload) {
+              this.electionHistory = payload.elections.content;
+              this.electionHistoryPage = payload.elections.page;
+            }
+          });
+      }
+    }
+  };
+
+  onArchivePreviousPage = async () => {
+    if (this.electionHistoryPage) {
+      if (this.electionHistoryPage.number - 1 >= 0) {
+        this.electionArchiveService
+          .getElectionArchive(this.electionHistoryPage.number - 1)
+          .then((payload) => {
+            if (payload) {
+              this.electionHistory = payload.elections.content;
+              this.electionHistoryPage = payload.elections.page;
+            }
+          });
+      }
     }
   };
 }

@@ -14,6 +14,9 @@
 
 <app-archive-election-list
     [electionHistory]="electionHistory"
+    [electionHistoryPage]="electionHistoryPage"
+    [onArchiveNextPage]="onArchiveNextPage"
+    [onArchivePreviousPage]="onArchivePreviousPage"
     [isLoading]="electionHistoryLoading$ | async"
     [routePathByElectionType]="routePathByElectionType">
 </app-archive-election-list>

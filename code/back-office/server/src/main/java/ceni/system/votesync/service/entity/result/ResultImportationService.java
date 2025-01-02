@@ -162,8 +162,8 @@ public class ResultImportationService {
             this.alertService.saveAllAlerts(List.of(alert));
             this.notificationService
                     .sendAlert(new AlertBody(1, "Résultat incohérent. Source: " + result.getPollingStationCode()));
-            throw new InvalidElectoralResultException("Result for polling station code: "
-                    + result.getPollingStationCode() + " is invalid.");
+            throw new InvalidElectoralResultException("Resultat pour le code bureau de vote: "
+                    + result.getPollingStationCode() + " est invalide.");
         }
     }
 }

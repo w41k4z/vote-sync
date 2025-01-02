@@ -35,9 +35,9 @@
                 </li>
             </ul>
             <footer class="mt-3 mb-2 d-flex gap-3 justify-content-center align-items-center">
-                <i class="bi bi-arrow-left-circle"></i>
-                <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">1</span></b> sur 1</p>
-                <i class="bi bi-arrow-right-circle"></i>
+                <i class="bi bi-arrow-left-circle" (click)="onArchivePreviousPage()"></i>
+                <p class="m-0 fw-lighter">Page <b><span class="text-primary fw-bold">{{ electionHistoryPage && electionHistoryPage.number + 1 }}</span></b> sur {{ electionHistoryPage && electionHistoryPage.totalPages }}</p>
+                <i class="bi bi-arrow-right-circle" (click)="onArchiveNextPage()"></i>
             </footer>
         </div>
         <ng-template #empty>

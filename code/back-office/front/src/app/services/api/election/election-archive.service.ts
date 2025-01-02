@@ -12,10 +12,14 @@ export class ElectionArchiveService extends ApiCallService {
     super(http);
   }
 
-  async getElectionArchive() {
+  async getElectionArchive(page: number = 0, size: number = 3) {
+    let params: string[] = [];
+    params.push(`page=${page}`);
+    params.push(`size=${size}`);
+    let strParam = `?${params.join('&')}`;
     return (
       await this.getCall<ElectionArchivePayload>(
-        `${Endpoints.ELECTIONS}/history`
+        `${Endpoints.ELECTIONS}/history${strParam}`
       )
     ).payload;
   }

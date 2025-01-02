@@ -48,7 +48,6 @@ public class ElectionService {
         election.setStartDate(Date.valueOf(request.getStartDate()));
         election.setStatus(Status.PENDING);
         Election configuredElection = this.repository.save(election);
-        this.repository.simulateElectionData(configuredElection.getId());
         return configuredElection;
     }
 

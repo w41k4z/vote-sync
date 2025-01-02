@@ -11,7 +11,4 @@ public interface ElectionRepository extends EntityRepository<Election, Integer> 
     @Transactional
     @Procedure(procedureName = "close_election")
     void closeElectionById(Integer electionId);
-    
-    @Procedure(procedureName = "data_simulation")
-    void simulateElectionData(Integer electionId);
 }
